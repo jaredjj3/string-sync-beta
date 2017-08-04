@@ -1,0 +1,43 @@
+{
+  "name": "StringSync",
+  "version": "0.0.0",
+  "scripts": {
+    "webpack": "./node_modules/.bin/webpack -w",
+    "heroku-postbuild": "webpack --config webpack.config.prod.js",
+    "dev": "./node_modules/.bin/webpack-dev-server --open --colors --inline --hot"
+  },
+  "engines": {
+    "node": ">=6.3.0",
+    "npm": "3.10.3"
+  },
+  "dependencies": {
+    "@types/jquery": "^2.0.41",
+    "@types/node": "^7.0.13",
+    "@types/react": "^15.0.23",
+    "antd": "^2.12.3",
+    "babel": "^6.23.0",
+    "babel-core": "^6.24.0",
+    "babel-loader": "^7.0.0",
+    "babel-preset-es2015": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "css-loader": "^0.28.0",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "node-sass": "^4.5.2",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-redux": "^4.4.5",
+    "react-router": "^2.8.1",
+    "react-youtube": "^7.3.0",
+    "redux": "^3.6.0",
+    "sass-loader": "^6.0.3",
+    "style-loader": "^0.16.1",
+    "ts-loader": "^2.0.3",
+    "typescript": "^2.2.2",
+    "vexflow": "^1.2.83",
+    "webpack": "^2.4.1"
+  },
+  "devDependencies": {
+    "babel-plugin-import": "^1.3.1",
+    "webpack-dev-server": "^2.4.5"
+  }
+}
