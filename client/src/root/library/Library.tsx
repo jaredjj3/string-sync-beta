@@ -8,9 +8,7 @@ interface LibraryState {}
 class Library extends React.Component<LibraryProps, LibraryState> {
   public render(): JSX.Element {
     return (
-      <div>
-        I AM LIBRARY
-      </div>
+      <div></div>
     );
   }
 }
