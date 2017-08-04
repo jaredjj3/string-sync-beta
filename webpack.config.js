@@ -1,6 +1,12 @@
 const path = require('path');
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
+const fs = require('fs');
+
+const lessToJs = require('less-vars-to-js');
+const themeVariables = lessToJs(
+  fs.readFileSync(path.join(__dirname, 'client', 'src', 'styles', 'vars', 'antd-overrides.less'), 'utf8')
+);
 
 module.exports = {
   context: __dirname,
@@ -42,12 +48,23 @@ module.exports = {
         test: /\.scss$/,
         loaders: ['style-loader', 'css-loader', 'sass-loader']
       }, {
+        test: /\.less$/,
+        use: [
+          { loader: "style-loader" },
+          { loader: "css-loader" },
+          { 
+            loader: "less-loader",
+            options: {
+              modifyVars: themeVariables
+            }
+          },
+        ]
+      }, {
         test: [/\.jsx?$/, /\.js?$/],
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
           presets: ['es2015', 'react'],
-          plugins: ['import', { libraryName: 'antd', style: 'css' }]
         }
       }, {
         test: [/\.tsx?$/],
