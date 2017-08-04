@@ -1,11 +1,9 @@
 import React    from 'react';
 import ReactDOM from 'react-dom';
 
-import App from 'root/app';
+import Root from './root';
+import store from 'data/store';
 
 document.addEventListener('DOMContentLoaded', (): void => {
-  ReactDOM.render(
-    <App />,
-    document.getElementById('root'),
-  );
+  ReactDOM.render(<Root store={store} />, document.getElementById('root'));
 });
