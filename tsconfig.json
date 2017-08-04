@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "lib": [
+      "es2016",
+      "dom"
+    ],
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "client/src",
+    "jsx": "react",
+    "outDir": "tmp-see-ts-loader-issue-171",
+    "module": "es6",
+    "moduleResolution": "node",
+    "pretty": true,
+    "paths": {
+      "client/src/*": ["./src/*"]
+    },
+    "sourceMap": true
+  },
+  "compileOnSave": true,
+  "exclude": [
+    "node_modules"
+  ]
+}
