@@ -5,7 +5,6 @@ import LocaleProvider from 'antd/lib/locale-provider';
 import enUS from 'antd/lib/locale-provider/en_US.js';
 
 // styles
-import './reset.scss';
 import 'antd/dist/antd.less';
 
 interface AppProps {
