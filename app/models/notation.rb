@@ -2,16 +2,20 @@
 #
 # Table name: notations
 #
-#  id               :integer          not null, primary key
-#  user_id          :integer          not null
-#  youtube_video_id :text             not null
-#  thumbnail_url    :text             not null
-#  name             :string           not null
-#  artist_name      :string           not null
-#  build_structs    :text
-#  scroll_structs   :text
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  id                     :integer          not null, primary key
+#  user_id                :integer          not null
+#  youtube_video_id       :text             not null
+#  thumbnail_url          :text             not null
+#  name                   :string           not null
+#  artist_name            :string           not null
+#  build_structs          :text
+#  scroll_structs         :text
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  thumbnail_file_name    :string
+#  thumbnail_content_type :string
+#  thumbnail_file_size    :integer
+#  thumbnail_updated_at   :datetime
 #
 
 class Notation < ApplicationRecord
