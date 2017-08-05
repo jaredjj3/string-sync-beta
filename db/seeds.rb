@@ -11,7 +11,7 @@ def create_roles
 end
 
 def create_users
-  all_roles = Roles.all
+  all_roles = Role.all
   [
     { username: "jaredjj3", email: "jaredjj3@gmail.com", password: "password", roles: all_roles },
     { username: "samblakelock", email: "samblakelock@gmail.com", password: "password", roles: all_roles }

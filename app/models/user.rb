@@ -15,8 +15,8 @@
 class User < ApplicationRecord
   attr_reader :password
 
-  has_many(:roles, through: :user_roles)
   has_many(:user_roles, dependent: :destroy)
+  has_many(:roles, through: :user_roles)
 
   validates(:email, :username, uniqueness: { case_sensitive: false })
   validates(:email, :username, presence: true)
@@ -24,10 +24,13 @@ class User < ApplicationRecord
   validates(:password, length: { in: 6..20, allow_nil: true })
   validates(:session_token, presence: true, uniqueness: true)
   validates(:email, :username, length: { in: 3..30 })
+  validates(:user_roles, presence: true)
 
   after_initialize(:ensure_session_token)
-  after_initialize(:downcase_username_and_email)
-  before_save(:downcase_username_and_email)
+  after_initialize(:ensure_role)
+  after_initialize(:downcase_username_and_email!)
+
+  before_save(:downcase_username_and_email!)
 
   def self.find_by_credentials(username_or_email, password)
     user = User.find_by(email: username_or_email) || User.find_by(username: username_or_email)
@@ -66,10 +69,10 @@ class User < ApplicationRecord
     end
 
     def ensure_role
-      self.roles = Role.where(name: "student") if self.roles.blank?
+      self.roles = [Role.where(name: "student").first!] if self.roles.blank?
     end
 
-    def downcase_username_and_email
+    def downcase_username_and_email!
       self.username.downcase!
       self.email.downcase!
     end
