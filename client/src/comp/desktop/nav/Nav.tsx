@@ -56,13 +56,13 @@ class Nav extends React.Component<NavProps, NavState> {
               mode="horizontal"
               style={{ fontSize: '18px', borderBottom: '0' }}
             >
-              <Item key={NavKeys.SEARCH} style={{ borderBottom: '0' }}>
+              <Item key={NavKeys.SEARCH} style={{ paddingTop: '15px', paddingBottom: '16px' }}>
                 <Icon type="search" onClick={(e: React.SyntheticEvent<any>) => this.goTo('/search')}/>
               </Item>
-              <Item key={NavKeys.HOME} style={{ borderBottom: '0' }}>
+              <Item key={NavKeys.HOME} style={{ paddingTop: '15px', paddingBottom: '16px' }}>
                 <Icon type="home" onClick={(e: React.SyntheticEvent<any>) => this.goTo('/')}/>
               </Item>
-              <Item key={NavKeys.LOGIN} style={{ borderBottom: '0' }}>
+              <Item key={NavKeys.LOGIN} style={{ paddingTop: '15px', paddingBottom: '16px' }}>
                 <Icon type="user" onClick={(e: React.SyntheticEvent<any>) => this.goTo('/login')}/>
               </Item>
             </Menu>
@@ -72,7 +72,7 @@ class Nav extends React.Component<NavProps, NavState> {
     );
   }
 
-  private goTo(location: string): void {
+  private goTo = (location: string): void => {
     browserHistory.push(location);
   }
 }
