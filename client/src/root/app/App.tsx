@@ -26,8 +26,18 @@ interface AppProps {
 interface AppState {}
 
 class App extends React.Component<AppProps, AppState> {
-  props: AppProps;
-  state: AppState;
+  private updateViewportHandle: number;
+
+  componentWillMount(): void {
+    const { queryDevice, updateViewport } = this.props;
+
+    queryDevice();
+    updateViewport();
+  }
+
+  componentDidMount(): void {
+    addEventListener('resize', this.dispatchUpdateViewport);
+  }
 
   render(): JSX.Element {
     const { params, children, device } = this.props;
@@ -40,6 +50,27 @@ class App extends React.Component<AppProps, AppState> {
         </div>
       </LocaleProvider>
     );
+  }
+
+  // This function prevents the updateViewport function from being called too frequently.
+  // There are certain components, such as the ReactYouTube video component that must reload
+  // in order to change its video's dimensions, which is imperative to this app.
+  private dispatchUpdateViewport = (e: Event): void => {
+    window.clearTimeout(this.updateViewportHandle);
+
+    // For some reason, certain scrolling actions trigger a window resize event
+    // on the Chrome browser on the iPhone 6. Therefore, avoid rerendering the
+    // screen if a mobile device is detected.
+    if (this.props.device.isTouch) {
+      return;
+    }
+
+    this.updateViewportHandle = window.setTimeout(this.updateViewport, 500);
+  }
+
+  private updateViewport = (): void => {
+    this.props.updateViewport();
+    window.clearTimeout(this.updateViewportHandle);
   }
 }
 
