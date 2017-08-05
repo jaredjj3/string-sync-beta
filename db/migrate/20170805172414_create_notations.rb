@@ -3,7 +3,6 @@ class CreateNotations < ActiveRecord::Migration[5.0]
     create_table :notations do |t|
       t.integer :user_id, null: false
       t.text :youtube_video_id, null: false
-      t.text :thumbnail_url, null: false
       t.string :name, null: false
       t.string :artist_name, null: false
       t.text :build_structs

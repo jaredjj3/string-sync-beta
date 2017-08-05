@@ -5,7 +5,6 @@
 #  id                     :integer          not null, primary key
 #  user_id                :integer          not null
 #  youtube_video_id       :text             not null
-#  thumbnail_url          :text             not null
 #  name                   :string           not null
 #  artist_name            :string           not null
 #  build_structs          :text
@@ -25,10 +24,10 @@ class Notation < ApplicationRecord
   has_many(:user_notations)
   has_many(:followers, through: :user_notations, source: :user)
 
-  has_attached_file(:thumbnail)
+  has_attached_file(:thumbnail, default_url: "default.jpg")
   validates_attachment_content_type(:thumbnail, content_type: /\Aimage\/.*\z/)
 
-  validates(:user_id, :video_url, :name, :artist_name, presence: true)
+  validates(:user_id, :youtube_video_id, :name, :artist_name, presence: true)
   validate(:has_valid_video_url)
 
   before_create(:extract_youtube_id)
@@ -46,7 +45,7 @@ class Notation < ApplicationRecord
     def has_valid_video_url
       return unless new_record?
 
-      if youtube_video_id_match.blank?
+      if youtube_video_id_match(self.youtube_video_id).blank?
         errors[:youtube_video_id] << "must be valid youtube url"
       end
     end

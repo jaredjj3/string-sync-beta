@@ -18,7 +18,6 @@ ActiveRecord::Schema.define(version: 20170805174531) do
   create_table "notations", force: :cascade do |t|
     t.integer  "user_id",                null: false
     t.text     "youtube_video_id",       null: false
-    t.text     "thumbnail_url",          null: false
     t.string   "name",                   null: false
     t.string   "artist_name",            null: false
     t.text     "build_structs"
