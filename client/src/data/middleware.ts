@@ -1,5 +1,7 @@
 import { applyMiddleware } from 'redux';
 
-export default applyMiddleware(
+import thunk from 'redux-thunk';
 
+export default applyMiddleware(
+  thunk
 );
