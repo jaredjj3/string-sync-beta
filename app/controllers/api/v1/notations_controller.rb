@@ -1,4 +1,4 @@
-class Api::v1::NotationsController < ApplicationController
+class Api::V1::NotationsController < ApplicationController
   def index
     @notations = Notation.all
     render(:index, status: 200)
@@ -16,7 +16,7 @@ class Api::v1::NotationsController < ApplicationController
   end
 
   def destroy
-  end@
+  end
 
   private
 
