@@ -25,7 +25,6 @@ class Notation < ApplicationRecord
   validates_attachment_content_type(:thumbnail, content_type: /\Aimage\/.*\z/)
 
   validates(:user_id, :video_url, :name, :artist_name, presence: true)
-  validate(:has_at_least_one_tag)
   validate(:has_valid_video_url)
 
   before_create(:extract_youtube_id)
@@ -44,13 +43,7 @@ class Notation < ApplicationRecord
       return unless new_record?
 
       if youtube_video_id_match.blank?
-        errors[:base] << "must be valid youtube url"
-      end
-    end
-
-    def has_at_least_one_tag
-      if tags.blank? && tag_ids.blank?
-        errors[:base] << "must have at least one tag"
+        errors[:youtube_video_id] << "must be valid youtube url"
       end
     end
 
