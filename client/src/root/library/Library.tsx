@@ -10,7 +10,10 @@ import { Library as StoreLibrary, Notation } from 'data/library/reducer';
 import { dupNotation } from 'util/dup/library';
 import sortBy from 'util/sortBy';
 
-export type TagNotationsMap = Array<{ tag: string, notations: Array<Notation> }>;
+export interface TagNotations {
+  tag: string;
+  notations: Array<Notation>;
+}
 
 interface LibraryProps {
   device: Device;
@@ -25,8 +28,14 @@ class Library extends React.Component<LibraryProps, LibraryState> {
     this.props.fetchNotations();
   }
 
+  shouldComponentUpdate(nextProps: LibraryProps): boolean {
+    return (
+      this.willLibraryNotationsUpdate(this.props, nextProps) ||
+      this.willDeviceTypeChange(this.props, nextProps)
+    );
+  }
+
   render(): JSX.Element {
-    console.log('rendered Library');
     const tagNotationsMap = this.tagNotationsMap(this.props.library.notations);
 
     return (
@@ -41,7 +50,7 @@ class Library extends React.Component<LibraryProps, LibraryState> {
     return device.type === 'MOBILE' || device.isTouch;
   }
 
-  private tagNotationsMap(notations: Array<Notation>): TagNotationsMap {
+  private tagNotationsMap(notations: Array<Notation>): Array<TagNotations> {
     const notationsByTag = this.notationsByTag(notations);
     return sortBy(
       Object.keys(notationsByTag).map(tag => ({ tag, notations: notationsByTag[tag] })),
@@ -58,6 +67,14 @@ class Library extends React.Component<LibraryProps, LibraryState> {
 
       return notationsByTag;
     }, {});
+  }
+
+  private willLibraryNotationsUpdate(oldProps: LibraryProps, nextProps: LibraryProps): boolean {
+    return oldProps.library.notations.length !== nextProps.library.notations.length;
+  }
+
+  private willDeviceTypeChange(oldProps: LibraryProps, nextProps: LibraryProps): boolean {
+    return oldProps.device.type !== nextProps.device.type;
   }
 }
 

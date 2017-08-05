@@ -1,9 +1,30 @@
 @import "vars/overrides";
 
 .LibraryCarousel__carouselPage {
-  padding: 20px 20px 20px 20px;
-  margin: 15px 0 30px 0;
+  padding: 40px;
+  margin-top: 10px;
   background: @background-color-base;
   border-radius: 3px;
   border: 1px solid @border-color-base;
+}
+
+.LibraryCarousel__dots.slick-dots {
+  bottom: 25px;
+
+  li {
+    background: @border-color-base;
+  }
+
+  li > button {
+    padding: 6px;
+    background: @border-color-base;
+  }
+
+  li.slick-active > button {
+    background: @primary-color;
+  }
+
+  li > button:hover {
+    background: @primary-color;
+  }
 }
