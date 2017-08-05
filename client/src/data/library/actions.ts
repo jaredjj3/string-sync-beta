@@ -1,12 +1,12 @@
 import * as API from './api';
 
-export const RECEIVE_ALL_NOTATIONS = 'RECEIVE_ALL_NOTATIONS';
+export const RECEIVE_NOTATIONS = 'RECEIVE_NOTATIONS';
 
-export const receiveAllNotations = notations => ({
-  type: RECEIVE_ALL_NOTATIONS,
+export const receiveNotations = notations => ({
+  type: RECEIVE_NOTATIONS,
   notations,
 });
 
-export const fetchAllNotations = () => dispatch => (
-  API.fetchAllNotations().then(notations => dispatch(receiveAllNotations(notations)))
+export const fetchNotations = () => dispatch => (
+  API.fetchNotations().then(notations => dispatch(receiveNotations(notations)))
 );

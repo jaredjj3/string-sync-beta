@@ -1,32 +1,15 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
-import Card from 'comp/card';
-import Carousel from './carousel';
+import LibraryCarousel from './carousel';
 
-interface DesktopLibraryProps {}
+const DesktopLibrary = ({ tagNotationsMap }): JSX.Element => (
+  <div>
+    {
+      tagNotationsMap.map((tagNotations, i) => (
+        <LibraryCarousel key={tagNotations.tag} tagNotations={tagNotations} />
+      ))
+    }
+  </div>
+);
 
-interface DesktopLibraryState {}
-
-class DesktopLibrary extends React.Component<DesktopLibraryProps, DesktopLibraryState> {
-  render(): JSX.Element {
-    return (
-      <div>
-        {}
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = state => ({
-
-});
-
-const mapDispatchToProps = dispatch => ({
-
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(DesktopLibrary);
+export default DesktopLibrary;

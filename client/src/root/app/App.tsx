@@ -82,7 +82,7 @@ class App extends React.Component<AppProps, AppState> {
       return;
     }
 
-    this.updateViewportHandle = window.setTimeout(this.updateViewport, 500);
+    this.updateViewportHandle = window.setTimeout(this.updateViewport, 100);
   }
 
   private updateViewport = (): void => {

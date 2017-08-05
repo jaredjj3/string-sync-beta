@@ -1,8 +1,8 @@
-import { RECEIVE_ALL_NOTATIONS } from './actions';
+import { RECEIVE_NOTATIONS } from './actions';
 
 import dup from 'util/dup/library';
 
-interface Notation {
+export interface Notation {
   id: number,
   name: string,
   transcriber: string,
@@ -24,7 +24,7 @@ export default (state = defaultState, action): Library => {
   const nextState = dup(state);
 
   switch (action.type) {
-    case RECEIVE_ALL_NOTATIONS:
+    case RECEIVE_NOTATIONS:
       nextState.notations = action.notations;
       return nextState;
 
