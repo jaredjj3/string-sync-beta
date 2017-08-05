@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface NavProps {
-  params: any;
+  location: Location;
 }
 
 interface NavState {

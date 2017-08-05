@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 
 import Logo from './logo';
-import Menu from 'antd/lib/menu';
+import Menu from 'comp/menu';
 import Icon from 'comp/icon';
 import Row from 'comp/row';
 import Col from 'comp/col';
@@ -12,7 +13,7 @@ import './_nav.scss';
 const { Item, ItemGroup } = Menu;
 
 interface NavProps {
-  params: any;
+  location: Location;
 }
 
 interface NavState {
@@ -20,17 +21,25 @@ interface NavState {
 }
 
 enum NavKeys {
-  LOGO   = 'LOGO',
   SEARCH = 'SEARCH',
   HOME   = 'HOME',
   LOGIN  = 'LOGIN'
 }
 
 class Nav extends React.Component<NavProps, NavState> {
-  state: NavState = { current: NavKeys.HOME };
+  static NAV_KEYS_BY_LOCATION: object = {
+    '/'       : NavKeys.HOME,
+    '/login'  : NavKeys.LOGIN,
+    '/signup' : NavKeys.LOGIN,
+    '/search' : NavKeys.SEARCH,
+  };
 
-  handleClick = (e: any): void => {
-    this.setState({ current: e.key });
+  componentWillMount(): void {
+    this.setState({ current: Nav.NAV_KEYS_BY_LOCATION[this.props.location.pathname] });
+  }
+
+  componentWillReceiveProps(nextProps: NavProps, nextState: NavState): void {
+    this.setState({ current: Nav.NAV_KEYS_BY_LOCATION[nextProps.location.pathname] });
   }
 
   render(): JSX.Element {
@@ -42,7 +51,6 @@ class Nav extends React.Component<NavProps, NavState> {
           </Col>
           <Col xs={0} sm={0} md={8} lg={8}>
             <Menu
-              onClick={this.handleClick}
               selectedKeys={[this.state.current]}
               mode="horizontal"
               style={{ fontSize: '18px', borderBottom: '0' }}
@@ -51,7 +59,9 @@ class Nav extends React.Component<NavProps, NavState> {
                 <Icon type="search" />
               </Item>
               <Item key={NavKeys.HOME} style={{ borderBottom: '0' }}>
-                <Icon type="home" />
+                <Link to="/">
+                  <Icon type="home" />
+                </Link>
               </Item>
               <Item key={NavKeys.LOGIN} style={{ borderBottom: '0' }}>
                 <Icon type="user" />

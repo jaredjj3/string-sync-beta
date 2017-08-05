@@ -5,19 +5,19 @@ import Layout from 'comp/layout';
 import Icon from 'comp/icon';
 import Nav from 'comp/nav';
 
-import { Device } from 'types/device';
-
 import LocaleProvider from 'antd/lib/locale-provider';
 import enUS from 'antd/lib/locale-provider/en_US.js';
 
-// styles
+import { Device } from 'types/device';
+import { Location } from 'types/location';
+
 import 'antd/dist/antd.less';
 
 const { Header, Content } = Layout;
 
 interface AppProps {
   children: React.ReactChildren;
-  params: any;
+  location: Location;
   device: Device;
   queryDevice(): void;
   updateViewport(): void;
@@ -40,12 +40,11 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   render(): JSX.Element {
-    const { params, children, device } = this.props;
-
+    const { location, children, device } = this.props;
     return (
       <LocaleProvider locale={enUS}>
         <div>
-          <Nav device={device} params={params} />
+          <Nav device={device} location={location} />
           {children}
         </div>
       </LocaleProvider>
