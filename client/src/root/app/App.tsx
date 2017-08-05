@@ -13,6 +13,7 @@ import { Location } from 'types/location';
 
 import 'antd/dist/antd.less';
 import './_app.less';
+import 'styles/vars/overrides.less';
 
 const { Header, Content, Footer } = Layout;
 
@@ -45,7 +46,10 @@ class App extends React.Component<AppProps, AppState> {
     return (
       <LocaleProvider locale={enUS}>
         <Layout>
-          <Header className="AppLayout__header">
+          <Header
+            className="AppLayout__header"
+            style={{ marginBottom: '3em' }}
+          >
             <div className="AppLayout__header__content">
               <Nav device={device} location={location} />
             </div>

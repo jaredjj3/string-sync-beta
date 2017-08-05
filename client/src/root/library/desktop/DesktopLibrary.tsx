@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Card from 'comp/card';
+import Carousel from './carousel';
 
 interface DesktopLibraryProps {}
 
@@ -10,9 +11,9 @@ interface DesktopLibraryState {}
 class DesktopLibrary extends React.Component<DesktopLibraryProps, DesktopLibraryState> {
   render(): JSX.Element {
     return (
-      <Card style={{ minHeight: '100vh' }}>
-        I AM LIBRARY DESKTOP
-      </Card>
+      <div>
+        {}
+      </div>
     );
   }
 }
