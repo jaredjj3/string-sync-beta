@@ -59,7 +59,7 @@ class Nav extends React.Component<NavProps, NavState> {
             <Menu
               selectedKeys={[this.state.current]}
               mode="horizontal"
-              style={{ fontSize: '18px', borderBottom: '0' }}
+              style={{ fontSize: '18px', borderBottom: '0', background: 'none' }}
               onClick={this.goTo}
             >
               <Item key={NavKeys.SEARCH} style={itemStyle}>
