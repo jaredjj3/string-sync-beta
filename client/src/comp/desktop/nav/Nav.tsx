@@ -11,7 +11,9 @@ import './_nav.scss';
 
 const { Item, ItemGroup } = Menu;
 
-interface NavProps {}
+interface NavProps {
+  params: any;
+}
 
 interface NavState {
   current: string;
