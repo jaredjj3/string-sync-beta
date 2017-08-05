@@ -10,14 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170805170911) do
+ActiveRecord::Schema.define(version: 20170805172414) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "notations", force: :cascade do |t|
+    t.integer  "user_id",          null: false
+    t.text     "youtube_video_id", null: false
+    t.text     "thumbnail_url",    null: false
+    t.string   "name",             null: false
+    t.string   "artist_name",      null: false
+    t.text     "build_structs"
+    t.text     "scroll_structs"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.index ["user_id"], name: "index_notations_on_user_id", using: :btree
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "name", null: false
     t.index ["name"], name: "index_roles_on_name", unique: true, using: :btree
+  end
+
+  create_table "user_notations", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "notation_id"
+    t.index ["user_id", "notation_id"], name: "index_user_notations_on_user_id_and_notation_id", unique: true, using: :btree
   end
 
   create_table "user_roles", id: false, force: :cascade do |t|
