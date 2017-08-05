@@ -44,25 +44,27 @@ class Nav extends React.Component<NavProps, NavState> {
   }
 
   render(): JSX.Element {
+    const itemStyle = { paddingTop: '8px', paddingBottom: '6px' };
+
     return (
       <nav className="Nav--desktop">
         <Row type="flex" justify="space-between" align="middle">
-          <Col xs={0} sm={0} md={8} lg={8} push={4}>
+          <Col xs={0} sm={0} md={8} lg={8}>
             <Logo />
           </Col>
-          <Col xs={0} sm={0} md={8} lg={8}>
+          <Col xs={0} sm={0} md={6} lg={6} push={1}>
             <Menu
               selectedKeys={[this.state.current]}
               mode="horizontal"
               style={{ fontSize: '18px', borderBottom: '0' }}
             >
-              <Item key={NavKeys.SEARCH} style={{ paddingTop: '15px', paddingBottom: '16px' }}>
+              <Item key={NavKeys.SEARCH} style={itemStyle}>
                 <Icon type="search" onClick={(e: React.SyntheticEvent<any>) => this.goTo('/search')}/>
               </Item>
-              <Item key={NavKeys.HOME} style={{ paddingTop: '15px', paddingBottom: '16px' }}>
+              <Item key={NavKeys.HOME} style={itemStyle}>
                 <Icon type="home" onClick={(e: React.SyntheticEvent<any>) => this.goTo('/')}/>
               </Item>
-              <Item key={NavKeys.LOGIN} style={{ paddingTop: '15px', paddingBottom: '16px' }}>
+              <Item key={NavKeys.LOGIN} style={itemStyle}>
                 <Icon type="user" onClick={(e: React.SyntheticEvent<any>) => this.goTo('/login')}/>
               </Item>
             </Menu>

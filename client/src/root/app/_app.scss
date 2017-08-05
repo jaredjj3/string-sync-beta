@@ -1,0 +1,18 @@
+@import "~styles/vars/defaults";
+
+.AppLayout__header {
+  background: $background-color-base;
+  border-bottom: 1px solid $border-color-base;
+  margin-bottom: 1em;
+}
+
+.AppLayout__content {
+  min-height: 100vh;
+}
+
+.AppLayout__header__content,
+.AppLayout__content__content,
+.AppLayout__footer_content {
+  max-width: 980px;
+  margin: 0 auto;
+}

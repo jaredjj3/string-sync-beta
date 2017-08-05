@@ -12,8 +12,9 @@ import { Device } from 'types/device';
 import { Location } from 'types/location';
 
 import 'antd/dist/antd.less';
+import './_app.scss';
 
-const { Header, Content } = Layout;
+const { Header, Content, Footer } = Layout;
 
 interface AppProps {
   children: React.ReactChildren;
@@ -43,10 +44,23 @@ class App extends React.Component<AppProps, AppState> {
     const { location, children, device } = this.props;
     return (
       <LocaleProvider locale={enUS}>
-        <div>
-          <Nav device={device} location={location} />
-          {children}
-        </div>
+        <Layout>
+          <Header className="AppLayout__header">
+            <div className="AppLayout__header__content">
+              <Nav device={device} location={location} />
+            </div>
+          </Header>
+          <Content className="AppLayout__content">
+            <div className="AppLayout__content__content">
+              {children}
+            </div>
+          </Content>
+          <Footer className="AppLayout__footer">
+            <div className="AppLayout__footer__content">
+              StringSync ©2017 Created by Jared Johnson
+            </div>
+          </Footer>
+        </Layout>
       </LocaleProvider>
     );
   }
