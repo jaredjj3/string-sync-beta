@@ -1,20 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-interface LibraryProps {}
+import MobileLibrary from './mobile';
+import DesktopLibrary from './desktop';
 
-interface LibraryState {}
-
-class Library extends React.Component<LibraryProps, LibraryState> {
-  public render(): JSX.Element {
-    return (
-      <div></div>
-    );
-  }
-}
+const Library = ({ device }) => device.type === 'MOBILE' ? <MobileLibrary /> : <DesktopLibrary />;
 
 const mapStateToProps = state => ({
-
+  device: state.device
 });
 
 const mapDispatchToProps = dispatch => ({

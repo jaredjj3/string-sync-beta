@@ -1,3 +1,3 @@
-import Nav from './Nav';
+import DesktopNav from './DesktopNav';
 
-export default Nav;
+export default DesktopNav;
