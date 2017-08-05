@@ -19,6 +19,8 @@ interface AppProps {
   children: React.ReactChildren;
   params: any;
   device: Device;
+  queryDevice(): void;
+  updateViewport(): void;
 }
 
 interface AppState {}
@@ -41,12 +43,15 @@ class App extends React.Component<AppProps, AppState> {
   }
 }
 
+import { queryDevice, updateViewport } from 'data/device/actions';
+
 const mapStateToProps = state => ({
   device: state.device,
 });
 
 const mapDispatchToProps = dispatch => ({
-
+  queryDevice: () => dispatch(queryDevice()),
+  updateViewport: () => dispatch(updateViewport())
 });
 
 export default connect(
