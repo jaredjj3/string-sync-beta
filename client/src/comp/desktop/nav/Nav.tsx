@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { browserHistory } from 'react-router';
 
 import Logo from './logo';
 import Menu from 'comp/menu';
@@ -56,21 +57,23 @@ class Nav extends React.Component<NavProps, NavState> {
               style={{ fontSize: '18px', borderBottom: '0' }}
             >
               <Item key={NavKeys.SEARCH} style={{ borderBottom: '0' }}>
-                <Icon type="search" />
+                <Icon type="search" onClick={(e: React.SyntheticEvent<any>) => this.goTo('/search')}/>
               </Item>
               <Item key={NavKeys.HOME} style={{ borderBottom: '0' }}>
-                <Link to="/">
-                  <Icon type="home" />
-                </Link>
+                <Icon type="home" onClick={(e: React.SyntheticEvent<any>) => this.goTo('/')}/>
               </Item>
               <Item key={NavKeys.LOGIN} style={{ borderBottom: '0' }}>
-                <Icon type="user" />
+                <Icon type="user" onClick={(e: React.SyntheticEvent<any>) => this.goTo('/login')}/>
               </Item>
             </Menu>
           </Col>
         </Row>
       </nav>
     );
+  }
+
+  private goTo(location: string): void {
+    browserHistory.push(location);
   }
 }
 
