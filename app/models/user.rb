@@ -17,6 +17,9 @@ class User < ApplicationRecord
 
   has_many(:user_roles, dependent: :destroy)
   has_many(:roles, through: :user_roles)
+  has_many(:authored_notations, class_name: "Notation")
+  has_many(:user_notations)
+  has_many(:saved_notations, through: :user_notations, source: :notation)
 
   validates(:email, :username, uniqueness: { case_sensitive: false })
   validates(:email, :username, presence: true)

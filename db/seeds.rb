@@ -45,9 +45,15 @@ def create_notations(num = 20)
   end
 end
 
+def create_saved_notations
+  notations = Notation.all.to_a
+  User.all.each { |user| user.saved_notations << notations.sample(rand(notations.size)) }
+end
+
 init
 delete_all
 create_roles
 create_users
 create_tags
 create_notations
+create_saved_notations
