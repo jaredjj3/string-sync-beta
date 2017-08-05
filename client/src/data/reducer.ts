@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux';
 
-export default combineReducers({
+import device from './device/reducer';
 
+export default combineReducers({
+  device
 });
