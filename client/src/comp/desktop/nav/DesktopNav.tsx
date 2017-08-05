@@ -9,7 +9,11 @@ import Icon from 'comp/icon';
 import Row from 'comp/row';
 import Col from 'comp/col';
 
-import './_nav.scss';
+import { ClickParam } from 'antd/lib/menu';
+
+import './_nav.less';
+
+import invert from 'util/invert';
 
 const { Item, ItemGroup } = Menu;
 
@@ -31,7 +35,6 @@ class Nav extends React.Component<NavProps, NavState> {
   static NAV_KEYS_BY_LOCATION: object = {
     '/'       : NavKeys.HOME,
     '/login'  : NavKeys.LOGIN,
-    '/signup' : NavKeys.LOGIN,
     '/search' : NavKeys.SEARCH,
   };
 
@@ -57,15 +60,16 @@ class Nav extends React.Component<NavProps, NavState> {
               selectedKeys={[this.state.current]}
               mode="horizontal"
               style={{ fontSize: '18px', borderBottom: '0' }}
+              onClick={this.goTo}
             >
               <Item key={NavKeys.SEARCH} style={itemStyle}>
-                <Icon type="search" onClick={(e: React.SyntheticEvent<any>) => this.goTo('/search')}/>
+                <Icon type="search" />
               </Item>
               <Item key={NavKeys.HOME} style={itemStyle}>
-                <Icon type="home" onClick={(e: React.SyntheticEvent<any>) => this.goTo('/')}/>
+                <Icon type="home" />
               </Item>
               <Item key={NavKeys.LOGIN} style={itemStyle}>
-                <Icon type="user" onClick={(e: React.SyntheticEvent<any>) => this.goTo('/login')}/>
+                <Icon type="user" />
               </Item>
             </Menu>
           </Col>
@@ -74,7 +78,8 @@ class Nav extends React.Component<NavProps, NavState> {
     );
   }
 
-  private goTo = (location: string): void => {
+  private goTo = (params: ClickParam): void => {
+    const location = invert(Nav.NAV_KEYS_BY_LOCATION)[params.key];
     browserHistory.push(location);
   }
 }

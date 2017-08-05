@@ -37,8 +37,6 @@
     "less": "^2.7.2",
     "less-loader": "^4.0.5",
     "less-vars-to-js": "^1.1.2",
-    "node-sass": "^4.5.2",
-    "sass-loader": "^6.0.3",
     "style-loader": "^0.16.1",
     "ts-loader": "^2.0.3",
     "webpack-dev-server": "^2.4.5"

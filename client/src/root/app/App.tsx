@@ -12,7 +12,7 @@ import { Device } from 'types/device';
 import { Location } from 'types/location';
 
 import 'antd/dist/antd.less';
-import './_app.scss';
+import './_app.less';
 
 const { Header, Content, Footer } = Layout;
 

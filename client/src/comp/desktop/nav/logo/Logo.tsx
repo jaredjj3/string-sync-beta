@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import Icon from 'comp/icon';
 
-import './_logo.scss';
+import './_logo.less';
 
 const Logo = (): JSX.Element => (
   <Link to="/" className="Logo">

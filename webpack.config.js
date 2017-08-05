@@ -5,7 +5,7 @@ const fs = require('fs');
 
 const lessToJs = require('less-vars-to-js');
 const themeVariables = lessToJs(
-  fs.readFileSync(path.join(__dirname, 'client', 'src', 'styles', 'vars', 'antd-overrides.less'), 'utf8')
+  fs.readFileSync(path.join(__dirname, 'client', 'src', 'styles', 'vars', 'overrides.less'), 'utf8')
 );
 
 module.exports = {
@@ -44,10 +44,7 @@ module.exports = {
   },
   module: {
     loaders: [
-      {
-        test: /\.scss$/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader']
-      }, {
+       {
         test: /\.less$/,
         use: [
           { loader: "style-loader" },
@@ -55,7 +52,11 @@ module.exports = {
           { 
             loader: "less-loader",
             options: {
-              modifyVars: themeVariables
+              modifyVars: themeVariables,
+              paths: [
+                path.resolve(__dirname, 'client', 'src', 'styles'),
+                path.resolve(__dirname, 'node_modules')
+              ]
             }
           },
         ]
