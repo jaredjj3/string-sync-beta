@@ -23,7 +23,7 @@ export default (state = defaultState, action): Device => {
       const width = window.innerWidth;
       const height = window.innerHeight;
       const orientation = width > height ? LANDSCAPE : PORTRAIT;
-      const type = (width < 765 || nextState.isTouch) ? MOBILE : DESKTOP;
+      const type = (width < 992 || nextState.isTouch) ? MOBILE : DESKTOP;
       Object.assign(nextState.viewport, { width, height, orientation });
       Object.assign(nextState, { type });
       return nextState;
