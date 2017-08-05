@@ -41,4 +41,15 @@ class App extends React.Component<AppProps, AppState> {
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  device: state.device,
+});
+
+const mapDispatchToProps = dispatch => ({
+
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
