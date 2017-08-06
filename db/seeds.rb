@@ -55,5 +55,5 @@ delete_all
 create_roles
 create_users
 create_tags
-create_notations
+create_notations(50)
 create_saved_notations
