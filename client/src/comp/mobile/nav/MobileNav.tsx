@@ -47,26 +47,29 @@ class Nav extends React.Component<NavProps, NavState> {
   }
 
   render(): JSX.Element {
-    const iconStyle = { fontSize: '0.5rem' };
+    const iconStyle = (key: string) => ({
+      fontSize: '0.5rem',
+      color: key === this.state.current ? '#FC354C' : '#666666'
+    });
 
     return (
       <nav>
         <NavBar
           mode="light"
-          iconName="null"
+          iconName="up"
           leftContent={
             <Link to="/search">
-              <Icon type="search" style={iconStyle} />
+              <Icon type="search" style={iconStyle(NavKeys.SEARCH)} />
             </Link>
           }
           rightContent={
             <Link to="/login">
-              <Icon type="user" style={iconStyle}  />
+              <Icon type="user" style={iconStyle(NavKeys.LOGIN)}  />
             </Link>
           }
         >
           <Link to="/">
-            <Icon type="home" style={iconStyle} />
+            <Icon type="home" style={iconStyle(NavKeys.HOME)} />
           </Link>
         </NavBar>
       </nav>

@@ -53,7 +53,7 @@ class Nav extends React.Component<NavProps, NavState> {
       <nav className="Nav--desktop">
         <Row type="flex" justify="space-between" align="middle">
           <Col xs={0} sm={0} md={8} lg={8}>
-            <Logo />
+            <Logo showBar={true} />
           </Col>
           <Col xs={0} sm={0} md={6} lg={6} push={1}>
             <Menu

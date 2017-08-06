@@ -1,0 +1,34 @@
+@import "vars/overrides";
+
+.LibraryGrid {
+  .am-grid {
+    border: 1px solid #ddd;
+  }
+
+  .am-grid-text {
+    font-size: 12px !important;
+  }
+
+  .am-grid-null-item {
+    background: @layout-body-background !important;
+    border: none !important;
+
+    &:after {
+      content: none !important;
+    }
+  }
+}
+
+.LibraryGrid__item__imageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+  img {
+    flex-shrink: 0;
+    min-width: 100%;
+    min-height: 100%
+  }
+}
+

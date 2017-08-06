@@ -4,9 +4,9 @@ import Icon from 'antd/lib/icon';
 
 import './_logo.less';
 
-const Logo = (): JSX.Element => (
+const Logo = ({ showBar }): JSX.Element => (
   <Link to="/" className="Logo">
-    <span className="Logo__icon">
+    <span className={`Logo__icon ${showBar ? 'Logo__icon--bar' : ''}`}>
       <Icon type="aliwangwang" />
     </span>
     <span className="Logo__name">
