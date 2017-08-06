@@ -13,8 +13,13 @@ module.exports = {
   entry: './client/src/stringSync.tsx',
   devtool: 'source-map',
   resolve: {
-    modules: [path.resolve(__dirname, "client", "src"), "node_modules"],
-    extensions: ['.js', '.jsx', '.web.js', '.json', '.ts', '.tsx', '.d.ts']
+    modules: [path.resolve(__dirname, 'client', 'src'), 'node_modules'],
+    extensions: [
+      '.web.tsx', '.web.ts', '.web.jsx', '.web.js', '.ts', '.tsx', 'd.ts',
+      '.js',
+      '.jsx',
+      '.react.js'
+    ]
   },
   output: {
     path: path.join(__dirname, 'app', 'assets', 'javascripts'),
@@ -45,6 +50,9 @@ module.exports = {
   module: {
     loaders: [
        {
+         test: /\.svg$/,
+         loader: 'svg-sprite-loader'
+       }, {
         test: /\.less$/,
         use: [
           { loader: "style-loader" },
@@ -64,16 +72,18 @@ module.exports = {
         test: [/\.jsx?$/, /\.js?$/],
         exclude: /node_modules/,
         loader: 'babel-loader',
-        query: {
-          plugins: [
-            ['import', { libraryName: 'antd', style: true}],
-            ['import', { libraryName: 'antd-mobile', style: true }]
-          ],
-          presets: ['es2015', 'react'],
-        }
       }, {
         test: [/\.tsx?$/],
-        loaders: 'babel-loader?presets[]=es2015&presets[]=react!ts-loader'
+        use: [
+          { 
+            loader: 'babel-loader',
+          }, { 
+            loader: 'ts-loader',
+            query: {
+              transpileOnly: true
+            }
+          }
+        ]
       }
     ]
   }

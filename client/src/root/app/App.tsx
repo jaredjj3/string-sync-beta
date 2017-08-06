@@ -13,9 +13,9 @@ import enUS from 'antd/lib/locale-provider/en_US.js';
 import { Device } from 'types/device';
 import { Location } from 'types/location';
 
+import 'antd-mobile/dist/antd-mobile.less';
 import 'antd/dist/antd.less';
 import './_app.less';
-import 'styles/vars/overrides.less';
 
 const { Header, Content, Footer } = Layout;
 
