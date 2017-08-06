@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 
 import Layout from 'comp/layout';
 import Icon from 'comp/icon';
-import Nav from 'comp/nav';
+import DesktopNav from 'comp/desktop/nav';
+import MobileNav from 'comp/mobile/nav';
 
 import LocaleProvider from 'antd/lib/locale-provider';
 import enUS from 'antd/lib/locale-provider/en_US.js';
@@ -43,25 +44,39 @@ class App extends React.Component<AppProps, AppState> {
 
   render(): JSX.Element {
     const { location, children, device } = this.props;
+    const isMobile = device.type === 'MOBILE';
+    const footerClassName = [
+      'AppLayout__footer',
+      isMobile ? 'AppLayout__footer--mobile' : ''
+    ].join(' ').trim();
+
     return (
       <LocaleProvider locale={enUS}>
         <Layout>
-          <Header
-            className="AppLayout__header"
-            style={{ marginBottom: '3em' }}
-          >
-            <div className="AppLayout__header__content">
-              <Nav device={device} location={location} />
-            </div>
-          </Header>
+          {
+            isMobile ?
+              null :
+              <Header
+                className="AppLayout__header"
+                style={{ marginBottom: '3em' }}
+              >
+                <div className="AppLayout__header__content">
+                  <DesktopNav location={location} />
+                </div>
+              </Header>
+          }
           <Content className="AppLayout__content">
             <div className="AppLayout__content__content">
               {children}
             </div>
           </Content>
-          <Footer className="AppLayout__footer">
+          <Footer className={footerClassName}>
             <div className="AppLayout__footer__content">
-              StringSync ©2017 Created by Jared Johnson
+              {
+                isMobile ?
+                  <MobileNav location={location} /> :
+                  <span>StringSync ©2017 Created by Jared Johnson</span>
+              }
             </div>
           </Footer>
         </Layout>

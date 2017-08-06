@@ -3,7 +3,6 @@
 .AppLayout__header {
   background: @background-color-base;
   border-bottom: 1px solid @border-color-base;
-  margin-bottom: 1em;
 }
 
 .AppLayout__content {
@@ -11,7 +10,17 @@
 }
 
 .AppLayout__footer {
+  margin-top: 20px;
   margin: 0 auto;
+}
+
+.AppLayout__footer--mobile {
+  background: @background-color-base;
+  border-top: 1px solid @border-color-base;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  padding: 0 4em;
 }
 
 .AppLayout__header__content,

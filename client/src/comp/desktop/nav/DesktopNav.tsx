@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { browserHistory } from 'react-router';
 
@@ -10,12 +9,13 @@ import Row from 'comp/row';
 import Col from 'comp/col';
 
 import { ClickParam } from 'antd/lib/menu';
+import { Location } from 'types/location';
 
 import './_nav.less';
 
 import invert from 'util/invert';
 
-const { Item, ItemGroup } = Menu;
+const { Item } = Menu;
 
 interface NavProps {
   location: Location;
