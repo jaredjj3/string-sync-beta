@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Layout from 'comp/layout';
-import Icon from 'comp/icon';
+import Layout from 'antd/lib/layout';
+import Icon from 'antd/lib/icon';
 import DesktopNav from 'comp/desktop/nav';
 import MobileNav from 'comp/mobile/nav';
 

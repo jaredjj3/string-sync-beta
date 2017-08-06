@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Carousel from 'comp/carousel';
+import Carousel from 'antd/lib/carousel';
 import NotationDetail from './detail';
-import Row from 'comp/row';
-import Col from 'comp/col';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
 
 import { TagNotations } from '../../Library';
 

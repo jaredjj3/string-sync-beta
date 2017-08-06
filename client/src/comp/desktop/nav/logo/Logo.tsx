@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import Icon from 'comp/icon';
+import Icon from 'antd/lib/icon';
 
 import './_logo.less';
 

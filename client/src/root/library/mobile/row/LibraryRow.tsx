@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Row from 'comp/row';
-import Col from 'comp/col';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
 import NotationDetail from './detail';
 
 import { TagNotations } from '../../Library';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Card from 'comp/card';
+import Card from 'antd/lib/card';
 
 import './_notationDetail.less';
 

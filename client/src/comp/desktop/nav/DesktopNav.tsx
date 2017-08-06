@@ -3,10 +3,10 @@ import { Link } from 'react-router';
 import { browserHistory } from 'react-router';
 
 import Logo from './logo';
-import Menu from 'comp/menu';
-import Icon from 'comp/icon';
-import Row from 'comp/row';
-import Col from 'comp/col';
+import Menu from 'antd/lib/menu';
+import Icon from 'antd/lib/icon';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
 
 import { ClickParam } from 'antd/lib/menu';
 import { Location } from 'types/location';
