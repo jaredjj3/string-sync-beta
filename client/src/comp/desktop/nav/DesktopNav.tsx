@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { browserHistory } from 'react-router';
 
-import Logo from './logo';
+import Logo from 'comp/logo';
 import Menu from 'antd/lib/menu';
 import Icon from 'antd/lib/icon';
 import Row from 'antd/lib/row';
@@ -11,7 +11,7 @@ import Col from 'antd/lib/col';
 import { ClickParam } from 'antd/lib/menu';
 import { Location } from 'types/location';
 
-import './_nav.less';
+import './_desktopNav.less';
 
 import invert from 'util/invert';
 

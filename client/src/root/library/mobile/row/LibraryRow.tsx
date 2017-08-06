@@ -19,15 +19,16 @@ interface LibraryRowState {
 class LibraryRow extends React.Component<LibraryRowProps, LibraryRowState> {
   render(): JSX.Element {
     const { tagNotations } = this.props;
+    const chunkSize = 2;
 
     return (
       <div>
         {
-          inChunksOf(3, tagNotations.notations, (notations, i) => (
-            <Row key={`${tagNotations.tag}-${i}`} gutter={5} type="flex" >
+          inChunksOf(chunkSize, tagNotations.notations, (notations, i) => (
+            <Row key={`${tagNotations.tag}-${i}`} gutter={5} type="flex" style={{ height: '150px' }}>
               {
                 notations.map(notation => (
-                  <Col key={`${tagNotations.tag}-${notation.id}-${i}`} span={8}>
+                  <Col key={`${tagNotations.tag}-${notation.id}-${i}`} span={24 / chunkSize}>
                     <NotationDetail notation={notation} />
                   </Col>
                 ))

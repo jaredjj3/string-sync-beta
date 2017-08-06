@@ -7,6 +7,9 @@ const lessToJs = require('less-vars-to-js');
 const themeVariables = lessToJs(
   fs.readFileSync(path.join(__dirname, 'client', 'src', 'styles', 'vars', 'overrides.less'), 'utf8')
 );
+const svgDirs = [
+  require.resolve('antd-mobile').replace(/warn\.js$/, '')
+]
 
 module.exports = {
   context: __dirname,
@@ -50,8 +53,9 @@ module.exports = {
   module: {
     loaders: [
        {
-         test: /\.svg$/,
-         loader: 'svg-sprite-loader'
+         test: /\.(svg)$/i,
+         loader: 'svg-sprite-loader',
+         include: svgDirs
        }, {
         test: /\.less$/,
         use: [

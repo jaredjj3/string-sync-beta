@@ -6,11 +6,12 @@ import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Menu from 'antd/lib/menu';
 import Icon from 'antd/lib/icon';
+import NavBar from 'antd-mobile/lib/nav-bar';
 
 import { ClickParam } from 'antd/lib/menu';
 import { Location } from 'types/location';
 
-import './_nav.less';
+import './_mobileNav.less';
 
 import invert from 'util/invert';
 
@@ -46,38 +47,30 @@ class Nav extends React.Component<NavProps, NavState> {
   }
 
   render(): JSX.Element {
-    const itemStyle = { textAlign: 'center', borderWidth: '5px' };
+    const iconStyle = { fontSize: '0.5rem' };
 
     return (
-      <nav className="Nav--mobile">
-        <Row type="flex" justify="space-between" align="middle">
-          <Col xs={24} sm={24} md={0} lg={0}>
-            <Menu
-              selectedKeys={[this.state.current]}
-              mode="horizontal"
-              style={{ borderBottom: '0', background: 'none' }}
-              onClick={this.goTo}
-              className="Nav--mobile__menu"
-            >
-              <Item key={NavKeys.SEARCH} style={itemStyle}>
-                <Icon type="search" />
-              </Item>
-              <Item key={NavKeys.HOME} style={itemStyle}>
-                <Icon type="home" />
-              </Item>
-              <Item key={NavKeys.LOGIN} style={itemStyle}>
-                <Icon type="user" />
-              </Item>
-            </Menu>
-          </Col>
-        </Row>
+      <nav>
+        <NavBar
+          mode="light"
+          iconName="null"
+          leftContent={
+            <Link to="/search">
+              <Icon type="search" style={iconStyle} />
+            </Link>
+          }
+          rightContent={
+            <Link to="/login">
+              <Icon type="user" style={iconStyle}  />
+            </Link>
+          }
+        >
+          <Link to="/">
+            <Icon type="home" style={iconStyle} />
+          </Link>
+        </NavBar>
       </nav>
     );
-  }
-
-  private goTo = (params: ClickParam): void => {
-    const location = invert(Nav.NAV_KEYS_BY_LOCATION)[params.key];
-    browserHistory.push(location);
   }
 }
 
