@@ -48,7 +48,7 @@ class Nav extends React.Component<NavProps, NavState> {
 
   render(): JSX.Element {
     const iconStyle = (key: string) => ({
-      fontSize: '0.5rem',
+      fontSize: '24px',
       color: key === this.state.current ? '#FC354C' : '#666666'
     });
 
@@ -57,6 +57,7 @@ class Nav extends React.Component<NavProps, NavState> {
         <NavBar
           mode="light"
           iconName="up"
+          className="Nav--mobile"
           leftContent={
             <Link to="/search">
               <Icon type="search" style={iconStyle(NavKeys.SEARCH)} />

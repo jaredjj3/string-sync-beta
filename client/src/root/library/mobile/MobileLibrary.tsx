@@ -7,10 +7,12 @@ import LibraryGrid from './grid';
 import './_mobileLibrary.less';
 
 const MobileLibrary = ({ tagNotationsMap }): JSX.Element => (
-  <div>
-    <Gradient />
-    <div className="Library--mobile__fauxHeader">
-      <Logo showBar={false} />
+  <div style={{ marginTop: '100px' }}>
+    <div className="Library--mobile__header">
+      <Gradient />
+      <div className="Library--mobile__header__logo">
+        <Logo showBar={false} />
+      </div>
     </div>
     {
       tagNotationsMap.map((tagNotations) => (
