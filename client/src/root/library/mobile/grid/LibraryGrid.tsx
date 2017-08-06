@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 
 import Grid from 'antd-mobile/lib/grid';
 
+import shuffle from 'util/shuffle';
+
 import './_libraryGrid.less';
 
 const LibraryGrid = ({ tagNotations }): JSX.Element => {
@@ -12,6 +14,7 @@ const LibraryGrid = ({ tagNotations }): JSX.Element => {
       url: `/${notation.id}`
     })
   );
+  shuffle(data);
 
   return (
     <div>
