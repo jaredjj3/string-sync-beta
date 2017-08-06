@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import AppLayout from './layout';
 import Layout from 'antd/lib/layout';
 import Icon from 'antd/lib/icon';
 import DesktopNav from 'comp/desktop/nav';
@@ -44,45 +45,50 @@ class App extends React.Component<AppProps, AppState> {
 
   render(): JSX.Element {
     const { location, children, device } = this.props;
-    const isMobile = device.type === 'MOBILE';
-    const footerClassName = [
-      'AppLayout__footer',
-      isMobile ? 'AppLayout__footer--mobile' : ''
-    ].join(' ').trim();
 
     return (
       <LocaleProvider locale={enUS}>
-        <Layout>
-          {
-            isMobile ?
-              null :
-              <Header
-                className="AppLayout__header"
-                style={{ marginBottom: '3em' }}
-              >
-                <div className="AppLayout__header__content">
-                  <DesktopNav location={location} />
-                </div>
-              </Header>
-          }
-          <Content className="AppLayout__content">
-            <div className="AppLayout__content__content">
-              {children}
-            </div>
-          </Content>
-          <Footer className={footerClassName}>
-            <div className="AppLayout__footer__content">
-              {
-                isMobile ?
-                  <MobileNav location={location} /> :
-                  <span>StringSync ©2017 Created by Jared Johnson</span>
-              }
-            </div>
-          </Footer>
-        </Layout>
+        <AppLayout location={location} device={device} >
+          {children}
+        </AppLayout>
       </LocaleProvider>
     );
   }
+
+      // const isMobile = device.type === 'MOBILE';
+    // const footerClassName = [
+    //   'AppLayout__footer',
+    //   isMobile ? 'AppLayout__footer--mobile' : ''
+    // ].join(' ').trim();
+
+  // <Layout>
+  //         {
+  //           isMobile ?
+  //             null :
+  //             <Header
+  //               className="AppLayout__header"
+  //               style={{ marginBottom: '3em' }}
+  //             >
+  //               <div className="AppLayout__header__content">
+  //                 <DesktopNav location={location} />
+  //               </div>
+  //             </Header>
+  //         }
+  //         <Content className="AppLayout__content">
+  //           <div className="AppLayout__content__content">
+  //             {children}
+  //           </div>
+  //         </Content>
+  //         <Footer className={footerClassName}>
+  //           <div className="AppLayout__footer__content">
+  //             {
+  //               isMobile ?
+  //                 <MobileNav location={location} /> :
+  //                 <span>StringSync ©2017 Created by Jared Johnson</span>
+  //             }
+  //           </div>
+  //         </Footer>
+  //       </Layout>
 
   // This function prevents the updateViewport function from being called too frequently.
   // There are certain components, such as the ReactYouTube video component that must reload
@@ -97,7 +103,7 @@ class App extends React.Component<AppProps, AppState> {
       return;
     }
 
-    this.updateViewportHandle = window.setTimeout(this.updateViewport, 100);
+    this.updateViewportHandle = window.setTimeout(this.updateViewport, 10);
   }
 
   private updateViewport = (): void => {
