@@ -65,6 +65,10 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
+          plugins: [
+            ['import', { libraryName: 'antd', style: true}],
+            ['import', { libraryName: 'antd-mobile', style: true }]
+          ],
           presets: ['es2015', 'react'],
         }
       }, {
