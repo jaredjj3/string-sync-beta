@@ -14,7 +14,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   context: __dirname,
-  entry: './client/src/note8.tsx',
+  entry: './client/src/stringSync.tsx',
   output: {
     path: path.join(__dirname, 'app', 'assets', 'javascripts'),
     filename: 'bundle.js',
