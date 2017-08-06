@@ -1,20 +1,18 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
-interface MobileLibraryProps {}
+import LibraryRow from './row';
 
-interface MobileLibraryState {}
+const MobileLibrary = ({ tagNotationsMap }): JSX.Element => (
+  <div>
+    {
+      tagNotationsMap.map((tagNotations) => (
+        <div id={tagNotations.tag} key={tagNotations.tag} style={{ margin: '20px'}}>
+          <h2>{`${tagNotations.tag[0].toUpperCase()}${tagNotations.tag.slice(1)}`}</h2>
+          <LibraryRow tagNotations={tagNotations} />
+        </div>
+      ))
+    }
+  </div>
+);
 
-class MobileLibrary extends React.Component<MobileLibraryProps, MobileLibraryState> {
-  public render(): JSX.Element {
-    return (<span>MobileLibrary</span>);
-  }
-}
-
-export default connect(
-  (state) => ({
-    // Map state to props
-  }),
-  {
-    // Map dispatch to props
-  })(MobileLibrary);
+export default MobileLibrary;
