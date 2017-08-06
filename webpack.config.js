@@ -14,7 +14,7 @@ module.exports = {
   devtool: 'source-map',
   resolve: {
     modules: [path.resolve(__dirname, "client", "src"), "node_modules"],
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.d.ts']
+    extensions: ['', '.js', '.jsx', '.web.js', '.json', '.ts', '.tsx', '.d.ts']
   },
   output: {
     path: path.join(__dirname, 'app', 'assets', 'javascripts'),
