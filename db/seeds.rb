@@ -1,5 +1,3 @@
-require 'byebug'
-
 def init
   Rails.application.eager_load!
 end
