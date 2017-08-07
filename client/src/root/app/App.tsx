@@ -55,41 +55,6 @@ class App extends React.Component<AppProps, AppState> {
     );
   }
 
-      // const isMobile = device.type === 'MOBILE';
-    // const footerClassName = [
-    //   'AppLayout__footer',
-    //   isMobile ? 'AppLayout__footer--mobile' : ''
-    // ].join(' ').trim();
-
-  // <Layout>
-  //         {
-  //           isMobile ?
-  //             null :
-  //             <Header
-  //               className="AppLayout__header"
-  //               style={{ marginBottom: '3em' }}
-  //             >
-  //               <div className="AppLayout__header__content">
-  //                 <DesktopNav location={location} />
-  //               </div>
-  //             </Header>
-  //         }
-  //         <Content className="AppLayout__content">
-  //           <div className="AppLayout__content__content">
-  //             {children}
-  //           </div>
-  //         </Content>
-  //         <Footer className={footerClassName}>
-  //           <div className="AppLayout__footer__content">
-  //             {
-  //               isMobile ?
-  //                 <MobileNav location={location} /> :
-  //                 <span>StringSync ©2017 Created by Jared Johnson</span>
-  //             }
-  //           </div>
-  //         </Footer>
-  //       </Layout>
-
   // This function prevents the updateViewport function from being called too frequently.
   // There are certain components, such as the ReactYouTube video component that must reload
   // in order to change its video's dimensions, which is imperative to this app.

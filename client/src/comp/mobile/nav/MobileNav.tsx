@@ -93,7 +93,10 @@ class Nav extends React.Component<NavProps, NavState> {
 
   private selectIconFor = (navKey: NavKeys): Function => {
     return (e: React.SyntheticEvent<HTMLAnchorElement>): void => {
+      // FIXME: Fix this, nephew
+      e.preventDefault();
       this.maybeSetState({ current: navKey });
+      browserHistory.push(Nav.NAV_KEYS_BY_LOCATION[navKey]);
     };
   }
 
