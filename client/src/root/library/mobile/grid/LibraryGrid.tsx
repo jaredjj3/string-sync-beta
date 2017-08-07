@@ -2,30 +2,30 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import Grid from 'antd-mobile/lib/grid';
+import LazyLoad from 'react-lazy-load';
 
-import shuffle from 'util/shuffle';
-
-import './_libraryGrid.less';
+import { shuffle } from 'lodash';
 
 const LibraryGrid = ({ tagNotations }): JSX.Element => {
   const data = tagNotations.notations.map(notation => ({
-      icon: notation.thumbnailUrl,
+      thumbnail: notation.thumbnailUrl,
       text: notation.name,
       url: `/${notation.id}`
     })
   );
-  shuffle(data);
 
   return (
     <div>
       <Grid
         className="LibraryGrid"
-        data={data}
+        data={shuffle(data)}
         columnNum={3}
         renderItem={(el, index) => (
             <Link to={el.url} className="LibraryGrid__item">
               <div className="LibraryGrid__item__imageContainer">
-                <img src={el.icon} />
+                <LazyLoad>
+                  <img src={el.thumbnail} />
+                </LazyLoad>
               </div>
             </Link>
           )

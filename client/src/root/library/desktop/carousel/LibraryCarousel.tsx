@@ -28,6 +28,7 @@ class LibraryCarousel extends React.Component<LibraryCarouselProps, LibraryCarou
 
     return (
       <Carousel
+        lazyLoad
         className="LibraryCarousel"
         dotsClass="slick-dots LibraryCarousel__dots"
         autoplay={true}
