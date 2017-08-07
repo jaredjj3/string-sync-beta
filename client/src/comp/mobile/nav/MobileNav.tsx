@@ -59,17 +59,17 @@ class Nav extends React.Component<NavProps, NavState> {
           iconName="up"
           className="Nav--mobile"
           leftContent={
-            <Link to="/search">
+            <Link to="/search" className="Nav--mobile__link">
               <Icon type="search" style={iconStyle(NavKeys.SEARCH)} />
             </Link>
           }
           rightContent={
-            <Link to="/login">
+            <Link to="/login" className="Nav--mobile__link">
               <Icon type="user" style={iconStyle(NavKeys.LOGIN)}  />
             </Link>
           }
         >
-          <Link to="/">
+          <Link to="/" className="Nav--mobile__link">
             <Icon type="home" style={iconStyle(NavKeys.HOME)} />
           </Link>
         </NavBar>
