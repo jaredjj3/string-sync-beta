@@ -38,12 +38,14 @@ class Nav extends React.Component<NavProps, NavState> {
     '/search' : NavKeys.SEARCH,
   };
 
+  state: NavState = { current: NavKeys.HOME };
+
   componentWillMount(): void {
-    this.setState({ current: Nav.NAV_KEYS_BY_LOCATION[this.props.location.pathname] });
+    this.maybeSetState({ current: Nav.NAV_KEYS_BY_LOCATION[this.props.location.pathname] });
   }
 
   componentWillReceiveProps(nextProps: NavProps, nextState: NavState): void {
-    this.setState({ current: Nav.NAV_KEYS_BY_LOCATION[nextProps.location.pathname] });
+    this.maybeSetState({ current: Nav.NAV_KEYS_BY_LOCATION[nextProps.location.pathname] });
   }
 
   render(): JSX.Element {
@@ -59,22 +61,48 @@ class Nav extends React.Component<NavProps, NavState> {
           iconName="up"
           className="Nav--mobile"
           leftContent={
-            <Link to="/search" className="Nav--mobile__link">
+            <Link
+              to="/search"
+              className="Nav--mobile__link"
+              onClick={this.selectIconFor(NavKeys.SEARCH)}
+            >
               <Icon type="search" style={iconStyle(NavKeys.SEARCH)} />
             </Link>
           }
           rightContent={
-            <Link to="/login" className="Nav--mobile__link">
+            <Link
+              to="/login"
+              className="Nav--mobile__link"
+              onClick={this.selectIconFor(NavKeys.SEARCH)}
+            >
               <Icon type="user" style={iconStyle(NavKeys.LOGIN)}  />
             </Link>
           }
         >
-          <Link to="/" className="Nav--mobile__link">
+          <Link
+            to="/"
+            className="Nav--mobile__link"
+            onClick={this.selectIconFor(NavKeys.SEARCH)}
+          >
             <Icon type="home" style={iconStyle(NavKeys.HOME)} />
           </Link>
         </NavBar>
       </nav>
     );
+  }
+
+  private selectIconFor = (navKey: NavKeys): Function => {
+    return (e: React.SyntheticEvent<HTMLAnchorElement>): void => {
+      this.maybeSetState({ current: navKey });
+    };
+  }
+
+  private maybeSetState = (state: NavState): void => {
+    const shouldSetState = Object.keys(state).some( key => state[key] !== this.state[key]);
+
+    if (shouldSetState) {
+      this.setState(state);
+    }
   }
 }
 
