@@ -2,18 +2,15 @@ import React from 'react';
 import { Link } from 'react-router';
 import { browserHistory } from 'react-router';
 
+import Col from 'antd/lib/col';
+import Icon from 'antd/lib/icon';
 import Logo from 'comp/logo';
 import Menu from 'antd/lib/menu';
-import Icon from 'antd/lib/icon';
 import Row from 'antd/lib/row';
-import Col from 'antd/lib/col';
 
 import { ClickParam } from 'antd/lib/menu';
 import { Location } from 'types/location';
-
-import './_desktopNav.less';
-
-import invert from 'util/invert';
+import { invert } from 'lodash';
 
 const { Item } = Menu;
 
@@ -46,6 +43,11 @@ class Nav extends React.Component<NavProps, NavState> {
     this.setState({ current: Nav.NAV_KEYS_BY_LOCATION[nextProps.location.pathname] });
   }
 
+  goTo = (params: ClickParam): void => {
+    const location = invert(Nav.NAV_KEYS_BY_LOCATION)[params.key];
+    browserHistory.push(location);
+  }
+
   render(): JSX.Element {
     const itemStyle = { paddingTop: '8px', paddingBottom: '6px' };
 
@@ -76,11 +78,6 @@ class Nav extends React.Component<NavProps, NavState> {
         </Row>
       </nav>
     );
-  }
-
-  private goTo = (params: ClickParam): void => {
-    const location = invert(Nav.NAV_KEYS_BY_LOCATION)[params.key];
-    browserHistory.push(location);
   }
 }
 

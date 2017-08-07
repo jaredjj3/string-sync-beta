@@ -11,8 +11,8 @@ import enUS from 'antd/lib/locale-provider/en_US.js';
 
 import { Device } from 'types/device';
 import { Location } from 'types/location';
-import { debounce } from 'lodash';
 import { add, remove } from 'eventlistener';
+import { debounce } from 'lodash';
 
 const { Header, Content, Footer } = Layout;
 

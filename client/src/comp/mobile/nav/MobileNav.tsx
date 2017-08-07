@@ -2,20 +2,21 @@ import React from 'react';
 import { Link } from 'react-router';
 import { browserHistory } from 'react-router';
 
-import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
-import Menu from 'antd/lib/menu';
 import Icon from 'antd/lib/icon';
+import Menu from 'antd/lib/menu';
 import NavBar from 'antd-mobile/lib/nav-bar';
+import Row from 'antd/lib/row';
 
 import { ClickParam } from 'antd/lib/menu';
 import { Location } from 'types/location';
-
-import './_mobileNav.less';
-
-import invert from 'util/invert';
+import { isEqual, invert } from 'lodash';
 
 const { Item } = Menu;
+
+interface OnClickFunction {
+  (e: React.SyntheticEvent<HTMLElement>): void;
+}
 
 interface NavProps {
   location: Location;
@@ -41,11 +42,26 @@ class Nav extends React.Component<NavProps, NavState> {
   state: NavState = { current: NavKeys.HOME };
 
   componentWillMount(): void {
-    this.maybeSetState({ current: Nav.NAV_KEYS_BY_LOCATION[this.props.location.pathname] });
+    this.setState({ current: Nav.NAV_KEYS_BY_LOCATION[this.props.location.pathname] });
   }
 
   componentWillReceiveProps(nextProps: NavProps, nextState: NavState): void {
-    this.maybeSetState({ current: Nav.NAV_KEYS_BY_LOCATION[nextProps.location.pathname] });
+    this.setState({ current: Nav.NAV_KEYS_BY_LOCATION[nextProps.location.pathname] });
+  }
+
+  shouldComponentUpdate(nextProps: NavProps, nextState: NavState): boolean {
+    return !isEqual(this.state, nextState);
+  }
+
+  goTo = (navKey: NavKeys): OnClickFunction => {
+    return (e: React.SyntheticEvent<any>): void => {
+      this.setState({ current: navKey }, () => {
+        // Change the location after the component has rerendered due to setState for a
+        // more responsive feel (as opposed to rendering the component after the location)
+        // has changed.
+        browserHistory.push(invert(Nav.NAV_KEYS_BY_LOCATION)[navKey]);
+      });
+    };
   }
 
   render(): JSX.Element {
@@ -61,51 +77,31 @@ class Nav extends React.Component<NavProps, NavState> {
           iconName="up"
           className="Nav--mobile"
           leftContent={
-            <Link
-              to="/search"
+            <Icon
               className="Nav--mobile__link"
-              onClick={this.selectIconFor(NavKeys.SEARCH)}
-            >
-              <Icon type="search" style={iconStyle(NavKeys.SEARCH)} />
-            </Link>
+              onClick={this.goTo(NavKeys.SEARCH)}
+              type="search"
+              style={iconStyle(NavKeys.SEARCH)}
+            />
           }
           rightContent={
-            <Link
-              to="/login"
+            <Icon
               className="Nav--mobile__link"
-              onClick={this.selectIconFor(NavKeys.SEARCH)}
-            >
-              <Icon type="user" style={iconStyle(NavKeys.LOGIN)}  />
-            </Link>
+              onClick={this.goTo(NavKeys.LOGIN)}
+              type="user"
+              style={iconStyle(NavKeys.LOGIN)}
+            />
           }
         >
-          <Link
-            to="/"
+          <Icon
             className="Nav--mobile__link"
-            onClick={this.selectIconFor(NavKeys.SEARCH)}
-          >
-            <Icon type="home" style={iconStyle(NavKeys.HOME)} />
-          </Link>
+            onClick={this.goTo(NavKeys.HOME)}
+            type="home"
+            style={iconStyle(NavKeys.HOME)}
+          />
         </NavBar>
       </nav>
     );
-  }
-
-  private selectIconFor = (navKey: NavKeys): Function => {
-    return (e: React.SyntheticEvent<HTMLAnchorElement>): void => {
-      // FIXME: Fix this, nephew
-      e.preventDefault();
-      this.maybeSetState({ current: navKey });
-      browserHistory.push(Nav.NAV_KEYS_BY_LOCATION[navKey]);
-    };
-  }
-
-  private maybeSetState = (state: NavState): void => {
-    const shouldSetState = Object.keys(state).some( key => state[key] !== this.state[key]);
-
-    if (shouldSetState) {
-      this.setState(state);
-    }
   }
 }
 
