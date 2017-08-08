@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import LazyLoad from 'react-lazy-load';
+import LazyLoad from 'react-lazyload';
 
 import { GridData } from '../LibraryGrid';
 
@@ -18,14 +18,6 @@ class LibraryGridItem extends React.Component<LibraryGridItemProps, LibraryGridI
   state: LibraryGridItemState = { visible: false };
   img: HTMLImageElement;
 
-  fadeIn = (): void => {
-    // This is wrapped in a setTimeout so that the component
-    // will mount first. Putting it in a setTimeout effectively
-    // pushes it to the first (last-to-be-called) item in the
-    // stack.
-    setTimeout(() => this.setState({ visible: true }), 0);
-  }
-
   render(): JSX.Element {
     const { data } = this.props;
     const imgClassName = [
@@ -34,13 +26,20 @@ class LibraryGridItem extends React.Component<LibraryGridItemProps, LibraryGridI
     ].join(' ').trim();
 
     return (
-      <Link to={data.url} className="LibraryGridItem">
-        <div className="LibraryGridItem__imgContainer">
-          <LazyLoad onContentVisible={this.fadeIn}>
-            <img src={data.thumbnail} className={imgClassName} ref={c => this.img = c} />
-          </LazyLoad>
-        </div>
-      </Link>
+      <div style={{ overflow: 'hidden'}}>
+        <Link to={data.url} className="LibraryGridItem">
+          <div className="LibraryGridItem__imgContainer">
+            <LazyLoad
+              once
+              debounce
+              height="100%"
+              offset={500}
+            >
+              <img src={data.thumbnail} className={imgClassName} />
+            </LazyLoad>
+          </div>
+        </Link>
+    </div>
     );
   }
 }
