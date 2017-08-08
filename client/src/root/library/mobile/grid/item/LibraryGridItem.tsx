@@ -31,9 +31,8 @@ class LibraryGridItem extends React.Component<LibraryGridItemProps, LibraryGridI
           <div className="LibraryGridItem__imgContainer">
             <LazyLoad
               once
-              throttle
+              debounce
               resize
-              debounce={false}
               height="100%"
               offset={500}
             >

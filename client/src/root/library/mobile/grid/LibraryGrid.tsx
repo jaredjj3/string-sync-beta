@@ -10,15 +10,14 @@ export interface GridData {
   thumbnail: string;
   text: string;
   url: string;
-  tag?: string;
+
 }
 
 const LibraryGrid = ({ tagNotations }): JSX.Element => {
   const data: Array<GridData> = tagNotations.notations.map(notation => ({
       thumbnail: notation.thumbnailUrl,
       text: notation.name,
-      url: `/${notation.id}`,
-      tag: tagNotations.tag
+      url: `/${notation.id}`
     })
   );
 

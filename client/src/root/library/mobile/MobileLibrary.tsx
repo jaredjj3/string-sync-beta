@@ -17,7 +17,7 @@ const MobileLibrary = ({ tagNotationsMap }): JSX.Element => (
     {
       tagNotationsMap.map((tagNotations) => (
         <div id={tagNotations.tag} key={tagNotations.tag} style={{ marginTop: '80px' }}>
-          <h1 style={{ marginBottom: '10px', textAlign: 'center', fontSize: '36px' }}>
+          <h1 style={{ marginBottom: '10px', textAlign: 'center' }}>
             {`${tagNotations.tag[0].toUpperCase()}${tagNotations.tag.slice(1)}`}
           </h1>
           <LibraryGrid tagNotations={tagNotations} />
