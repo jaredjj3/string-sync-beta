@@ -6,11 +6,10 @@ import LibraryGridItem from './item';
 
 import { shuffle } from 'lodash';
 
-export interface GridData {
+interface GridData {
   thumbnail: string;
   text: string;
   url: string;
-
 }
 
 const LibraryGrid = ({ tagNotations }): JSX.Element => {
