@@ -25,7 +25,7 @@ def create_tags
   end
 end
 
-def create_notations(num = 20)
+def create_notations(num)
   teachers = User.joins(user_roles: :role).where(roles: { name: "teacher" })
   tags = Tag.all
 
@@ -53,5 +53,5 @@ delete_all
 create_roles
 create_users
 create_tags
-create_notations(50)
+create_notations(100)
 create_saved_notations

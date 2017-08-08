@@ -2,12 +2,18 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import Grid from 'antd-mobile/lib/grid';
-import LazyLoad from 'react-lazy-load';
+import LibraryGridItem from './item';
 
 import { shuffle } from 'lodash';
 
+export interface GridData {
+  thumbnail: string;
+  text: string;
+  url: string;
+}
+
 const LibraryGrid = ({ tagNotations }): JSX.Element => {
-  const data = tagNotations.notations.map(notation => ({
+  const data: Array<GridData> = tagNotations.notations.map(notation => ({
       thumbnail: notation.thumbnailUrl,
       text: notation.name,
       url: `/${notation.id}`
@@ -20,16 +26,7 @@ const LibraryGrid = ({ tagNotations }): JSX.Element => {
         className="LibraryGrid"
         data={shuffle(data)}
         columnNum={3}
-        renderItem={(el, index) => (
-            <Link to={el.url} className="LibraryGrid__item">
-              <div className="LibraryGrid__item__imageContainer">
-                <LazyLoad>
-                  <img src={el.thumbnail} />
-                </LazyLoad>
-              </div>
-            </Link>
-          )
-        }
+        renderItem={(gridData: GridData, index) => <LibraryGridItem data={gridData} />}
       />
     </div>
   );
