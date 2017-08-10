@@ -1,3 +1,5 @@
+@import "vars/overrides";
+
 .Library--mobile__header {
   position: fixed;
   top: 0;
@@ -5,10 +7,24 @@
   z-index: 999;
   width: 100vw;
   text-align: center;
-  border-bottom: 1px solid #ddd;
 }
 
 .Library--mobile__header__logo {
   text-align: center;
   margin: 1em 0;
+}
+
+.Library--mobile__content__title {
+  text-align: center;
+  background: white;
+  padding: 6px;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+  font-weight: 100;
+  letter-spacing: 3px;
+  transition: color 500ms @ease-in;
+}
+
+.Library--mobile__content__title--lit {
+  color: @primary-color;
 }
