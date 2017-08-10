@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import AppLayout from './layout';
 import DesktopNav from 'comp/desktop/nav';
+import Gradient from 'comp/gradient';
 import Icon from 'antd/lib/icon';
 import Layout from 'antd/lib/layout';
 import LocaleProvider from 'antd/lib/locale-provider';
@@ -53,11 +54,14 @@ class App extends React.Component<AppProps, AppState> {
     const { location, children, device } = this.props;
 
     return (
-      <LocaleProvider locale={enUS}>
-        <AppLayout location={location} device={device} >
-          {children}
-        </AppLayout>
-      </LocaleProvider>
+      <div>
+        <Gradient />
+        <LocaleProvider locale={enUS}>
+          <AppLayout location={location} device={device} >
+            {children}
+          </AppLayout>
+        </LocaleProvider>
+      </div>
     );
   }
 
