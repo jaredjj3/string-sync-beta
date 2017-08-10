@@ -9,7 +9,7 @@ const LibraryGridItem = ({ data }): JSX.Element => (
       <div className="LibraryGridItem__imgContainer">
         <LazyLoad
           once
-          debounce
+          throttle
           resize
           height="100%"
           offset={500}
