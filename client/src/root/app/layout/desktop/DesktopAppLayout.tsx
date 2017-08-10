@@ -2,6 +2,7 @@ import React from 'react';
 
 import Layout from 'antd/lib/layout';
 import DesktopNav from 'comp/desktop/nav';
+import Gradient from 'comp/gradient';
 
 const { Header, Content, Footer } = Layout;
 
@@ -12,6 +13,7 @@ const DesktopAppLayout = ({ location, children }): JSX.Element => (
         className="AppLayout__header"
         style={{ marginBottom: '3em' }}
       >
+        <Gradient />
         <div className="AppLayout__header__content">
           <DesktopNav location={location} />
         </div>
