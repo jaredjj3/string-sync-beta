@@ -8,7 +8,7 @@ import Button from 'antd-mobile/lib/button';
 import Icon from 'antd/lib/icon';
 
 const MobileLibrary = ({ tagNotationsMap }) => (
-  <div style={{ marginTop: '100px' }}>
+  <div style={{ marginTop: '52px' }}>
     <div className="Library--mobile__header">
       <div className="Library--mobile__header__logo">
         <Logo showLogo={false} />

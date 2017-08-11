@@ -22,8 +22,6 @@ const LibraryGrid = ({ tagNotations }): JSX.Element => {
 
   const adjustedData = drop(shuffle(data), data.length % 3);
 
-  console.log('library grid rendered')
-
   return (
     <div>
       <Grid
