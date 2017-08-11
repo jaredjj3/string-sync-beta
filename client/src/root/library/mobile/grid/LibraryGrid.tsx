@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import Grid from 'antd-mobile/lib/grid';
 import LibraryGridItem from './item';
 
-import { shuffle } from 'lodash';
+import { shuffle, drop } from 'lodash';
 
 interface GridData {
   thumbnail: string;
@@ -20,12 +20,14 @@ const LibraryGrid = ({ tagNotations }): JSX.Element => {
     })
   );
 
+  const adjustedData = drop(shuffle(data), data.length % 3);
+
   return (
     <div>
       <Grid
         hasLine={false}
         className="LibraryGrid"
-        data={shuffle(data)}
+        data={adjustedData}
         columnNum={3}
         renderItem={(gridData: GridData, index) => <LibraryGridItem data={gridData} />}
       />
