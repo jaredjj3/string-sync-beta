@@ -4,8 +4,8 @@ import { Link } from 'react-router';
 import LazyLoad from 'react-lazyload';
 
 const LibraryGridItem = ({ data }): JSX.Element => (
-  <div style={{ overflow: 'hidden'}}>
-    <Link to={data.url} className="LibraryGridItem">
+  <div className="LibraryGridItem" style={{ overflow: 'hidden'}}>
+    <Link to={data.url}>
       <div className="LibraryGridItem__imgContainer">
         <LazyLoad
           once

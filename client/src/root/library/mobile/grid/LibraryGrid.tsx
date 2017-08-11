@@ -23,6 +23,7 @@ const LibraryGrid = ({ tagNotations }): JSX.Element => {
   return (
     <div>
       <Grid
+        hasLine={false}
         className="LibraryGrid"
         data={shuffle(data)}
         columnNum={3}
