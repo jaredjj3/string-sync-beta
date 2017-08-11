@@ -2,6 +2,23 @@
 
 @content-title-height: 50px;
 
+.Library--mobile__headerSpacer {
+  margin-top: 50px;
+  padding-bottom: 12px;
+  height: 50px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #ddd;
+  background: white;
+  background: -webkit-linear-gradient(white, @layout-body-background); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(white, @layout-body-background); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(white, @layout-body-background); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(white, @layout-body-background); /* Standard syntax */
+}
+
 .Library--mobile__header {
   position: fixed;
   top: 0;
@@ -13,6 +30,7 @@
 .Library--mobile__header__logo {
   text-align: center;
   margin: 1em 0;
+  background: white;
 }
 
 .Library--mobile__content__titleContainer {

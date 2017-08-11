@@ -7,7 +7,10 @@ import Logo from 'comp/logo';
 import Icon from 'antd/lib/icon';
 
 const MobileLibrary = ({ tagNotationsMap }) => (
-  <div style={{ marginTop: '100px' }}>
+  <div>
+    <div className="Library--mobile__headerSpacer">
+      <Icon type="aliwangwang" />
+    </div>
     <div className="Library--mobile__header">
       <div className="Library--mobile__header__logo">
         <Logo showLogo={false} />
@@ -27,16 +30,6 @@ const MobileLibrary = ({ tagNotationsMap }) => (
         </div>
       ))
     }
-    <div
-      style={{
-        margin: '120px 20px 0 20px',
-        textAlign: 'center',
-        fontSize: '36px',
-        color: '#ddd'
-      }}
-    >
-      <Icon type="aliwangwang" onClick={() => scrollTo(0, 0)} />
-    </div>
   </div>
 );
 
