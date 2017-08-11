@@ -8,7 +8,7 @@ import Button from 'antd-mobile/lib/button';
 import Icon from 'antd/lib/icon';
 
 const MobileLibrary = ({ tagNotationsMap }) => (
-  <div style={{ marginTop: '53px' }}>
+  <div style={{ marginTop: '100px' }}>
     <div className="Library--mobile__header">
       <div className="Library--mobile__header__logo">
         <Logo showLogo={false} />
@@ -28,15 +28,8 @@ const MobileLibrary = ({ tagNotationsMap }) => (
         </div>
       ))
     }
-    <div style={{ margin: '36px 20px 0 20px' }}>
-      <Button
-        type="primary"
-        size="small"
-        style={{ color: '#fff' }}
-        onClick={() => scrollTo(0, 0)}
-      >
-        Back to Top
-      </Button>
+    <div style={{ margin: '50px 20px 0 20px', textAlign: 'center', fontSize: '36px' }}>
+      <Icon type="aliwangwang" onClick={() => scrollTo(0, 0)} />
     </div>
   </div>
 );
