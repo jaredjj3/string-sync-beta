@@ -7,6 +7,7 @@ export const receiveNotations = notations => ({
   notations,
 });
 
-export const fetchNotations = () => dispatch => (
-  API.fetchNotations().then(notations => dispatch(receiveNotations(notations)))
-);
+export const fetchNotations = () => async dispatch => {
+  const notations = await API.fetchNotations();
+  dispatch(receiveNotations(notations));
+};

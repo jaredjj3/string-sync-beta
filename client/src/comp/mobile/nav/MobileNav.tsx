@@ -29,7 +29,7 @@ interface NavState {
 enum NavKeys {
   SEARCH = 'SEARCH',
   HOME   = 'HOME',
-  LOGIN  = 'LOGIN'
+  LOGIN  = 'LOGIN',
 }
 
 class Nav extends React.Component<NavProps, NavState> {
