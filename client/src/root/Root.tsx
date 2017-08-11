@@ -7,6 +7,8 @@ import App from './app';
 import Library from './library';
 import Search from './search';
 import Login from './login';
+import NotationShow from './notation/show';
+import NotationEdit from './notation/edit';
 
 const Root = ({ store }): any => {
 
@@ -22,6 +24,8 @@ const Root = ({ store }): any => {
           <IndexRoute component={Library} />
           <Route path="login" component={Login} />
           <Route path="search" component={Search} />
+          <Route path=":id" component={NotationShow} />
+          <Route path=":id/edit" component={NotationEdit} />
         </Route>
       </Router>
     </Provider>

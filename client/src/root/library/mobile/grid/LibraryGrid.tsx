@@ -20,9 +20,9 @@ const LibraryGrid = ({ tagNotations }): JSX.Element => {
     })
   );
 
-  const shuffledData = shuffle(data);
+  const shuffledData    = shuffle(data);
   const divisbleBy3Data = drop(shuffledData, data.length > 3 ? data.length % 3 : 0);
-  const upTo12Data = take(divisbleBy3Data, 12);
+  const upTo12Data      = take(divisbleBy3Data, 12);
 
   return (
     <div>
