@@ -1,6 +1,8 @@
 @import "vars/overrides";
 
 .LibraryGrid {
+  border-right: 1px solid white;
+
   .am-grid-text {
     font-size: 12px !important;
   }
@@ -16,6 +18,10 @@
 
   .am-grid-item-content {
     background: @layout-body-background;
+  }
+  
+  .am-grid-item-content .LibraryGridItem {
+    border-left: 1px solid white;
   }
 }
 
