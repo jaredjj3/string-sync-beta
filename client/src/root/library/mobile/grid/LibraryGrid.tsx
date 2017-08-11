@@ -20,14 +20,16 @@ const LibraryGrid = ({ tagNotations }): JSX.Element => {
     })
   );
 
-  const adjustedData = take(drop(shuffle(data), data.length % 3), 12);
+  const shuffledData = shuffle(data);
+  const divisbleBy3Data = drop(shuffledData, data.length > 3 ? data.length % 3 : 0);
+  const upTo12Data = take(divisbleBy3Data, 12);
 
   return (
     <div>
       <Grid
         hasLine={false}
         className="LibraryGrid"
-        data={adjustedData}
+        data={upTo12Data}
         columnNum={3}
         renderItem={(gridData: GridData, index) => <LibraryGridItem data={gridData} />}
       />
