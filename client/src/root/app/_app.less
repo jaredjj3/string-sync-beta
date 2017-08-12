@@ -1,12 +1,16 @@
 @import "vars/overrides";
 
+body {
+  background: @layout-body-background;
+}
+
 .AppLayout__header {
   background: @background-color-base;
   border-bottom: 1px solid @border-color-base;
 }
 
 .AppLayout__content {
-  min-height: 100vh;
+  min-height: calc(100vh - 100px);
   margin-bottom: 100px;
 }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 
 import Form from 'antd/lib/form';
 import Icon from 'antd/lib/icon';
@@ -25,38 +26,37 @@ class Login extends React.Component<LoginProps, LoginState> {
     });
   }
 
-  render() {
+  render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Form onSubmit={this.handleSubmit} className="login-form">
-        <FormItem>
-          {getFieldDecorator('userName', {
-            rules: [{ required: true, message: 'Please input your username!' }],
-          })(
-            <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="Username" />
-          )}
-        </FormItem>
-        <FormItem>
-          {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Please input your Password!' }],
-          })(
-            <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Password" />
-          )}
-        </FormItem>
-        <FormItem>
-          {getFieldDecorator('remember', {
-            valuePropName: 'checked',
-            initialValue: true,
-          })(
-            <Checkbox>Remember me</Checkbox>
-          )}
-          <a className="login-form-forgot" href="">Forgot password</a>
-          <Button type="primary" htmlType="submit" className="login-form-button">
-            Log in
-          </Button>
-          Or <a href="">register now!</a>
-        </FormItem>
-      </Form>
+      <div className="Login">
+        <h1 className="Login__title">LOGIN</h1>
+        <Form onSubmit={this.handleSubmit} className="Login__form">
+          <FormItem>
+            {getFieldDecorator('userName', {
+              rules: [{ required: true, message: 'Please input your username!' }],
+            })(
+              <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="username" />
+            )}
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator('password', {
+              rules: [{ required: true, message: 'Please input your Password!' }],
+            })(
+              <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="password" />
+            )}
+          </FormItem>
+          <FormItem>
+            <Button type="primary" htmlType="submit" className="Login__form__button">
+              Login
+            </Button>
+            <div className="Login__form__footer">
+              <div>Don't have an account?</div>
+              <h3><Link to="signup">Create an account</Link></h3>
+            </div>
+          </FormItem>
+        </Form>
+      </div>
     );
   }
 }
