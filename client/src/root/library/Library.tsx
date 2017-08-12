@@ -25,7 +25,9 @@ interface LibraryState {}
 
 class Library extends React.Component<LibraryProps, LibraryState> {
   componentWillMount(): void {
-    this.props.fetchNotations();
+    if (this.props.library.notations.length === 0) {
+      this.props.fetchNotations();
+    }
   }
 
   shouldComponentUpdate(nextProps: LibraryProps): boolean {

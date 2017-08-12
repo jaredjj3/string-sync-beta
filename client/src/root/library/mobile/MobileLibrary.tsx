@@ -7,7 +7,7 @@ import Logo from 'comp/logo';
 import Icon from 'antd/lib/icon';
 
 const MobileLibrary = ({ tagNotationsMap }) => (
-  <div>
+  <div className="Library--mobile">
     <div className="Library--mobile__headerSpacer">
       <Icon type="aliwangwang" />
     </div>
