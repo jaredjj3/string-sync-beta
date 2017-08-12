@@ -46,7 +46,7 @@ class LibraryCarousel extends React.Component<LibraryCarouselProps, LibraryCarou
           autoplay={true}
           speed={700}
           autoplaySpeed={this.state.autoplaySpeed}
-          ref={c => this.carousel = c.refs.slick}
+          ref={c => this.carousel = c && c.refs.slick}
         >
           {
             inChunksOf(3, tagNotations.notations, (notations, i) => (
