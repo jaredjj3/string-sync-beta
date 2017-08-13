@@ -34,6 +34,7 @@ enum MobileNavKeys {
   SEARCH = 'SEARCH',
   HOME   = 'HOME',
   LOGIN  = 'LOGIN',
+  SIGNUP = 'SIGNUP'
 }
 
 class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
@@ -41,6 +42,7 @@ class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
     '/'       : MobileNavKeys.HOME,
     '/login'  : MobileNavKeys.LOGIN,
     '/search' : MobileNavKeys.SEARCH,
+    '/signup' : MobileNavKeys.SIGNUP
   };
 
   componentWillMount(): void {
@@ -48,13 +50,15 @@ class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
   }
 
   componentWillReceiveProps(nextProps: MobileNavProps, nextState: MobileNavState): void {
-    this.setState({ current: MobileNav.NAV_KEYS_BY_LOCATION[nextProps.location.pathname] });
+    const location = `/${nextProps.location.pathname.replace('/', '')}`;
+    this.setState({ current: MobileNav.NAV_KEYS_BY_LOCATION[location] });
   }
 
   shouldComponentUpdate(nextProps: MobileNavProps, nextState: MobileNavState): boolean {
     return (
       !isEqual(this.state, nextState) ||
-      this.props.isLoggedIn !== nextProps.isLoggedIn
+      this.props.isLoggedIn !== nextProps.isLoggedIn ||
+      this.props.location !== nextProps.location
     );
   }
 
@@ -74,9 +78,9 @@ class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
 
   render(): JSX.Element {
     const { isLoggedIn } = this.props;
-    const iconStyle = (key: string) => ({
+    const iconStyle = (keys: Array<string>) => ({
       fontSize: '24px',
-      color: key === this.state.current ? '#FC354C' : '#666666'
+      color: keys.some(key => key === this.state.current) ? '#FC354C' : '#666666'
     });
 
     return (
@@ -90,14 +94,14 @@ class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
               className="Nav--mobile__link"
               onClick={this.goTo(MobileNavKeys.SEARCH)}
               type="search"
-              style={iconStyle(MobileNavKeys.SEARCH)}
+              style={iconStyle([MobileNavKeys.SEARCH])}
             />
           }
           rightContent={
             isLoggedIn ?
               <Icon
                 type="logout"
-                style={iconStyle(MobileNavKeys.LOGIN)}
+                style={iconStyle([MobileNavKeys.LOGIN])}
                 className="Nav--mobile__link"
                 onClick={this.logout}
               /> :
@@ -105,7 +109,7 @@ class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
                 className="Nav--mobile__link"
                 onClick={this.goTo(MobileNavKeys.LOGIN)}
                 type="user"
-                style={iconStyle(MobileNavKeys.LOGIN)}
+                style={iconStyle([MobileNavKeys.LOGIN, MobileNavKeys.SIGNUP])}
               />
           }
         >
@@ -113,7 +117,7 @@ class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
             className="Nav--mobile__link"
             onClick={this.goTo(MobileNavKeys.HOME)}
             type="home"
-            style={iconStyle(MobileNavKeys.HOME)}
+            style={iconStyle([MobileNavKeys.HOME])}
           />
         </NavBar>
       </nav>

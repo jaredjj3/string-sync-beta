@@ -9,11 +9,25 @@ export const receiveUser = user => ({
 });
 
 export const login = user => async dispatch => {
-  const currentUser = await API.login(user);
-  dispatch(receiveUser(currentUser));
+  const { notify, notifyAll } = window as any;
+
+  try {
+    const currentUser = await API.login(user);
+    dispatch(receiveUser(currentUser));
+    notify('Login', `logged in as @${currentUser.username}`, { type: 'info' });
+  } catch ({ responseJSON }) {
+    notifyAll('Login', responseJSON, { duration: 10 });
+  }
 };
 
 export const logout = () => async dispatch => {
-  await API.logout();
-  dispatch(receiveUser(getNullUser()));
+  const { notify, notifyAll } = window as any;
+
+  try {
+    await API.logout();
+    dispatch(receiveUser(getNullUser()));
+    notify('Logout', 'successful', { type: 'success' });
+  } catch ({ responseJSON }) {
+    notifyAll('Logout', responseJSON);
+  }
 };

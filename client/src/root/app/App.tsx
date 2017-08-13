@@ -10,12 +10,15 @@ import MobileNav from 'comp/mobile/nav';
 import enUS from 'antd/lib/locale-provider/en_US.js';
 
 import getNullUser from 'util/getNullUser';
+import notify from 'util/notify';
+import { NotifyOptions } from 'util/notify';
 import { Device } from 'types/device';
 import { Location } from 'types/location';
 import { add, remove } from 'eventlistener';
 import { debounce } from 'lodash';
 
 import { User } from 'types/user';
+import { NotificationStruct } from 'types/notificationStruct';
 
 const { Header, Content, Footer } = Layout;
 
@@ -45,6 +48,9 @@ class App extends React.Component<AppProps, AppState> {
     const currentUser = (window as any).currentUser || getNullUser();
     delete (window as any).currentUser;
     receiveUser(currentUser);
+
+    this.installNotificationSystem();
+
     queryDevice();
     updateViewport();
   }
@@ -55,6 +61,19 @@ class App extends React.Component<AppProps, AppState> {
 
   componentWillUnmount(): void {
     remove(window, 'resize', this.maybeUpdateViewport);
+  }
+
+  installNotificationSystem(): void {
+    (window as any).notify = notify.bind(this);
+
+    (window as any).notifyAll =
+      (title: string, notifications: Array<NotificationStruct>, opts: NotifyOptions = {}): void => {
+        notifications.map(notification => {
+          const { type } = notification;
+          const notificationListItems = notification.messages.map(msg => <li>{msg}</li>);
+          notify.call(this, title, <ul>{notificationListItems}</ul>, { type, ...opts });
+        });
+      };
   }
 
   render(): JSX.Element {

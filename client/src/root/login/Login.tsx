@@ -36,16 +36,9 @@ class Login extends React.Component<LoginProps, LoginState> {
     this.props.form.validateFields(async (err, user) => {
       if (!err) {
         this.setState({ loading: true });
-
-        // FIXME: need error handling
-        try {
-          await this.props.login({ user });
-        } catch (error) {
-          console.error('error ', error);
-        } finally {
-          this.setState({ loading: false });
-          this.maybeGoToLibrary();
-        }
+        await this.props.login({ user });
+        this.setState({ loading: false });
+        this.maybeGoToLibrary();
       }
     });
   }

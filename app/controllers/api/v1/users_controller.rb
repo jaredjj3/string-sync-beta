@@ -6,8 +6,7 @@ class Api::V1::UsersController < ApplicationController
       login(@user)
       render(:show, status: 200)
     else
-      errors = { errors: [{ type: :general, messages: @user.errors.full_messages }] }
-      render(json: errors, status: 422)
+      render(json: @user.errors_as_json, status: 422)
     end
   end
 
@@ -17,7 +16,7 @@ class Api::V1::UsersController < ApplicationController
     if @user && logged_in_as?(:admin)
       render(:show, status: 200)
     else
-      errors = { errors: [{ type: :general, messages: ["unauthorized to show user"] }] }
+      errors = [{ type: :error, messages: ["unauthorized to show user"] }]
       render(json: errors, status: 401)
     end
   end
@@ -29,11 +28,10 @@ class Api::V1::UsersController < ApplicationController
       if @user.update(user_params)
         render(:show, status: 200)
       else
-        errors = { errors: [{ type: :general, messages: @user.errors.full_messages }] }
-        render(json: errors, status: 301)
+        render(json: @user.errors_as_json, status: 301)
       end
     else
-      errors = { errors: [{ type: :general, messages: ["unauthorized to update user"] }] }
+      errors = [{ type: :error, messages: ["unauthorized to update user"] }]
       render(json: errors, status: 401)
     end
   end
