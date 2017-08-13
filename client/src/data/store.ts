@@ -11,4 +11,5 @@ const store = createStore(
 );
 
 (window as any).store = store;
+delete (window as any).currentUser;
 export default store;
