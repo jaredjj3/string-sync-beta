@@ -30,13 +30,13 @@ class User < ApplicationRecord
   validates(:user_roles, presence: true)
 
   after_initialize(:ensure_session_token)
-  after_initialize(:downcase_username_and_email!)
 
   before_save(:ensure_role)
   before_save(:downcase_username_and_email!)
 
   def self.find_by_credentials(username_or_email, password)
-    user = User.find_by(email: username_or_email) || User.find_by(username: username_or_email)
+    user = User.includes(:user_notations).find_by(email: username_or_email) ||
+        User.includes(:user_notations).find_by(username: username_or_email)
     user && user.is_password?(password) ? user : nil
   end
 
