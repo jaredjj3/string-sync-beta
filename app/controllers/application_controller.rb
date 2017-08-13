@@ -28,7 +28,10 @@ class ApplicationController < ActionController::Base
     end
 
     def logged_in_as?(role)
-      raise ArgumentError.new("must be a symbol or a role") if !role.is_a?(Symbol) && !role.is_a?(Role)
+      if !role.is_a?(Symbol) && !role.is_a?(Role)
+        raise ArgumentError.new("must be a symbol or a role")
+      end
+      
       role = Role.where(name: role).first! if role.is_a?(Symbol)
       logged_in? && current_user.roles.include?(role)
     end

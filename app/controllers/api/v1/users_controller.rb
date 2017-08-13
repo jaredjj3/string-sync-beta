@@ -17,7 +17,8 @@ class Api::V1::UsersController < ApplicationController
     if @user && logged_in_as?(:admin)
       render(:show, status: 200)
     else
-      render(:errors, status: 302)
+      errors = { errors: [{ type: :general, messages: ["unauthorized to show user"] }] }
+      render(json: errors, status: 401)
     end
   end
 
