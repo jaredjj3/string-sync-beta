@@ -17,5 +17,4 @@ export const login = user => async dispatch => {
 export const logout = () => async dispatch => {
   await API.logout();
   dispatch(receiveUser(getNullUser()));
-
 };

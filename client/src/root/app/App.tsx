@@ -9,6 +9,7 @@ import LocaleProvider from 'antd/lib/locale-provider';
 import MobileNav from 'comp/mobile/nav';
 import enUS from 'antd/lib/locale-provider/en_US.js';
 
+import getNullUser from 'util/getNullUser';
 import { Device } from 'types/device';
 import { Location } from 'types/location';
 import { add, remove } from 'eventlistener';
@@ -41,7 +42,9 @@ class App extends React.Component<AppProps, AppState> {
   componentWillMount(): void {
     const { queryDevice, updateViewport, receiveUser } = this.props;
 
-    receiveUser((window as any).currentUser);
+    const currentUser = (window as any).currentUser || getNullUser();
+    delete (window as any).currentUser;
+    receiveUser(currentUser);
     queryDevice();
     updateViewport();
   }
