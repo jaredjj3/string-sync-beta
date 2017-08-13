@@ -37,6 +37,7 @@ class App extends React.Component<AppProps, AppState> {
 
     this.maybeUpdateViewport = debounce(this._maybeUpdateViewport, 300, { maxWait: 600 });
   }
+
   componentWillMount(): void {
     const { queryDevice, updateViewport, receiveUser } = this.props;
 
