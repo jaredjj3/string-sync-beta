@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 
 import Button from 'antd/lib/button';
 import Checkbox from 'antd/lib/checkbox';
@@ -14,12 +14,19 @@ const FormItem = Form.Item;
 
 interface LoginProps {
   form: any;
+  isLoggedIn: boolean;
   login(user: { user: User }): void;
 }
 
 interface LoginState {}
 
 class Login extends React.Component<LoginProps, LoginState> {
+  componentWillReceiveProps (nextProps: LoginProps): void {
+    if (nextProps.isLoggedIn) {
+      browserHistory.push('/');
+    }
+  }
+
   handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     this.props.form.validateFields((err, user) => {
@@ -31,6 +38,8 @@ class Login extends React.Component<LoginProps, LoginState> {
 
   render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;
+    console.log('login rendered');
+    
     return (
       <div className="Login">
         <h1 className="Login__title">LOGIN</h1>
@@ -74,7 +83,7 @@ class Login extends React.Component<LoginProps, LoginState> {
 import { login } from 'data/session/actions';
 
 const mapStateToProps = state => ({
-
+  isLoggedIn: state.session.currentUser.isLoggedIn
 });
 
 const mapDispatchToProps = dispatch => ({

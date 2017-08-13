@@ -3,6 +3,6 @@ export interface User {
   email: string;
   username: string;
   roles: string[];
-  loggedIn: boolean;
+  isLoggedIn: boolean;
   savedNotations: Array<number | string>;
 }

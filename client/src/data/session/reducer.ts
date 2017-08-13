@@ -13,7 +13,7 @@ const defaultState: Session = Object.freeze({
     email: '',
     username: '',
     roles: ['student'],
-    loggedIn: false,
+    isLoggedIn: false,
     savedNotations: []
   }
 });

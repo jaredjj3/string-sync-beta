@@ -8,7 +8,8 @@ class Api::V1::SessionsController < ApplicationController
       login(@user)
       render(:login, status: 200)
     else
-      render(json: {}, status: 422)
+      errors = { errors: { messages: ["invalid username or password"] } }
+      render(json: errors, status: 422)
     end
   end
 

@@ -11,7 +11,7 @@
       <% if logged_in? %>
         window.currentUser = <%= render("api/v1/users/show.json.jbuilder", user: current_user).html_safe %>
       <% else %>
-        window.currentUser = { loggedIn: false }
+        window.currentUser = { isLoggedIn: false }
       <% end %>
     </script>
 
