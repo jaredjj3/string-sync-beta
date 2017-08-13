@@ -9,7 +9,6 @@ export interface Session {
 }
 
 const defaultState: Session = Object.freeze({ currentUser: (window as any).currentUser || getNullUser() });
-delete (window as any).currentUser;
 
 const dup = (state: Session): Session => {
   const currentUser = dupUser(state.currentUser);
