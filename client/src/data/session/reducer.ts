@@ -22,10 +22,10 @@ const dup = (state: Session): Session => {
 
 export default (state = defaultState, action): Session => {
   Object.freeze(state);
+
+  // FIXME: state is undefined in production when initializing
+  // see getNullUser
   const nextState = dup(state);
-  console.log('action ', action.type);
-  console.log(JSON.stringify(nextState));
-  console.log('\n')
 
   switch (action.type) {
     case RECEIVE_USER:
