@@ -8,7 +8,7 @@ export interface Session {
   currentUser: User;
 }
 
-const defaultState = (): Session => Object.freeze(
+const defaultState: Session = Object.freeze(
   Object.assign(
     { currentUser: getNullUser() },
     { currentUser: dupUser((window as any).currentUser) }
@@ -20,10 +20,8 @@ const dup = (state: Session): Session => {
   return Object.assign({}, state, { currentUser });
 };
 
-export default (state = defaultState(), action): Session => {
+export default (state = defaultState, action): Session => {
   Object.freeze(state);
-  console.log(state && state.currentUser, action);
-
   const nextState = dup(state);
 
   switch (action.type) {
