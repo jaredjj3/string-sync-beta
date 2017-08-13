@@ -10,6 +10,4 @@ document.addEventListener('DOMContentLoaded', (): void => {
   }
 
   ReactDOM.render(<Root store={store} />, document.getElementById('root'));
-
-  delete (window as any).currentUser;
 });
