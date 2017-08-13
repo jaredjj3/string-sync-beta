@@ -26,4 +26,10 @@ class ApplicationController < ActionController::Base
       @current_user = nil
       session[:session_token] = nil
     end
+
+    def logged_in_as?(role)
+      raise ArgumentError.new("must be a symbol or a role") if !role.is_a?(Symbol) && !role.is_a?(Role)
+      role = Role.where(name: role).first! if role.is_a?(Symbol)
+      logged_in? && current_user.roles.include?(role)
+    end
 end
