@@ -11,7 +11,7 @@ export interface Session {
 const defaultState = (): Session => Object.freeze(
   Object.assign(
     { currentUser: getNullUser() },
-    { currentUser: (window as any).currentUser }
+    { currentUser: dupUser((window as any).currentUser) }
   )
 );
 
@@ -22,9 +22,8 @@ const dup = (state: Session): Session => {
 
 export default (state = defaultState(), action): Session => {
   Object.freeze(state);
+  console.log(state && state.currentUser, action);
 
-  // FIXME: state is undefined in production when initializing
-  // see getNullUser
   const nextState = dup(state);
 
   switch (action.type) {

@@ -12,11 +12,10 @@ export const receiveUser = user => ({
 export const login = user => async dispatch => {
   const currentUser = await API.login(user);
   dispatch(receiveUser(currentUser));
-  (window as any).currentUser = currentUser;
 };
 
 export const logout = () => async dispatch => {
   await API.logout();
   dispatch(receiveUser(getNullUser()));
-  (window as any).currentUser = getNullUser();
+
 };
