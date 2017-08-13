@@ -1,4 +1,6 @@
 import * as API from './api';
+import getNullUser from 'util/getNullUser';
+import dupUser from 'util/dup/user';
 
 export const RECEIVE_USER = 'session/RECEIVE_USER';
 
@@ -14,4 +16,5 @@ export const login = user => async dispatch => {
 
 export const logout = user => async dispatch => {
   API.logout();
+  dispatch(receiveUser(getNullUser()));
 };

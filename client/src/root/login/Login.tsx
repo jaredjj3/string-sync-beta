@@ -92,7 +92,7 @@ class Login extends React.Component<LoginProps, LoginState> {
 import { login } from 'data/session/actions';
 
 const mapStateToProps = state => ({
-  isLoggedIn: state.session.currentUser.isLoggedIn
+  isLoggedIn: Boolean(state.session.currentUser.id)
 });
 
 const mapDispatchToProps = dispatch => ({
