@@ -1,15 +1,7 @@
 import { RECEIVE_NOTATIONS } from './actions';
+import { Notation } from 'types/notation';
 
 import dup from 'util/dup/library';
-
-export interface Notation {
-  id: number,
-  name: string,
-  transcriber: string,
-  artist: string,
-  thumbnailUrl: string,
-  tags: Array<string>
-}
 
 export interface Library {
   notations: Array<Notation>

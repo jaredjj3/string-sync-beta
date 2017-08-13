@@ -6,14 +6,14 @@ class Api::SessionsController < ApplicationController
 
     if @user
       login(@user)
-      render(:show, status: 200)
+      render("api/v1/users/show", status: 200)
     else
-      render(:errors, status: 422)
+      render("api/v1/users/errors", status: 422)
     end
   end
 
   def destroy
     logout
-    render(json: {})
+    render(json: {}, status: 200)
   end
 end

@@ -1,4 +1,5 @@
-import { Library, Notation } from 'data/library/reducer';
+import { Library } from 'data/library/reducer';
+import { Notation } from 'types/notation';
 
 export const dupNotation = (notation: Notation): Notation => {
   const nextNotation = Object.assign({}, notation);

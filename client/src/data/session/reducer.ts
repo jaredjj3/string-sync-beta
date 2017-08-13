@@ -1,0 +1,37 @@
+import { RECEIVE_USER } from './actions';
+import { User } from 'types/user';
+
+import dupUser from 'util/dup/user';
+
+export interface Session {
+  currentUser: User;
+}
+
+const defaultState: Session = Object.freeze({
+  currentUser: {
+    id: -1,
+    email: '',
+    username: '',
+    roles: ['student'],
+    loggedIn: false,
+    savedNotations: []
+  }
+});
+
+const dup = (state: Session): Session => (
+  Object.assign({}, state, { currentUser: dupUser(state.currentUser) })
+);
+
+export default (state = defaultState, action): Session => {
+  Object.freeze(state);
+  const nextState = dup(state);
+
+  switch (action.type) {
+    case RECEIVE_USER:
+      nextState.currentUser = action.user;
+      return nextState;
+
+    default:
+      return nextState;
+  }
+};
