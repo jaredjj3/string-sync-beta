@@ -18,9 +18,10 @@ const defaultState: Session = Object.freeze({
   }
 });
 
-const dup = (state: Session): Session => (
-  Object.assign({}, state, { currentUser: dupUser(state.currentUser) })
-);
+const dup = (state: Session): Session => {
+  const currentUser = dupUser(state.currentUser);
+  return Object.assign({}, state, { currentUser });
+};
 
 export default (state = defaultState, action): Session => {
   Object.freeze(state);

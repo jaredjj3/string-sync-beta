@@ -2,16 +2,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
+import Button from 'antd/lib/button';
+import Checkbox from 'antd/lib/checkbox';
 import Form from 'antd/lib/form';
 import Icon from 'antd/lib/icon';
 import Input from 'antd/lib/input';
-import Button from 'antd/lib/button';
-import Checkbox from 'antd/lib/checkbox';
+
+import { User } from 'types/user';
 
 const FormItem = Form.Item;
 
 interface LoginProps {
   form: any;
+  login(user: { user: User }): void;
 }
 
 interface LoginState {}
@@ -19,9 +22,9 @@ interface LoginState {}
 class Login extends React.Component<LoginProps, LoginState> {
   handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    this.props.form.validateFields((err, user) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        this.props.login({ user });
       }
     });
   }
@@ -68,4 +71,17 @@ class Login extends React.Component<LoginProps, LoginState> {
   }
 }
 
-export default Form.create()(Login);
+import { login } from 'data/session/actions';
+
+const mapStateToProps = state => ({
+
+});
+
+const mapDispatchToProps = dispatch => ({
+  login: user => dispatch(login(user))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Form.create()(Login));

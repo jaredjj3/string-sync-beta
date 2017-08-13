@@ -1,14 +1,14 @@
-class Api::SessionsController < ApplicationController
+class Api::V1::SessionsController < ApplicationController
   def create
-    email = params[:user][:email]
+    username = params[:user][:username]
     password = params[:user][:password]
-    @user = User.find_by_credentials(email, password)
+    @user = User.find_by_credentials(username, password)
 
     if @user
       login(@user)
-      render("api/v1/users/show", status: 200)
+      render(:login, status: 200)
     else
-      render("api/v1/users/errors", status: 422)
+      render(json: {}, status: 422)
     end
   end
 
