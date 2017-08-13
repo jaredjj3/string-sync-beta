@@ -33,17 +33,24 @@ class Login extends React.Component<LoginProps, LoginState> {
         <h1 className="Login__title">LOGIN</h1>
         <Form onSubmit={this.handleSubmit} className="Login__form">
           <FormItem>
-            {getFieldDecorator('userName', {
-              rules: [{ required: true, message: 'Please input your username!' }],
+            {getFieldDecorator('username', {
+              rules: [{ required: true, message: 'username or email is required' }],
             })(
-              <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="username" />
+              <Input
+                prefix={<Icon type="user" style={{ fontSize: 14 }} />}
+                placeholder="username or email"
+              />
             )}
           </FormItem>
           <FormItem>
             {getFieldDecorator('password', {
-              rules: [{ required: true, message: 'Please input your Password!' }],
+              rules: [{ required: true, message: 'password is required' }],
             })(
-              <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="password" />
+              <Input
+                type="password"
+                placeholder="password"
+                prefix={<Icon type="lock" style={{ fontSize: 14 }} />}
+              />
             )}
           </FormItem>
           <FormItem>
