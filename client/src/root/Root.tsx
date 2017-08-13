@@ -56,8 +56,8 @@ const Root = ({ store }): any => {
           <Route path="signup" component={Signup} onEnter={maybeRedirect(RedirectTypes.AUTH)}/>
           <Route path="search" component={Search} />
           <Route path="upload" component={Upload} onEnter={maybeRedirect(RedirectTypes.PROTECT)} />
-          <Route path=":id" component={NotationShow} />
-          <Route path=":id/edit" component={NotationEdit} />
+          <Route path="n/:id" component={NotationShow} />
+          <Route path="n/:id/edit" component={NotationEdit} />
         </Route>
       </Router>
     </Provider>

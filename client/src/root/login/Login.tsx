@@ -54,9 +54,9 @@ class Login extends React.Component<LoginProps, LoginState> {
     const { getFieldDecorator } = this.props.form;
 
     return (
-      <div className="Login">
-        <h1 className="Login__title">LOGIN</h1>
-        <Form onSubmit={this.handleSubmit} className="Login__form">
+      <div className="Form">
+        <h1 className="Form__title">LOGIN</h1>
+        <Form onSubmit={this.handleSubmit} className="Form__form">
           <FormItem>
             {getFieldDecorator('username', {
               rules: [{ required: true, message: 'username or email is required' }],
@@ -82,12 +82,12 @@ class Login extends React.Component<LoginProps, LoginState> {
             <Button
               type="primary"
               htmlType="submit"
-              className="Login__form__button"
+              className="Form__submit"
               loading={this.state.loading}
             >
               Login
             </Button>
-            <div className="Login__form__footer">
+            <div className="Form__footer">
               <div>Don't have an account?</div>
               <h3><Link to="signup">Create an account</Link></h3>
             </div>

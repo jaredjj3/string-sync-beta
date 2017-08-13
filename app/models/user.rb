@@ -23,8 +23,11 @@ class User < ApplicationRecord
 
   validates(:email, :username, uniqueness: { case_sensitive: false })
   validates(:email, :username, presence: true)
+  validates(:username, format: { with: /[a-zA-Z0-9_]+/, message: "must only contain letters, numbers, or underscores" })
+  validates(:username, format: { with: /[a-zA-Z0-9]{1,}/, message: "must have at least one number or letter" })
   validates(:email, format: { with: /.+@.+/, message: "must be valid" })
   validates(:password, length: { in: 6..20, allow_nil: true })
+  validates(:password, format: { with: /((?![<>;]).)*/, message: "must not contain <, >, or ;" })
   validates(:session_token, presence: true, uniqueness: true)
   validates(:email, :username, length: { in: 3..30 })
   validates(:user_roles, presence: true)
@@ -35,7 +38,7 @@ class User < ApplicationRecord
   before_save(:downcase_username_and_email!)
 
   def self.find_by_credentials(username_or_email, password)
-    username_or_email = username_or_email.downcase
+    username_or_email = username_or_email.downcase.gsub("@", "")
     user = User.includes(:user_notations).find_by(email: username_or_email) ||
         User.includes(:user_notations).find_by(username: username_or_email)
 

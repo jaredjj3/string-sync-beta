@@ -7,7 +7,7 @@ import './_notationDetail.less';
 
 const NotationDetail = ({ notation }): JSX.Element => (
   <div>
-    <Link to={`/${notation.id}`}>
+    <Link to={`/n/${notation.id}`}>
       <Card style={{ width: '280px', height: '240px', cursor: 'pointer' }} bodyStyle={{ padding: 0 }}>
         <div>
           <div className="NotationDetail--desktop__img">

@@ -16,7 +16,7 @@ const LibraryGrid = ({ tagNotations }): JSX.Element => {
   const data: Array<GridData> = tagNotations.notations.map(notation => ({
       thumbnail: notation.thumbnailUrl,
       text: notation.name,
-      url: `/${notation.id}`
+      url: `/n/${notation.id}`
     })
   );
 
