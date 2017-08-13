@@ -14,7 +14,7 @@ export const login = user => async dispatch => {
   dispatch(receiveUser(currentUser));
 };
 
-export const logout = user => async dispatch => {
-  API.logout();
+export const logout = () => async dispatch => {
+  await API.logout();
   dispatch(receiveUser(getNullUser()));
 };

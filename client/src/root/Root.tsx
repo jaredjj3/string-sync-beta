@@ -12,16 +12,36 @@ import NotationEdit from './notation/edit';
 import NotationShow from './notation/show';
 import Search from './search';
 import Signup from './signup';
+import Upload from './upload';
+
+enum RedirectTypes {
+  AUTH = 'AUTH',
+  PROTECT = 'PROTECT'
+}
 
 const Root = ({ store }): any => {
 
   const scrollToTop = (): void => { window.scrollTo(0, 0); };
 
-  const maybeRedirectToLibrary = (nextState, replace) => {
-    const isLoggedIn = Boolean(store.getState().session.currentUser.id);
-    if (isLoggedIn) {
-      replace('/');
-    }
+  const maybeRedirect = (behavior: RedirectTypes) => {
+    return (nextState, replace) => {
+      const isLoggedIn = Boolean(store.getState().session.currentUser.id);
+
+      switch (behavior) {
+        case RedirectTypes.AUTH:
+          if (isLoggedIn) {
+            replace('/');
+          }
+          return;
+        case RedirectTypes.PROTECT:
+          if (!isLoggedIn) {
+            replace('/');
+          }
+          return;
+        default:
+          return;
+      }
+    };
   };
 
   return (
@@ -32,9 +52,10 @@ const Root = ({ store }): any => {
       >
         <Route path="/" component={App}>
           <IndexRoute component={Library} />
-          <Route path="login" component={Login} onEnter={maybeRedirectToLibrary}/>
-          <Route path="signup" component={Signup} onEnter={maybeRedirectToLibrary}/>
+          <Route path="login" component={Login} onEnter={maybeRedirect(RedirectTypes.AUTH)}/>
+          <Route path="signup" component={Signup} onEnter={maybeRedirect(RedirectTypes.AUTH)}/>
           <Route path="search" component={Search} />
+          <Route path="upload" component={Upload} onEnter={maybeRedirect(RedirectTypes.PROTECT)} />
           <Route path=":id" component={NotationShow} />
           <Route path=":id/edit" component={NotationEdit} />
         </Route>

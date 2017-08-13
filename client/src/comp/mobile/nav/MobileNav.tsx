@@ -1,12 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router';
-import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
+import { Link, browserHistory } from 'react-router';
 
 import Col from 'antd/lib/col';
 import Icon from 'antd/lib/icon';
 import Menu from 'antd/lib/menu';
 import NavBar from 'antd-mobile/lib/nav-bar';
 import Row from 'antd/lib/row';
+import Drawer from 'antd-mobile/lib/drawer';
+import List from 'antd-mobile/lib/list';
 
 import { ClickParam } from 'antd/lib/menu';
 import { Location } from 'types/location';
@@ -18,53 +20,60 @@ interface OnClickFunction {
   (e: React.SyntheticEvent<HTMLElement>): void;
 }
 
-interface NavProps {
+interface MobileNavProps {
   location: Location;
+  isLoggedIn: boolean;
+  logout(): void;
 }
 
-interface NavState {
+interface MobileNavState {
   current: string;
 }
 
-enum NavKeys {
+enum MobileNavKeys {
   SEARCH = 'SEARCH',
   HOME   = 'HOME',
   LOGIN  = 'LOGIN',
 }
 
-class Nav extends React.Component<NavProps, NavState> {
+class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
   static NAV_KEYS_BY_LOCATION: object = {
-    '/'       : NavKeys.HOME,
-    '/login'  : NavKeys.LOGIN,
-    '/search' : NavKeys.SEARCH,
+    '/'       : MobileNavKeys.HOME,
+    '/login'  : MobileNavKeys.LOGIN,
+    '/search' : MobileNavKeys.SEARCH,
   };
 
-  state: NavState = { current: NavKeys.HOME };
-
   componentWillMount(): void {
-    this.setState({ current: Nav.NAV_KEYS_BY_LOCATION[this.props.location.pathname] });
+    this.setState({ current: MobileNav.NAV_KEYS_BY_LOCATION[this.props.location.pathname] });
   }
 
-  componentWillReceiveProps(nextProps: NavProps, nextState: NavState): void {
-    this.setState({ current: Nav.NAV_KEYS_BY_LOCATION[nextProps.location.pathname] });
+  componentWillReceiveProps(nextProps: MobileNavProps, nextState: MobileNavState): void {
+    this.setState({ current: MobileNav.NAV_KEYS_BY_LOCATION[nextProps.location.pathname] });
   }
 
-  shouldComponentUpdate(nextProps: NavProps, nextState: NavState): boolean {
-    return !isEqual(this.state, nextState);
+  shouldComponentUpdate(nextProps: MobileNavProps, nextState: MobileNavState): boolean {
+    return (
+      !isEqual(this.state, nextState) ||
+      this.props.isLoggedIn !== nextProps.isLoggedIn
+    );
   }
 
-  goTo = (navKey: NavKeys): OnClickFunction => {
+  goTo = (navKey: MobileNavKeys): OnClickFunction => {
     return (e: React.SyntheticEvent<any>): void => {
-      this.setState({ current: navKey }, () => {
-        // Change the location after the component has rerendered due to setState for a
-        // more responsive feel (as opposed to rendering the component after the location)
-        // has changed.
-        browserHistory.push(invert(Nav.NAV_KEYS_BY_LOCATION)[navKey]);
-      });
+      this.setState({ current: navKey });
+      browserHistory.push(invert(MobileNav.NAV_KEYS_BY_LOCATION)[navKey]);
     };
   }
 
+  logout = (e: React.SyntheticEvent<HTMLAllCollection>): void => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.props.logout();
+    browserHistory.push('/');
+  }
+
   render(): JSX.Element {
+    const { isLoggedIn } = this.props;
     const iconStyle = (key: string) => ({
       fontSize: '24px',
       color: key === this.state.current ? '#FC354C' : '#666666'
@@ -79,25 +88,32 @@ class Nav extends React.Component<NavProps, NavState> {
           leftContent={
             <Icon
               className="Nav--mobile__link"
-              onClick={this.goTo(NavKeys.SEARCH)}
+              onClick={this.goTo(MobileNavKeys.SEARCH)}
               type="search"
-              style={iconStyle(NavKeys.SEARCH)}
+              style={iconStyle(MobileNavKeys.SEARCH)}
             />
           }
           rightContent={
-            <Icon
-              className="Nav--mobile__link"
-              onClick={this.goTo(NavKeys.LOGIN)}
-              type="user"
-              style={iconStyle(NavKeys.LOGIN)}
-            />
+            isLoggedIn ?
+              <Icon
+                type="logout"
+                style={iconStyle(MobileNavKeys.LOGIN)}
+                className="Nav--mobile__link"
+                onClick={this.logout}
+              /> :
+              <Icon
+                className="Nav--mobile__link"
+                onClick={this.goTo(MobileNavKeys.LOGIN)}
+                type="user"
+                style={iconStyle(MobileNavKeys.LOGIN)}
+              />
           }
         >
           <Icon
             className="Nav--mobile__link"
-            onClick={this.goTo(NavKeys.HOME)}
+            onClick={this.goTo(MobileNavKeys.HOME)}
             type="home"
-            style={iconStyle(NavKeys.HOME)}
+            style={iconStyle(MobileNavKeys.HOME)}
           />
         </NavBar>
       </nav>
@@ -105,4 +121,17 @@ class Nav extends React.Component<NavProps, NavState> {
   }
 }
 
-export default Nav;
+import { logout } from 'data/session/actions';
+
+const mapStateToProps = state => ({
+  isLoggedIn: Boolean(state.session.currentUser.id)
+});
+
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch(logout())
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MobileNav);

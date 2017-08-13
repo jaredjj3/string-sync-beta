@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router';
-import { browserHistory } from 'react-router';
+import { connect } from 'react-redux';
+import { Link, browserHistory } from 'react-router';
 
 import Col from 'antd/lib/col';
 import Icon from 'antd/lib/icon';
@@ -13,12 +13,16 @@ import { Location } from 'types/location';
 import { invert } from 'lodash';
 
 const { Item } = Menu;
+const SubMenu = Menu.SubMenu;
+const MenuItemGroup = Menu.ItemGroup;
 
-interface NavProps {
+interface DesktopNavProps {
   location: Location;
+  isLoggedIn: boolean;
+  logout(): void;
 }
 
-interface NavState {
+interface DesktopNavState {
   current: string;
 }
 
@@ -28,7 +32,7 @@ enum NavKeys {
   LOGIN  = 'LOGIN'
 }
 
-class Nav extends React.Component<NavProps, NavState> {
+class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
   static NAV_KEYS_BY_LOCATION: object = {
     '/'       : NavKeys.HOME,
     '/login'  : NavKeys.LOGIN,
@@ -36,20 +40,27 @@ class Nav extends React.Component<NavProps, NavState> {
   };
 
   componentWillMount(): void {
-    this.setState({ current: Nav.NAV_KEYS_BY_LOCATION[this.props.location.pathname] });
+    this.setState({ current: DesktopNav.NAV_KEYS_BY_LOCATION[this.props.location.pathname] });
   }
 
-  componentWillReceiveProps(nextProps: NavProps, nextState: NavState): void {
-    this.setState({ current: Nav.NAV_KEYS_BY_LOCATION[nextProps.location.pathname] });
+  componentWillReceiveProps(nextProps: DesktopNavProps, nextState: DesktopNavState): void {
+    this.setState({ current: DesktopNav.NAV_KEYS_BY_LOCATION[nextProps.location.pathname] });
   }
 
   goTo = (params: ClickParam): void => {
-    const location = invert(Nav.NAV_KEYS_BY_LOCATION)[params.key];
+    const location = invert(DesktopNav.NAV_KEYS_BY_LOCATION)[params.key];
     browserHistory.push(location);
   }
 
+  logout = (e: React.SyntheticEvent<HTMLDivElement>): void => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.props.logout();
+    browserHistory.push('/');
+  }
+
   render(): JSX.Element {
-    const itemStyle = { paddingTop: '8px', paddingBottom: '6px' };
+    const { isLoggedIn } = this.props;
 
     return (
       <nav className="Nav--desktop">
@@ -64,15 +75,32 @@ class Nav extends React.Component<NavProps, NavState> {
               style={{ fontSize: '18px', borderBottom: '0', background: 'none' }}
               onClick={this.goTo}
             >
-              <Item key={NavKeys.SEARCH} style={itemStyle}>
+              <Item key={NavKeys.SEARCH} className="Nav--desktop__menuItem">
                 <Icon type="search" />
               </Item>
-              <Item key={NavKeys.HOME} style={itemStyle}>
+              <Item key={NavKeys.HOME} className="Nav--desktop__menuItem">
                 <Icon type="home" />
               </Item>
-              <Item key={NavKeys.LOGIN} style={itemStyle}>
-                <Icon type="user" />
-              </Item>
+              {
+                isLoggedIn ?
+                <SubMenu title={<Icon type="setting" />} className="Nav--desktop__menuItem">
+                  <Item>
+                    <Link to="upload">
+                      <Icon type="upload" />
+                      <span>upload</span>
+                    </Link>
+                  </Item>
+                  <Item>
+                    <div onClick={this.logout}>
+                      <Icon type="logout" />
+                      <span>logout</span>
+                    </div>
+                  </Item>
+                </SubMenu> :
+                <Item key={NavKeys.LOGIN} className="Nav--desktop__menuItem">
+                  <Icon type="user" />
+                </Item>
+              }
             </Menu>
           </Col>
         </Row>
@@ -81,4 +109,17 @@ class Nav extends React.Component<NavProps, NavState> {
   }
 }
 
-export default Nav;
+import { logout } from 'data/session/actions';
+
+const mapStateToProps = state => ({
+  isLoggedIn: Boolean(state.session.currentUser.id)
+});
+
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch(logout())
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DesktopNav);

@@ -1,11 +1,10 @@
 import { User } from 'types/user';
 
 const getNullUser = () => ({
-  id: -1,
-  email: '',
-  username: '',
+  id: null,
+  email: null,
+  username: null,
   roles: ['student'],
-  isLoggedIn: false,
   savedNotations: []
 });
 

@@ -25,18 +25,27 @@ interface LoginState {
 class Login extends React.Component<LoginProps, LoginState> {
   state: LoginState = { loading: false };
 
-  componentWillReceiveProps (nextProps: LoginProps): void {
-    if (nextProps.isLoggedIn) {
-      this.setState({ loading: true });
+  maybeGoToLibrary(): void {
+    if (this.props.isLoggedIn) {
       browserHistory.push('/');
     }
   }
 
-  handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
+  handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    this.props.form.validateFields((err, user) => {
+    this.props.form.validateFields(async (err, user) => {
       if (!err) {
-        this.props.login({ user });
+        this.setState({ loading: true });
+
+        // FIXME: need error handling
+        try {
+          await this.props.login({ user });
+        } catch (error) {
+          console.error('error ', error);
+        } finally {
+          this.setState({ loading: false });
+          this.maybeGoToLibrary();
+        }
       }
     });
   }
