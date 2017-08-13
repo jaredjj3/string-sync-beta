@@ -14,6 +14,8 @@ import { Location } from 'types/location';
 import { add, remove } from 'eventlistener';
 import { debounce } from 'lodash';
 
+import { User } from 'types/user';
+
 const { Header, Content, Footer } = Layout;
 
 interface AppProps {
@@ -22,6 +24,7 @@ interface AppProps {
   device: Device;
   queryDevice(): void;
   updateViewport(): void;
+  receiveUser(user: User): void;
 }
 
 interface AppState {}
@@ -35,8 +38,9 @@ class App extends React.Component<AppProps, AppState> {
     this.maybeUpdateViewport = debounce(this._maybeUpdateViewport, 300, { maxWait: 600 });
   }
   componentWillMount(): void {
-    const { queryDevice, updateViewport } = this.props;
+    const { queryDevice, updateViewport, receiveUser } = this.props;
 
+    receiveUser((window as any).currentUser);
     queryDevice();
     updateViewport();
   }
@@ -74,6 +78,7 @@ class App extends React.Component<AppProps, AppState> {
 }
 
 import { queryDevice, updateViewport } from 'data/device/actions';
+import { receiveUser } from 'data/session/actions';
 
 const mapStateToProps = state => ({
   device: state.device,
@@ -81,7 +86,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   queryDevice: () => dispatch(queryDevice()),
-  updateViewport: () => dispatch(updateViewport())
+  updateViewport: () => dispatch(updateViewport()),
+  receiveUser: user => dispatch(receiveUser(user))
 });
 
 export default connect(
