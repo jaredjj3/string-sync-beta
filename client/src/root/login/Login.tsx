@@ -18,16 +18,21 @@ interface LoginProps {
   login(user: { user: User }): void;
 }
 
-interface LoginState {}
+interface LoginState {
+  loading: boolean;
+}
 
 class Login extends React.Component<LoginProps, LoginState> {
+  state: LoginState = { loading: false };
+
   componentWillReceiveProps (nextProps: LoginProps): void {
     if (nextProps.isLoggedIn) {
+      this.setState({ loading: true });
       browserHistory.push('/');
     }
   }
 
-  handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
+  handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     this.props.form.validateFields((err, user) => {
       if (!err) {
@@ -38,8 +43,7 @@ class Login extends React.Component<LoginProps, LoginState> {
 
   render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;
-    console.log('login rendered');
-    
+
     return (
       <div className="Login">
         <h1 className="Login__title">LOGIN</h1>
@@ -66,7 +70,12 @@ class Login extends React.Component<LoginProps, LoginState> {
             )}
           </FormItem>
           <FormItem>
-            <Button type="primary" htmlType="submit" className="Login__form__button">
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="Login__form__button"
+              loading={this.state.loading}
+            >
               Login
             </Button>
             <div className="Login__form__footer">
