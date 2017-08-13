@@ -2,7 +2,13 @@ import { createStore } from 'redux';
 
 import reducer from './reducer';
 import middleware from './middleware';
-import preloadedState from './preloadedState';
+import getNullUser from 'util/getNullUser';
+
+const preloadedState = {
+  session: {
+    currentUser: (window as any).currentUser || getNullUser()
+  }
+};
 
 const store = createStore(
   reducer,

@@ -11,6 +11,5 @@ document.addEventListener('DOMContentLoaded', (): void => {
 
   ReactDOM.render(<Root store={store} />, document.getElementById('root'));
 
-  // FIXME: Figure out why bootstrapping the current user to the window is not working
-  // delete (window as any).currentUser;
+  delete (window as any).currentUser;
 });
