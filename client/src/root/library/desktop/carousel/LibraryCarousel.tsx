@@ -39,8 +39,8 @@ class LibraryCarousel extends React.Component<LibraryCarouselProps, LibraryCarou
       <div className="LibraryCarouselContainer">
         <Icon type="left" onClick={this.prevPage} className="Arrow Arrow--prev" />
         <Carousel
-          lazyLoad
           infinite
+          lazyLoad
           className="LibraryCarousel"
           dotsClass="slick-dots LibraryCarousel__dots"
           autoplay={true}

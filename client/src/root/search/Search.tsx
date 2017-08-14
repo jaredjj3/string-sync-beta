@@ -28,15 +28,17 @@ class Search extends React.Component<SearchProps, SearchState> {
     const { notations } = this.props.library;
 
     return(
-      <Row gutter={10}>
-        {
-          notations.map(notation => (
-            <Col xs={24} sm={12} lg={8} xl={8}>
-              <NotationDetail notation={notation} />
-            </Col>
-          ))
-        }
-      </Row>
+      <div className="Search">
+        <Row gutter={10} type="flex" justify="center" align="middle">
+          {
+            notations.map(notation => (
+              <Col key={`search-notation-${notation.id}`} xs={24} sm={12} lg={8} xl={8}>
+                <NotationDetail notation={notation} />
+              </Col>
+            ))
+          }
+        </Row>
+      </div>
     );
   }
 }
