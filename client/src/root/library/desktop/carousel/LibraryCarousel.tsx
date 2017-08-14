@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Carousel from 'antd/lib/carousel';
-import NotationDetail from './detail';
+import NotationDetail from 'comp/notation/detail';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Icon from 'antd/lib/icon';

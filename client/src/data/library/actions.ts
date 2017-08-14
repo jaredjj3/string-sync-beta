@@ -8,6 +8,12 @@ export const receiveNotations = notations => ({
 });
 
 export const fetchNotations = () => async dispatch => {
-  const notations = await API.fetchNotations();
-  dispatch(receiveNotations(notations));
+  const { notifyAll }  = window as any;
+
+  try {
+    const notations = await API.fetchNotations();
+    dispatch(receiveNotations(notations));
+  } catch ({ responseJSON }) {
+    notifyAll('Library', responseJSON);
+  }
 };
