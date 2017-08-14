@@ -1,13 +1,24 @@
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
-interface SearchProps {}
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
 
-interface SearchState {}
+interface SearchProps {
+
+}
+
+interface SearchState {
+
+}
 
 class Search extends React.Component<SearchProps, SearchState> {
-  public render(): JSX.Element {
-    return (<span>Search</span>);
+  render(): JSX.Element {
+    return(
+      <div>
+
+      </div>
+    );
   }
 }
 
