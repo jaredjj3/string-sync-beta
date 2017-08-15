@@ -9,7 +9,7 @@ import Icon from 'antd/lib/icon';
 const MobileLibrary = ({ tagNotationsMap }) => (
   <div className="Library--mobile">
     <div className="Library--mobile__headerSpacer">
-      <Icon type="aliwangwang" />
+      ♩
     </div>
     <div className="Library--mobile__header">
       <div className="Library--mobile__header__logo">

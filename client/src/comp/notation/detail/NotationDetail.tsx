@@ -6,20 +6,18 @@ import LazyLoad from 'react-lazyload';
 
 import './_notationDetail.less';
 
-const bodyStyle = { padding: 0 };
-
 const style = { width: '280px', height: '240px', cursor: 'pointer' };
 
-const NotationDetail = ({ notation }): JSX.Element => (
+const NotationDetail = ({ notation, unmountIfInvisible }): JSX.Element => (
   <div className="NotationDetail">
     <Link to={`/n/${notation.id}`}>
       <LazyLoad
-        once
+        unmountIfInvisible={unmountIfInvisible}
         height={style.height}
         offset={500}
-        placeholder={<Card loading {...style} {...bodyStyle}/>}
+        placeholder={<Card loading {...style} />}
       >
-        <Card {...style} {...bodyStyle} >
+        <Card {...style}>
           <div>
             <div className="NotationDetail__img">
               <img alt={notation.name} width="100%" src={notation.thumbnailUrl} />
