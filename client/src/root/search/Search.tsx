@@ -1,29 +1,29 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Affix from 'antd/lib/affix';
-import AutoComplete from 'antd/lib/auto-complete';
-import Col from 'antd/lib/col';
-import Icon from 'antd/lib/icon';
-import Input from 'antd/lib/input';
-import NotationDetail from 'comp/notation/detail';
-import Row from 'antd/lib/row';
+import MobileSearch from './mobile';
+import DesktopSearch from './desktop';
+
 import { debounce } from 'lodash';
 
 import { Library } from 'data/library/reducer';
+import { Device } from 'types/device';
+import { Notation } from 'types/notation';
 
 interface SearchProps {
   library: Library;
+  device: Device;
   fetchNotations(): void;
 }
 
 interface SearchState {
   query: string;
   data: Array<string>;
+  results: Array<Notation>
 }
 
 class Search extends React.Component<SearchProps, SearchState> {
-  state: SearchState = { query: '', data: [] };
+  state: SearchState = { query: '', data: [], results: [] };
 
   componentWillMount(): void {
     if (this.props.library.notations.length === 0) {
@@ -56,26 +56,22 @@ class Search extends React.Component<SearchProps, SearchState> {
     this.setState(Object.assign({}, this.state, { data }));
   }
 
+  filterNotations = (): void => {
+
+  }
+
   render(): JSX.Element {
-    const { notations } = this.props.library;
-    const { data } = this.state;
+    const { results } = this.state;
+    const { isTouch, type } = this.props.device;
+    const isMobile = type === 'MOBILE';
 
     return(
       <div className="Search">
-        <Affix offsetTop={2}>
-          <div className="SearchBar">
-            <Input suffix={<Icon type="search" className="certain-category-icon" />} />
-          </div>
-        </Affix>
-        <Row gutter={10}>
-          {
-            notations.map(notation => (
-              <Col key={`search-notation-${notation.id}`} xs={24} sm={12} lg={8} xl={8}>
-                <NotationDetail unmountIfInvisible notation={notation} />
-              </Col>
-            ))
-          }
-        </Row>
+        {
+          isTouch || isMobile ?
+            <MobileSearch  notations={results} onSearch={this.filterNotations} /> :
+            <DesktopSearch notations={results} onSearch={this.filterNotations} />
+        }
       </div>
     );
   }
@@ -84,7 +80,8 @@ class Search extends React.Component<SearchProps, SearchState> {
 import { fetchNotations } from 'data/library/actions';
 
 const mapStateToProps = state => ({
-  library: state.library
+  library: state.library,
+  device: state.device
 });
 
 const mapDispatchToProps = dispatch => ({

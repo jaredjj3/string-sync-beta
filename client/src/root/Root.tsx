@@ -2,9 +2,6 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 
-import AuthRoute from 'comp/routes/auth';
-import ProtectedRoute from 'comp/routes/protected';
-
 import App from './app';
 import Library from './library';
 import Login from './login';
@@ -14,10 +11,7 @@ import Search from './search';
 import Signup from './signup';
 import Upload from './upload';
 
-enum RedirectTypes {
-  AUTH = 'AUTH',
-  PROTECT = 'PROTECT'
-}
+type RedirectTypes = 'AUTH' | 'PROTECT';
 
 const Root = ({ store }): any => {
 
@@ -28,12 +22,12 @@ const Root = ({ store }): any => {
       const isLoggedIn = Boolean(store.getState().session.currentUser.id);
 
       switch (behavior) {
-        case RedirectTypes.AUTH:
+        case 'AUTH':
           if (isLoggedIn) {
             replace('/');
           }
           return;
-        case RedirectTypes.PROTECT:
+        case 'PROTECT':
           if (!isLoggedIn) {
             replace('/');
           }
@@ -52,10 +46,10 @@ const Root = ({ store }): any => {
       >
         <Route path="/" component={App}>
           <IndexRoute component={Library} />
-          <Route path="login" component={Login} onEnter={maybeRedirect(RedirectTypes.AUTH)}/>
-          <Route path="signup" component={Signup} onEnter={maybeRedirect(RedirectTypes.AUTH)}/>
+          <Route path="login" component={Login} onEnter={maybeRedirect('AUTH')}/>
+          <Route path="signup" component={Signup} onEnter={maybeRedirect('AUTH')}/>
           <Route path="search" component={Search} />
-          <Route path="upload" component={Upload} onEnter={maybeRedirect(RedirectTypes.PROTECT)} />
+          <Route path="upload" component={Upload} onEnter={maybeRedirect('PROTECT')} />
           <Route path="n/:id" component={NotationShow} />
           <Route path="n/:id/edit" component={NotationEdit} />
         </Route>
