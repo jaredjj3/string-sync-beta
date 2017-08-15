@@ -8,7 +8,7 @@ const LibraryGridItem = ({ data }): JSX.Element => (
     <Link to={data.url}>
       <div className="LibraryGridItem__imgContainer">
         <LazyLoad
-          unmountIfInvisible
+          once
           throttle
           resize
           height="100%"
