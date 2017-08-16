@@ -7,7 +7,7 @@ const { Search } = Input;
 
 const SearchBar = ({ onSearch }): JSX.Element => (
   <div className="SearchBar">
-    <Search onSearch={onSearch} />
+    <Search onChange={(e) => onSearch(e.target.value)} />
   </div>
 );
 

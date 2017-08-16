@@ -5,6 +5,8 @@ import MobileSearch from './mobile';
 import DesktopSearch from './desktop';
 
 import { debounce } from 'lodash';
+import fuzzySearch from 'util/fuzzySearch';
+import { forceCheck } from 'react-lazyload';
 
 import { Library } from 'data/library/reducer';
 import { Device } from 'types/device';
@@ -17,13 +19,18 @@ interface SearchProps {
 }
 
 interface SearchState {
-  query: string;
-  data: Array<string>;
   results: Array<Notation>
 }
 
 class Search extends React.Component<SearchProps, SearchState> {
-  state: SearchState = { query: '', data: [], results: [] };
+  state: SearchState = { results: [] };
+  filterNotations: Function;
+
+  constructor(props: SearchProps) {
+    super(props);
+
+    this.filterNotations = debounce(this._filterNotations, 500);
+  }
 
   componentWillMount(): void {
     if (this.props.library.notations.length === 0) {
@@ -31,33 +38,8 @@ class Search extends React.Component<SearchProps, SearchState> {
     }
   }
 
-  componentDidMount(): void {
-    this.maybeSetData(this.props.library);
-  }
-
-  componentWillReceiveProps(nextProps: SearchProps): void {
-    this.maybeSetData(nextProps.library);
-  }
-
-  maybeSetData(library: Library): void {
-    if (library.notations.length === 0 || this.state.data.length > 0) {
-      return;
-    }
-
-    const dataSet = library.notations.reduce((set, notation) => {
-      set.add(notation.artist);
-      set.add(notation.name);
-      set.add(notation.transcriber);
-      return set;
-    }, new Set());
-
-    const data = Array.from(dataSet);
-
-    this.setState(Object.assign({}, this.state, { data }));
-  }
-
-  filterNotations = (): void => {
-
+  componentDidUpdate(): void {
+    forceCheck();
   }
 
   render(): JSX.Element {
@@ -74,6 +56,31 @@ class Search extends React.Component<SearchProps, SearchState> {
         }
       </div>
     );
+  }
+
+  private _filterNotations = (query: string): void => {
+    if (query === '') {
+      this._scrollToTop();
+      this.setState({ results: [] });
+    }
+
+    const results = this.props.library.notations.filter(notation => this._isMatch(query, notation));
+    this.setState(Object.assign({}, this.state, { results }));
+  }
+
+  private _isMatch = (query: string, notation: Notation): boolean => {
+    const lowerQuery = query.toLowerCase();
+
+    return (
+      fuzzySearch(lowerQuery, notation.name.toLowerCase())        ||
+      fuzzySearch(lowerQuery, notation.artist.toLowerCase())      ||
+      fuzzySearch(lowerQuery, notation.transcriber.toLowerCase()) ||
+      notation.tags.some(tag => fuzzySearch(lowerQuery, tag.toLowerCase()))
+    );
+  }
+
+  private _scrollToTop = (): void => {
+    window.scrollTo(0, 0);
   }
 }
 

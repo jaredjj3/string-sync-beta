@@ -6,7 +6,7 @@ import NotationDetail from 'comp/notation/detail';
 
 const SearchResults = ({ notations }): JSX.Element => (
   <div className="SearchResults">
-    <Row gutter={10} style={{ marginTop: '100px' }}>
+    <Row gutter={10}>
       {
         notations.length > 0 ?
           notations.map(notation => (
