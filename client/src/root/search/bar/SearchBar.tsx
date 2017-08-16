@@ -3,11 +3,12 @@ import React from 'react';
 import Input from 'antd/lib/input';
 import Icon from 'antd/lib/icon';
 
-const { Search } = Input;
-
-const SearchBar = ({ onSearch }): JSX.Element => (
+const SearchBar = ({ onSearch, loading }): JSX.Element => (
   <div className="SearchBar">
-    <Search onChange={(e) => onSearch(e.target.value)} />
+    <Input
+      onChange={(e) => onSearch(e.target.value)}
+      prefix={loading ? <Icon type="loading" /> : <Icon type="search" />}
+    />
   </div>
 );
 

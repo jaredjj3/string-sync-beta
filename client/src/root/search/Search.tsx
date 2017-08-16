@@ -20,16 +20,17 @@ interface SearchProps {
 
 interface SearchState {
   results: Array<Notation>
+  loading: boolean;
 }
 
 class Search extends React.Component<SearchProps, SearchState> {
-  state: SearchState = { results: [] };
+  state: SearchState = { results: [], loading: false };
   filterNotations: Function;
 
   constructor(props: SearchProps) {
     super(props);
 
-    this.filterNotations = debounce(this._filterNotations, 500);
+    this.filterNotations = debounce(this._filterNotations, 250);
   }
 
   componentWillMount(): void {
@@ -42,8 +43,19 @@ class Search extends React.Component<SearchProps, SearchState> {
     forceCheck();
   }
 
+  maybeStartLoading(): void {
+    if (!this.state.loading) {
+      this.setState(Object.assign({}, this.state, { loading: true }));
+    }
+  }
+
+  onChange = (query: string): void => {
+    this.maybeStartLoading();
+    this.filterNotations(query);
+  }
+
   render(): JSX.Element {
-    const { results } = this.state;
+    const { results, loading } = this.state;
     const { isTouch, type } = this.props.device;
     const isMobile = type === 'MOBILE';
 
@@ -51,8 +63,8 @@ class Search extends React.Component<SearchProps, SearchState> {
       <div className="Search">
         {
           isTouch || isMobile ?
-            <MobileSearch  notations={results} onSearch={this.filterNotations} /> :
-            <DesktopSearch notations={results} onSearch={this.filterNotations} />
+            <MobileSearch  loading={loading} notations={results} onSearch={this.onChange} /> :
+            <DesktopSearch loading={loading} notations={results} onSearch={this.onChange} />
         }
       </div>
     );
@@ -61,11 +73,12 @@ class Search extends React.Component<SearchProps, SearchState> {
   private _filterNotations = (query: string): void => {
     if (query === '') {
       this._scrollToTop();
-      this.setState({ results: [] });
+      this.setState({ results: [], loading: false });
+      return;
     }
 
     const results = this.props.library.notations.filter(notation => this._isMatch(query, notation));
-    this.setState(Object.assign({}, this.state, { results }));
+    this.setState({ results, loading: false });
   }
 
   private _isMatch = (query: string, notation: Notation): boolean => {
