@@ -16,6 +16,8 @@ export interface TagNotations {
   notations: Array<Notation>;
 }
 
+export type TagNotationsMap = Array<TagNotations>;
+
 interface LibraryProps {
   device: Device;
   library: StoreLibrary;
@@ -53,7 +55,7 @@ class Library extends React.Component<LibraryProps, LibraryState> {
     return device.type === 'MOBILE' || device.isTouch;
   }
 
-  private tagNotationsMap(notations: Array<Notation>): Array<TagNotations> {
+  private tagNotationsMap(notations: Array<Notation>): TagNotationsMap {
     const notationsByTag = this.notationsByTag(notations);
     return sortBy(
       Object.keys(notationsByTag).map(tag => ({ tag, notations: notationsByTag[tag] })),
