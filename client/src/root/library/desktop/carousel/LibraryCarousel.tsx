@@ -55,7 +55,7 @@ class LibraryCarousel extends React.Component<LibraryCarouselProps, LibraryCarou
                   {
                     notations.map(notation => (
                       <Col key={`${tagNotations.tag}-${notation.id}-${i}`} span={8}>
-                        <NotationDetail notation={notation} unmountIfInvisible={false} />
+                        <NotationDetail notation={notation} />
                       </Col>
                     ))
                   }

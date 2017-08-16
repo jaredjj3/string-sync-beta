@@ -8,11 +8,10 @@ import './_notationDetail.less';
 
 const style = { width: '280px', height: '240px', cursor: 'pointer' };
 
-const NotationDetail = ({ notation, unmountIfInvisible }): JSX.Element => (
+const NotationDetail = ({ notation }): JSX.Element => (
   <div className="NotationDetail">
     <Link to={`/n/${notation.id}`}>
       <LazyLoad
-        unmountIfInvisible={unmountIfInvisible}
         height={style.height}
         offset={500}
         placeholder={<Card loading {...style} />}

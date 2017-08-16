@@ -7,7 +7,7 @@ const SearchBar = ({ onSearch, loading }): JSX.Element => (
   <div className="SearchBar">
     <Input
       onChange={(e) => onSearch(e.target.value)}
-      prefix={loading ? <Icon type="loading" /> : <Icon type="search" />}
+      prefix={loading ? <Icon type="ellipsis" /> : <Icon type="search" />}
     />
   </div>
 );

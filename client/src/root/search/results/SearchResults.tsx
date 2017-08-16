@@ -11,7 +11,7 @@ const SearchResults = ({ notations }): JSX.Element => (
         notations.length > 0 ?
           notations.map(notation => (
             <Col key={`search-result-${notation.id}`} xs={24} sm={12} lg={8} xl={8}>
-              <NotationDetail unmountIfInvisible notation={notation} />
+              <NotationDetail notation={notation} />
             </Col>
           )) :
           <div className="SearchResults__content--none">
