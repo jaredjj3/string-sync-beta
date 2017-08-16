@@ -5,7 +5,8 @@ import MobileLibrary from './mobile';
 import DesktopLibrary from './desktop';
 
 import { Device } from 'types/device';
-import { Library as StoreLibrary, Notation } from 'data/library/reducer';
+import { Library as StoreLibrary } from 'data/library/reducer';
+import { Notation } from 'types/notation';
 
 import { dupNotation } from 'util/dup/library';
 import sortBy from 'util/sortBy';
@@ -24,7 +25,7 @@ interface LibraryProps {
 interface LibraryState {}
 
 class Library extends React.Component<LibraryProps, LibraryState> {
-  componentWillMount(): void {
+  componentDidMount(): void {
     if (this.props.library.notations.length === 0) {
       this.props.fetchNotations();
     }
@@ -42,7 +43,7 @@ class Library extends React.Component<LibraryProps, LibraryState> {
 
     return (
       this.shouldRenderMobile() ?
-        <MobileLibrary tagNotationsMap={tagNotationsMap}  /> :
+        <MobileLibrary  tagNotationsMap={tagNotationsMap}  /> :
         <DesktopLibrary tagNotationsMap={tagNotationsMap} />
     );
   }

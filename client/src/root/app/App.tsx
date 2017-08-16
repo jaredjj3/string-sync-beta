@@ -42,38 +42,30 @@ class App extends React.Component<AppProps, AppState> {
     this.maybeUpdateViewport = debounce(this._maybeUpdateViewport, 300, { maxWait: 600 });
   }
 
-  componentWillMount(): void {
-    const { queryDevice, updateViewport, receiveUser } = this.props;
+  componentDidMount(): void {
+    this._processUser();
+    this._installNotificationSystem();
 
-    const currentUser = (window as any).currentUser || getNullUser();
-    delete (window as any).currentUser;
-    receiveUser(currentUser);
-
-    this.installNotificationSystem();
-
+    const { queryDevice, updateViewport } = this.props;
     queryDevice();
     updateViewport();
+
+    add(window, 'resize', this.maybeUpdateViewport);
   }
 
-  componentDidMount(): void {
-    add(window, 'resize', this.maybeUpdateViewport);
+  shouldComponentUpdate(nextProps: AppProps): boolean {
+    const prevDevice = this.props.device;
+    const nextDevice = nextProps.device;
+
+    return (
+      prevDevice.viewport.height !== nextDevice.viewport.height ||
+      prevDevice.viewport.width  !== nextDevice.viewport.width  ||
+      this.props.location        !== nextProps.location
+    );
   }
 
   componentWillUnmount(): void {
     remove(window, 'resize', this.maybeUpdateViewport);
-  }
-
-  installNotificationSystem(): void {
-    (window as any).notify = notify.bind(this);
-
-    (window as any).notifyAll =
-      (title: string, notifications: Array<NotificationStruct>, opts: NotifyOptions = {}): void => {
-        notifications.map(notification => {
-          const { type } = notification;
-          const notificationListItems = notification.messages.map(msg => <li>{msg}</li>);
-          notify.call(this, title, <ul>{notificationListItems}</ul>, { type, ...opts });
-        });
-      };
   }
 
   render(): JSX.Element {
@@ -88,11 +80,31 @@ class App extends React.Component<AppProps, AppState> {
     );
   }
 
+  private _processUser(): void {
+    const currentUser = (window as any).currentUser || getNullUser();
+    delete (window as any).currentUser;
+    this.props.receiveUser(currentUser);
+  }
+
+  private _installNotificationSystem(): void {
+    (window as any).notify = notify.bind(this);
+
+    (window as any).notifyAll =
+      (title: string, notifications: Array<NotificationStruct>, opts: NotifyOptions = {}): void => {
+        notifications.map(notification => {
+          const { type } = notification;
+          const notificationListItems = notification.messages.map(msg => <li>{msg}</li>);
+          notify.call(this, title, <ul>{notificationListItems}</ul>, { type, ...opts });
+        });
+      };
+  }
+
   private _maybeUpdateViewport = (e: Event): void => {
     // For some reason, certain scrolling actions trigger a window resize event
     // on the Chrome browser on the iPhone 6. Therefore, avoid rerendering the
     // screen if a touch device is detected.
-    if (this.props.device.isTouch) {
+    const { device } = this.props;
+    if (device.isTouch || device.type === 'MOBILE') {
       return;
     }
 

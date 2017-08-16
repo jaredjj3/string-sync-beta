@@ -26,6 +26,7 @@ interface SearchState {
 class Search extends React.Component<SearchProps, SearchState> {
   state: SearchState = { results: [], loading: false };
   filterNotations: Function;
+  isFetching: boolean = false;
 
   constructor(props: SearchProps) {
     super(props);
@@ -33,9 +34,10 @@ class Search extends React.Component<SearchProps, SearchState> {
     this.filterNotations = debounce(this._filterNotations, 650);
   }
 
-  componentWillMount(): void {
-    if (this.props.library.notations.length === 0) {
+  componentDidMount(): void {
+    if (this.props.library.notations.length === 0 && !this.isFetching) {
       this.props.fetchNotations();
+      this.isFetching = true;
     }
   }
 

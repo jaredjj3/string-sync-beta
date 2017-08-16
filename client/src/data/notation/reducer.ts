@@ -12,7 +12,7 @@ export const createNotation = (formData, success, error) => {
   });
 };
 
-export const fetchNotation = (id, success, error) => {
+export const fetchNotations = (id, success, error) => {
   $.ajax({
     method: 'GET',
     url: `/api/notations/${id}`,

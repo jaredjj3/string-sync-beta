@@ -14,7 +14,7 @@ export const login = user => async dispatch => {
   try {
     const currentUser = await API.login(user);
     dispatch(receiveUser(currentUser));
-    notify('Login', `logged in as @${currentUser.username}`, { type: 'info' });
+    notify('Login', `logged in as @${currentUser.username}`, { type: 'info', duration: 2 });
   } catch ({ responseJSON }) {
     notifyAll('Login', responseJSON, { duration: 10 });
   }
@@ -26,7 +26,7 @@ export const logout = () => async dispatch => {
   try {
     await API.logout();
     dispatch(receiveUser(getNullUser()));
-    notify('Logout', 'successful', { type: 'success' });
+    notify('Logout', 'successful', { type: 'success', duration: 2 });
   } catch ({ responseJSON }) {
     notifyAll('Logout', responseJSON);
   }
