@@ -47,7 +47,11 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
               <Icon type="loading" style={iconStyle} /> :
               <Icon type="search"  style={iconStyle} />
           }
-          suffix={query ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null}
+          suffix={
+            query ?
+              <Icon type="close-circle" onClick={this.emitEmpty} style={{ fontSize: '16px' }} /> :
+              null
+            }
           />
       </div>
     );
