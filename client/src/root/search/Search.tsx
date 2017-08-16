@@ -30,7 +30,7 @@ class Search extends React.Component<SearchProps, SearchState> {
   constructor(props: SearchProps) {
     super(props);
 
-    this.filterNotations = debounce(this._filterNotations, 250);
+    this.filterNotations = debounce(this._filterNotations, 500);
   }
 
   componentWillMount(): void {
