@@ -1,6 +1,6 @@
 // https://github.com/bevacqua/fuzzysearch
 
-const fuzzySearch = (needle: string, haystack: string, distance: number): boolean => {
+const fuzzySearch = (needle: string, haystack: string): boolean => {
   const hlen = haystack.length;
   const nlen = needle.length;
   if (nlen > hlen) {

@@ -21,12 +21,14 @@ interface SearchProps {
 interface SearchState {
   results: Array<Notation>
   loading: boolean;
+  query: string;
+  checkedTags: Array<string>;
+  tags: Array<string>
 }
 
 class Search extends React.Component<SearchProps, SearchState> {
-  state: SearchState = { results: [], loading: false };
+  state: SearchState = { query: '', results: [], loading: false, checkedTags: [], tags: [] };
   filterNotations: Function;
-  tags: Array<string> = [];
 
   constructor(props: SearchProps) {
     super(props);
@@ -38,6 +40,8 @@ class Search extends React.Component<SearchProps, SearchState> {
     if (this.props.library.notations.length === 0) {
       this.props.fetchNotations();
     }
+
+    this.maybeSetTags(this.props);
   }
 
   componentWillReceiveProps(nextProps: SearchProps): void {
@@ -50,12 +54,12 @@ class Search extends React.Component<SearchProps, SearchState> {
 
   maybeSetTags(withProps: SearchProps): void {
     const { notations } = withProps.library;
-    if (notations.length > 0 && this.tags.length === 0) {
-      this.tags = Array.from(
-        notations.reduce((tagSet, notation) => (
-          notation.tags.reduce((_tagSet, tag) => _tagSet.add(tag), tagSet)
-        ), new Set())
-      );
+    if (notations.length > 0 && this.state.tags.length === 0) {
+      const tagSet = notations.reduce((_tagSet, notation) => (
+        notation.tags.reduce((__tagSet, tag) => __tagSet.add(tag), _tagSet)
+      ), new Set());
+      const tags = Array.from(tagSet);
+      this.setState(Object.assign({}, this.state, { tags }));
     }
   }
 
@@ -65,13 +69,20 @@ class Search extends React.Component<SearchProps, SearchState> {
     }
   }
 
-  onChange = (query: string): void => {
+  onSearch = (query: string): void => {
     this.maybeStartLoading();
-    this.filterNotations(query);
+    this.filterNotations(this.props.library.notations, query, this.state.checkedTags);
+    this.setState(Object.assign({}, this.state, { query }));
+  }
+
+  onCheck = (checkedTags: Array<string>): void => {
+    this.maybeStartLoading();
+    this.filterNotations(this.props.library.notations, this.state.query, checkedTags);
+    this.setState(Object.assign({}, this.state, { checkedTags }));
   }
 
   render(): JSX.Element {
-    const { results, loading } = this.state;
+    const { results, loading, tags } = this.state;
     const { isTouch, type } = this.props.device;
     const isMobile = type === 'MOBILE';
 
@@ -79,32 +90,51 @@ class Search extends React.Component<SearchProps, SearchState> {
       <div className="Search">
         {
           isTouch || isMobile ?
-            <MobileSearch  tags={this.tags} loading={loading} notations={results} onSearch={this.onChange} /> :
-            <DesktopSearch tags={this.tags} loading={loading} notations={results} onSearch={this.onChange} />
+            <MobileSearch
+              tags={tags}
+              loading={loading}
+              notations={results}
+              onSearch={this.onSearch}
+              onCheck={this.onCheck}
+            /> :
+            <DesktopSearch
+              tags={tags}
+              loading={loading}
+              notations={results}
+              onSearch={this.onSearch}
+              onCheck={this.onCheck}
+            />
         }
       </div>
     );
   }
 
-  private _filterNotations = (query: string): void => {
-    if (query === '') {
+  private _filterNotations = (notations: Array<Notation>, query: string, checkedTags: Array<string>): Array<Notation> => {
+    let results = [];
+
+    if (query === '' && checkedTags.length === 0) {
       this._scrollToTop();
-      this.setState({ results: [], loading: false });
-      return;
+      this.setState(Object.assign({}, this.state, { results, loading: false }));
+      return results;
     }
 
-    const results = this.props.library.notations.filter(notation => this._isMatch(query, notation));
-    this.setState({ results, loading: false });
+    const checkedTagSet = new Set(checkedTags);
+    results = notations.filter(notation => (
+      notation.tags.some(tag => checkedTagSet.has(tag)) ||
+      (query && this._isMatch(query, notation))
+    ));
+
+    this.setState(Object.assign({}, this.state, { results, loading: false }));
+    return results;
   }
 
   private _isMatch = (query: string, notation: Notation): boolean => {
-    const lowerQuery = query.toLowerCase();
+    const lowerCaseQuery = query.toLowerCase();
 
     return (
-      fuzzySearch(lowerQuery, notation.name.toLowerCase())        ||
-      fuzzySearch(lowerQuery, notation.artist.toLowerCase())      ||
-      fuzzySearch(lowerQuery, notation.transcriber.toLowerCase()) ||
-      notation.tags.some(tag => fuzzySearch(lowerQuery, tag.toLowerCase()))
+      fuzzySearch(lowerCaseQuery, notation.name.toLowerCase())        ||
+      fuzzySearch(lowerCaseQuery, notation.artist.toLowerCase())      ||
+      fuzzySearch(lowerCaseQuery, notation.transcriber.toLowerCase())
     );
   }
 

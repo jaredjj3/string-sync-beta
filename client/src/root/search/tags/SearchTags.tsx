@@ -16,18 +16,47 @@ interface SearchTagsState {
 class SearchTags extends React.Component<SearchTagsProps, SearchTagsState> {
   state: SearchTagsState = { checkedTags: [] };
 
+  updateCheckedTags = (tag: string, checked: Boolean): Array<string> => {
+    const checkedTags = [...this.state.checkedTags];
+    if (checked) {
+      checkedTags.push(tag);
+    } else {
+      const index = checkedTags.indexOf(tag);
+      checkedTags.splice(index, 1);
+    }
+
+    this.setState({ checkedTags });
+
+    return checkedTags;
+  }
+
   render(): JSX.Element {
     const { tags } = this.props;
+    const { checkedTags } = this.state;
 
     return (
       <div className="SearchTags">
-        {
-          tags.map((tag, i) => (
-            <CheckableTag checked key={tag}>
-              {tag}
-            </CheckableTag>
-          ))
-        }
+        <div className="SearchTags_title">
+          One of:
+        </div>
+        <div>
+          {
+            tags.map((tag, i) => (
+              <CheckableTag
+                checked={checkedTags.includes(tag)}
+                key={tag}
+                onChange={
+                  checked => {
+                    const updatedCheckedTags = this.updateCheckedTags(tag, checked);
+                    this.props.onCheck(updatedCheckedTags);
+                  }
+                }
+              >
+                {tag}
+              </CheckableTag>
+            ))
+          }
+        </div>
       </div>
     );
   }
