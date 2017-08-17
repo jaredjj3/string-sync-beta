@@ -26,7 +26,7 @@ interface SearchState {
 class Search extends React.Component<SearchProps, SearchState> {
   state: SearchState = { results: [], loading: false };
   filterNotations: Function;
-  isFetching: boolean = false;
+  tags: Array<string> = [];
 
   constructor(props: SearchProps) {
     super(props);
@@ -35,14 +35,28 @@ class Search extends React.Component<SearchProps, SearchState> {
   }
 
   componentDidMount(): void {
-    if (this.props.library.notations.length === 0 && !this.isFetching) {
+    if (this.props.library.notations.length === 0) {
       this.props.fetchNotations();
-      this.isFetching = true;
     }
+  }
+
+  componentWillReceiveProps(nextProps: SearchProps): void {
+    this.maybeSetTags(nextProps);
   }
 
   componentDidUpdate(): void {
     forceCheck();
+  }
+
+  maybeSetTags(withProps: SearchProps): void {
+    const { notations } = withProps.library;
+    if (notations.length > 0 && this.tags.length === 0) {
+      this.tags = Array.from(
+        notations.reduce((tagSet, notation) => (
+          notation.tags.reduce((_tagSet, tag) => _tagSet.add(tag), tagSet)
+        ), new Set())
+      );
+    }
   }
 
   maybeStartLoading(): void {
@@ -65,8 +79,8 @@ class Search extends React.Component<SearchProps, SearchState> {
       <div className="Search">
         {
           isTouch || isMobile ?
-            <MobileSearch  loading={loading} notations={results} onSearch={this.onChange} /> :
-            <DesktopSearch loading={loading} notations={results} onSearch={this.onChange} />
+            <MobileSearch  tags={this.tags} loading={loading} notations={results} onSearch={this.onChange} /> :
+            <DesktopSearch tags={this.tags} loading={loading} notations={results} onSearch={this.onChange} />
         }
       </div>
     );
