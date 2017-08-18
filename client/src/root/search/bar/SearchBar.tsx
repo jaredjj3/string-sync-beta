@@ -28,8 +28,8 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
   updateQuery = (e: any): void => {
     const query = e.target.value;
-    this.setState({ query });
     this.props.onSearch(query);
+    this.setState({ query });
   }
 
   render(): JSX.Element {

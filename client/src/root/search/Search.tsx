@@ -33,7 +33,7 @@ class Search extends React.Component<SearchProps, SearchState> {
   constructor(props: SearchProps) {
     super(props);
 
-    this.filterNotations = debounce(this._filterNotations, 650);
+    this.filterNotations = debounce(this._filterNotations, 675);
   }
 
   componentDidMount(): void {
@@ -63,22 +63,14 @@ class Search extends React.Component<SearchProps, SearchState> {
     }
   }
 
-  maybeStartLoading(): void {
-    if (!this.state.loading) {
-      this.setState(Object.assign({}, this.state, { loading: true }));
-    }
-  }
-
   onSearch = (query: string): void => {
-    this.maybeStartLoading();
     this.filterNotations(this.props.library.notations, query, this.state.checkedTags);
-    this.setState(Object.assign({}, this.state, { query }));
+    this.setState(Object.assign({}, this.state, { query, loading: true }));
   }
 
   onCheck = (checkedTags: Array<string>): void => {
-    this.maybeStartLoading();
     this.filterNotations(this.props.library.notations, this.state.query, checkedTags);
-    this.setState(Object.assign({}, this.state, { checkedTags }));
+    this.setState(Object.assign({}, this.state, { checkedTags, loading: true }));
   }
 
   render(): JSX.Element {
@@ -109,7 +101,12 @@ class Search extends React.Component<SearchProps, SearchState> {
     );
   }
 
-  private _filterNotations = (notations: Array<Notation>, query: string, checkedTags: Array<string>): Array<Notation> => {
+  private _filterNotations = (
+    notations: Array<Notation>,
+    query: string,
+    checkedTags: Array<string>
+  ): Array<Notation> => {
+
     let results = [];
 
     if (query === '' && checkedTags.length === 0) {
@@ -118,11 +115,19 @@ class Search extends React.Component<SearchProps, SearchState> {
       return results;
     }
 
-    const checkedTagSet = new Set(checkedTags);
-    results = notations.filter(notation => (
-      notation.tags.some(tag => checkedTagSet.has(tag)) ||
-      (query && this._isMatch(query, notation))
-    ));
+    // written this way so we're not checking the condition each loop in the filter block
+    if (query === '') {
+      results = notations.filter(notation => (
+        checkedTags.every(checkedTag => notation.tags.includes(checkedTag))
+      ));
+    } else if (checkedTags.length === 0) {
+      results = notations.filter(notation => this._isMatch(query, notation));
+    } else {
+      results = notations.filter(notation => (
+        checkedTags.every(checkedTag => notation.tags.includes(checkedTag)) &&
+        this._isMatch(query, notation)
+      ));
+    }
 
     this.setState(Object.assign({}, this.state, { results, loading: false }));
     return results;
@@ -131,10 +136,18 @@ class Search extends React.Component<SearchProps, SearchState> {
   private _isMatch = (query: string, notation: Notation): boolean => {
     const lowerCaseQuery = query.toLowerCase();
 
+    // fuzzy search
+    // return (
+    //   fuzzySearch(lowerCaseQuery, notation.name.toLowerCase())        ||
+    //   fuzzySearch(lowerCaseQuery, notation.artist.toLowerCase())      ||
+    //   fuzzySearch(lowerCaseQuery, notation.transcriber.toLowerCase())
+    // );
+
+    // strict search
     return (
-      fuzzySearch(lowerCaseQuery, notation.name.toLowerCase())        ||
-      fuzzySearch(lowerCaseQuery, notation.artist.toLowerCase())      ||
-      fuzzySearch(lowerCaseQuery, notation.transcriber.toLowerCase())
+      notation.name.toLowerCase().includes(lowerCaseQuery)        ||
+      notation.artist.toLowerCase().includes(lowerCaseQuery)      ||
+      notation.transcriber.toLowerCase().includes(lowerCaseQuery)
     );
   }
 

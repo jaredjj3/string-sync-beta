@@ -9,13 +9,19 @@ const SearchResults = ({ notations }): JSX.Element => (
     <Row gutter={10}>
       {
         notations.length > 0 ?
-          notations.map(notation => (
-            <Col key={`search-result-${notation.id}`} xs={24} sm={12} lg={8} xl={8}>
-              <NotationDetail notation={notation} />
-            </Col>
-          )) :
+          [
+            <div key="searchResults" className="SearchResults__content--some">
+              <h1>{`${notations.length} results`}</h1>
+            </div>,
+            notations.map(notation => (
+              <Col key={`search-result-${notation.id}`} xs={24} sm={12} lg={8} xl={8}>
+                <NotationDetail notation={notation} />
+              </Col>
+            ))
+          ] :
           <div className="SearchResults__content--none">
             <h1>No Results</h1>
+            <span></span>
           </div>
       }
     </Row>

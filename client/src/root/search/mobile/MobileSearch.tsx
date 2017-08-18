@@ -8,7 +8,7 @@ import SearchResults from '../results';
 
 const { Panel } = Collapse;
 
-const DesktopSearch = ({ tags, notations, onSearch, loading, onCheck }): JSX.Element => (
+const MobileSearch = ({ tags, notations, onSearch, loading, onCheck }): JSX.Element => (
   <div className="Search--mobile">
     <div className="Search--mobile__searchBar">
       <SearchBar loading={loading} onSearch={onSearch} />
@@ -20,4 +20,4 @@ const DesktopSearch = ({ tags, notations, onSearch, loading, onCheck }): JSX.Ele
   </div>
 );
 
-export default DesktopSearch;
+export default MobileSearch;

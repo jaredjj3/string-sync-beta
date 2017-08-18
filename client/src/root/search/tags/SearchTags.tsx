@@ -1,6 +1,8 @@
 import React from 'react';
 
 import Tag from 'antd/lib/tag';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
 
 const { CheckableTag } = Tag;
 
@@ -36,27 +38,26 @@ class SearchTags extends React.Component<SearchTagsProps, SearchTagsState> {
 
     return (
       <div className="SearchTags">
-        <div className="SearchTags_title">
-          One of:
-        </div>
-        <div>
+        <Row type="flex" justify="center">
           {
             tags.map((tag, i) => (
-              <CheckableTag
-                checked={checkedTags.includes(tag)}
-                key={tag}
-                onChange={
-                  checked => {
-                    const updatedCheckedTags = this.updateCheckedTags(tag, checked);
-                    this.props.onCheck(updatedCheckedTags);
+              <Col key={`col-${tag}-${i}`} style={{ marginTop: '7px' }}>
+                <CheckableTag
+                  checked={checkedTags.includes(tag)}
+                  key={tag}
+                  onChange={
+                    checked => {
+                      const updatedCheckedTags = this.updateCheckedTags(tag, checked);
+                      this.props.onCheck(updatedCheckedTags);
+                    }
                   }
-                }
-              >
-                {tag}
-              </CheckableTag>
+                >
+                  {tag}
+                </CheckableTag>
+              </Col>
             ))
           }
-        </div>
+        </Row>
       </div>
     );
   }
