@@ -11,7 +11,7 @@ const SearchResults = ({ notations }): JSX.Element => (
         notations.length > 0 ?
           [
             <div key="searchResults" className="SearchResults__content--some">
-              <h1>{`${notations.length} results`}</h1>
+              <h1>{`${notations.length} ${notations.length === 1 ? 'result' : 'results'}`}</h1>
             </div>,
             notations.map(notation => (
               <Col key={`search-result-${notation.id}`} xs={24} sm={12} lg={8} xl={8}>

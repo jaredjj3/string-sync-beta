@@ -58,7 +58,7 @@ class Search extends React.Component<SearchProps, SearchState> {
       const tagSet = notations.reduce((_tagSet, notation) => (
         notation.tags.reduce((__tagSet, tag) => __tagSet.add(tag), _tagSet)
       ), new Set());
-      const tags = Array.from(tagSet);
+      const tags = Array.from(tagSet).sort();
       this.setState(Object.assign({}, this.state, { tags }));
     }
   }
