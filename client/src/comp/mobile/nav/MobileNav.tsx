@@ -9,6 +9,7 @@ import NavBar from 'antd-mobile/lib/nav-bar';
 import Row from 'antd/lib/row';
 import Drawer from 'antd-mobile/lib/drawer';
 import List from 'antd-mobile/lib/list';
+import LogoutModal from './logout';
 
 import { ClickParam } from 'antd/lib/menu';
 import { Location } from 'types/location';
@@ -99,12 +100,7 @@ class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
           }
           rightContent={
             isLoggedIn ?
-              <Icon
-                type="logout"
-                style={iconStyle([MobileNavKeys.LOGIN])}
-                className="Nav--mobile__link"
-                onClick={this.logout}
-              /> :
+              <LogoutModal logout={this.logout} /> :
               <Icon
                 className="Nav--mobile__link"
                 onClick={this.goTo(MobileNavKeys.LOGIN)}
