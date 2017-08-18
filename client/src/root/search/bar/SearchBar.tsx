@@ -39,6 +39,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     return (
       <div className="SearchBar">
         <Input
+          placeholder="Search by song, artist, or transcriber"
           onChange={this.updateQuery}
           ref={c => this.searchInput = c}
           value={query}
