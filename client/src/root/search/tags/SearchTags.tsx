@@ -38,7 +38,7 @@ class SearchTags extends React.Component<SearchTagsProps, SearchTagsState> {
 
     return (
       <div className="SearchTags">
-        <Row type="flex" justify="center">
+        <Row type="flex">
           {
             tags.map((tag, i) => (
               <Col key={`col-${tag}-${i}`} style={{ marginTop: '7px' }}>
