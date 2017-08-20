@@ -1,34 +1,28 @@
-const $ = (window as any).$;
+import { RECEIVE_NOTATION } from './actions';
+import { Notation } from 'types/notation';
 
-export const createNotation = (formData, success, error) => {
-  $.ajax({
-    method: 'POST',
-    url: '/api/notations',
-    data: formData,
-    contentType: false,
-    processData: false,
-    success,
-    error,
-  });
-};
+import dup from 'util/dup/notation';
 
-export const fetchNotations = (id, success, error) => {
-  $.ajax({
-    method: 'GET',
-    url: `/api/notations/${id}`,
-    success,
-    error,
-  });
-};
+const defaultState: Notation = Object.freeze({
+  id: -1,
+  name: '',
+  transcriber: '',
+  artist: '',
+  thumbnailUrl: '',
+  tags: [],
+  buildStructs: { measures: [] },
+  scrollStructs: []
+});
 
-export const updateNotation = (notation, success, error) => {
-  const id = notation.id;
+export default (state = defaultState, action): Notation => {
+  Object.freeze(state);
+  const nextState = dup(state);
 
-  $.ajax({
-    method: 'PATCH',
-    url: `/api/notations/${id}`,
-    data: { notation },
-    success,
-    error,
-  });
+  switch (action.type) {
+    case RECEIVE_NOTATION:
+      return action.notation;
+
+    default:
+      return nextState;
+  }
 };

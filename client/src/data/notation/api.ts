@@ -1,34 +1,30 @@
 const $ = (window as any).$;
 
-export const createNotation = (formData, success, error) => {
+export const createNotation = formData => (
   $.ajax({
     method: 'POST',
     url: '/api/notations',
     data: formData,
     contentType: false,
-    processData: false,
-    success,
-    error,
-  });
-};
+    processData: false
+  })
+);
 
-export const fetchNotation = (id, success, error) => {
+export const fetchNotation = id => (
   $.ajax({
     method: 'GET',
-    url: `/api/notations/${id}`,
-    success,
-    error,
-  });
-};
+    url: `/api/notations/${id}`
+  })
+);
 
-export const updateNotation = (notation, success, error) => {
+export const updateNotation = notation => {
   const id = notation.id;
 
-  $.ajax({
-    method: 'PATCH',
-    url: `/api/notations/${id}`,
-    data: { notation },
-    success,
-    error,
-  });
+  return (
+    $.ajax({
+      method: 'PATCH',
+      url: `/api/notations/${id}`,
+      data: { notation }
+    })
+  );
 };

@@ -1,8 +1,9 @@
 import * as API from './api';
+import { Notation } from 'types/notation';
 
 export const RECEIVE_NOTATIONS = 'RECEIVE_NOTATIONS';
 
-export const receiveNotations = notations => ({
+export const receiveNotations = (notations: Array<Notation>) => ({
   type: RECEIVE_NOTATIONS,
   notations,
 });

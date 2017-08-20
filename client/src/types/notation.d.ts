@@ -1,4 +1,5 @@
 import { BuildStructs } from 'types/buildStructs';
+import { ScrollStructs } from 'types/scrollStructs';
 
 export interface Notation {
   id: number,
@@ -7,5 +8,6 @@ export interface Notation {
   artist: string,
   thumbnailUrl: string,
   tags: Array<string>,
-  buildStructs?: BuildStructs
+  buildStructs?: BuildStructs,
+  scrollStructs?: ScrollStructs
 }
