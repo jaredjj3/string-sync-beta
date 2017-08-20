@@ -1,23 +1,13 @@
 import React from 'react';
 
-import MobileVideo from 'comp/mobile/video';
+import Video from 'comp/video';
 
 import { Notation } from 'types/notation';
 
-interface MobileNotationShowProps {
-  notation: Notation;
-}
-
-interface MobileNotationShowState {}
-
-class MobileNotationShow extends React.Component<MobileNotationShowProps, MobileNotationShowState> {
-  render(): JSX.Element {
-    return (
-      <div className="NotationShow--mobile">
-        <MobileVideo />
-      </div>
-    );
-  }
-}
+const MobileNotationShow = ({ notation }): JSX.Element => (
+  <div className="NotationShow--mobile">
+    <Video youtubeVideoId={notation.youtubeVideoId} />
+  </div>
+);
 
 export default MobileNotationShow;

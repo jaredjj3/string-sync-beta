@@ -11,7 +11,8 @@ const defaultState: Notation = Object.freeze({
   thumbnailUrl: '',
   tags: [],
   buildStructs: { measures: [] },
-  scrollStructs: []
+  scrollStructs: [],
+  youtubeVideoId: ''
 });
 
 export default (state = defaultState, action): Notation => {
