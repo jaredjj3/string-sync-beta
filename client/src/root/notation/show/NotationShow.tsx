@@ -1,7 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { Notation } from 'types/notation';
+
 interface NotationShowProps {
+  notation: Notation;
   params: any;
   fetchNotation(id: number): void;
 }
@@ -18,7 +21,7 @@ class NotationShow extends React.Component<NotationShowProps, NotationShowState>
   render(): JSX.Element {
     return (
       <div className="NotationShow">
-        NotationShow
+        
       </div>
     );
   }
