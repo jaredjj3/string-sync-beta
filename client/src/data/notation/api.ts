@@ -3,7 +3,7 @@ const $ = (window as any).$;
 export const createNotation = formData => (
   $.ajax({
     method: 'POST',
-    url: '/api/notations',
+    url: '/api/v1/notations',
     data: formData,
     contentType: false,
     processData: false
@@ -13,7 +13,7 @@ export const createNotation = formData => (
 export const fetchNotation = id => (
   $.ajax({
     method: 'GET',
-    url: `/api/notations/${id}`
+    url: `/api/v1/notations/${id}`
   })
 );
 
@@ -23,7 +23,7 @@ export const updateNotation = notation => {
   return (
     $.ajax({
       method: 'PATCH',
-      url: `/api/notations/${id}`,
+      url: `/api/v1/notations/${id}`,
       data: { notation }
     })
   );

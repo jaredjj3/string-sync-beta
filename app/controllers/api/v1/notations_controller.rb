@@ -5,7 +5,7 @@ class Api::V1::NotationsController < ApplicationController
   end
 
   def show
-    @notation = Notation.find(params.require(:id))
+    @notation = Notation.includes(:tags, :transcriber).find(params.require(:id))
     render(:show, status: 200)
   end
 
