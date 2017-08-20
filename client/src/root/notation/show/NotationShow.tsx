@@ -27,7 +27,7 @@ class NotationShow extends React.Component<NotationShowProps, NotationShowState>
 import { fetchNotation } from 'data/notation/actions';
 
 const mapStateToProps = state => ({
-
+  notation: state.notation,
 });
 
 const mapDispatchToProps = dispatch => ({
