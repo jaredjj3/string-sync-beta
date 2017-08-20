@@ -9,10 +9,7 @@ const { Header, Content, Footer } = Layout;
 const DesktopAppLayout = ({ location, children }): JSX.Element => (
   <div>
     <Layout>
-      <Header
-        className="AppLayout__header"
-        style={{ marginBottom: '3em' }}
-      >
+      <Header className="AppLayout__header">
         <Gradient />
         <div className="AppLayout__header__content">
           <DesktopNav location={location} />

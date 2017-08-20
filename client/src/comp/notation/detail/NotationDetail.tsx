@@ -8,7 +8,7 @@ import LazyLoad from 'react-lazyload';
 
 import './_notationDetail.less';
 
-const style = { width: '280px', height: '240px', cursor: 'pointer' };
+const style = { width: '240px', height: '240px', cursor: 'pointer' };
 
 const NotationDetail = ({ notation }): JSX.Element => (
   <div className="NotationDetail">
