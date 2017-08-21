@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { Device } from 'types/device';
 
 import Youtube from 'react-youtube';
 
@@ -9,7 +12,7 @@ interface VideoProps {
 interface VideoState {}
 
 class Video extends React.Component<VideoProps, VideoState> {
-  // https://github.com/troybetz/react-youtube
+  // for options https://github.com/troybetz/react-youtube
   static youtubeOptions: any = {
     playerVars: {
       modestbranding: 1,
@@ -28,7 +31,9 @@ class Video extends React.Component<VideoProps, VideoState> {
     const { youtubeVideoId } = this.props;
 
     return (
-      <div className="Video">
+      <div
+        className="Video"
+      >
         <Youtube
           className="Video__youtubePlayer"
           opts={Video.youtubeOptions}
@@ -39,4 +44,15 @@ class Video extends React.Component<VideoProps, VideoState> {
   }
 }
 
-export default Video;
+const mapStateToProps = state => ({
+
+});
+
+const mapDispatchToProps = dispatch => ({
+
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Video);

@@ -102,13 +102,23 @@ class App extends React.Component<AppProps, AppState> {
   private _maybeUpdateViewport = (e: Event): void => {
     // For some reason, certain scrolling actions trigger a window resize event
     // on the Chrome browser on the iPhone 6. Therefore, avoid rerendering the
-    // screen if a touch device is detected.
-    const { device } = this.props;
-    if (device.isTouch || device.type === 'MOBILE') {
+    // screen if a touch device is detected and there is no viewport change.
+    if (!this._shouldUpdateViewport()) {
       return;
     }
 
     this.props.updateViewport();
+  }
+
+  private _shouldUpdateViewport = (): boolean => {
+    const { device } = this.props;
+    const { width, height } = device.viewport;
+    const isTouchDevice = device.isTouch || device.type === 'MOBILE';
+
+    return (
+      !isTouchDevice ||
+      (window.innerWidth !== width && window.innerHeight !== height)
+    );
   }
 }
 

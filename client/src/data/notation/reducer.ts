@@ -15,13 +15,20 @@ const defaultState: Notation = Object.freeze({
   youtubeVideoId: ''
 });
 
+const process = (notation: any): Notation => {
+  notation.buildStructs = JSON.parse(notation.buildStructs);
+  notation.scrollStructs = JSON.parse(notation.scrollStructs);
+
+  return notation;
+};
+
 export default (state = defaultState, action): Notation => {
   Object.freeze(state);
   const nextState = dup(state);
 
   switch (action.type) {
     case RECEIVE_NOTATION:
-      return action.notation;
+      return process(action.notation);
 
     default:
       return nextState;
