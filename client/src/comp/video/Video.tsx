@@ -7,6 +7,7 @@ import Youtube from 'react-youtube';
 
 interface VideoProps {
   youtubeVideoId: string;
+  setVideoPlayer(videoPlayer: any): void;
 }
 
 interface VideoState {}
@@ -27,6 +28,11 @@ class Video extends React.Component<VideoProps, VideoState> {
     }
   };
 
+  setVideoPlayer = (e: React.SyntheticEvent<any>): void => {
+    const videoPlayer = (e.target as any);
+    this.props.setVideoPlayer(videoPlayer);
+  }
+
   render(): JSX.Element {
     const { youtubeVideoId } = this.props;
 
@@ -38,18 +44,21 @@ class Video extends React.Component<VideoProps, VideoState> {
           className="Video__youtubePlayer"
           opts={Video.youtubeOptions}
           videoId={youtubeVideoId}
+          onReady={this.setVideoPlayer}
         />
       </div>
     );
   }
 }
 
+import { setVideoPlayer } from 'data/video/actions';
+
 const mapStateToProps = state => ({
 
 });
 
 const mapDispatchToProps = dispatch => ({
-
+  setVideoPlayer: videoPlayer => dispatch(setVideoPlayer(videoPlayer))
 });
 
 export default connect(
