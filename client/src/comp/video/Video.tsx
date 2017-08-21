@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import Youtube from 'react-youtube';
+import VideoControls from './controls';
+
 import { Device } from 'types/device';
 
-import Youtube from 'react-youtube';
 
 interface VideoProps {
   youtubeVideoId: string;
@@ -44,6 +46,7 @@ class Video extends React.Component<VideoProps, VideoState> {
           videoId={youtubeVideoId}
           onReady={this.setVideoPlayer}
         />
+        <VideoControls />
       </div>
     );
   }
