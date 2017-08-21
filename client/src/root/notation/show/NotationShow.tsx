@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import DesktopNotationShow from './desktop';
-import MobileNotationShow from './mobile';
+import Video from 'comp/video';
+import Fretboard from 'comp/fretboard';
+import Tab from 'comp/tab';
 
 import { Notation } from 'types/notation';
 import { Device } from 'types/device';
@@ -29,11 +30,9 @@ class NotationShow extends React.Component<NotationShowProps, NotationShowState>
 
     return (
       <div className="NotationShow">
-        {
-          shouldRenderMobile ?
-            <MobileNotationShow notation={notation} /> :
-            <DesktopNotationShow notation={notation} />
-        }
+        <Video youtubeVideoId={notation.youtubeVideoId} />
+        <Fretboard />
+        <Tab />
       </div>
     );
   }
