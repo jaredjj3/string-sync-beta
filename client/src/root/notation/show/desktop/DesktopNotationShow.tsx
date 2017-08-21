@@ -1,17 +1,11 @@
 import React from 'react';
 
-import { Notation } from 'types/notation';
+import Video from 'comp/video';
 
-interface DesktopNotationShowProps {
-  notation: Notation;
-}
-
-interface DesktopNotationShowState {}
-
-class DesktopNotationShow extends React.Component<DesktopNotationShowProps, DesktopNotationShowState> {
-  public render(): JSX.Element {
-    return (<span>DesktopNotationShow</span>);
-  }
-}
+const DesktopNotationShow = ({ notation }): JSX.Element => (
+  <div className="NotationShow--mobile">
+    <Video youtubeVideoId={notation.youtubeVideoId} />
+  </div>
+);
 
 export default DesktopNotationShow;
