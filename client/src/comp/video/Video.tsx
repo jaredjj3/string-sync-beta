@@ -37,9 +37,7 @@ class Video extends React.Component<VideoProps, VideoState> {
     const { youtubeVideoId } = this.props;
 
     return (
-      <div
-        className="Video"
-      >
+      <div className="Video">
         <Youtube
           className="Video__youtubePlayer"
           opts={Video.youtubeOptions}
