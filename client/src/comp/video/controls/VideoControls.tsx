@@ -42,19 +42,24 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     currentTime: '0.0',
     seekSliderValues: VideoControls.DEFAULT_SEEK_SLIDER_VALUES
   };
+
   RAFHandle: number = null;
-  interpolator: Interpolator = null;
+  toSeekSliderValue: Interpolator = null;
+  toTime: Interpolator = null;
   updateSeekSlider: UpdateSeekSliderFunc;
+  maybeSeekVideo: Function;
+  isScrubbing: boolean = false;
   shouldPlayOnScrubEnd: boolean = false;
 
   constructor(props: VideoControlsProps) {
     super(props);
 
     this.updateSeekSlider = throttle(this._updateSeekSlider, 10);
+    this.maybeSeekVideo = throttle(this._maybeSeekVideo, 250);
   }
 
   componentWillReceiveProps(nextProps: VideoControlsProps): void {
-    this.maybeSetInterpolator(nextProps.videoPlayer);
+    this._maybeSetInterpolator(nextProps.videoPlayer);
     const shouldRAF = nextProps.videoPlayer && videoStateCategory(nextProps.videoState) === 'ACTIVE';
     this.setState(Object.assign({}, this.state, { shouldRAF }));
   }
@@ -77,18 +82,8 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     );
   }
 
-  maybeSetInterpolator(videoPlayer: any): void {
-    const duration = videoPlayer && videoPlayer.getDuration();
-    const shouldSetInterpolator = !this.interpolator && duration > 0;
-    if (shouldSetInterpolator) {
-      const point1 = { x: 0, y: 0 };
-      const point2 = { x: duration, y: 100 };
-      this.interpolator = interpolator(point1, point2);
-    }
-  }
-
   updateStateWithPlayer = (videoPlayer: any): void => {
-    if (!videoPlayer || !this.interpolator) {
+    if (!videoPlayer || !this.toSeekSliderValue) {
       return;
     }
 
@@ -102,7 +97,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     // sort numbers correctly
     // https://stackoverflow.com/questions/7000851/array-sort-doesnt-sort-numbers-correctly
     const seekSliderValues = Object.assign([], this.state.seekSliderValues).sort((a, b) => a - b);
-    seekSliderValues[1] = this.interpolator(rawTime);
+    seekSliderValues[1] = this.toSeekSliderValue(rawTime);
 
     return {
       currentTime,
@@ -119,6 +114,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     }
 
     this.shouldPlayOnScrubEnd = false;
+    this.isScrubbing = false;
   }
 
   render(): JSX.Element {
@@ -181,8 +177,51 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
   }
 
   private _updateSeekSlider = (nextValues: SeekSliderValues): void => {
+    this._maybeStartScrubbing();
     const seekSliderValues = nextValues.sort((a, b) => a - b);
+    this.maybeSeekVideo(this.state.seekSliderValues, seekSliderValues); // throttled version
     this.setState(Object.assign({}, this.state, { seekSliderValues }));
+  }
+
+  private _maybeStartScrubbing = (): void => {
+    const { videoPlayer, videoState } = this.props;
+
+    if (this.isScrubbing) {
+      return;
+    }
+
+    this.shouldPlayOnScrubEnd = videoStateCategory(videoState) === 'ACTIVE';
+    this.isScrubbing = true;
+
+    videoPlayer.pauseVideo();
+  }
+
+  private _maybeSeekVideo = (oldValues: SeekSliderValues, newValues: SeekSliderValues): void => {
+    if (!this.isScrubbing) {
+      return;
+    }
+
+    const { videoPlayer } = this.props;
+
+    if (oldValues[1] !== newValues[1]) {
+      videoPlayer.seekTo(this.toTime(newValues[1]));
+    }
+  }
+
+  private _maybeSetInterpolator(videoPlayer: any): void {
+    const duration = videoPlayer && videoPlayer.getDuration();
+    const shouldSetInterpolators = (!this.toSeekSliderValue || !this.toTime) && duration > 0;
+    if (shouldSetInterpolators) {
+      let point1, point2;
+
+      point1 = { x: 0, y: 0 };
+      point2 = { x: duration, y: 100 };
+      this.toSeekSliderValue = interpolator(point1, point2);
+
+      point1 = { x: 0, y: 0 };
+      point2 = { x: 100, y: duration };
+      this.toTime = interpolator(point1, point2);
+    }
   }
 }
 
