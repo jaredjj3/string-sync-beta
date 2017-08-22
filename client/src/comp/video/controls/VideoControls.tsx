@@ -6,32 +6,65 @@ import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Slider from 'antd/lib/slider';
 
+import formatTime from 'util/formatTime';
+import videoStateCategory from 'util/videoStateCategory';
+
 interface VideoControlsProps {
   videoPlayer: any;
   videoState: string;
   togglePanel(key: string): any;
 }
 
-interface VideoControlsState {}
+interface VideoControlsState {
+  shouldRAF: boolean;
+  currentTime: string;
+}
 
 class VideoControls extends React.Component<VideoControlsProps, VideoControlsState> {
-  componentDidUpdate(): void {
+  state: VideoControlsState = {
+    shouldRAF: false,
+    currentTime: '0.0'
+  };
 
+  componentWillReceiveProps(nextProps: VideoControlsProps): void {
+    let shouldRAF;
+    if (videoStateCategory(nextProps.videoState) === 'ACTIVE') {
+      shouldRAF = true;
+    } else {
+      shouldRAF = false;
+    }
+
+    this.setState(Object.assign({}, this.state, { shouldRAF }));
   }
 
-  shouldComponentUpdate(nextProps: VideoControlsProps): boolean {
-    const category = (videoState: string) => (
-      (videoState === 'PLAYING' || videoState === 'BUFFERING') ? 'ACTIVE' : 'PASSIVE'
-    );
+  componentDidUpdate(): void {
+    if (this.state.shouldRAF) {
+      window.requestAnimationFrame(() => this.refreshStateWithPlayer(this.props.videoPlayer));
+    }
+  }
 
+  refreshStateWithPlayer = (videoPlayer: any): void => {
+    if (!videoPlayer) {
+      return;
+    }
+
+    const currentTime = formatTime(videoPlayer.getCurrentTime());
+    const playerAttrs = { currentTime };
+
+    this.setState(Object.assign({}, this.state, playerAttrs));
+  }
+
+  shouldComponentUpdate(nextProps: VideoControlsProps, nextState: VideoControlsState): boolean {
     return (
+      nextState.shouldRAF ||
       this.props.videoPlayer !== nextProps.videoPlayer ||
-      category(this.props.videoState) !== category(nextProps.videoState)
+      videoStateCategory(this.props.videoState) !== videoStateCategory(nextProps.videoState)
     );
   }
 
   render(): JSX.Element {
     const { videoPlayer, togglePanel } = this.props;
+    const { currentTime } = this.state;
 
     return (
       <div className="VideoControls">
@@ -44,8 +77,10 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
           <Col push={2} xs={2} sm={2} md={1} lg={1} xl={1}>
             <Icon type="caret-right" />
           </Col>
-          <Col push={2} xs={2} sm={2} md={1} lg={1} xl={1}>
-            0s
+          <Col push={2} xs={3} sm={3} md={2} lg={2} xl={2}>
+            <span style={{ fontSize: '12px' }}>
+              {`${currentTime}s`}
+            </span>
           </Col>
           <Col push={2} xs={4} sm={4} md={4} lg={2} xl={2}>
             <div>
@@ -76,7 +111,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
 }
 
 const mapStateToProps = state => ({
-  videoPlayer: state.video.videoPlayer,
+  videoPlayer: state.video.player,
   videoState: state.video.state
 });
 
