@@ -6,7 +6,6 @@ import VideoControls from './controls';
 
 import { Device } from 'types/device';
 
-
 interface VideoProps {
   youtubeVideoId: string;
   setVideoPlayer(videoPlayer: any): void;
@@ -21,7 +20,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       modestbranding: 1,
       playsinline: 1,
       rel: 0,
-      controls: 1,
+      controls: 0,
       showinfo: 0,
       disablekb: 1,
       fs: 0,
