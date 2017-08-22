@@ -4,11 +4,14 @@ import { connect } from 'react-redux';
 import Youtube from 'react-youtube';
 import VideoControls from './controls';
 
+import PLAYER_STATES from 'util/const/PLAYER_STATES';
+
 import { Device } from 'types/device';
 
 interface VideoProps {
   youtubeVideoId: string;
-  setVideoPlayer(videoPlayer: any): void;
+  updateVideoPlayer(videoPlayer: any): void;
+  updateVideoState(videoState: string): void;
   togglePanel(key: string): Function;
 }
 
@@ -30,9 +33,13 @@ class Video extends React.Component<VideoProps, VideoState> {
     }
   };
 
-  setVideoPlayer = (e: React.SyntheticEvent<any>): void => {
+  updateVideoPlayer = (e: React.SyntheticEvent<any>): void => {
     const videoPlayer = (e.target as any);
-    this.props.setVideoPlayer(videoPlayer);
+    this.props.updateVideoPlayer(videoPlayer);
+  }
+
+  updateVideoState = (e: any): void => {
+    this.props.updateVideoState(PLAYER_STATES[e.data]);
   }
 
   render(): JSX.Element {
@@ -44,7 +51,8 @@ class Video extends React.Component<VideoProps, VideoState> {
           className="Video__youtubePlayer"
           opts={Video.youtubeOptions}
           videoId={youtubeVideoId}
-          onReady={this.setVideoPlayer}
+          onReady={this.updateVideoPlayer}
+          onStateChange={this.updateVideoState}
         />
         <VideoControls togglePanel={togglePanel} />
       </div>
@@ -52,14 +60,15 @@ class Video extends React.Component<VideoProps, VideoState> {
   }
 }
 
-import { setVideoPlayer } from 'data/video/actions';
+import { updateVideoPlayer, updateVideoState } from 'data/video/actions';
 
 const mapStateToProps = state => ({
 
 });
 
 const mapDispatchToProps = dispatch => ({
-  setVideoPlayer: videoPlayer => dispatch(setVideoPlayer(videoPlayer))
+  updateVideoPlayer: videoPlayer => dispatch(updateVideoPlayer(videoPlayer)),
+  updateVideoState: videoState => dispatch(updateVideoState(videoState))
 });
 
 export default connect(

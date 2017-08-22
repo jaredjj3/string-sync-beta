@@ -7,19 +7,31 @@ import Col from 'antd/lib/col';
 import Slider from 'antd/lib/slider';
 
 interface VideoControlsProps {
-  player: any;
+  videoPlayer: any;
+  videoState: string;
   togglePanel(key: string): any;
 }
 
 interface VideoControlsState {}
 
 class VideoControls extends React.Component<VideoControlsProps, VideoControlsState> {
+  componentDidUpdate(): void {
+
+  }
+
   shouldComponentUpdate(nextProps: VideoControlsProps): boolean {
-    return Boolean(nextProps.player);
+    const category = (videoState: string) => (
+      (videoState === 'PLAYING' || videoState === 'BUFFERING') ? 'ACTIVE' : 'PASSIVE'
+    );
+
+    return (
+      this.props.videoPlayer !== nextProps.videoPlayer ||
+      category(this.props.videoState) !== category(nextProps.videoState)
+    );
   }
 
   render(): JSX.Element {
-    const { player, togglePanel } = this.props;
+    const { videoPlayer, togglePanel } = this.props;
 
     return (
       <div className="VideoControls">
@@ -64,7 +76,8 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
 }
 
 const mapStateToProps = state => ({
-  player: state.video.player
+  videoPlayer: state.video.videoPlayer,
+  videoState: state.video.state
 });
 
 const mapDispatchToProps = dispatch => ({
