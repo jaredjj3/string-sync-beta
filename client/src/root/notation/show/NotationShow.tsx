@@ -25,11 +25,27 @@ interface NotationShowState {
 
 class NotationShow extends React.Component<NotationShowProps, NotationShowState> {
   state: NotationShowState = {
-    activePanels: []
+    activePanels: ['fretboard']
   };
 
   componentDidMount(): void {
     this.props.fetchNotation(this.props.params.id);
+  }
+
+  togglePanel = (key: string): Function => {
+    return (e: React.SyntheticEvent<HTMLAllCollection>): void => {
+      const activePanels = Object.assign([], this.state.activePanels);
+      const index = this.state.activePanels.indexOf(key);
+      const isKeyActive = index >= 0;
+
+      if (isKeyActive) {
+        activePanels.splice(index, 1);
+      } else {
+        activePanels.push(key);
+      }
+
+      this.setState(Object.assign({}, this.state, { activePanels }));
+    };
   }
 
   render(): JSX.Element {
@@ -38,7 +54,10 @@ class NotationShow extends React.Component<NotationShowProps, NotationShowState>
 
     return (
       <div className="NotationShow">
-        <Video youtubeVideoId={notation.youtubeVideoId} />
+        <Video
+          youtubeVideoId={notation.youtubeVideoId}
+          togglePanel={this.togglePanel}
+        />
         <Collapse
           activeKey={activePanels}
           bordered={false}

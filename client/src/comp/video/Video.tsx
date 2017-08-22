@@ -9,6 +9,7 @@ import { Device } from 'types/device';
 interface VideoProps {
   youtubeVideoId: string;
   setVideoPlayer(videoPlayer: any): void;
+  togglePanel(key: string): Function;
 }
 
 interface VideoState {}
@@ -35,7 +36,7 @@ class Video extends React.Component<VideoProps, VideoState> {
   }
 
   render(): JSX.Element {
-    const { youtubeVideoId } = this.props;
+    const { youtubeVideoId, togglePanel } = this.props;
 
     return (
       <div className="Video">
@@ -45,7 +46,7 @@ class Video extends React.Component<VideoProps, VideoState> {
           videoId={youtubeVideoId}
           onReady={this.setVideoPlayer}
         />
-        <VideoControls />
+        <VideoControls togglePanel={togglePanel} />
       </div>
     );
   }

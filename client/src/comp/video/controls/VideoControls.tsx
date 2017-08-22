@@ -7,18 +7,19 @@ import Col from 'antd/lib/col';
 import Slider from 'antd/lib/slider';
 
 interface VideoControlsProps {
-  videoPlayer: any;
+  player: any;
+  togglePanel(key: string): any;
 }
 
 interface VideoControlsState {}
 
 class VideoControls extends React.Component<VideoControlsProps, VideoControlsState> {
   shouldComponentUpdate(nextProps: VideoControlsProps): boolean {
-    return Boolean(nextProps.videoPlayer);
+    return Boolean(nextProps.player);
   }
 
   render(): JSX.Element {
-    const { videoPlayer } = this.props;
+    const { player, togglePanel } = this.props;
 
     return (
       <div className="VideoControls">
@@ -52,7 +53,9 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
             <Icon type="retweet" />
           </Col>
           <Col push={3} xs={2} sm={2} md={1} lg={1} xl={1}>
-            <Icon type="shrink" />
+            <div onClick={togglePanel('fretboard')}>
+              <Icon type="shrink" />
+            </div>
           </Col>
         </Row>
       </div>
@@ -61,7 +64,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
 }
 
 const mapStateToProps = state => ({
-  videoPlayer: state.video.player
+  player: state.video.player
 });
 
 const mapDispatchToProps = dispatch => ({
