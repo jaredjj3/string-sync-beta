@@ -28,13 +28,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
   RAFHandle: number = null;
 
   componentWillReceiveProps(nextProps: VideoControlsProps): void {
-    let shouldRAF;
-    if (videoStateCategory(nextProps.videoState) === 'ACTIVE') {
-      shouldRAF = true;
-    } else {
-      shouldRAF = false;
-    }
-
+    const shouldRAF = videoStateCategory(nextProps.videoState) === 'ACTIVE';
     this.setState(Object.assign({}, this.state, { shouldRAF }));
   }
 
