@@ -1,8 +1,8 @@
 import { Point } from 'types/point';
 
-type InterpolatorFunc = (target: number, offset: number) => number;
+export type Interpolator = (target: number, offset?: number) => number;
 
-const interpolator = (point1: Point, point2: Point): InterpolatorFunc => {
+const interpolator = (point1: Point, point2: Point): Interpolator => {
   const [p1, p2] = point1.y > point2.y ? [point1, point2] : [point2, point1];
   const [x1, x2] = [p1.x, p2.x];
   const [y1, y2] = [p1.y, p2.y];

@@ -9,6 +9,9 @@ import Slider from 'antd/lib/slider';
 import formatTime from 'util/formatTime';
 import videoStateCategory from 'util/videoStateCategory';
 
+import interpolator from 'util/interpolator';
+import { Interpolator } from 'util/interpolator';
+
 interface VideoControlsProps {
   videoPlayer: any;
   videoState: string;
@@ -18,17 +21,28 @@ interface VideoControlsProps {
 interface VideoControlsState {
   shouldRAF: boolean;
   currentTime: string;
+  seekSliderValues: [number, number, number];
+}
+
+interface PlayerAttrs {
+  currentTime: string;
+
 }
 
 class VideoControls extends React.Component<VideoControlsProps, VideoControlsState> {
+  static DEFAULT_SEEK_SLIDER_VALUES: [number, number, number] = [-1, 0, 101];
+
   state: VideoControlsState = {
     shouldRAF: false,
-    currentTime: '0.0'
+    currentTime: '0.0',
+    seekSliderValues: VideoControls.DEFAULT_SEEK_SLIDER_VALUES
   };
   RAFHandle: number = null;
+  interpolator: Interpolator = null;
 
   componentWillReceiveProps(nextProps: VideoControlsProps): void {
-    const shouldRAF = videoStateCategory(nextProps.videoState) === 'ACTIVE';
+    this.maybeSetInterpolator(nextProps.videoPlayer);
+    const shouldRAF = nextProps.videoPlayer && videoStateCategory(nextProps.videoState) === 'ACTIVE';
     this.setState(Object.assign({}, this.state, { shouldRAF }));
   }
 
@@ -41,17 +55,6 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     }
   }
 
-  updateStateWithPlayer = (videoPlayer: any): void => {
-    if (!videoPlayer) {
-      return;
-    }
-
-    const currentTime = formatTime(videoPlayer.getCurrentTime());
-    const playerAttrs = { currentTime };
-
-    this.setState(Object.assign({}, this.state, playerAttrs));
-  }
-
   shouldComponentUpdate(nextProps: VideoControlsProps, nextState: VideoControlsState): boolean {
     return (
       nextState.shouldRAF ||
@@ -60,15 +63,52 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     );
   }
 
+  maybeSetInterpolator(videoPlayer: any): void {
+    const duration = videoPlayer && videoPlayer.getDuration();
+    const shouldSetInterpolator = !this.interpolator && duration > 0;
+    if (shouldSetInterpolator) {
+      const point1 = { x: 0, y: 0 };
+      const point2 = { x: duration, y: 100 };
+      this.interpolator = interpolator(point1, point2);
+    }
+  }
+
+  updateStateWithPlayer = (videoPlayer: any): void => {
+    if (!videoPlayer || !this.interpolator) {
+      return;
+    }
+
+    this.setState(Object.assign({}, this.state, this.playerAttributes(videoPlayer)));
+  }
+
+  playerAttributes(videoPlayer: any): any {
+    const rawTime = videoPlayer.getCurrentTime();
+    const currentTime = formatTime(rawTime);
+    const seekSliderValues = Object.assign([], this.state.seekSliderValues).sort((a, b) => a - b);
+    seekSliderValues[1] = this.interpolator(rawTime);
+
+    return {
+      currentTime,
+      seekSliderValues
+    };
+  }
+
   render(): JSX.Element {
     const { videoPlayer, togglePanel } = this.props;
-    const { currentTime } = this.state;
+    const { currentTime, seekSliderValues } = this.state;
 
     return (
       <div className="VideoControls">
         <Row type="flex" align="middle" justify="center">
           <Col span={20}>
-            <Slider range defaultValue={[0, 1, 100]} />
+            <Slider
+              range
+              min={-1}
+              max={101}
+              step={0.01}
+              defaultValue={VideoControls.DEFAULT_SEEK_SLIDER_VALUES}
+              value={seekSliderValues}
+            />
           </Col>
         </Row>
         <Row className="VideoControls__grannular" type="flex" align="middle" gutter={10}>
