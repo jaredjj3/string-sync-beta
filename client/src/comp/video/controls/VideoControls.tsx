@@ -8,9 +8,14 @@ import Slider from 'antd/lib/slider';
 
 import formatTime from 'util/formatTime';
 import videoStateCategory from 'util/videoStateCategory';
+import { throttle, isEqual, debounce } from 'lodash';
 
 import interpolator from 'util/interpolator';
 import { Interpolator } from 'util/interpolator';
+
+type SeekSliderValues = [number, number, number];
+
+type UpdateSeekSliderFunc = (value: SeekSliderValues) => void;
 
 interface VideoControlsProps {
   videoPlayer: any;
@@ -21,16 +26,16 @@ interface VideoControlsProps {
 interface VideoControlsState {
   shouldRAF: boolean;
   currentTime: string;
-  seekSliderValues: [number, number, number];
+  seekSliderValues: SeekSliderValues;
 }
 
 interface PlayerAttrs {
   currentTime: string;
-
+  seekSliderValues: SeekSliderValues;
 }
 
 class VideoControls extends React.Component<VideoControlsProps, VideoControlsState> {
-  static DEFAULT_SEEK_SLIDER_VALUES: [number, number, number] = [-1, 0, 101];
+  static DEFAULT_SEEK_SLIDER_VALUES: SeekSliderValues = [-1, 0, 101];
 
   state: VideoControlsState = {
     shouldRAF: false,
@@ -39,6 +44,14 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
   };
   RAFHandle: number = null;
   interpolator: Interpolator = null;
+  updateSeekSlider: UpdateSeekSliderFunc;
+  shouldPlayOnScrubEnd: boolean = false;
+
+  constructor(props: VideoControlsProps) {
+    super(props);
+
+    this.updateSeekSlider = throttle(this._updateSeekSlider, 10);
+  }
 
   componentWillReceiveProps(nextProps: VideoControlsProps): void {
     this.maybeSetInterpolator(nextProps.videoPlayer);
@@ -58,6 +71,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
   shouldComponentUpdate(nextProps: VideoControlsProps, nextState: VideoControlsState): boolean {
     return (
       nextState.shouldRAF ||
+      !isEqual(this.state.seekSliderValues, nextState.seekSliderValues) ||
       this.props.videoPlayer !== nextProps.videoPlayer ||
       videoStateCategory(this.props.videoState) !== videoStateCategory(nextProps.videoState)
     );
@@ -84,6 +98,9 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
   playerAttributes(videoPlayer: any): any {
     const rawTime = videoPlayer.getCurrentTime();
     const currentTime = formatTime(rawTime);
+
+    // sort numbers correctly
+    // https://stackoverflow.com/questions/7000851/array-sort-doesnt-sort-numbers-correctly
     const seekSliderValues = Object.assign([], this.state.seekSliderValues).sort((a, b) => a - b);
     seekSliderValues[1] = this.interpolator(rawTime);
 
@@ -91,6 +108,17 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
       currentTime,
       seekSliderValues
     };
+  }
+
+  restorePlayState = (): void => {
+    const { videoPlayer } = this.props;
+    if (this.shouldPlayOnScrubEnd) {
+      videoPlayer.playVideo();
+    } else {
+      videoPlayer.pauseVideo();
+    }
+
+    this.shouldPlayOnScrubEnd = false;
   }
 
   render(): JSX.Element {
@@ -106,8 +134,11 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
               min={-1}
               max={101}
               step={0.01}
+              onChange={this.updateSeekSlider}
               defaultValue={VideoControls.DEFAULT_SEEK_SLIDER_VALUES}
               value={seekSliderValues}
+              tipFormatter={null}
+              onAfterChange={this.restorePlayState}
             />
           </Col>
         </Row>
@@ -147,6 +178,11 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
         </Row>
       </div>
     );
+  }
+
+  private _updateSeekSlider = (nextValues: SeekSliderValues): void => {
+    const seekSliderValues = nextValues.sort((a, b) => a - b);
+    this.setState(Object.assign({}, this.state, { seekSliderValues }));
   }
 }
 
