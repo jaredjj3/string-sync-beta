@@ -117,9 +117,18 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     this.isScrubbing = false;
   }
 
+  pauseVideo = (): void => {
+    this.props.videoPlayer.pauseVideo();
+  }
+
+  playVideo = (): void => {
+    this.props.videoPlayer.playVideo();
+  }
+
   render(): JSX.Element {
-    const { videoPlayer, togglePanel } = this.props;
+    const { videoPlayer, togglePanel, videoState } = this.props;
     const { currentTime, seekSliderValues } = this.state;
+    const isVideoActive = videoStateCategory(videoState) === 'ACTIVE';
 
     return (
       <div className="VideoControls">
@@ -140,7 +149,11 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
         </Row>
         <Row className="VideoControls__grannular" type="flex" align="middle" gutter={10}>
           <Col push={2} xs={2} sm={2} md={1} lg={1} xl={1}>
-            <Icon type="caret-right" />
+            {
+              isVideoActive ?
+                <Icon type="pause" onClick={this.pauseVideo} /> :
+                <Icon type="caret-right" onClick={this.playVideo} />
+            }
           </Col>
           <Col push={2} xs={3} sm={3} md={2} lg={2} xl={2}>
             <Row type="flex">
