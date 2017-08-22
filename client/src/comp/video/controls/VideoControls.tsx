@@ -8,7 +8,7 @@ import Slider from 'antd/lib/slider';
 
 import formatTime from 'util/formatTime';
 import videoStateCategory from 'util/videoStateCategory';
-import { throttle, isEqual, debounce } from 'lodash';
+import { throttle, isEqual } from 'lodash';
 
 import interpolator from 'util/interpolator';
 import { Interpolator } from 'util/interpolator';
