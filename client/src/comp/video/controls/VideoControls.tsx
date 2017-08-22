@@ -25,6 +25,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     shouldRAF: false,
     currentTime: '0.0'
   };
+  RAFHandle: number = null;
 
   componentWillReceiveProps(nextProps: VideoControlsProps): void {
     let shouldRAF;
@@ -39,11 +40,14 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
 
   componentDidUpdate(): void {
     if (this.state.shouldRAF) {
-      window.requestAnimationFrame(() => this.refreshStateWithPlayer(this.props.videoPlayer));
+      this.RAFHandle = window.requestAnimationFrame(() => this.updateStateWithPlayer(this.props.videoPlayer));
+    } else {
+      window.cancelAnimationFrame(this.RAFHandle);
+      this.RAFHandle = null;
     }
   }
 
-  refreshStateWithPlayer = (videoPlayer: any): void => {
+  updateStateWithPlayer = (videoPlayer: any): void => {
     if (!videoPlayer) {
       return;
     }
@@ -78,9 +82,11 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
             <Icon type="caret-right" />
           </Col>
           <Col push={2} xs={3} sm={3} md={2} lg={2} xl={2}>
-            <span style={{ fontSize: '12px' }}>
-              {`${currentTime}s`}
-            </span>
+            <Row type="flex">
+              <span style={{ fontSize: '12px' }}>
+                {`${currentTime}s`}
+              </span>
+            </Row>
           </Col>
           <Col push={2} xs={4} sm={4} md={4} lg={2} xl={2}>
             <div>
