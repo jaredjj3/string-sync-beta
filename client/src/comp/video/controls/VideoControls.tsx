@@ -145,7 +145,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     this.props.videoPlayer.playVideo();
   }
 
-  toggleMute = (): void => {
+  toggleMute = (e: React.SyntheticEvent<any>): void => {
     const { volume, prevVolume } = this.state;
 
     // non throttled versions of this._updateVolSlider
@@ -202,7 +202,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
             </div>
           </Col>
           <Col push={2} xs={2} sm={2} md={1} lg={1} xl={1}>
-            <Icon type="sound" />
+            <Icon type="sound" onClick={this.toggleMute} />
           </Col>
           <Col push={2} xs={5} sm={5} md={4} lg={3} xl={3}>
             <Slider value={volume} defaultValue={100} onChange={this.updateVolSlider} />
