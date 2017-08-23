@@ -83,8 +83,12 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     );
   }
 
+  get areConvertorFuncsSet(): boolean {
+    return this.toSeekSliderValue !== null && this.toTime !== null;
+  }
+
   updateStateWithPlayer = (videoPlayer: any): void => {
-    if (!videoPlayer || !this.toSeekSliderValue) {
+    if (!videoPlayer || !this.areConvertorFuncsSet) {
       return;
     }
 
@@ -194,8 +198,8 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
   private _updateSeekSlider = (nextValues: SeekSliderValues): void => {
     this._maybeStartScrubbing();
     let seekSliderValues = nextValues.sort((a, b) => a - b);
-    this.maybeSeekVideo(this.state.seekSliderValues, seekSliderValues); // throttled version
     seekSliderValues = this._adjustSliders(this.state.seekSliderValues, seekSliderValues);
+    this.maybeSeekVideo(this.state.seekSliderValues, seekSliderValues); // throttled version
     this.setState(Object.assign({}, this.state, { seekSliderValues }));
   }
 
@@ -213,7 +217,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
   }
 
   private _maybeSeekVideo = (oldValues: SeekSliderValues, newValues: SeekSliderValues): void => {
-    if (!this.isScrubbing) {
+    if (!this.isScrubbing || !this.areConvertorFuncsSet) {
       return;
     }
 
@@ -226,7 +230,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
 
   private _maybeSetInterpolator(videoPlayer: any): void {
     const duration = videoPlayer && videoPlayer.getDuration();
-    const shouldSetInterpolators = (!this.toSeekSliderValue || !this.toTime) && duration > 0;
+    const shouldSetInterpolators = !this.areConvertorFuncsSet && duration > 0;
     if (shouldSetInterpolators) {
       let point1, point2;
 
@@ -275,17 +279,13 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
   private _pushSlidersRight(seekSliderValues: SeekSliderValues): SeekSliderValues {
     const nextValues = Object.assign([], seekSliderValues);
     const [v0, v1, v2] = nextValues;
-    const { MIN_HANDLE_DELTA } = VideoControls;
+    const delta = VideoControls.MIN_HANDLE_DELTA;
 
-    let delta;
-
-    delta = v1 - v0;
-    if (delta <= MIN_HANDLE_DELTA) {
+    if (v1 - v0 <= delta) {
       nextValues[1] += delta;
     }
 
-    delta = v2 - v1;
-    if (delta <= MIN_HANDLE_DELTA) {
+    if (v2 - v1 <= delta) {
       nextValues[2] += delta;
     }
 
@@ -295,17 +295,13 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
   private _pullSlidersLeft(seekSliderValues: SeekSliderValues): SeekSliderValues {
     const nextValues = Object.assign([], seekSliderValues);
     const [v0, v1, v2] = nextValues;
-    const { MIN_HANDLE_DELTA } = VideoControls;
+    const delta = VideoControls.MIN_HANDLE_DELTA;
 
-    let delta;
-
-    delta = v2 - v1;
-    if (delta <= MIN_HANDLE_DELTA) {
+    if (v2 - v1 <= delta) {
       nextValues[1] -= delta;
     }
 
-    delta = v1 - v0;
-    if (delta <= MIN_HANDLE_DELTA) {
+    if (v1 - v0 <= delta) {
       nextValues[0] -= delta;
     }
 
