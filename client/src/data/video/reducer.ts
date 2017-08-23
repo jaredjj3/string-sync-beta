@@ -1,11 +1,13 @@
-import { SET_VIDEO_PLAYER } from './actions';
+import { UPDATE_VIDEO_PLAYER, UPDATE_VIDEO_STATE } from './actions';
 
 interface Video {
   player: any;
+  state: string;
 }
 
 const defaultState: Video = Object.freeze({
-  player: null
+  player: null,
+  state: ''
 });
 
 export default (state = defaultState, action) => {
@@ -13,8 +15,12 @@ export default (state = defaultState, action) => {
   const nextState = Object.assign({}, state);
 
   switch (action.type) {
-    case SET_VIDEO_PLAYER:
+    case UPDATE_VIDEO_PLAYER:
       nextState.player = action.videoPlayer;
+      return nextState;
+
+    case UPDATE_VIDEO_STATE:
+      nextState.state = action.videoState;
       return nextState;
 
     default:

@@ -1,13 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { Device } from 'types/device';
-
 import Youtube from 'react-youtube';
+import VideoControls from './controls';
+
+import PLAYER_STATES from 'util/const/PLAYER_STATES';
+
+import { Device } from 'types/device';
 
 interface VideoProps {
   youtubeVideoId: string;
-  setVideoPlayer(videoPlayer: any): void;
+  updateVideoPlayer(videoPlayer: any): void;
+  updateVideoState(videoState: string): void;
+  togglePanel(key: string): Function;
 }
 
 interface VideoState {}
@@ -19,22 +24,26 @@ class Video extends React.Component<VideoProps, VideoState> {
       modestbranding: 1,
       playsinline: 1,
       rel: 0,
-      controls: 1,
+      controls: 0,
       showinfo: 0,
       disablekb: 1,
       fs: 0,
-      autoplay: 1,
+      autoplay: 0,
       start: 0,
     }
   };
 
-  setVideoPlayer = (e: React.SyntheticEvent<any>): void => {
+  updateVideoPlayer = (e: React.SyntheticEvent<any>): void => {
     const videoPlayer = (e.target as any);
-    this.props.setVideoPlayer(videoPlayer);
+    this.props.updateVideoPlayer(videoPlayer);
+  }
+
+  updateVideoState = (e: any): void => {
+    this.props.updateVideoState(PLAYER_STATES[e.data]);
   }
 
   render(): JSX.Element {
-    const { youtubeVideoId } = this.props;
+    const { youtubeVideoId, togglePanel } = this.props;
 
     return (
       <div className="Video">
@@ -42,21 +51,24 @@ class Video extends React.Component<VideoProps, VideoState> {
           className="Video__youtubePlayer"
           opts={Video.youtubeOptions}
           videoId={youtubeVideoId}
-          onReady={this.setVideoPlayer}
+          onReady={this.updateVideoPlayer}
+          onStateChange={this.updateVideoState}
         />
+        <VideoControls togglePanel={togglePanel} />
       </div>
     );
   }
 }
 
-import { setVideoPlayer } from 'data/video/actions';
+import { updateVideoPlayer, updateVideoState } from 'data/video/actions';
 
 const mapStateToProps = state => ({
 
 });
 
 const mapDispatchToProps = dispatch => ({
-  setVideoPlayer: videoPlayer => dispatch(setVideoPlayer(videoPlayer))
+  updateVideoPlayer: videoPlayer => dispatch(updateVideoPlayer(videoPlayer)),
+  updateVideoState: videoState => dispatch(updateVideoState(videoState))
 });
 
 export default connect(
