@@ -205,7 +205,12 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
             <Icon type="sound" onClick={this.toggleMute} />
           </Col>
           <Col push={2} xs={5} sm={5} md={4} lg={3} xl={3}>
-            <Slider value={volume} defaultValue={100} onChange={this.updateVolSlider} />
+            <Slider
+              value={volume}
+              defaultValue={100}
+              onChange={this.updateVolSlider}
+              tipFormatter={null}
+            />
           </Col>
           <Col push={3} xs={2} sm={2} md={1} lg={1} xl={1}>
             <Icon type="retweet" onClick={this.resetSliders} />
