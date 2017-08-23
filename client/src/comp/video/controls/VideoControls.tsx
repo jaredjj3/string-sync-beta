@@ -85,6 +85,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
   shouldComponentUpdate(nextProps: VideoControlsProps, nextState: VideoControlsState): boolean {
     return (
       nextState.shouldRAF ||
+      this.state.volume !== nextState.volume ||
       !isEqual(this.state.seekSliderValues, nextState.seekSliderValues) ||
       this.props.videoPlayer !== nextProps.videoPlayer ||
       videoStateCategory(this.props.videoState) !== videoStateCategory(nextProps.videoState)
@@ -209,7 +210,6 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
               value={volume}
               defaultValue={100}
               onChange={this.updateVolSlider}
-              tipFormatter={null}
             />
           </Col>
           <Col push={3} xs={2} sm={2} md={1} lg={1} xl={1}>
