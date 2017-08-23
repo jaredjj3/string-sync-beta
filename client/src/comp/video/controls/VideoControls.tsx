@@ -54,7 +54,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
   constructor(props: VideoControlsProps) {
     super(props);
 
-    this.updateSeekSlider = throttle(this._updateSeekSlider, 10);
+    this.updateSeekSlider = throttle(this._updateSeekSlider, 20);
     this.maybeSeekVideo = throttle(this._maybeSeekVideo, 250);
   }
 
@@ -96,8 +96,9 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
 
     // sort numbers correctly
     // https://stackoverflow.com/questions/7000851/array-sort-doesnt-sort-numbers-correctly
-    const seekSliderValues = Object.assign([], this.state.seekSliderValues).sort((a, b) => a - b);
+    let seekSliderValues = Object.assign([], this.state.seekSliderValues).sort((a, b) => a - b);
     seekSliderValues[1] = this.toSeekSliderValue(rawTime);
+    seekSliderValues = this._maybeLoop(seekSliderValues);
 
     return {
       currentTime,
@@ -191,6 +192,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
 
   private _updateSeekSlider = (nextValues: SeekSliderValues): void => {
     this._maybeStartScrubbing();
+
     const seekSliderValues = nextValues.sort((a, b) => a - b);
     this.maybeSeekVideo(this.state.seekSliderValues, seekSliderValues); // throttled version
     this.setState(Object.assign({}, this.state, { seekSliderValues }));
@@ -235,6 +237,24 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
       point2 = { x: 100, y: duration };
       this.toTime = interpolator(point1, point2);
     }
+  }
+
+  private _maybeLoop = (seekSliderValues: SeekSliderValues): SeekSliderValues => {
+    const nextValues = Object.assign([], seekSliderValues);
+
+    if (this.isScrubbing) {
+      return nextValues;
+    }
+
+    const { videoPlayer } = this.props;
+
+    const shouldLoop = nextValues[2] - nextValues[1] <= 1;
+    if (shouldLoop) {
+      nextValues[1] = nextValues[0] + 1;
+      videoPlayer.seekTo(this.toTime(nextValues[1]));
+    }
+
+    return nextValues;
   }
 }
 
