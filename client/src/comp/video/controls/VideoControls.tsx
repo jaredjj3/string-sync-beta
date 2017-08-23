@@ -36,6 +36,7 @@ interface PlayerAttrs {
 
 class VideoControls extends React.Component<VideoControlsProps, VideoControlsState> {
   static DEFAULT_SEEK_SLIDER_VALUES: SeekSliderValues = [-1, 0, 101];
+  static MIN_HANDLE_DELTA: number = 5;
 
   state: VideoControlsState = {
     shouldRAF: false,
@@ -192,9 +193,9 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
 
   private _updateSeekSlider = (nextValues: SeekSliderValues): void => {
     this._maybeStartScrubbing();
-
-    const seekSliderValues = nextValues.sort((a, b) => a - b);
+    let seekSliderValues = nextValues.sort((a, b) => a - b);
     this.maybeSeekVideo(this.state.seekSliderValues, seekSliderValues); // throttled version
+    seekSliderValues = this._adjustSliders(this.state.seekSliderValues, seekSliderValues);
     this.setState(Object.assign({}, this.state, { seekSliderValues }));
   }
 
@@ -252,6 +253,60 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     if (shouldLoop) {
       nextValues[1] = nextValues[0] + 1;
       videoPlayer.seekTo(this.toTime(nextValues[1]));
+    }
+
+    return nextValues;
+  }
+
+  private _adjustSliders = (oldValues: SeekSliderValues, newValues: SeekSliderValues): SeekSliderValues => {
+    const valuesDiff = newValues.map((newValue, i) => newValue - oldValues[i]);
+    const isPushingRight = valuesDiff.some(value => value > 0);
+    const isPullingLeft = valuesDiff.some(value => value < 0);
+
+    if (isPushingRight) {
+      return this._pushSlidersRight(newValues);
+    } else if (isPullingLeft) {
+      return this._pullSlidersLeft(newValues);
+    } else {
+      return Object.assign([], newValues);
+    }
+  }
+
+  private _pushSlidersRight(seekSliderValues: SeekSliderValues): SeekSliderValues {
+    const nextValues = Object.assign([], seekSliderValues);
+    const [v0, v1, v2] = nextValues;
+    const { MIN_HANDLE_DELTA } = VideoControls;
+
+    let delta;
+
+    delta = v1 - v0;
+    if (delta <= MIN_HANDLE_DELTA) {
+      nextValues[1] += delta;
+    }
+
+    delta = v2 - v1;
+    if (delta <= MIN_HANDLE_DELTA) {
+      nextValues[2] += delta;
+    }
+
+    return nextValues;
+  }
+
+  private _pullSlidersLeft(seekSliderValues: SeekSliderValues): SeekSliderValues {
+    const nextValues = Object.assign([], seekSliderValues);
+    const [v0, v1, v2] = nextValues;
+    const { MIN_HANDLE_DELTA } = VideoControls;
+
+    let delta;
+
+    delta = v2 - v1;
+    if (delta <= MIN_HANDLE_DELTA) {
+      nextValues[1] -= delta;
+    }
+
+    delta = v1 - v0;
+    if (delta <= MIN_HANDLE_DELTA) {
+      nextValues[0] -= delta;
     }
 
     return nextValues;
