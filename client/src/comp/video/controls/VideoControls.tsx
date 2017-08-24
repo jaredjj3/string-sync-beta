@@ -29,6 +29,7 @@ interface VideoControlsState {
   seekSliderValues: SeekSliderValues;
   volume: number;
   prevVolume: number;
+  playbackRateIndex: number;
 }
 
 interface PlayerAttrs {
@@ -38,7 +39,8 @@ interface PlayerAttrs {
 
 class VideoControls extends React.Component<VideoControlsProps, VideoControlsState> {
   static DEFAULT_SEEK_SLIDER_VALUES: SeekSliderValues = [-1, 0, 101];
-  static MIN_HANDLE_DELTA: number = 5;
+  static MIN_HANDLE_DELTA: number = 3;
+  static PLAYBACK_RATES: Array<number> = [1, 0.5, 0.75];
 
   state: VideoControlsState = {
     shouldRAF: false,
@@ -46,6 +48,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     seekSliderValues: VideoControls.DEFAULT_SEEK_SLIDER_VALUES,
     volume: 100,
     prevVolume: 100,
+    playbackRateIndex: 0
   };
 
   RAFHandle: number = null;
@@ -61,8 +64,8 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
   constructor(props: VideoControlsProps) {
     super(props);
 
-    this.updateSeekSlider = throttle(this._updateSeekSlider, 20);
-    this.updateVolSlider = throttle(this._updateVolSlider, 20);
+    this.updateSeekSlider = throttle(this._updateSeekSlider, 10);
+    this.updateVolSlider = throttle(this._updateVolSlider, 10);
     this.maybeSeekVideo = throttle(this._maybeSeekVideo, 250);
   }
 
@@ -86,6 +89,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     return (
       nextState.shouldRAF ||
       this.state.volume !== nextState.volume ||
+      this.state.playbackRateIndex !== nextState.playbackRateIndex ||
       !isEqual(this.state.seekSliderValues, nextState.seekSliderValues) ||
       this.props.videoPlayer !== nextProps.videoPlayer ||
       videoStateCategory(this.props.videoState) !== videoStateCategory(nextProps.videoState)
@@ -157,9 +161,18 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     }
   }
 
+  updatePlaybackRate = (e: React.SyntheticEvent<any>): void => {
+    const playbackRateIndex = (this.state.playbackRateIndex + 1) % VideoControls.PLAYBACK_RATES.length;
+
+    const seekSliderValues = Object.assign([], this.state.seekSliderValues);
+    this.setState(Object.assign({}, this.state, { seekSliderValues, playbackRateIndex }));
+    this.props.videoPlayer.setPlaybackRate(VideoControls.PLAYBACK_RATES[playbackRateIndex]);
+  }
+
   render(): JSX.Element {
     const { videoPlayer, togglePanel, videoState } = this.props;
-    const { currentTime, seekSliderValues, volume } = this.state;
+    const { currentTime, seekSliderValues, volume, playbackRateIndex } = this.state;
+    const { PLAYBACK_RATES } = VideoControls;
     const isVideoActive = videoStateCategory(videoState) === 'ACTIVE';
 
     return (
@@ -194,14 +207,23 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
               </span>
             </Row>
           </Col>
-          <Col push={2} xs={4} sm={4} md={4} lg={2} xl={2}>
-            <div>
-              <Row type="flex" align="middle">
-                <Icon type="clock-circle" style={{ marginRight: '4px' }}/>
-                <span style={{ fontSize: '10px' }}>100%</span>
-              </Row>
-            </div>
-          </Col>
+          {
+            videoPlayer && videoPlayer.getAvailablePlaybackRates().length === 1 ?
+              null :
+              <Col push={2} xs={4} sm={4} md={4} lg={2} xl={2}>
+                <div
+                  className="VideoControls__playbackRate"
+                  onClick={this.updatePlaybackRate}
+                >
+                  <Row type="flex" align="middle">
+                    <Icon type="clock-circle" style={{ marginRight: '4px' }}/>
+                    <span style={{ fontSize: '10px' }}>
+                      {`${PLAYBACK_RATES[playbackRateIndex] * 100}%`}
+                    </span>
+                  </Row>
+                </div>
+              </Col>
+          }
           <Col push={2} xs={2} sm={2} md={1} lg={1} xl={1}>
             <Icon type="sound" onClick={this.toggleMute} />
           </Col>
@@ -210,6 +232,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
               value={volume}
               defaultValue={100}
               onChange={this.updateVolSlider}
+              onAfterChange={this.restorePlayState}
             />
           </Col>
           <Col push={3} xs={2} sm={2} md={1} lg={1} xl={1}>
@@ -234,6 +257,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
   }
 
   private _updateVolSlider = (volume: number): void => {
+    this._maybeStartScrubbing();
     const currVolume = this.state.volume;
     const prevVolume =  currVolume > 0 ? currVolume : this.state.prevVolume;
     const seekSliderValues = Object.assign([], this.state.seekSliderValues);
