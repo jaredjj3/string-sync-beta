@@ -116,8 +116,9 @@ class App extends React.Component<AppProps, AppState> {
     const isTouchDevice = device.isTouch || device.type === 'MOBILE';
 
     return (
-      !isTouchDevice ||
-      (window.innerWidth !== width && window.innerHeight !== height)
+      !isTouchDevice                 ||
+      window.innerWidth !== width    ||
+      window.innerHeight !== height
     );
   }
 }
