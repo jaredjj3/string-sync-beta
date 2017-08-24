@@ -248,7 +248,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
           <Col push={3} xs={2} sm={2} md={1} lg={1} xl={1}>
             <Icon type="retweet" onClick={this.resetSliders} />
           </Col>
-          <Col push={3} xs={2} sm={2} md={1} lg={1} xl={1}>
+          <Col push={4} xs={2} sm={2} md={1} lg={1} xl={1}>
             <div onClick={togglePanel('fretboard')}>
               <Icon type="shrink" />
             </div>
