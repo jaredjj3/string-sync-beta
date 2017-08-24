@@ -7,3 +7,4 @@ json.tags           @notation.tags.map(&:name)
 json.buildStructs   @notation.build_structs
 json.scrollStructs  @notation.scroll_structs
 json.youtubeVideoId @notation.youtube_video_id
+json.duration       @notation.duration
