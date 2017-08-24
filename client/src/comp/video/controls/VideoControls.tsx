@@ -5,16 +5,18 @@ import Icon from 'antd/lib/icon';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Slider from 'antd/lib/slider';
+import Scrubber from './scrubber';
 
 import formatTime from 'util/formatTime';
 import videoStateCategory from 'util/videoStateCategory';
+import { isVideoActive } from 'util/videoStateCategory';
 import { throttle, isEqual } from 'lodash';
 
 import interpolator from 'util/interpolator';
 import { Interpolator } from 'util/interpolator';
 import { Device } from 'types/device';
 
-type SeekSliderValues = [number, number, number];
+export type SeekSliderValues = [number, number, number];
 
 type UpdateSliderFunc = (value: number | SeekSliderValues) => void;
 
@@ -74,7 +76,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
   componentWillReceiveProps(nextProps: VideoControlsProps): void {
     this._maybeSetInterpolator(nextProps.videoPlayer);
     this._maybeInitVolume(nextProps.videoPlayer);
-    const shouldRAF = nextProps.videoPlayer && videoStateCategory(nextProps.videoState) === 'ACTIVE';
+    const shouldRAF = nextProps.videoPlayer && isVideoActive(nextProps.videoState);
     this.setState(Object.assign({}, this.state, { shouldRAF }));
   }
 
@@ -177,30 +179,22 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     const { currentTime, seekSliderValues, volume, playbackRateIndex } = this.state;
     const { PLAYBACK_RATES } = VideoControls;
 
-    const isVideoActive = videoStateCategory(videoState) === 'ACTIVE';
+    const isActive = isVideoActive(videoState);
     const isMobile = device.type === 'MOBILE' || device.isTouch;
 
     return (
       <div className="VideoControls">
         <Row type="flex" align="middle" justify="center">
-          <Col span={20}>
-            <Slider
-              range
-              min={-1}
-              max={101}
-              step={0.01}
-              onChange={this.updateSeekSlider}
-              defaultValue={VideoControls.DEFAULT_SEEK_SLIDER_VALUES}
-              value={seekSliderValues}
-              tipFormatter={null}
-              onAfterChange={this.restorePlayState}
-            />
-          </Col>
+          <Scrubber
+            values={seekSliderValues}
+            onChange={this.updateSeekSlider}
+            onAfterChange={this.restorePlayState}
+          />
         </Row>
         <Row className="VideoControls__grannular" type="flex" align="middle" gutter={10}>
           <Col push={2} xs={2} sm={2} md={1} lg={1} xl={1}>
             {
-              isVideoActive ?
+              isActive ?
                 <Icon type="pause" onClick={this.pauseVideo} /> :
                 <Icon type="caret-right" onClick={this.playVideo} />
             }

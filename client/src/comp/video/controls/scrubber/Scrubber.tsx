@@ -1,12 +1,44 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-interface ScrubberProps {}
+import Col from 'antd/lib/col';
+import Slider from 'antd/lib/slider';
 
-interface ScrubberState {}
+import { SeekSliderValues } from '../VideoControls';
 
-class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
+type UpdateSliderFunc = (value: number | SeekSliderValues) => void;
+
+interface ScrubberProps {
+  values: SeekSliderValues;
+  onChange: UpdateSliderFunc;
+  onAfterChange: any;
+}
+
+interface ScrubberState {
+
+}
+
+class Scrubber extends React.PureComponent<ScrubberProps, ScrubberState> {
+  static DEFAULT_VALUES: SeekSliderValues = [-1, 0, 101];
+
   render(): JSX.Element {
-    return (<span>Scrubber</span>);
+    const { values, onChange, onAfterChange } = this.props;
+
+    return (
+      <Col span={20}>
+        <Slider
+          range
+          min={-1}
+          max={101}
+          step={0.01}
+          onChange={onChange}
+          defaultValue={Scrubber.DEFAULT_VALUES}
+          value={values}
+          tipFormatter={null}
+          onAfterChange={onAfterChange}
+        />
+      </Col>
+    );
   }
 }
 
