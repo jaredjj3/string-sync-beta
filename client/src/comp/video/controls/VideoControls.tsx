@@ -12,6 +12,7 @@ import { throttle, isEqual } from 'lodash';
 
 import interpolator from 'util/interpolator';
 import { Interpolator } from 'util/interpolator';
+import { Device } from 'types/device';
 
 type SeekSliderValues = [number, number, number];
 
@@ -20,6 +21,7 @@ type UpdateSliderFunc = (value: number | SeekSliderValues) => void;
 interface VideoControlsProps {
   videoPlayer: any;
   videoState: string;
+  device: Device;
   togglePanel(key: string): any;
 }
 
@@ -91,6 +93,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
       this.state.volume !== nextState.volume ||
       this.state.playbackRateIndex !== nextState.playbackRateIndex ||
       !isEqual(this.state.seekSliderValues, nextState.seekSliderValues) ||
+      !isEqual(this.props.device, nextProps.device) ||
       this.props.videoPlayer !== nextProps.videoPlayer ||
       videoStateCategory(this.props.videoState) !== videoStateCategory(nextProps.videoState)
     );
@@ -170,10 +173,12 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
   }
 
   render(): JSX.Element {
-    const { videoPlayer, togglePanel, videoState } = this.props;
+    const { videoPlayer, togglePanel, videoState, device } = this.props;
     const { currentTime, seekSliderValues, volume, playbackRateIndex } = this.state;
     const { PLAYBACK_RATES } = VideoControls;
+
     const isVideoActive = videoStateCategory(videoState) === 'ACTIVE';
+    const isMobile = device.type === 'MOBILE' || device.isTouch;
 
     return (
       <div className="VideoControls">
@@ -208,8 +213,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
             </Row>
           </Col>
           {
-            videoPlayer && videoPlayer.getAvailablePlaybackRates().length === 1 ?
-              null :
+            isMobile ? null :
               <Col push={2} xs={4} sm={4} md={4} lg={2} xl={2}>
                 <div
                   className="VideoControls__playbackRate"
@@ -224,17 +228,23 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
                 </div>
               </Col>
           }
-          <Col push={2} xs={2} sm={2} md={1} lg={1} xl={1}>
-            <Icon type="sound" onClick={this.toggleMute} />
-          </Col>
-          <Col push={2} xs={5} sm={5} md={4} lg={3} xl={3}>
-            <Slider
-              value={volume}
-              defaultValue={100}
-              onChange={this.updateVolSlider}
-              onAfterChange={this.restorePlayState}
-            />
-          </Col>
+          {
+            isMobile ? null :
+              <Col push={2} xs={2} sm={2} md={1} lg={1} xl={1}>
+                <Icon type="sound" onClick={this.toggleMute} />
+              </Col>
+          }
+          {
+            isMobile ? null :
+              <Col push={2} xs={5} sm={5} md={4} lg={3} xl={3}>
+                <Slider
+                  value={volume}
+                  defaultValue={100}
+                  onChange={this.updateVolSlider}
+                  onAfterChange={this.restorePlayState}
+                />
+              </Col>
+          }
           <Col push={3} xs={2} sm={2} md={1} lg={1} xl={1}>
             <Icon type="retweet" onClick={this.resetSliders} />
           </Col>
@@ -246,6 +256,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
         </Row>
       </div>
     );
+
   }
 
   private _updateSeekSlider = (nextValues: SeekSliderValues): void => {
@@ -386,7 +397,8 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
 
 const mapStateToProps = state => ({
   videoPlayer: state.video.player,
-  videoState: state.video.state
+  videoState: state.video.state,
+  device: state.device
 });
 
 const mapDispatchToProps = dispatch => ({
