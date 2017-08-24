@@ -15,6 +15,7 @@
 #  thumbnail_content_type :string
 #  thumbnail_file_size    :integer
 #  thumbnail_updated_at   :datetime
+#  duration               :float
 #
 
 class Notation < ApplicationRecord
