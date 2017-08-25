@@ -6,6 +6,7 @@ import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Slider from 'antd/lib/slider';
 import Scrubber from './scrubber';
+import Play from './play';
 
 import formatTime from 'util/formatTime';
 import videoStateCategory from 'util/videoStateCategory';
@@ -193,14 +194,10 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
         </Row>
         <Row className="VideoControls__grannular" type="flex" align="middle" gutter={10}>
           <Col push={2} xs={2} sm={2} md={1} lg={1} xl={1}>
-            {
-              isActive ?
-                <Icon type="pause" onClick={this.pauseVideo} /> :
-                <Icon type="caret-right" onClick={this.playVideo} />
-            }
+            <Play isActive={isActive} videoPlayer={videoPlayer} />
           </Col>
           <Col push={2} xs={3} sm={3} md={2} lg={2} xl={2}>
-            <Row type="flex">
+            <Row type="flex" align="middle">
               <span style={{ fontSize: '12px' }}>
                 {`${currentTime}s`}
               </span>
