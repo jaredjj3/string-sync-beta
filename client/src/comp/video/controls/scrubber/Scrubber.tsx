@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Col from 'antd/lib/col';
 import Slider from 'antd/lib/slider';
 
 import { SeekSliderValues } from '../VideoControls';
@@ -25,7 +24,7 @@ class Scrubber extends React.PureComponent<ScrubberProps, ScrubberState> {
     const { values, onChange, onAfterChange } = this.props;
 
     return (
-      <Col span={20}>
+      <div>
         <Slider
           range
           min={-1}
@@ -37,7 +36,7 @@ class Scrubber extends React.PureComponent<ScrubberProps, ScrubberState> {
           tipFormatter={null}
           onAfterChange={onAfterChange}
         />
-      </Col>
+      </div>
     );
   }
 }

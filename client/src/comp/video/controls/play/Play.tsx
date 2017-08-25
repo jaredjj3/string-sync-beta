@@ -1,6 +1,8 @@
 import React from 'react';
 import Icon from 'antd/lib/icon';
 
+import Row from 'antd/lib/row';
+
 interface PlayProps {
   isActive: boolean;
   videoPlayer: any;
@@ -21,9 +23,13 @@ class Play extends React.Component<PlayProps, PlayState> {
     const { isActive } = this.props;
 
     return (
-      isActive ?
-        <Icon type="pause" onClick={this.pauseVideo} /> :
-        <Icon type="caret-right" onClick={this.playVideo} />
+      <Row type="flex" align="middle" justify="start">
+        {
+          isActive ?
+            <Icon type="pause" onClick={this.pauseVideo} /> :
+            <Icon type="caret-right" onClick={this.playVideo} />
+        }
+      </Row>
     );
   }
 }

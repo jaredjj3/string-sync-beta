@@ -7,6 +7,8 @@ import Col from 'antd/lib/col';
 import Slider from 'antd/lib/slider';
 import Scrubber from './scrubber';
 import Play from './play';
+import Playback from './playback';
+import Volume from './volume';
 
 import formatTime from 'util/formatTime';
 import videoStateCategory from 'util/videoStateCategory';
@@ -148,14 +150,6 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     this.setState(Object.assign({}, this.state, { seekSliderValues }));
   }
 
-  pauseVideo = (): void => {
-    this.props.videoPlayer.pauseVideo();
-  }
-
-  playVideo = (): void => {
-    this.props.videoPlayer.playVideo();
-  }
-
   toggleMute = (e: React.SyntheticEvent<any>): void => {
     const { volume, prevVolume } = this.state;
 
@@ -183,66 +177,52 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     const isActive = isVideoActive(videoState);
     const isMobile = device.type === 'MOBILE' || device.isTouch;
 
+    const playbackRate = PLAYBACK_RATES[playbackRateIndex];
+
     return (
       <div className="VideoControls">
         <Row type="flex" align="middle" justify="center">
-          <Scrubber
-            values={seekSliderValues}
-            onChange={this.updateSeekSlider}
-            onAfterChange={this.restorePlayState}
-          />
-        </Row>
-        <Row className="VideoControls__grannular" type="flex" align="middle" gutter={10}>
-          <Col push={2} xs={2} sm={2} md={1} lg={1} xl={1}>
-            <Play isActive={isActive} videoPlayer={videoPlayer} />
+          <Col span={20}>
+            <Scrubber
+              values={seekSliderValues}
+              onChange={this.updateSeekSlider}
+              onAfterChange={this.restorePlayState}
+            />
           </Col>
-          <Col push={2} xs={3} sm={3} md={2} lg={2} xl={2}>
+        </Row>
+        <Row className="VideoControls__grannular" type="flex" align="middle" justify="center">
+          <Col xs={6} sm={6} lg={4} xl={4}>
             <Row type="flex" align="middle">
-              <span style={{ fontSize: '12px' }}>
+              <Play isActive={isActive} videoPlayer={videoPlayer} />
+              <span className="VideoControls__grannular__time">
                 {`${currentTime}s`}
+              </span>
+              <span style={{ marginLeft: '30px' }}>
+                {isMobile ? null : <Playback onClick={this.updatePlaybackRate} playbackRate={playbackRate} />}
               </span>
             </Row>
           </Col>
           {
-            isMobile ? null :
-              <Col push={2} xs={4} sm={4} md={4} lg={2} xl={2}>
-                <div
-                  className="VideoControls__playbackRate"
-                  onClick={this.updatePlaybackRate}
-                >
-                  <Row type="flex" align="middle">
-                    <Icon type="clock-circle" style={{ marginRight: '4px' }}/>
-                    <span style={{ fontSize: '10px' }}>
-                      {`${PLAYBACK_RATES[playbackRateIndex] * 100}%`}
-                    </span>
-                  </Row>
-                </div>
-              </Col>
-          }
-          {
-            isMobile ? null :
-              <Col push={2} xs={2} sm={2} md={1} lg={1} xl={1}>
-                <Icon type="sound" onClick={this.toggleMute} />
-              </Col>
-          }
-          {
-            isMobile ? null :
-              <Col push={2} xs={5} sm={5} md={4} lg={3} xl={3}>
-                <Slider
-                  value={volume}
-                  defaultValue={100}
+            isMobile ?
+              null :
+              <Col span={4}>
+                <Volume
+                  volume={volume}
+                  onIconClick={this.toggleMute}
                   onChange={this.updateVolSlider}
                   onAfterChange={this.restorePlayState}
                 />
               </Col>
           }
-          <Col push={3} xs={2} sm={2} md={1} lg={1} xl={1}>
-            <Icon type="retweet" onClick={this.resetSliders} />
-          </Col>
-          <Col push={4} xs={2} sm={2} md={1} lg={1} xl={1}>
-            <div onClick={togglePanel('fretboard')}>
-              <Icon type="shrink" />
-            </div>
+          <Col xs={6} sm={6} lg={4} xl={4}>
+            <Row type="flex" align="middle">
+              <Icon type="retweet" onClick={this.resetSliders} />
+              <Icon
+                type="shrink"
+                style={{ marginLeft: '20px' }}
+                onClick={togglePanel('fretboard')}
+              />
+            </Row>
           </Col>
         </Row>
       </div>

@@ -1,13 +1,20 @@
 import React from 'react';
 
-interface PlaybackProps {}
+import Row from 'antd/lib/row';
+import Icon from 'antd/lib/icon';
 
-interface PlaybackState {}
-
-class Playback extends React.Component<PlaybackProps, PlaybackState> {
-  render(): JSX.Element {
-    return (<span>Playback</span>);
-  }
-}
+const Playback = ({ onClick, playbackRate }) => (
+  <div
+    className="VideoControls__playbackRate"
+    onClick={onClick}
+  >
+    <Row type="flex" align="middle">
+      <Icon type="clock-circle" style={{ marginRight: '4px' }}/>
+      <span style={{ fontSize: '10px' }}>
+        {`${playbackRate * 100}%`}
+      </span>
+    </Row>
+  </div>
+);
 
 export default Playback;
