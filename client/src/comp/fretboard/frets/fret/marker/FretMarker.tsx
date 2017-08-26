@@ -12,8 +12,8 @@ interface FretMarkerState {
 
 class FretMarker extends React.PureComponent<FretMarkerProps, FretMarkerState> {
   state: FretMarkerState = {
-    lit: true,
-    pressed: true
+    lit: Math.random() > 0.5,
+    pressed: Math.random() > 0.5
   };
 
   componentWillMount(): void {
