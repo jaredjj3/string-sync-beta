@@ -9,16 +9,22 @@ interface FretboardProps {}
 
 interface FretboardState {}
 
+const fretIndicators = Object.assign([], Frets.DOTS).map((dots, fret) => (
+  dots > 0 || fret === 0 ? fret.toString() : null
+));
+
 class Fretboard extends React.PureComponent<FretboardProps, FretboardState> {
+  static FRET_INDICATORS: Array<string> = fretIndicators;
+
   render(): JSX.Element {
     return (
       <div className="FretboardContainer">
         <Row type="flex" justify="center" className="Fret__indicator">
           {
-            Array(23).fill(null).map((_, fret) => (
+            Fretboard.FRET_INDICATORS.map((indicator, fret) => (
               <Col key={`fret-indicator-${fret}`} span={fret === 0 ? 2 : 1}>
                 <Row type="flex" justify="center">
-                  {fret}
+                  {indicator}
                 </Row>
               </Col>
             ))
