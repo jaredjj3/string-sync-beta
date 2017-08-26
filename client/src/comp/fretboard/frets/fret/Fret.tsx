@@ -3,6 +3,7 @@ import React from 'react';
 import Marker from './marker';
 import Col from 'antd/lib/col';
 import Row from 'antd/lib/row';
+import Dot from './dot';
 
 interface FretProps {
   fret: number;
@@ -29,6 +30,11 @@ class Fret extends React.Component<FretProps, FretState> {
             ))
           }
         </Row>
+        <div className="Fret__dots">
+          {
+            Array(dots).fill(null).map((_, index) => <Dot key={`marker-dot-${index}`} />)
+          }
+        </div>
       </div>
     );
   }

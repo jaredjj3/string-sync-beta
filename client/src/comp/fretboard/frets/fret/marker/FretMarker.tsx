@@ -53,7 +53,7 @@ class FretMarker extends React.PureComponent<FretMarkerProps, FretMarkerState> {
         onMouseOver={this.light}
         onMouseLeave={this.hide}
       >
-        {`s${string}f${fret}`}
+        &nbsp;
       </span>
     );
   }

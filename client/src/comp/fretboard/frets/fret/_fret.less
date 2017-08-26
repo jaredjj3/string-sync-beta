@@ -1,3 +1,22 @@
+@fret-color: rgba(211, 211, 211, 0.4);
+
 .Fret {
-  background: burlywood;
+  background: #2b1d0e;
+  border-right: 1px solid @fret-color;
+  position: relative;
+}
+
+.Fret__dots {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  position: absolute;
+  height: 100%;
+  width: calc(100% - 1rem);
+  top: 0;
+}
+
+.Fretboard .ant-col-2 .Fret:first-child {
+  border-right: 3px solid @fret-color;
 }
