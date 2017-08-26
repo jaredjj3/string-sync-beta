@@ -20,7 +20,7 @@ class Frets extends React.PureComponent<FretsProps, FretsState> {
         <Row type="flex">
           {
             Frets.DOTS.map((dots, fret) => (
-              <Col key={`fret-${fret}`}>
+              <Col span={2} key={`fret-${fret}`}>
                 <Fret
                   fret={fret}
                   dots={dots}

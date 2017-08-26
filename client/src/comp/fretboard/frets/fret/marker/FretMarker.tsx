@@ -1,7 +1,6 @@
 import React from 'react';
 
 interface FretMarkerProps {
-  key: string;
   string: number;
   fret: number;
 }
