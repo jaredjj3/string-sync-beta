@@ -1,5 +1,5 @@
-import Marker from './Marker';
+import FretMarker from './FretMarker';
 
-import './_marker.less';
+import './_fretMarker.less';
 
-export default Marker;
+export default FretMarker;
