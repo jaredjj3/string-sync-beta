@@ -1,5 +1,5 @@
 import React from 'react';
 
-const FretDot = (): JSX.Element => <span className="Fret__dot"></span>;
+const FretDot = (): JSX.Element => <span className="FretDot"></span>;
 
 export default FretDot;

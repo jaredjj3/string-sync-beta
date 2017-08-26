@@ -18,18 +18,20 @@ class Fret extends React.Component<FretProps, FretState> {
 
     return (
       <div className="Fret">
-        <Row>
-          {
-            Array(6).fill(null).map((_, string) => (
-              <Col key={`marker-${string + 1}-${fret}`}>
-                <Marker
-                  string={string + 1}
-                  fret={fret}
-                />
-              </Col>
-            ))
-          }
-        </Row>
+        <div className="Fret__markers">
+          <Row>
+            {
+              Array(6).fill(null).map((_, string) => (
+                <Col key={`marker-${string + 1}-${fret}`}>
+                  <Marker
+                    string={string + 1}
+                    fret={fret}
+                  />
+                </Col>
+              ))
+            }
+          </Row>
+        </div>
         <div className="Fret__dots">
           {
             Array(dots).fill(null).map((_, index) => <Dot key={`marker-dot-${index}`} />)

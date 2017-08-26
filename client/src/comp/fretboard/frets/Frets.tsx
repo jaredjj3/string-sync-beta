@@ -11,7 +11,7 @@ interface FretsState {}
 class Frets extends React.PureComponent<FretsProps, FretsState> {
   static DOTS: Array<number> = [
     0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0,
-    2, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0
+    2, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0
   ];
 
   render(): JSX.Element {
