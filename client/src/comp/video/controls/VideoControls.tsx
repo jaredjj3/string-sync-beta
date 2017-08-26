@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import Icon from 'antd/lib/icon';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
-import Slider from 'antd/lib/slider';
 import Scrubber from './scrubber';
 import Play from './play';
 import Playback from './playback';
