@@ -1,3 +1,5 @@
-import Strings from './Strings';
+import GuitarStrings from './GuitarStrings';
 
-export default Strings;
+import './_guitarStrings.less';
+
+export default GuitarStrings;

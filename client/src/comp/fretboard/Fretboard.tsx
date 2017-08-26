@@ -10,9 +10,11 @@ interface FretboardState {}
 class Fretboard extends React.PureComponent<FretboardProps, FretboardState> {
   render(): JSX.Element {
     return (
-      <div className="Fretboard">
-        <Frets />
-        <Strings />
+      <div className="FretboardContainer">
+        <div className="Fretboard">
+          <Frets />
+          <Strings />
+        </div>
       </div>
     );
   }
