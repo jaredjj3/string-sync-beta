@@ -1,14 +1,18 @@
 import React from 'react';
 
+import Frets from './frets';
+import Strings from './strings';
+
 interface FretboardProps {}
 
 interface FretboardState {}
 
-class Fretboard extends React.Component<FretboardProps, FretboardState> {
+class Fretboard extends React.PureComponent<FretboardProps, FretboardState> {
   render(): JSX.Element {
     return (
       <div className="Fretboard">
-        Fretboard
+        <Frets />
+        <Strings />
       </div>
     );
   }
