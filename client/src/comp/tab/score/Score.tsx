@@ -1,6 +1,8 @@
 import React from 'react';
 
-import vextab from 'vextab/releases/vextab-div.js';
+import { VexTab, Artist, Flow } from 'vextab/releases/vextab-div.js';
+
+const { Renderer } = Flow;
 
 interface CaretProps {}
 
@@ -10,10 +12,6 @@ class Caret extends React.PureComponent<CaretProps, CaretState> {
   rootDiv: HTMLDivElement;
 
   componentDidMount(): void {
-    const VexTab = vextab.VexTab;
-    const Artist = vextab.Artist;
-    const Renderer = vextab.Flow.Renderer;
-
     // Create VexFlow Renderer from canvas element with id #boo.
     const renderer = new Renderer(this.rootDiv, Renderer.Backends.CANVAS);
 
