@@ -6,7 +6,13 @@ interface TabState {}
 
 class Tab extends React.Component<TabProps, TabState> {
   render(): JSX.Element {
-    return (<div>Tab</div>);
+    // TODO: Make a layers component
+
+    return (
+      <div>
+        Tab
+      </div>
+    );
   }
 }
 
