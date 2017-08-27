@@ -13,7 +13,7 @@ class Tab extends React.Component<TabProps, TabState> {
   render(): JSX.Element {
 
     return (
-      <Overlap height="200px" width="100%">
+      <Overlap className="Tab" height="200px" width="100vw">
         <Layer>
           <Score />
         </Layer>

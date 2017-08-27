@@ -3,7 +3,7 @@ import React from 'react';
 import LibraryCarousel from './carousel';
 
 const DesktopLibrary = ({ tagNotationsMap }): JSX.Element => (
-  <div>
+  <div className="Library--desktop">
     {
       tagNotationsMap.map((tagNotations) => (
         <div id={tagNotations.tag} key={tagNotations.tag} style={{ marginTop: '20px' }}>

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Marker from './marker';
-import Col from 'antd/lib/col';
 import Row from 'antd/lib/row';
 import Dot from './dot';
 
@@ -19,18 +18,16 @@ class Fret extends React.Component<FretProps, FretState> {
     return (
       <div className="Fret">
         <div className="Fret__markers">
-          <Row>
-            {
-              Array(6).fill(null).map((_, string) => (
-                <Col key={`marker-${string + 1}-${fret}`}>
-                  <Marker
-                    string={string + 1}
-                    fret={fret}
-                  />
-                </Col>
-              ))
-            }
-          </Row>
+          {
+            Array(6).fill(null).map((_, string) => (
+              <Row type="flex" justify="center" key={`marker-${string + 1}-${fret}`}>
+                <Marker
+                  string={string + 1}
+                  fret={fret}
+                />
+              </Row>
+            ))
+          }
         </div>
         <div className="Fret__dots">
           {
