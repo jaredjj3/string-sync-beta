@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Overlap from 'comp/overlap';
+import Score from  './score';
 
 const { Layer } = Overlap;
 
@@ -14,10 +15,7 @@ class Tab extends React.Component<TabProps, TabState> {
     return (
       <Overlap height="200px" width="100%">
         <Layer>
-          Tab
-        </Layer>
-        <Layer>
-          second layer
+          <Score />
         </Layer>
       </Overlap>
     );
