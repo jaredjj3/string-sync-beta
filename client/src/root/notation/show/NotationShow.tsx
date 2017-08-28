@@ -56,7 +56,6 @@ class NotationShow extends React.Component<NotationShowProps, NotationShowState>
       <div className="NotationShow">
         <Video
           youtubeVideoId={notation.youtubeVideoId}
-          togglePanel={this.togglePanel}
         />
         <Collapse
           activeKey={activePanels}

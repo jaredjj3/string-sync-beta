@@ -39,21 +39,10 @@ notes :8 t12p7/4 s5s3/4 :8 3s:16:5-7/5 :h p5/4
 class Score extends React.PureComponent<ScoreProps, ScoreState> {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
+  renderer: any;
 
   componentDidUpdate(): void {
-    const { viewport } = this.props.device;
-
-    const renderer = new Renderer(this.canvas, Renderer.Backends.CANVAS);
-    const artist = new Artist(10, 0, viewport.width - 10, { scale: 1.0 });
-    const tab = new VexTab(artist);
-
-    try {
-      tab.parse(test);
-      artist.render(renderer);
-      this.renderTabText(artist.staves.map(stave => stave.tab));
-    } catch (e) {
-      console.log(e);
-    }
+    this.renderScore();
   }
 
   setCanvas = (c: HTMLCanvasElement): void => {
@@ -63,6 +52,22 @@ class Score extends React.PureComponent<ScoreProps, ScoreState> {
 
     this.canvas = c;
     this.ctx = c.getContext('2d');
+    this.renderer = new Renderer(c, Renderer.Backends.CANVAS);
+  }
+
+  renderScore(): void {
+    const { viewport } = this.props.device;
+
+    const artist = new Artist(10, 0, viewport.width - 10, { scale: 1.0 });
+    const tab = new VexTab(artist);
+
+    try {
+      tab.parse(test);
+      artist.render(this.renderer);
+      this.renderTabText(artist.staves.map(stave => stave.tab));
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   renderTabText(tabStaves: any): void {
@@ -80,6 +85,8 @@ class Score extends React.PureComponent<ScoreProps, ScoreState> {
   }
 
   render(): JSX.Element {
+    console.log('FIXME: do not render unecessarily');
+
     return (
       <div>
         <canvas ref={this.setCanvas} />

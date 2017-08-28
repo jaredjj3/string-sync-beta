@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Controls from './controls';
 import Overlap from 'comp/overlap';
 import Score from './score';
 import Icon from 'antd/lib/icon';
@@ -11,11 +12,12 @@ interface TabProps {}
 
 interface TabState {}
 
-class Tab extends React.Component<TabProps, TabState> {
+class Tab extends React.PureComponent<TabProps, TabState> {
   render(): JSX.Element {
 
     return (
       <div className="TabContainer">
+        <Controls />
         <Row className="TabContainer__iconContainer" type="flex" justify="center" align="middle" >
           <Icon type="up" />
         </Row>

@@ -43,7 +43,7 @@ class Video extends React.Component<VideoProps, VideoState> {
   }
 
   render(): JSX.Element {
-    const { youtubeVideoId, togglePanel } = this.props;
+    const { youtubeVideoId } = this.props;
 
     return (
       <div className="Video">
@@ -54,7 +54,7 @@ class Video extends React.Component<VideoProps, VideoState> {
           onReady={this.updateVideoPlayer}
           onStateChange={this.updateVideoState}
         />
-        <VideoControls togglePanel={togglePanel} />
+        <VideoControls />
       </div>
     );
   }

@@ -26,7 +26,6 @@ interface VideoControlsProps {
   videoPlayer: any;
   videoState: string;
   device: Device;
-  togglePanel(key: string): any;
 }
 
 interface VideoControlsState {
@@ -151,7 +150,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
   }
 
   render(): JSX.Element {
-    const { videoPlayer, togglePanel, videoState, device } = this.props;
+    const { videoPlayer, videoState, device } = this.props;
     const { currentTime, seekSliderValues, playbackRateIndex } = this.state;
     const { PLAYBACK_RATES } = VideoControls;
 
@@ -180,20 +179,12 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
               }
             </Row>
           </Col>
-          <Col span={16}>
+          <Col span={20}>
             <Scrubber
               values={seekSliderValues}
               onChange={this.updateSeekSlider}
               onAfterChange={this.restorePlayState}
             />
-          </Col>
-          <Col span={4} className="VideoControls__grannular">
-            <Row type="flex" align="middle" justify="center" className="VideoControls__grannular">
-              <Icon
-                type="shrink"
-                onClick={togglePanel('fretboard')}
-              />
-            </Row>
           </Col>
         </Row>
       </div>
@@ -216,7 +207,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
       return;
     }
 
-    this.shouldPlayOnScrubEnd = videoStateCategory(videoState) === 'ACTIVE';
+    this.shouldPlayOnScrubEnd = isVideoActive(videoState);
     this.isScrubbing = true;
 
     videoPlayer.pauseVideo();
