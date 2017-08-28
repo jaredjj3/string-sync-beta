@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Button from 'antd/lib/button';
+import Icon from 'antd/lib/icon';
 import { VexTab, Artist, Flow } from 'services/vexflow';
 
 import { Device } from 'types/device';
@@ -44,7 +44,7 @@ class Score extends React.PureComponent<ScoreProps, ScoreState> {
     const { viewport } = this.props.device;
 
     const renderer = new Renderer(this.canvas, Renderer.Backends.CANVAS);
-    const artist = new Artist(0, 0, viewport.width - 10, { scale: 1.0 });
+    const artist = new Artist(10, 0, viewport.width - 10, { scale: 1.0 });
     const tab = new VexTab(artist);
 
     try {
@@ -69,20 +69,19 @@ class Score extends React.PureComponent<ScoreProps, ScoreState> {
     this.ctx.save();
     this.ctx.font = '24px sans-serif';
 
-    tabStaves.map(({ start_x, y }) => {
-      this.ctx.fillText('T', start_x - 14, y + 73);
-      this.ctx.fillText('A', start_x - 14, y + 93);
-      this.ctx.fillText('B', start_x - 14, y + 113);
+    tabStaves.map(({ y }) => {
+      const x = 20;
+      this.ctx.fillText('T', x, y + 73);
+      this.ctx.fillText('A', x, y + 93);
+      this.ctx.fillText('B', x, y + 113);
     });
 
     this.ctx.restore();
   }
 
   render(): JSX.Element {
-    console.log('rendered');
-
     return (
-      <div style={{ paddingLeft: '10px' }}>
+      <div>
         <canvas ref={this.setCanvas} />
       </div>
     );

@@ -4,7 +4,7 @@ import Row from 'antd/lib/row';
 import Icon from 'antd/lib/icon';
 
 const Playback = ({ onClick, playbackRate }) => (
-  <div
+  <span
     className="VideoControls__playbackRate"
     onClick={onClick}
   >
@@ -14,7 +14,7 @@ const Playback = ({ onClick, playbackRate }) => (
         {`${playbackRate * 100}%`}
       </span>
     </Row>
-  </div>
+  </span>
 );
 
 export default Playback;

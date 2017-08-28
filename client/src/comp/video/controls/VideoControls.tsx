@@ -33,8 +33,6 @@ interface VideoControlsState {
   shouldRAF: boolean;
   currentTime: string;
   seekSliderValues: SeekSliderValues;
-  volume: number;
-  prevVolume: number;
   playbackRateIndex: number;
 }
 
@@ -52,8 +50,6 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     shouldRAF: false,
     currentTime: '0.0',
     seekSliderValues: VideoControls.DEFAULT_SEEK_SLIDER_VALUES,
-    volume: 100,
-    prevVolume: 100,
     playbackRateIndex: 0
   };
 
@@ -71,13 +67,11 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     super(props);
 
     this.updateSeekSlider = throttle(this._updateSeekSlider, 10);
-    this.updateVolSlider = throttle(this._updateVolSlider, 10);
     this.maybeSeekVideo = throttle(this._maybeSeekVideo, 250);
   }
 
   componentWillReceiveProps(nextProps: VideoControlsProps): void {
     this._maybeSetInterpolator(nextProps.videoPlayer);
-    this._maybeInitVolume(nextProps.videoPlayer);
     const shouldRAF = nextProps.videoPlayer && isVideoActive(nextProps.videoState);
     this.setState(Object.assign({}, this.state, { shouldRAF }));
   }
@@ -94,7 +88,6 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
   shouldComponentUpdate(nextProps: VideoControlsProps, nextState: VideoControlsState): boolean {
     return (
       nextState.shouldRAF ||
-      this.state.volume !== nextState.volume ||
       this.state.playbackRateIndex !== nextState.playbackRateIndex ||
       !isEqual(this.state.seekSliderValues, nextState.seekSliderValues) ||
       !isEqual(this.props.device, nextProps.device) ||
@@ -149,17 +142,6 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     this.setState(Object.assign({}, this.state, { seekSliderValues }));
   }
 
-  toggleMute = (e: React.SyntheticEvent<any>): void => {
-    const { volume, prevVolume } = this.state;
-
-    // non throttled versions of this._updateVolSlider
-    if (volume === 0) {
-      this._updateVolSlider(prevVolume);
-    } else {
-      this._updateVolSlider(0);
-    }
-  }
-
   updatePlaybackRate = (e: React.SyntheticEvent<any>): void => {
     const playbackRateIndex = (this.state.playbackRateIndex + 1) % VideoControls.PLAYBACK_RATES.length;
 
@@ -170,7 +152,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
 
   render(): JSX.Element {
     const { videoPlayer, togglePanel, videoState, device } = this.props;
-    const { currentTime, seekSliderValues, volume, playbackRateIndex } = this.state;
+    const { currentTime, seekSliderValues, playbackRateIndex } = this.state;
     const { PLAYBACK_RATES } = VideoControls;
 
     const isActive = isVideoActive(videoState);
@@ -181,44 +163,34 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     return (
       <div className="VideoControls">
         <Row type="flex" align="middle" justify="center">
-          <Col span={20}>
+          <Col span={4}>
+            <Row type="flex" align="middle" justify="center" className="VideoControls__grannular">
+              <Play isActive={isActive} videoPlayer={videoPlayer} />
+              {
+                isMobile ?
+                  null :
+                  <Row type="flex" align="middle" justify="center">
+                    <span className="VideoControls__grannular__time" style={{ marginRight: '20px' }}>
+                      {`${currentTime}s`}
+                    </span>
+                    <span>
+                      <Playback onClick={this.updatePlaybackRate} playbackRate={playbackRate} />
+                    </span>
+                  </Row>
+              }
+            </Row>
+          </Col>
+          <Col span={16}>
             <Scrubber
               values={seekSliderValues}
               onChange={this.updateSeekSlider}
               onAfterChange={this.restorePlayState}
             />
           </Col>
-        </Row>
-        <Row className="VideoControls__grannular" type="flex" align="middle" justify="center">
-          <Col xs={6} sm={6} lg={4} xl={4}>
-            <Row type="flex" align="middle">
-              <Play isActive={isActive} videoPlayer={videoPlayer} />
-              <span className="VideoControls__grannular__time">
-                {`${currentTime}s`}
-              </span>
-              <span style={{ marginLeft: '30px' }}>
-                {isMobile ? null : <Playback onClick={this.updatePlaybackRate} playbackRate={playbackRate} />}
-              </span>
-            </Row>
-          </Col>
-          {
-            isMobile ?
-              null :
-              <Col span={4}>
-                <Volume
-                  volume={volume}
-                  onIconClick={this.toggleMute}
-                  onChange={this.updateVolSlider}
-                  onAfterChange={this.restorePlayState}
-                />
-              </Col>
-          }
-          <Col xs={6} sm={6} lg={4} xl={4}>
-            <Row type="flex" align="middle">
-              <Icon type="retweet" onClick={this.resetSliders} />
+          <Col span={4} className="VideoControls__grannular">
+            <Row type="flex" align="middle" justify="center" className="VideoControls__grannular">
               <Icon
                 type="shrink"
-                style={{ marginLeft: '20px' }}
                 onClick={togglePanel('fretboard')}
               />
             </Row>
@@ -235,28 +207,6 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     seekSliderValues = this._adjustSliders(this.state.seekSliderValues, seekSliderValues);
     this.maybeSeekVideo(this.state.seekSliderValues, seekSliderValues); // throttled version
     this.setState(Object.assign({}, this.state, { seekSliderValues }));
-  }
-
-  private _updateVolSlider = (volume: number): void => {
-    this._maybeStartScrubbing();
-    const currVolume = this.state.volume;
-    const prevVolume =  currVolume > 0 ? currVolume : this.state.prevVolume;
-    const seekSliderValues = Object.assign([], this.state.seekSliderValues);
-    this.setState(Object.assign({}, this.state, { seekSliderValues, prevVolume, volume }));
-    this.props.videoPlayer.setVolume(volume);
-  }
-
-  private _maybeInitVolume = (videoPlayer: any): void => {
-    if (this.isVolumeInit || !videoPlayer) {
-      return;
-    }
-
-    const volume = videoPlayer.getVolume();
-    const prevVolume = volume;
-    const seekSliderValues = Object.assign([], this.state.seekSliderValues);
-    this.setState(Object.assign({}, this.state, { seekSliderValues, volume, prevVolume }));
-
-    this.isVolumeInit = true;
   }
 
   private _maybeStartScrubbing = (): void => {

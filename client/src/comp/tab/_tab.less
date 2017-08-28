@@ -1,5 +1,21 @@
+@import "vars/overrides";
+
+.TabContainer__iconContainer {
+  padding: 10px 0;
+  color: #626262;
+  cursor: pointer;
+  transition: background 50ms @ease-in;
+
+  &:active {
+    background: darken(@background-color-base, 10%);
+  }
+
+  i {
+    font-size: 36px;
+    font-weight: 700;
+  }
+}
+
 .Tab {
-  overflow-y: none;
-  overflow-x: scroll;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
 }
