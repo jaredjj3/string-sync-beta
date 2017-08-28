@@ -15,41 +15,75 @@ interface ScoreProps {
 interface ScoreState {}
 
 const test = `
-tabstave
-notation=false
-clef=none
+options space=20
 
-notes :q (5/2.5/3.7/4) :8 7-5h6/3 ^3^ 5h6-7/5 ^3^ :q 7V/4 |
-notes :8 t12p7/4 s5s3/4 :8 3s:16:5-7/5 :h p5/4 |
-notes :q (5/4.5/5) (7/4.7/5)s(5/4.5/5) ^3^ |
-notes :8 7-5/4 $.a./b.$ (5/4.5/5)h(7/5) =:|
-notes :8 (12/5.12/4)ds(5/5.5/4)u 3b4/5 |
-notes :h (5V/6.5/4.6/3.7/2) $.italic.let ring$ =|=
-text :w, what, ,|, :hd, , #tr
+tabstave
+notation=true
+key=B
+time=4/4
+clef=none
+notes :q =|| (5/2.5/3.7/4) :8 7-5h6/3 ^3^ 5h6-7/5 ^3^ :q 7V/4 |
+notes :8 t12p7/4 s5s3/4 :8 3s:16:5-7/5 :h p5/4
+
+options space=40
+
+tabstave
+notation=true
+key=A
+time=4/4
+clef=none
+notes :q =|| (5/2.5/3.7/4) :8 7-5h6/3 ^3^ 5h6-7/5 ^3^ :q 7V/4 |
+notes :8 t12p7/4 s5s3/4 :8 3s:16:5-7/5 :h p5/4
 `;
 
 class Score extends React.PureComponent<ScoreProps, ScoreState> {
-  scoreCanvas: HTMLCanvasElement;
+  canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
 
   componentDidUpdate(): void {
     const { viewport } = this.props.device;
 
-    const renderer = new Renderer(this.scoreCanvas, Renderer.Backends.CANVAS);
-    const artist = new Artist(10, 30, 1500, { scale: 1.0 });
+    const renderer = new Renderer(this.canvas, Renderer.Backends.CANVAS);
+    const artist = new Artist(0, 0, viewport.width - 10, { scale: 1.0 });
     const tab = new VexTab(artist);
 
     try {
       tab.parse(test);
       artist.render(renderer);
+      this.renderTabText(artist.staves.map(stave => stave.tab));
     } catch (e) {
-      console.error(e);
+      console.log(e);
     }
   }
 
+  setCanvas = (c: HTMLCanvasElement): void => {
+    if (!c || (this.canvas && this.ctx)) {
+      return;
+    }
+
+    this.canvas = c;
+    this.ctx = c.getContext('2d');
+  }
+
+  renderTabText(tabStaves: any): void {
+    this.ctx.save();
+    this.ctx.font = '24px sans-serif';
+
+    tabStaves.map(({ start_x, y }) => {
+      this.ctx.fillText('T', start_x - 14, y + 73);
+      this.ctx.fillText('A', start_x - 14, y + 93);
+      this.ctx.fillText('B', start_x - 14, y + 113);
+    });
+
+    this.ctx.restore();
+  }
+
   render(): JSX.Element {
+    console.log('rendered');
+
     return (
-      <div>
-        <canvas ref={c => this.scoreCanvas = c} />
+      <div style={{ paddingLeft: '10px' }}>
+        <canvas ref={this.setCanvas} />
       </div>
     );
   }
