@@ -1,3 +1,4 @@
+import Process from './process';
 import isBetween from 'util/isBetween';
 
 interface Param {
@@ -9,52 +10,14 @@ interface Param {
 // spaced tablature so that it fits within a certain viewport.
 
 class VexFormatter {
+  // Object properties that characterize a note token
+  static CHAR_TOKEN_PROPS: Array<string> = ['command', 'time', 'chord', 'fret'];
+
   code: string = '';
   width: number = 0;
   formatted: string = '';
 
-  update(code: string, width: number, elements: Array<any>): string {
-    const shouldUpdate = this.code !== code || this.width !== width;
-
-    this.code = code;
-    this.width = width;
-
-    if (shouldUpdate) {
-      this._format(elements);
-    }
-
-    return this.formatted;
-  }
-
-  private _format(elements: Array<any>): void {
-    debugger
-    this.formatted = elements.map(element => this._processElement).join('\n');
-  }
-
-  private _processElement(element: any): string {
-    if (element.element === 'options') {
-      return this._processOptions(element);
-    } else if (element.element === 'tabstave') {
-      return this._processTabstave(element);
-    } else {
-      return '';
-    }
-  }
-
-  private _processOptions(options: any): string {
-    return `options ${this._joinParams(options.params)}`;
-  }
-
-  private _processTabstave(tabstave: any): string {
-    let result = `tabstave ${this._joinParams(tabstave.options)}`;
-    
-  }
-
-  private _joinParams(params: Array<Param>): string {
-    return params.map(({ key, value }) => `${key}=${value}`).join(' ');
-  }
-
-  private get _numMeasuresPerStave(): number {
+  get numMeasuresPerStave(): number {
     const { width } = this;
 
     switch (true) {
@@ -71,6 +34,24 @@ class VexFormatter {
       default:
         return Math.ceil(width / 336);
     }
+  }
+
+  update(code: string, width: number, elements: Array<any>): string {
+    const shouldUpdate = this.code !== code || this.width !== width;
+
+    this.code = code;
+    this.width = width;
+
+    if (shouldUpdate) {
+      this._format(elements);
+    }
+
+    return this.formatted;
+  }
+
+  private _format(elements: Array<any>): void {
+    const temp = elements.map(element => Process.element(element)).join('\n');
+    debugger
   }
 }
 
