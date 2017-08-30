@@ -14,11 +14,15 @@ class TabControls extends React.Component<TabControlsProps, TabControlsState> {
     return (
       <div className="TabControls">
         <Row type="flex" align="middle" justify="center">
-          <Col>
-            <Icon type="left" />
+          <Col className="TabControls__nav" span={12}>
+            <Row type="flex" align="middle" justify="center">
+              <Icon type="left" />
+            </Row>
           </Col>
-          <Col>
-            <Icon type="right" />
+          <Col className="TabControls__nav" span={12}>
+            <Row type="flex" align="middle" justify="center">
+              <Icon type="right" />
+            </Row>
           </Col>
         </Row>
       </div>

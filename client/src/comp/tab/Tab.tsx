@@ -18,17 +18,11 @@ class Tab extends React.PureComponent<TabProps, TabState> {
     return (
       <div className="TabContainer">
         <Controls />
-        <Row className="TabContainer__iconContainer" type="flex" justify="center" align="middle" >
-          <Icon type="up" />
-        </Row>
         <Overlap className="Tab" height="300px" width="100vw">
           <Layer>
             <Score />
           </Layer>
         </Overlap>
-        <Row className="TabContainer__iconContainer" type="flex" justify="center" align="middle" >
-          <Icon type="down" />
-        </Row>
       </div>
     );
   }

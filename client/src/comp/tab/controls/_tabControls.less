@@ -1,7 +1,21 @@
-.TabControls {
-  padding: 10px 0;
+@import "vars/overrides";
 
-  i { 
-    font-size: 24px;
+.TabControls i {
+  font-size: 24px;
+}
+
+.TabControls__nav {
+  padding: 10px 0;
+  color: #626262;
+  cursor: pointer;
+  transition: background 100ms @ease-in;
+
+  &:active {
+    background: darken(@background-color-base, 10%);
+  }
+
+  i {
+    font-size: 36px;
+    font-weight: 700;
   }
 }
