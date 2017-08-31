@@ -11,14 +11,17 @@ declare namespace Element {
     params: Array<Param>
   }
 
+  interface Text {
+    text: string;
+  }
+
   interface TabStave extends Element {
     notes: Array<any>;
     options: Array<Options>;
+    text: Array<Text>
   }
 
-  interface Token extends Object {
-
-  }
+  type Token = any;
 }
 
 export { Element, Param };

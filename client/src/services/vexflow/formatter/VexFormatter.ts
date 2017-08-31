@@ -37,7 +37,7 @@ class VexFormatter {
   }
 
   update(code: string, width: number, elements: Array<any>): string {
-    const shouldUpdate = this.code !== code || this.width !== width;
+    const shouldUpdate = this.code !== code || this.width !== width || this.formatted === '';
 
     this.code = code;
     this.width = width;
@@ -51,7 +51,6 @@ class VexFormatter {
 
   private _format(elements: Array<any>): void {
     const temp = elements.map(element => Process.element(element)).join('\n');
-    debugger
   }
 }
 

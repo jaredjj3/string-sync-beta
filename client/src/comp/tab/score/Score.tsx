@@ -79,7 +79,7 @@ class Score extends React.PureComponent<ScoreProps, ScoreState> {
       artist.render(this.renderer);
       this.renderTabText(artist.staves.map(stave => stave.tab));
     } catch (e) {
-      // console.error(e);
+      console.error(e);
     }
   }
 
