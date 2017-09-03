@@ -43,10 +43,10 @@ const joinParams = (params: Array<Param>) => (
 // e.g. Process['options'](token) calls Process.options(token)
 
 class Process {
-  static element(token: Element.Options | Element.TabStave): ProcessedElement {
+  static element(token: Element.Options | Element.TabStave): any {
     const type: Element.Name = token.element;
-    const vextab = this.do(type, [token]) || '';
-    return { type, vextab };
+    const component = this.do(type, [token]) || '';
+    return { type, component };
   }
 
   // Prevents callers from trying to invoke an undefined function.
