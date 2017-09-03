@@ -26,6 +26,8 @@ const noteTokenType = (token: any): NoteTokenType => {
       return prop;
     }
   }
+
+  throw `token ${token} did not resolve to one of: ${NOTE_TOKEN_TYPES.join(', ')}`;
 };
 
 const joinParams = (params: Array<Param>) => (
@@ -56,29 +58,28 @@ class Process {
 
   // called by Process.element
 
-  private static options(options: Element.Options): ProcessedElement {
+  private static options(options: any): ProcessedElement {
     const type = 'options';
-    const vextab = `options ${joinParams(options.params)}`;
+    const params = options.params || options;
+    const vextab = joinParams(params);
     return { type, vextab };
   }
 
   private static tabstave (tabstave: Element.TabStave): any {
-    const options = tabstave.options.map(option => this.options(option)).join(' ');
-    const notes = tabstave.notes.map(note => this.note(note)).join(' ');
-    const text = tabstave.text.map(_text => this.text(_text)).join(',');
+    const type = 'tabstave';
+    const options = this.options(tabstave.options);
+    const notes = tabstave.notes.map(note => this.note(note));
+    const text = tabstave.text.map(_text => this.text(_text));
 
-    return `
-      tabstave ${options}
-      notes ${notes}
-      text ${text}
-    `;
+    return { type, options, notes, text };
   }
 
   // called by Process.tabstave
 
   private static note(token: Element.Token): ProcessedElement {
-    const type = 'note';
-    const vextab = this.do(noteTokenType(token), [token]) || '';
+    const tokenType = noteTokenType(token);
+    const type = tokenType === 'command' ? token.command : tokenType;
+    const vextab = this.do(tokenType, [token]) || '';
     return { type, vextab };
   }
 
@@ -90,43 +91,35 @@ class Process {
 
   // called by Process.note
 
-  private static command(token: Element.Token): ProcessedElement {
+  private static command(token: Element.Token): string {
     const name: CommandType = token.command;
     return this.do(name, [token]) || '';
   }
 
-  private static time(token: Element.Token): ProcessedElement {
-      const type = 'time';
-      const vextab = `:${token.time}${token.dot ? 'd' : ''}`;
-      return { type, vextab };
+  private static time(token: Element.Token): string {
+    return `:${token.time}${token.dot ? 'd' : ''}`;
   }
 
-  private static chord(token: Element.Token): ProcessedElement {
+  private static chord(token: Element.Token): string {
     const chordStr = token.chord.map(({ fret, string, decorator }) => (
       `${fret}${decorator || ''}/${string}`
     )).join('.');
 
-    const type = 'chord';
-    const vextab = `(${chordStr})${token.decorator || ''}`;
-    return { type, vextab };
+    return `(${chordStr})${token.decorator || ''}`;
   }
 
-  private static fret(token: Element.Token): ProcessedElement {
-    const type = 'fret';
-    const vextab = `${token.articulation || ''}${token.fret}${token.decorator || ''}/${token.string}`;
-    return { type, vextab };
+  private static fret(token: Element.Token): string {
+    return `${token.articulation || ''}${token.fret}${token.decorator || ''}/${token.string}`;
   }
 
   // called by Process.command
 
-  private static bar(token: Element.Token): ProcessedElement {
+  private static bar(token: Element.Token): string {
     return BARS_BY_TYPE[token.type];
   }
 
-  private static tuplet(token: Element.Token): ProcessedElement {
-    const type = 'tuplet';
-    const vextab = `^${token.params.tuplet}^`;
-    return { type, vextab };
+  private static tuplet(token: Element.Token): string {
+    return `^${token.params.tuplet}^`;
   }
 }
 

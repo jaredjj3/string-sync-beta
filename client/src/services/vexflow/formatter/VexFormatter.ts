@@ -50,7 +50,17 @@ class VexFormatter {
   }
 
   private _format(elements: Array<any>): void {
-    const temp = elements.map(element => Process.element(element)).join('\n');
+    const deconstructed = this._deconstruct(elements);
+    const reconstructed = this._reconstruct(deconstructed);
+
+  }
+
+  private _deconstruct(elements: Array<any>): Array<any> {
+    return elements.map(element => Process.element(element));
+  }
+
+  private _reconstruct(deconstructed: Array<any>): Array<any> {
+    debugger
   }
 }
 
