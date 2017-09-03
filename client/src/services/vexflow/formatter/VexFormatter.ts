@@ -1,6 +1,8 @@
 import Process from './process';
 import isBetween from 'util/isBetween';
 
+import { merge } from 'lodash';
+
 interface Param {
   key: string;
   value: string;
@@ -52,7 +54,7 @@ class VexFormatter {
   private _format(elements: Array<any>): void {
     const deconstructed = this._deconstruct(elements);
     const reconstructed = this._reconstruct(deconstructed);
-
+    debugger
   }
 
   private _deconstruct(elements: Array<any>): Array<any> {
@@ -60,7 +62,18 @@ class VexFormatter {
   }
 
   private _reconstruct(deconstructed: Array<any>): Array<any> {
-    debugger
+    // For now, ignore all the auxilary options.
+    const tabstaves = deconstructed.filter(element => element.type === 'tabstave');
+    return tabstaves.reduce((masterTabstave, tabstave) => {
+      const src = tabstave.components;
+      const dst = masterTabstave.components;
+
+      masterTabstave.components.notes = dst.notes.concat(src.notes);
+      masterTabstave.components.text = dst.text.concat(src.text);
+      masterTabstave.components.options.vextab = dst.options.vextab.concat(src.options.vextab);
+
+      return masterTabstave;
+    });
   }
 }
 

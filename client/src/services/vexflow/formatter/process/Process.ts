@@ -17,7 +17,8 @@ const BARS_BY_TYPE: any = {
   'repeat-begin': '=|:',
   'repeat-end': '=:|',
   'double-repeat': '=::',
-  'end-bar': '=|='
+  'end-bar': '=|=',
+  'single': '|'
 };
 
 const noteTokenType = (token: any): NoteTokenType => {
@@ -45,8 +46,8 @@ const joinParams = (params: Array<Param>) => (
 class Process {
   static element(token: Element.Options | Element.TabStave): any {
     const type: Element.Name = token.element;
-    const component = this.do(type, [token]) || '';
-    return { type, component };
+    const components = this.do(type, [token]) || '';
+    return { type, components };
   }
 
   // Prevents callers from trying to invoke an undefined function.
