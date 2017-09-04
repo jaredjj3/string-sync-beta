@@ -10,6 +10,8 @@ const { Renderer } = Flow;
 
 interface ScoreProps {
   device: Device;
+  measuresPerLine: number;
+  setMeasuresPerLine(measuresPerLine: number): void;
 }
 
 interface ScoreState {}
@@ -66,6 +68,12 @@ class Score extends React.PureComponent<ScoreProps, ScoreState> {
     this.renderer = new Renderer(c, Renderer.Backends.CANVAS);
   }
 
+  maybeSetMeasuresPerLine = (measuresPerLine: number): void => {
+    if (measuresPerLine !== this.props.measuresPerLine) {
+      this.props.setMeasuresPerLine(measuresPerLine);
+    }
+  }
+
   renderScore(): void {
     const { viewport } = this.props.device;
 
@@ -85,6 +93,8 @@ class Score extends React.PureComponent<ScoreProps, ScoreState> {
     } catch (e) {
       console.error(e);
     }
+
+    this.maybeSetMeasuresPerLine(this.formatter.measuresPerLine);
   }
 
   renderTabText(tabStaves: any): void {
@@ -112,12 +122,15 @@ class Score extends React.PureComponent<ScoreProps, ScoreState> {
   }
 }
 
+import { setMeasuresPerLine } from 'data/tab/actions';
+
 const mapStateToProps = state => ({
-  device: state.device
+  device: state.device,
+  measuresPerLine: state.tab.measuresPerLine
 });
 
 const mapDispatchToProps = dispatch => ({
-
+  setMeasuresPerLine: (measuresPerLine: number) => dispatch(setMeasuresPerLine(measuresPerLine))
 });
 
 export default connect(

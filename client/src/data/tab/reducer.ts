@@ -1,12 +1,12 @@
 import { SET_MEASURES_PER_LINE, FOCUS_MEASURE } from './actions';
 
 interface StoreTab {
-  focused: number;
+  focusedMeasure: number;
   measuresPerLine: number;
 }
 
 const defaultState: StoreTab = Object.freeze({
-  focused: 0,
+  focusedMeasure: 0,
   measuresPerLine: 1
 });
 
@@ -20,7 +20,7 @@ export default (state = defaultState, action): StoreTab => {
       return nextState;
 
     case FOCUS_MEASURE:
-      nextState.focused = action.measure;
+      nextState.focusedMeasure = action.measure;
       return nextState;
 
     default:
