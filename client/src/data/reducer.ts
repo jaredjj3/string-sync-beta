@@ -8,6 +8,7 @@ import video from './video/reducer';
 import feature from './feature/reducer';
 import behavior from './behavior/reducer';
 import tab from './tab/reducer';
+import panels from './panels/reducer';
 
 export default combineReducers({
   device,
@@ -18,4 +19,5 @@ export default combineReducers({
   feature,
   behavior,
   tab,
+  panels,
 });

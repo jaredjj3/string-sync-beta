@@ -114,7 +114,7 @@ class Score extends React.Component<ScoreProps, ScoreState> {
       tab.parse(formatted);
 
       artist.render(this.renderer);
-      this.renderTabText(artist.staves.map(stave => stave.tab));
+      this.renderTabText(artist);
     } catch (e) {
       console.error(e);
     }
@@ -122,15 +122,16 @@ class Score extends React.Component<ScoreProps, ScoreState> {
     this.artist = artist;
   }
 
-  renderTabText(tabstaves: any): void {
+  renderTabText(artist: Artist): void {
     this.ctx.save();
     this.ctx.font = '24px sans-serif';
 
-    tabstaves.map(({ y }) => {
-      const x = 25;
-      this.ctx.fillText('T', x, y + 94);
-      this.ctx.fillText('A', x, y + 114);
-      this.ctx.fillText('B', x, y + 134 );
+    artist.staves.map(stave => {
+      let x = 25;
+      let y = stave.tab.y + 73;
+      this.ctx.fillText('T', x, y);
+      this.ctx.fillText('A', x, y + 20);
+      this.ctx.fillText('B', x, y + 40);
     });
 
     this.ctx.restore();

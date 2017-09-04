@@ -10,6 +10,7 @@ import { Device } from 'types/device';
 
 interface VideoProps {
   youtubeVideoId: string;
+  showControls?: boolean;
   updateVideoPlayer(videoPlayer: any): void;
   updateVideoState(videoState: string): void;
   togglePanel(key: string): Function;
@@ -18,6 +19,10 @@ interface VideoProps {
 interface VideoState {}
 
 class Video extends React.Component<VideoProps, VideoState> {
+  static defaultProps: any = {
+    showControls: false
+  };
+
   // for options https://github.com/troybetz/react-youtube
   static youtubeOptions: any = {
     playerVars: {
@@ -43,7 +48,7 @@ class Video extends React.Component<VideoProps, VideoState> {
   }
 
   render(): JSX.Element {
-    const { youtubeVideoId } = this.props;
+    const { youtubeVideoId, showControls } = this.props;
 
     return (
       <div className="Video">
@@ -54,7 +59,7 @@ class Video extends React.Component<VideoProps, VideoState> {
           onReady={this.updateVideoPlayer}
           onStateChange={this.updateVideoState}
         />
-        <VideoControls />
+        {showControls ? <VideoControls /> : null}
       </div>
     );
   }

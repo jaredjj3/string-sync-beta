@@ -26,8 +26,8 @@ class Play extends React.Component<PlayProps, PlayState> {
       <Row type="flex" align="middle" justify="start">
         {
           isActive ?
-            <Icon type="pause" onClick={this.pauseVideo} /> :
-            <Icon type="caret-right" onClick={this.playVideo} />
+            <Icon type="pause-circle-o" onClick={this.pauseVideo} /> :
+            <Icon type="play-circle-o" onClick={this.playVideo} />
         }
       </Row>
     );

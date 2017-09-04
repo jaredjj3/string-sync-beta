@@ -2,10 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Video from 'comp/video';
+import VideoControls from 'comp/video/controls';
 import Fretboard from 'comp/fretboard';
 import Tab from 'comp/tab';
+import TabControls from 'comp/tab/controls';
 import Collapse from 'antd/lib/collapse';
 import Icon from 'antd/lib/icon';
+import Affix from 'antd/lib/affix';
 
 import { Notation } from 'types/notation';
 import { Device } from 'types/device';
@@ -16,41 +19,20 @@ interface NotationShowProps {
   notation: Notation;
   device: Device;
   params: any;
+  showFretboard: boolean;
+  showFretboardControls: boolean;
   fetchNotation(id: number): void;
 }
 
-interface NotationShowState {
-  activePanels: Array<string>;
-}
+interface NotationShowState {}
 
 class NotationShow extends React.Component<NotationShowProps, NotationShowState> {
-  state: NotationShowState = {
-    activePanels: ['fretboard']
-  };
-
   componentDidMount(): void {
     this.props.fetchNotation(this.props.params.id);
   }
 
-  togglePanel = (key: string): Function => {
-    return (e: React.SyntheticEvent<HTMLAllCollection>): void => {
-      const activePanels = Object.assign([], this.state.activePanels);
-      const index = this.state.activePanels.indexOf(key);
-      const isKeyActive = index >= 0;
-
-      if (isKeyActive) {
-        activePanels.splice(index, 1);
-      } else {
-        activePanels.push(key);
-      }
-
-      this.setState(Object.assign({}, this.state, { activePanels }));
-    };
-  }
-
   render(): JSX.Element {
-    const { notation } = this.props;
-    const { activePanels } = this.state;
+    const { notation, showFretboard, showFretboardControls } = this.props;
 
     return (
       <div className="NotationShow">
@@ -58,7 +40,7 @@ class NotationShow extends React.Component<NotationShowProps, NotationShowState>
           youtubeVideoId={notation.youtubeVideoId}
         />
         <Collapse
-          activeKey={activePanels}
+          activeKey={showFretboard ? 'fretboard' : null}
           bordered={false}
         >
           <Panel className="NotationShow__panel" key="fretboard" header="">
@@ -66,6 +48,14 @@ class NotationShow extends React.Component<NotationShowProps, NotationShowState>
           </Panel>
         </Collapse>
         <Tab />
+        <div className="NotationShow__controls">
+          <Collapse activeKey={showFretboardControls ? 'fretboardControls' : null}>
+            <Panel className="NotationShow__panel" key="fretboardControls" header="">
+              <TabControls />
+            </Panel>
+          </Collapse>
+          <VideoControls />
+        </div>
       </div>
     );
   }
@@ -75,6 +65,8 @@ import { fetchNotation } from 'data/notation/actions';
 
 const mapStateToProps = state => ({
   notation: state.notation,
+  showFretboard: state.panels.fretboard,
+  showFretboardControls: state.panels.fretboardControls
 });
 
 const mapDispatchToProps = dispatch => ({

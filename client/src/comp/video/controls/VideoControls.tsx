@@ -26,6 +26,7 @@ interface VideoControlsProps {
   videoPlayer: any;
   videoState: string;
   device: Device;
+  toggleFretboardControls(): void;
 }
 
 interface VideoControlsState {
@@ -135,12 +136,6 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     this.isScrubbing = false;
   }
 
-  resetSliders = (e: React.SyntheticEvent<any>): void => {
-    const seekSliderValues = Object.assign([], VideoControls.DEFAULT_SEEK_SLIDER_VALUES);
-    seekSliderValues[1] = this.state.seekSliderValues[1];
-    this.setState(Object.assign({}, this.state, { seekSliderValues }));
-  }
-
   updatePlaybackRate = (e: React.SyntheticEvent<any>): void => {
     const playbackRateIndex = (this.state.playbackRateIndex + 1) % VideoControls.PLAYBACK_RATES.length;
 
@@ -150,7 +145,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
   }
 
   render(): JSX.Element {
-    const { videoPlayer, videoState, device } = this.props;
+    const { videoPlayer, videoState, device, toggleFretboardControls } = this.props;
     const { currentTime, seekSliderValues, playbackRateIndex } = this.state;
     const { PLAYBACK_RATES } = VideoControls;
 
@@ -163,7 +158,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
       <div className="VideoControls">
         <Row type="flex" align="middle" justify="center">
           <Col span={4}>
-            <Row type="flex" align="middle" justify="center" className="VideoControls__grannular">
+            <Row className="VideoControls__grannular" type="flex" align="middle" justify="center">
               <Play isActive={isActive} videoPlayer={videoPlayer} />
               {
                 isMobile ?
@@ -179,12 +174,17 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
               }
             </Row>
           </Col>
-          <Col span={20}>
+          <Col span={16}>
             <Scrubber
               values={seekSliderValues}
               onChange={this.updateSeekSlider}
               onAfterChange={this.restorePlayState}
             />
+          </Col>
+          <Col span={4}>
+            <Row className="VideoControls__grannular" type="flex" align="middle" justify="center">
+              <Icon onClick={toggleFretboardControls} type="setting" />
+            </Row>
           </Col>
         </Row>
       </div>
@@ -306,6 +306,8 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
   }
 }
 
+import { togglePanel } from 'data/panels/actions';
+
 const mapStateToProps = state => ({
   videoPlayer: state.video.player,
   videoState: state.video.state,
@@ -313,7 +315,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-
+  toggleFretboardControls: () => dispatch(togglePanel('fretboardControls'))
 });
 
 export default connect(

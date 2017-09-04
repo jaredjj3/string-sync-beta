@@ -7,49 +7,63 @@ import Icon from 'antd/lib/icon';
 
 interface TabControlsProps {
   focusedLine: number;
+  focusedMeasure: number;
   numMeasures: number;
-  measuresPerLine: number;
-  focusLine(line: number): void;
+  focusMeasure(line: number): void;
+  toggleFretboard(): void;
 }
 
 interface TabControlsState {}
 
 class TabControls extends React.Component<TabControlsProps, TabControlsState> {
-  focusNextLine = (e: React.SyntheticEvent<any>): void => {
-    const { numMeasures, measuresPerLine, focusedLine } = this.props;
-
-    const numLines = Math.ceil(numMeasures / measuresPerLine);
-    const lineToFocus = Math.min(focusedLine + 1, numLines);
-
-    this.props.focusLine(lineToFocus);
+  focusNextMeasure = (e: React.SyntheticEvent<any>): void => {
+    const { focusedMeasure, numMeasures, focusMeasure } = this.props;
+    focusMeasure(Math.min(focusedMeasure + 1, numMeasures));
   }
 
-  focusPrevLine = (e: React.SyntheticEvent<any>): void => {
-    const { numMeasures, measuresPerLine, focusedLine } = this.props;
-
-    const numLines = Math.ceil(numMeasures / measuresPerLine);
-    const lineToFocus = Math.max(focusedLine - 1, 0);
-
-    this.props.focusLine(lineToFocus);
+  focusPrevMeasure = (e: React.SyntheticEvent<any>): void => {
+    const { focusedMeasure, focusMeasure } = this.props;
+    focusMeasure(Math.max(focusedMeasure - 1, 0));
   }
 
   render(): JSX.Element {
+    const { toggleFretboard } = this.props;
+
     return (
       <div className="TabControls">
         <Row type="flex" align="middle" justify="center">
           <Col className="TabControls__nav" span={4}>
-            <div onClick={this.focusPrevLine}>
+            <div onClick={this.focusPrevMeasure}>
               <Row type="flex" align="middle" justify="center">
-                <Icon type="left" />
+                <Icon type="left-circle-o" />
               </Row>
             </div>
           </Col>
-          <Col span={16}>
+          <Col className="TabControls__nav" span={4}>
+            <div>
+              <Row type="flex" align="middle" justify="center">
+                <Icon type="left-square-o" />
+              </Row>
+            </div>
+          </Col>
+          <Col className="TabControls__nav" span={8}>
+            <div onClick={toggleFretboard}>
+              <Row type="flex" align="middle" justify="center">
+                <Icon type="database" />
+              </Row>
+            </div>
           </Col>
           <Col className="TabControls__nav" span={4}>
-            <div onClick={this.focusNextLine}>
+            <div>
               <Row type="flex" align="middle" justify="center">
-                <Icon type="right" />
+                <Icon type="right-square-o" />
+              </Row>
+            </div>
+          </Col>
+          <Col className="TabControls__nav" span={4}>
+            <div onClick={this.focusNextMeasure}>
+              <Row type="flex" align="middle" justify="center">
+                <Icon type="right-circle-o" />
               </Row>
             </div>
           </Col>
@@ -59,16 +73,18 @@ class TabControls extends React.Component<TabControlsProps, TabControlsState> {
   }
 }
 
-import { focusLine } from 'data/tab/actions';
+import { focusMeasure } from 'data/tab/actions';
+import { togglePanel } from 'data/panels/actions';
 
 const mapStateToProps = state => ({
   focusedLine: state.tab.focusedLine,
-  numMeasures: state.tab.numMeasures,
-  measuresPerLine: state.tab.measuresPerLine
+  focusedMeasure: state.tab.focusedMeasure,
+  numMeasures: state.tab.numMeasures
 });
 
 const mapDispatchToProps = dispatch => ({
-  focusLine: (line: number) => dispatch(focusLine(line))
+  focusMeasure: (measure: number) => dispatch(focusMeasure(measure)),
+  toggleFretboard: () => dispatch(togglePanel('fretboard'))
 });
 
 export default connect(
