@@ -58,6 +58,8 @@ class Score extends React.PureComponent<ScoreProps, ScoreState> {
 
   componentDidUpdate(): void {
     this.renderScore();
+    this.maybeSetMeasuresPerLine(this.formatter.measuresPerLine);
+    this.maybeSetNumMeasures(this.formatter.measures.length);
   }
 
   setCanvas = (c: HTMLCanvasElement): void => {
@@ -101,9 +103,6 @@ class Score extends React.PureComponent<ScoreProps, ScoreState> {
     } catch (e) {
       console.error(e);
     }
-
-    this.maybeSetMeasuresPerLine(this.formatter.measuresPerLine);
-    this.maybeSetNumMeasures(this.formatter.measures.length);
   }
 
   renderTabText(tabStaves: any): void {

@@ -6,20 +6,25 @@ import Col from 'antd/lib/col';
 import Icon from 'antd/lib/icon';
 
 interface TabControlsProps {
-  focusedMeasure: number;
+  focusedLine: number;
+  numMeasures: number;
   measuresPerLine: number;
-  focusMeasure(measure: number): void;
+  focusLine(line: number): void;
 }
 
 interface TabControlsState {}
 
 class TabControls extends React.Component<TabControlsProps, TabControlsState> {
   focusNextLine = (e: React.SyntheticEvent<any>): void => {
-    const { measuresPerLine, focusedMeasure } = this.props;
+    const { numMeasures, measuresPerLine, focusedLine } = this.props;
+
+    const numLines = Math.ceil(numMeasures / measuresPerLine);
+    // TODO: const lineToFocus =
   }
 
   focusPrevLine = (e: React.SyntheticEvent<any>): void => {
-    const { measuresPerLine, focusedMeasure } = this.props;
+    const { numMeasures, measuresPerLine, focusedLine } = this.props;
+
   }
 
   render(): JSX.Element {
@@ -44,15 +49,16 @@ class TabControls extends React.Component<TabControlsProps, TabControlsState> {
   }
 }
 
-import { focusMeasure } from 'data/tab/actions';
+import { focusLine } from 'data/tab/actions';
 
 const mapStateToProps = state => ({
-  focusedMeasure: state.tab.focusedMeasure,
+  focusedLine: state.tab.focusedLine,
+  numMeasures: state.tab.numMeasures,
   measuresPerLine: state.tab.measuresPerLine
 });
 
 const mapDispatchToProps = dispatch => ({
-  focusMeasure: (measure: number) => dispatch(focusMeasure(measure))
+  focusLine: (line: number) => dispatch(focusLine(line))
 });
 
 export default connect(
