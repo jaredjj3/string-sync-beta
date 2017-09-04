@@ -7,6 +7,7 @@ import notation from './notation/reducer';
 import video from './video/reducer';
 import feature from './feature/reducer';
 import behavior from './behavior/reducer';
+import tab from './tab/reducer';
 
 export default combineReducers({
   device,
@@ -16,4 +17,5 @@ export default combineReducers({
   video,
   feature,
   behavior,
+  tab,
 });
