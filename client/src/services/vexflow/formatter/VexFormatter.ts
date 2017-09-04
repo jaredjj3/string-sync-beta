@@ -19,6 +19,7 @@ class VexFormatter {
   code: string = '';
   width: number = 0;
   formatted: string = '';
+  measures: Array<string> = [];
 
   get measuresPerLine(): number {
     const { width } = this;
@@ -56,20 +57,20 @@ class VexFormatter {
     const deconstructed = this._deconstruct(elements);
     const reconstructed = this._reconstruct(deconstructed);
 
-    const measures = reconstructed.components.notes.reduce((_measures, note) => {
-        if (note.type === 'bar') {
-          _measures.push([]);
-        }
+    this.measures = reconstructed.components.notes.reduce((_measures, note) => {
+      if (note.type === 'bar') {
+        _measures.push([]);
+      }
 
-        _measures[_measures.length - 1].push(note.vextab);
+      _measures[_measures.length - 1].push(note.vextab);
 
-        return _measures;
-      }, []).map(measure => measure.join(' '));
+      return _measures;
+    }, []).map(measure => measure.join(' '));
 
     const tabstave = `tabstave ${reconstructed.components.options.vextab}`;
 
-    const chunkSize = Math.min(this.measuresPerLine, measures.length - 1);
-    const formatted = inChunksOf(chunkSize, measures, measureGroup => (
+    const chunkSize = Math.min(this.measuresPerLine, this.measures.length - 1);
+    const formatted = inChunksOf(chunkSize, this.measures, measureGroup => (
       [tabstave].concat([`notes ${measureGroup.join(' ')}`]).concat(['options space=20'])
     )).map(measure => measure.join('\n'));
 
