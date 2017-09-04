@@ -17,7 +17,7 @@ const BARS_BY_TYPE: any = {
   'repeat-begin': '=|:',
   'repeat-end': '=:|',
   'double-repeat': '=::',
-  'end-bar': '=|=',
+  'end': '=|=',
   'single': '|'
 };
 
@@ -111,6 +111,10 @@ class Process {
 
   private static fret(token: Element.Token): string {
     return `${token.articulation || ''}${token.fret}${token.decorator || ''}/${token.string}`;
+  }
+
+  private static annotations(token: Element.Token): string {
+    return `$${token.params.join(',')}$`;
   }
 
   // called by Process.command

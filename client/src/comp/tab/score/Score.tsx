@@ -15,21 +15,19 @@ interface ScoreProps {
 interface ScoreState {}
 
 const test = `
-options space=20
-
 tabstave
 notation=true
 key=A
 time=4/4
 clef=none
 notes =|: :q (5/2.5/3.7/4) :8 7-5h6/3 ^3^ 5h6-7/5 ^3^ :q 7V/4 |
-notes :8 t12p7/4 s5s3/4 :8 3s:16:5-7/5 :h p5/4
+notes :8 t12p7/4 s5s3/4 :8 3s:16:5-7/5 :h p5/4 $Fi,Ga,Ro!$
 text :w, |#segno, ,|, :hd, , #tr
-
-options space=40
 
 tabstave
 notation=true
+key=A
+time=4/4
 clef=none
 
 notes :q (5/4.5/5) (7/4.7/5)s(5/4.5/5) ^3^
@@ -71,12 +69,17 @@ class Score extends React.PureComponent<ScoreProps, ScoreState> {
   renderScore(): void {
     const { viewport } = this.props.device;
 
-    const artist = new Artist(10, 0, viewport.width - 10, { scale: 1.0 });
-    const tab = new VexTab(artist);
+    let artist = new Artist(10, 0, viewport.width - 10, { scale: 1.0 });
+    let tab = new VexTab(artist);
 
     try {
       tab.parse(test);
-      const formatted = this.formatter.update(test, 2, tab.elements);
+      const formatted = this.formatter.update(test, viewport.width, tab.elements);
+
+      artist = new Artist(10, 0, viewport.width - 10, { scale: 1.0 });
+      tab = new VexTab(artist);
+      tab.parse(formatted);
+
       artist.render(this.renderer);
       this.renderTabText(artist.staves.map(stave => stave.tab));
     } catch (e) {
@@ -89,10 +92,10 @@ class Score extends React.PureComponent<ScoreProps, ScoreState> {
     this.ctx.font = '24px sans-serif';
 
     tabStaves.map(({ y }) => {
-      const x = 20;
-      this.ctx.fillText('T', x, y + 73);
-      this.ctx.fillText('A', x, y + 93);
-      this.ctx.fillText('B', x, y + 113);
+      const x = 25;
+      this.ctx.fillText('T', x, y + 94);
+      this.ctx.fillText('A', x, y + 114);
+      this.ctx.fillText('B', x, y + 134 );
     });
 
     this.ctx.restore();

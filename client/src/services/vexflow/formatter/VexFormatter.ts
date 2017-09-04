@@ -1,6 +1,7 @@
 import Process from './process';
 import isBetween from 'util/isBetween';
 
+import inChunksOf from 'util/inChunksOf';
 import { merge } from 'lodash';
 
 interface Param {
@@ -23,9 +24,9 @@ class VexFormatter {
     const { width } = this;
 
     switch (true) {
-      case width <= 576:
+      case width <= 646:
         return 1;
-      case isBetween(width, 576, 768):
+      case isBetween(width, 646, 768):
         return 2;
       case isBetween(width, 768, 992):
         return 3;
@@ -54,14 +55,34 @@ class VexFormatter {
   private _format(elements: Array<any>): void {
     const deconstructed = this._deconstruct(elements);
     const reconstructed = this._reconstruct(deconstructed);
-    debugger
+
+    const measures = reconstructed.components.notes.reduce((_measures, note) => {
+        if (note.type === 'bar') {
+          _measures.push([]);
+        }
+
+        _measures[_measures.length - 1].push(note.vextab);
+
+        return _measures;
+      }, []).map(measure => measure.join(' '));
+
+    const tabstave = `tabstave ${reconstructed.components.options.vextab}`;
+
+    const chunkSize = Math.min(this.numMeasuresPerStave, measures.length - 1);
+    const formatted = inChunksOf(chunkSize, measures, measureGroup => (
+      [tabstave].concat([`notes ${measureGroup.join(' ')}`]).concat(['options space=20'])
+    )).map(measure => measure.join('\n'));
+
+    formatted.unshift('options space=40');
+
+    this.formatted = formatted.join('\n\n');
   }
 
   private _deconstruct(elements: Array<any>): Array<any> {
     return elements.map(element => Process.element(element));
   }
 
-  private _reconstruct(deconstructed: Array<any>): Array<any> {
+  private _reconstruct(deconstructed: Array<any>): any {
     // For now, ignore all the auxilary options.
     const tabstaves = deconstructed.filter(element => element.type === 'tabstave');
     return tabstaves.reduce((masterTabstave, tabstave) => {
@@ -70,10 +91,15 @@ class VexFormatter {
 
       masterTabstave.components.notes = dst.notes.concat(src.notes);
       masterTabstave.components.text = dst.text.concat(src.text);
-      masterTabstave.components.options.vextab = dst.options.vextab.concat(src.options.vextab);
+      // FIXME:
+      // masterTabstave.components.options.vextab = dst.options.vextab.concat(src.options.vextab);
 
       return masterTabstave;
     });
+  }
+
+  private _measuresFrom(components: any): any {
+
   }
 }
 
