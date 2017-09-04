@@ -19,12 +19,18 @@ class TabControls extends React.Component<TabControlsProps, TabControlsState> {
     const { numMeasures, measuresPerLine, focusedLine } = this.props;
 
     const numLines = Math.ceil(numMeasures / measuresPerLine);
-    // TODO: const lineToFocus =
+    const lineToFocus = Math.min(focusedLine + 1, numLines - 1);
+
+    this.props.focusLine(lineToFocus);
   }
 
   focusPrevLine = (e: React.SyntheticEvent<any>): void => {
     const { numMeasures, measuresPerLine, focusedLine } = this.props;
 
+    const numLines = Math.ceil(numMeasures / measuresPerLine);
+    const lineToFocus = Math.max(focusedLine - 1, 0);
+
+    this.props.focusLine(lineToFocus);
   }
 
   render(): JSX.Element {
@@ -32,16 +38,20 @@ class TabControls extends React.Component<TabControlsProps, TabControlsState> {
       <div className="TabControls">
         <Row type="flex" align="middle" justify="center">
           <Col className="TabControls__nav" span={4}>
-            <Row type="flex" align="middle" justify="center">
-              <Icon type="left" />
-            </Row>
+            <div onClick={this.focusPrevLine}>
+              <Row type="flex" align="middle" justify="center">
+                <Icon type="left" />
+              </Row>
+            </div>
           </Col>
           <Col span={16}>
           </Col>
           <Col className="TabControls__nav" span={4}>
-            <Row type="flex" align="middle" justify="center">
-              <Icon type="right" />
-            </Row>
+            <div onClick={this.focusNextLine}>
+              <Row type="flex" align="middle" justify="center">
+                <Icon type="right" />
+              </Row>
+            </div>
           </Col>
         </Row>
       </div>

@@ -34,10 +34,12 @@ export default (state = defaultState, action): StoreTab => {
 
     case FOCUS_MEASURE:
       nextState.focusedMeasure = action.measure;
+      nextState.focusedLine = Math.floor(nextState.focusedMeasure / nextState.measuresPerLine);
       return nextState;
 
     case FOCUS_LINE:
       nextState.focusedLine = action.line;
+      nextState.focusedMeasure = nextState.focusedLine * nextState.measuresPerLine;
       return nextState;
 
     default:
