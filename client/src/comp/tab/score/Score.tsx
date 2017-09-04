@@ -5,6 +5,7 @@ import Icon from 'antd/lib/icon';
 import { VexTab, Artist, Flow, Formatter } from 'services/vexflow';
 
 import { Device } from 'types/device';
+import { Notation } from 'types/notation';
 
 const { Renderer } = Flow;
 
@@ -12,8 +13,11 @@ interface ScoreProps {
   device: Device;
   measuresPerLine: number;
   numMeasures: number;
+  notation: Notation;
   setMeasuresPerLine(measuresPerLine: number): void;
   setNumMeasures(numMeasures: number): void;
+  setArtist(artist: Artist): void;
+  resetTab(): void;
 }
 
 interface ScoreState {}
@@ -26,7 +30,6 @@ time=4/4
 clef=none
 notes =|: :q (5/2.5/3.7/4) :8 7-5h6/3 ^3^ 5h6-7/5 ^3^ :q 7V/4 |
 notes :8 t12p7/4 s5s3/4 :8 3s:16:5-7/5 :h p5/4 $Fi,Ga,Ro!$
-text :w, |#segno, ,|, :hd, , #tr
 
 tabstave
 notation=true
@@ -37,18 +40,16 @@ clef=none
 notes :q (5/4.5/5) (7/4.7/5)s(5/4.5/5) ^3^
 notes :8 7-5/4 $.a./b.$ (5/4.5/5)h(7/5) =:|
 notes :8 (12/5.12/4)ds(5/5.5/4)u 3b4/5
-notes :h (5V/6.5/4.6/3.7/2) $.italic.let ring$ =|=
-
-text :h, ,.font=Times-12-italic, D.S. al coda, |#coda
-text :h, ,.-1, .font=Arial-14-bold,A13
-text ++, .23, #f
+notes :h (5V/6.5/4.6/3.7/2) $.italic.let ring$
 `;
 
-class Score extends React.PureComponent<ScoreProps, ScoreState> {
+class Score extends React.Component<ScoreProps, ScoreState> {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
   renderer: any;
   formatter: Formatter;
+  container: HTMLDivElement;
+  artist: Artist;
 
   constructor(props: ScoreProps) {
     super(props);
@@ -56,10 +57,18 @@ class Score extends React.PureComponent<ScoreProps, ScoreState> {
     this.formatter = new Formatter();
   }
 
-  componentDidUpdate(): void {
+  componentWillReceiveProps(nextProps: ScoreProps): void {
     this.renderScore();
-    this.maybeSetMeasuresPerLine(this.formatter.measuresPerLine);
-    this.maybeSetNumMeasures(this.formatter.measures.length);
+    const didSetMeasuresPerLine = this.maybeSetMeasuresPerLine(this.formatter.measuresPerLine);
+    const didSetNumMeasures = this.maybeSetNumMeasures(this.formatter.measures.length);
+
+    if (didSetMeasuresPerLine || didSetNumMeasures) {
+      this.props.setArtist(this.artist);
+    }
+  }
+
+  componentWillUnmount(): void {
+    this.props.resetTab();
   }
 
   setCanvas = (c: HTMLCanvasElement): void => {
@@ -72,16 +81,22 @@ class Score extends React.PureComponent<ScoreProps, ScoreState> {
     this.renderer = new Renderer(c, Renderer.Backends.CANVAS);
   }
 
-  maybeSetMeasuresPerLine = (measuresPerLine: number): void => {
+  maybeSetMeasuresPerLine = (measuresPerLine: number): boolean => {
     if (measuresPerLine !== this.props.measuresPerLine) {
       this.props.setMeasuresPerLine(measuresPerLine);
+      return true;
     }
+
+    return false;
   }
 
-  maybeSetNumMeasures = (numMeasures: number): void => {
+  maybeSetNumMeasures = (numMeasures: number): boolean => {
     if (numMeasures !== this.props.numMeasures) {
       this.props.setNumMeasures(numMeasures);
+      return true;
     }
+
+    return false;
   }
 
   renderScore(): void {
@@ -103,13 +118,15 @@ class Score extends React.PureComponent<ScoreProps, ScoreState> {
     } catch (e) {
       console.error(e);
     }
+
+    this.artist = artist;
   }
 
-  renderTabText(tabStaves: any): void {
+  renderTabText(tabstaves: any): void {
     this.ctx.save();
     this.ctx.font = '24px sans-serif';
 
-    tabStaves.map(({ y }) => {
+    tabstaves.map(({ y }) => {
       const x = 25;
       this.ctx.fillText('T', x, y + 94);
       this.ctx.fillText('A', x, y + 114);
@@ -130,17 +147,20 @@ class Score extends React.PureComponent<ScoreProps, ScoreState> {
   }
 }
 
-import { setMeasuresPerLine, setNumMeasures } from 'data/tab/actions';
+import { setMeasuresPerLine, setNumMeasures, setArtist, resetTab } from 'data/tab/actions';
 
 const mapStateToProps = state => ({
   device: state.device,
   measuresPerLine: state.tab.measuresPerLine,
-  numMeasures: state.tab.numMeasures
+  numMeasures: state.tab.numMeasures,
+  notation: state.notation
 });
 
 const mapDispatchToProps = dispatch => ({
   setMeasuresPerLine: (measuresPerLine: number) => dispatch(setMeasuresPerLine(measuresPerLine)),
-  setNumMeasures: (numMeasures: number) => dispatch(setNumMeasures(numMeasures))
+  setNumMeasures: (numMeasures: number) => dispatch(setNumMeasures(numMeasures)),
+  setArtist: (artist: Artist) => dispatch(setArtist(artist)),
+  resetTab: () => dispatch(resetTab())
 });
 
 export default connect(

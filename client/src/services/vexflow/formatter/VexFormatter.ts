@@ -57,8 +57,8 @@ class VexFormatter {
     const deconstructed = this._deconstruct(elements);
     const reconstructed = this._reconstruct(deconstructed);
 
-    this.measures = reconstructed.components.notes.reduce((_measures, note) => {
-      if (note.type === 'bar') {
+    this.measures = reconstructed.components.notes.reduce((_measures, note, index) => {
+      if (note.type === 'bar' && index < reconstructed.components.notes.length - 1) {
         _measures.push([]);
       }
 
@@ -71,10 +71,11 @@ class VexFormatter {
 
     const chunkSize = Math.min(this.measuresPerLine, this.measures.length - 1);
     const formatted = inChunksOf(chunkSize, this.measures, measureGroup => (
-      [tabstave].concat([`notes ${measureGroup.join(' ')}`]).concat(['options space=20'])
+      [tabstave].concat([`notes ${measureGroup.join(' ')}`]).concat(['options space=60'])
     )).map(measure => measure.join('\n'));
 
-    formatted.unshift('options space=40');
+    formatted.unshift('options space=20');
+    formatted.push('options space=300');
 
     this.formatted = formatted.join('\n\n');
   }

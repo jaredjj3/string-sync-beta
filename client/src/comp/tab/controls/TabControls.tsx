@@ -19,7 +19,7 @@ class TabControls extends React.Component<TabControlsProps, TabControlsState> {
     const { numMeasures, measuresPerLine, focusedLine } = this.props;
 
     const numLines = Math.ceil(numMeasures / measuresPerLine);
-    const lineToFocus = Math.min(focusedLine + 1, numLines - 1);
+    const lineToFocus = Math.min(focusedLine + 1, numLines);
 
     this.props.focusLine(lineToFocus);
   }
