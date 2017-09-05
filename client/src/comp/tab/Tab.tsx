@@ -25,7 +25,7 @@ class Tab extends React.PureComponent<TabProps, TabState> {
     showControls: false
   };
 
-  scoreOverlap: any;
+  scoreLayer: any;
 
   componentWillReceiveProps(nextProps: TabProps): void {
     this.maybeScroll(nextProps.artist, nextProps.focusedLine);
@@ -37,19 +37,17 @@ class Tab extends React.PureComponent<TabProps, TabState> {
     }
 
     const tabstavePosY = artist.staves.map(stave => stave.note.bounds.y);
-    this.scoreOverlap.container.scrollTop = tabstavePosY[focusedLine] - tabstavePosY[0];
+    this.scoreLayer.container.scrollTop = tabstavePosY[focusedLine] - tabstavePosY[0];
   }
 
   render(): JSX.Element {
     return (
       <div className="TabContainer">
         <Overlap
-          className="Tab"
           height="300px"
           width="100vw"
-          ref={c => this.scoreOverlap = c}
         >
-          <Layer>
+          <Layer className="ScoreContainer" ref={c => this.scoreLayer = c}>
             <Score />
           </Layer>
           <Layer>

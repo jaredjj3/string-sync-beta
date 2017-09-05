@@ -13,8 +13,6 @@ interface OverlapState {}
 class Overlap extends React.PureComponent<OverlapProps, OverlapState> {
   static Layer: any = Layer;
 
-  container: any;
-
   render(): JSX.Element {
     const { height, width, className } = this.props;
 
@@ -25,7 +23,6 @@ class Overlap extends React.PureComponent<OverlapProps, OverlapState> {
       <div
         className={overlapClassNames}
         style={{ height, width }}
-        ref={c => this.container = c}
       >
         {this.props.children}
       </div>

@@ -5,7 +5,7 @@ import Icon from 'antd/lib/icon';
 import { VexTab, Artist, Flow, Formatter } from 'services/vexflow';
 
 import { Device } from 'types/device';
-import { Notation } from 'types/notation';
+import { BuildStructs } from 'types/buildStructs';
 
 const { Renderer } = Flow;
 
@@ -13,7 +13,7 @@ interface ScoreProps {
   device: Device;
   measuresPerLine: number;
   numMeasures: number;
-  notation: Notation;
+  buildStructs: BuildStructs;
   setMeasuresPerLine(measuresPerLine: number): void;
   setNumMeasures(numMeasures: number): void;
   setArtist(artist: Artist): void;
@@ -58,11 +58,21 @@ class Score extends React.Component<ScoreProps, ScoreState> {
   }
 
   componentWillReceiveProps(nextProps: ScoreProps): void {
-    this.renderScore();
     const didSetMeasuresPerLine = this.maybeSetMeasuresPerLine(this.formatter.measuresPerLine);
     const didSetNumMeasures = this.maybeSetNumMeasures(this.formatter.measures.length);
 
-    this.props.setArtist(this.artist);
+    const shouldSetArtist = (
+      didSetMeasuresPerLine ||
+      didSetNumMeasures
+    );
+
+    if (shouldSetArtist) {
+      this.props.setArtist(this.artist);
+    }
+  }
+
+  componentWillUpdate(): void {
+    this.renderScore();
   }
 
   componentWillUnmount(): void {
@@ -150,7 +160,7 @@ const mapStateToProps = state => ({
   device: state.device,
   measuresPerLine: state.tab.measuresPerLine,
   numMeasures: state.tab.numMeasures,
-  notation: state.notation
+  buildStructs: state.notation.buildStructs
 });
 
 const mapDispatchToProps = dispatch => ({
