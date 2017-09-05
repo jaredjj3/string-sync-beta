@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import { isVideoActive } from 'util/videoStateCategory';
 
@@ -6,9 +7,9 @@ import { Point } from 'types/point';
 import { Artist } from 'services/vexflow';
 
 interface CaretProps {
-  // videoPlayer: any;
-  // videoState: string;
-  // artist: Artist;
+  videoPlayer: any;
+  videoState: string;
+  artist: Artist;
 }
 
 interface CaretState {
@@ -43,7 +44,8 @@ class Caret extends React.Component<CaretProps, CaretState> {
   // shouldComponentUpdate(nextProps: CaretProps, nextState: CaretState): boolean {
   //   return (
   //     nextState.shouldRAF ||
-  //     this.props.videoPlayer != nextProps.videoPlayer
+  //     this.props.videoPlayer !== nextProps.videoPlayer ||
+  //     this.props.videoState !== nextProps.videoState
   //   );
   // }
 
@@ -60,4 +62,17 @@ class Caret extends React.Component<CaretProps, CaretState> {
   }
 }
 
-export default Caret;
+const mapStateToProps = state => ({
+  videoPlayer: state.video.player,
+  videoState: state.video.state,
+  artist: state.tab.artist
+});
+
+const mapDispatchToProps = dispatch => ({
+
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Caret);

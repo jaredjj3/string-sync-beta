@@ -20,6 +20,7 @@ class VexFormatter {
   width: number = 0;
   formatted: string = '';
   measures: Array<string> = [];
+  chunkSize: number = 0;
 
   get measuresPerLine(): number {
     const { width } = this;
@@ -69,8 +70,8 @@ class VexFormatter {
 
     const tabstave = `tabstave ${reconstructed.components.options.vextab}`;
 
-    const chunkSize = Math.min(this.measuresPerLine, this.measures.length - 1);
-    const formatted = inChunksOf(chunkSize, this.measures, measureGroup => (
+    this.chunkSize = Math.min(this.measuresPerLine, this.measures.length);
+    const formatted = inChunksOf(this.chunkSize, this.measures, measureGroup => (
       [tabstave].concat([`notes ${measureGroup.join(' ')}`]).concat(['options space=60'])
     )).map(measure => measure.join('\n'));
 

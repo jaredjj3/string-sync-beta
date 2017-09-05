@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import Icon from 'antd/lib/icon';
 import { VexTab, Artist, Flow, Formatter } from 'services/vexflow';
+import { isEqual } from 'lodash';
 
 import { Device } from 'types/device';
 import { BuildStructs } from 'types/buildStructs';
@@ -41,6 +42,8 @@ notes :q (5/4.5/5) (7/4.7/5)s(5/4.5/5) ^3^
 notes :8 7-5/4 $.a./b.$ (5/4.5/5)h(7/5) =:|
 notes :8 (12/5.12/4)ds(5/5.5/4)u 3b4/5
 notes :h (5V/6.5/4.6/3.7/2) $.italic.let ring$
+notes =|: :q (5/2.5/3.7/4) :8 7-5h6/3 ^3^ 5h6-7/5 ^3^ :q 7V/4 |
+notes :8 t12p7/4 s5s3/4 :8 3s:16:5-7/5 :h p5/4 $Fi,Ga,Ro!$
 `;
 
 class Score extends React.Component<ScoreProps, ScoreState> {
@@ -48,7 +51,6 @@ class Score extends React.Component<ScoreProps, ScoreState> {
   ctx: CanvasRenderingContext2D;
   renderer: any;
   formatter: Formatter;
-  container: HTMLDivElement;
   artist: Artist;
 
   constructor(props: ScoreProps) {
@@ -57,22 +59,27 @@ class Score extends React.Component<ScoreProps, ScoreState> {
     this.formatter = new Formatter();
   }
 
-  componentWillReceiveProps(nextProps: ScoreProps): void {
-    const didSetMeasuresPerLine = this.maybeSetMeasuresPerLine(this.formatter.measuresPerLine);
-    const didSetNumMeasures = this.maybeSetNumMeasures(this.formatter.measures.length);
-
-    const shouldSetArtist = (
-      didSetMeasuresPerLine ||
-      didSetNumMeasures
-    );
-
-    if (shouldSetArtist) {
-      this.props.setArtist(this.artist);
-    }
+  componentDidMount(): void {
+    this.renderScore();
+    this.maybeSetMeasuresPerLine(this.formatter.measuresPerLine);
+    this.maybeSetNumMeasures(this.formatter.measures.length);
+    this.props.setArtist(this.artist);
   }
 
-  componentWillUpdate(): void {
+  shouldComponentUpdate(nextProps: ScoreProps): boolean {
+    return (
+      this.props.measuresPerLine !== nextProps.measuresPerLine ||
+      this.props.numMeasures !== nextProps.numMeasures ||
+      !isEqual(this.props.device, nextProps.device)
+      // TODO: after the seeds are fixed: this.props.buildStructs !== nextProps.buildStructs
+    );
+  }
+
+  componentDidUpdate(): void {
     this.renderScore();
+    this.maybeSetMeasuresPerLine(this.formatter.chunkSize);
+    this.maybeSetNumMeasures(this.formatter.measures.length);
+    this.props.setArtist(this.artist);
   }
 
   componentWillUnmount(): void {
@@ -89,22 +96,16 @@ class Score extends React.Component<ScoreProps, ScoreState> {
     this.renderer = new Renderer(c, Renderer.Backends.CANVAS);
   }
 
-  maybeSetMeasuresPerLine = (measuresPerLine: number): boolean => {
+  maybeSetMeasuresPerLine = (measuresPerLine: number): void => {
     if (measuresPerLine !== this.props.measuresPerLine) {
       this.props.setMeasuresPerLine(measuresPerLine);
-      return true;
     }
-
-    return false;
   }
 
-  maybeSetNumMeasures = (numMeasures: number): boolean => {
+  maybeSetNumMeasures = (numMeasures: number): void => {
     if (numMeasures !== this.props.numMeasures) {
       this.props.setNumMeasures(numMeasures);
-      return true;
     }
-
-    return false;
   }
 
   renderScore(): void {
