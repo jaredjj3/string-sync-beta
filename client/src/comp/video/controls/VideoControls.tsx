@@ -91,7 +91,7 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
       this.state.playbackRateIndex !== nextState.playbackRateIndex ||
       !isEqual(this.state.seekSliderValues, nextState.seekSliderValues) ||
       !isEqual(this.props.device, nextProps.device) ||
-      this.props.videoPlayer !== nextProps.videoPlayer ||
+      this.props.videoPlayer != nextProps.videoPlayer ||
       videoStateCategory(this.props.videoState) !== videoStateCategory(nextProps.videoState)
     );
   }

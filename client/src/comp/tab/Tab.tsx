@@ -43,11 +43,11 @@ class Tab extends React.PureComponent<TabProps, TabState> {
   render(): JSX.Element {
     return (
       <div className="TabContainer">
-        <Overlap
-          height="300px"
-          width="100vw"
-        >
-          <Layer className="ScoreContainer" ref={c => this.scoreLayer = c}>
+        <Overlap height="300px" width="100vw">
+          <Layer
+            className="ScoreContainer"
+            ref={c => this.scoreLayer = c}
+          >
             <Score />
           </Layer>
           <Layer>
