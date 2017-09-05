@@ -32,40 +32,44 @@ class TabControls extends React.Component<TabControlsProps, TabControlsState> {
     return (
       <div className="TabControls">
         <Row type="flex" align="middle" justify="center">
-          <Col className="TabControls__nav" span={4}>
-            <div onClick={this.focusPrevMeasure}>
-              <Row type="flex" align="middle" justify="center">
-                <Icon type="left-circle-o" />
-              </Row>
-            </div>
-          </Col>
-          <Col className="TabControls__nav" span={4}>
-            <div>
-              <Row type="flex" align="middle" justify="center">
-                <Icon type="left-square-o" />
-              </Row>
-            </div>
-          </Col>
-          <Col className="TabControls__nav" span={8}>
-            <div onClick={toggleFretboard}>
-              <Row type="flex" align="middle" justify="center">
-                <Icon type="database" />
-              </Row>
-            </div>
-          </Col>
-          <Col className="TabControls__nav" span={4}>
-            <div>
-              <Row type="flex" align="middle" justify="center">
-                <Icon type="right-square-o" />
-              </Row>
-            </div>
-          </Col>
-          <Col className="TabControls__nav" span={4}>
-            <div onClick={this.focusNextMeasure}>
-              <Row type="flex" align="middle" justify="center">
-                <Icon type="right-circle-o" />
-              </Row>
-            </div>
+          <Col xs={24} sm={14} md={12} lg={8} xl={6}>
+            <Row type="flex" align="middle" justify="center">
+              <Col className="TabControls__nav" span={4}>
+                <div onClick={this.focusPrevMeasure}>
+                  <Row type="flex" align="middle" justify="center">
+                    <Icon type="left-circle-o" />
+                  </Row>
+                </div>
+              </Col>
+              <Col className="TabControls__nav" span={4}>
+                <div>
+                  <Row type="flex" align="middle" justify="center">
+                    <Icon type="left-square-o" />
+                  </Row>
+                </div>
+              </Col>
+              <Col className="TabControls__nav" span={8}>
+                <div onClick={toggleFretboard}>
+                  <Row type="flex" align="middle" justify="center">
+                    <Icon type="database" />
+                  </Row>
+                </div>
+              </Col>
+              <Col className="TabControls__nav" span={4}>
+                <div>
+                  <Row type="flex" align="middle" justify="center">
+                    <Icon type="right-square-o" />
+                  </Row>
+                </div>
+              </Col>
+              <Col className="TabControls__nav" span={4}>
+                <div onClick={this.focusNextMeasure}>
+                  <Row type="flex" align="middle" justify="center">
+                    <Icon type="right-circle-o" />
+                  </Row>
+                </div>
+              </Col>
+            </Row>
           </Col>
         </Row>
       </div>
