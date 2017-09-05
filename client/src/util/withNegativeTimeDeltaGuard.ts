@@ -8,7 +8,7 @@
 import { isVideoActive } from './videoStateCategory';
 import PLAYER_STATES from 'util/const/PLAYER_STATES';
 
-const YOUTUBE_PREDICTION_OFFSET: number = 0.015;
+const YOUTUBE_PREDICTION_OFFSET: number = 0.016;
 
 const _shouldHaveDefaultBehavior = (videoPlayer: any, lastCalledAt: number) => {
   return (
@@ -18,8 +18,7 @@ const _shouldHaveDefaultBehavior = (videoPlayer: any, lastCalledAt: number) => {
 };
 
 const _getCurrentTime = (videoPlayer: any) => {
-  // may need to bind
-  const getCurrentTime = videoPlayer.getCurrentTime;
+  const getCurrentTime = videoPlayer.getCurrentTime.bind(videoPlayer);
 
   let lastCurrentTime: number = 0;
   let lastCalledAt: number = Date.now();
@@ -27,11 +26,12 @@ const _getCurrentTime = (videoPlayer: any) => {
   return () => {
     const possibleCurrentTime = getCurrentTime();
     const shouldHaveDefaultBehavior = _shouldHaveDefaultBehavior(videoPlayer, lastCalledAt);
+    const delta = possibleCurrentTime - lastCurrentTime;
 
     lastCalledAt = Date.now();
 
-    if (!shouldHaveDefaultBehavior && possibleCurrentTime <= lastCurrentTime) {
-      lastCurrentTime = possibleCurrentTime + YOUTUBE_PREDICTION_OFFSET;
+    if (!shouldHaveDefaultBehavior && delta <= 0) {
+      lastCurrentTime += YOUTUBE_PREDICTION_OFFSET;
     } else {
       lastCurrentTime = possibleCurrentTime;
     }

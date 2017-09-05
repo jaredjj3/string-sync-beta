@@ -1,4 +1,5 @@
 import { UPDATE_VIDEO_PLAYER, UPDATE_VIDEO_STATE } from './actions';
+import { withNegativeTimeDeltaGuard } from 'util/withNegativeTimeDeltaGuard';
 
 interface Video {
   player: any;
@@ -16,7 +17,7 @@ export default (state = defaultState, action) => {
 
   switch (action.type) {
     case UPDATE_VIDEO_PLAYER:
-      nextState.player = action.videoPlayer;
+      nextState.player = withNegativeTimeDeltaGuard(action.videoPlayer);
       return nextState;
 
     case UPDATE_VIDEO_STATE:
