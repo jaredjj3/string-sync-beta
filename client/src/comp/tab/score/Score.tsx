@@ -62,9 +62,7 @@ class Score extends React.Component<ScoreProps, ScoreState> {
     const didSetMeasuresPerLine = this.maybeSetMeasuresPerLine(this.formatter.measuresPerLine);
     const didSetNumMeasures = this.maybeSetNumMeasures(this.formatter.measures.length);
 
-    if (didSetMeasuresPerLine || didSetNumMeasures) {
-      this.props.setArtist(this.artist);
-    }
+    this.props.setArtist(this.artist);
   }
 
   componentWillUnmount(): void {
@@ -138,8 +136,6 @@ class Score extends React.Component<ScoreProps, ScoreState> {
   }
 
   render(): JSX.Element {
-    console.log('FIXME: do not render unecessarily');
-
     return (
       <div>
         <canvas ref={this.setCanvas} />

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Controls from './controls';
+import Caret from './caret';
 import Overlap from 'comp/overlap';
 import Score from './score';
 import Icon from 'antd/lib/icon';
@@ -50,6 +51,9 @@ class Tab extends React.PureComponent<TabProps, TabState> {
         >
           <Layer>
             <Score />
+          </Layer>
+          <Layer>
+            <Caret />
           </Layer>
         </Overlap>
         {this.props.showControls ? <Controls /> : null}
