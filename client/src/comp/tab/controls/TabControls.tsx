@@ -9,6 +9,7 @@ interface TabControlsProps {
   focusedLine: number;
   focusedMeasure: number;
   numMeasures: number;
+  isFretboardVisible: boolean;
   focusMeasure(line: number): void;
   toggleFretboard(): void;
 }
@@ -27,7 +28,11 @@ class TabControls extends React.Component<TabControlsProps, TabControlsState> {
   }
 
   render(): JSX.Element {
-    const { toggleFretboard } = this.props;
+    const { toggleFretboard, isFretboardVisible } = this.props;
+    const fretboardIconClassName = [
+      'TabControls__fretboard',
+      isFretboardVisible ? 'TabControls__fretboard--toggled' : ''
+    ].join(' ').trim();
 
     return (
       <div className="TabControls">
@@ -48,7 +53,7 @@ class TabControls extends React.Component<TabControlsProps, TabControlsState> {
                   </Row>
                 </div>
               </Col>
-              <Col className="TabControls__nav" span={8}>
+              <Col className={fretboardIconClassName} span={8}>
                 <div onClick={toggleFretboard}>
                   <Row type="flex" align="middle" justify="center">
                     <Icon type="database" />
@@ -83,7 +88,8 @@ import { togglePanel } from 'data/panels/actions';
 const mapStateToProps = state => ({
   focusedLine: state.tab.focusedLine,
   focusedMeasure: state.tab.focusedMeasure,
-  numMeasures: state.tab.numMeasures
+  numMeasures: state.tab.numMeasures,
+  isFretboardVisible: state.panels.fretboard
 });
 
 const mapDispatchToProps = dispatch => ({

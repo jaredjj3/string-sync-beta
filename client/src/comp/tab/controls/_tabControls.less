@@ -2,19 +2,24 @@
 
 .TabControls {
   background: black;
-
-  i {
-    font-size: 24px;
-  }
 }
 
-.TabControls__nav {
+.TabControls__nav,
+.TabControls__fretboard {
   padding: 20px 0;
   color: white;
   cursor: pointer;
+  transition: color 100ms @ease-in;
 
   i {
     font-size: 22px;
-    font-weight: 700;
   }
+}
+
+.TabControls__nav:active {
+  color: #CFCFCF;
+}
+
+.TabControls__fretboard--toggled {
+  color: @primary-color;
 }
