@@ -1,4 +1,4 @@
-import { Artist } from 'services/vexflow';
+import { Artist, Player } from 'services/vexflow';
 
 export const SET_MEASURES_PER_LINE = 'SET_MEASURES_PER_LINE';
 export const SET_NUM_MEASURES = 'SET_NUM_MEASURES';

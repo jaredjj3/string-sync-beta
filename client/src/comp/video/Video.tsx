@@ -7,10 +7,12 @@ import VideoControls from './controls';
 import PLAYER_STATES from 'util/const/PLAYER_STATES';
 
 import { Device } from 'types/device';
+import { Player } from 'services/vexflow';
 
 interface VideoProps {
   youtubeVideoId: string;
   showControls?: boolean;
+  tabPlayer: Player;
   updateVideoPlayer(videoPlayer: any): void;
   updateVideoState(videoState: string): void;
   togglePanel(key: string): Function;
@@ -41,6 +43,7 @@ class Video extends React.Component<VideoProps, VideoState> {
   updateVideoPlayer = (e: React.SyntheticEvent<any>): void => {
     const videoPlayer = (e.target as any);
     this.props.updateVideoPlayer(videoPlayer);
+    this.props.tabPlayer.videoPlayer = videoPlayer;
   }
 
   updateVideoState = (e: any): void => {
@@ -66,9 +69,10 @@ class Video extends React.Component<VideoProps, VideoState> {
 }
 
 import { updateVideoPlayer, updateVideoState } from 'data/video/actions';
+import { setPlayer } from 'data/tab/actions';
 
 const mapStateToProps = state => ({
-
+  tabPlayer: state.tab.player
 });
 
 const mapDispatchToProps = dispatch => ({

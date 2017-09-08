@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Icon from 'antd/lib/icon';
-import { VexTab, Artist, Flow, Formatter } from 'services/vexflow';
+import { VexTab, Artist, Flow, Formatter, Player } from 'services/vexflow';
 import { isEqual } from 'lodash';
 
 import { Device } from 'types/device';
@@ -15,6 +15,7 @@ interface ScoreProps {
   measuresPerLine: number;
   numMeasures: number;
   buildStructs: BuildStructs;
+  tabPlayer: Player;
   setMeasuresPerLine(measuresPerLine: number): void;
   setNumMeasures(numMeasures: number): void;
   setArtist(artist: Artist): void;
@@ -80,6 +81,7 @@ class Score extends React.Component<ScoreProps, ScoreState> {
     this.maybeSetMeasuresPerLine(this.formatter.chunkSize);
     this.maybeSetNumMeasures(this.formatter.measures.length);
     this.props.setArtist(this.artist);
+    this.props.tabPlayer.artist = this.artist;
   }
 
   componentWillUnmount(): void {
@@ -161,7 +163,8 @@ const mapStateToProps = state => ({
   device: state.device,
   measuresPerLine: state.tab.measuresPerLine,
   numMeasures: state.tab.numMeasures,
-  buildStructs: state.notation.buildStructs
+  buildStructs: state.notation.buildStructs,
+  tabPlayer: state.tab.player
 });
 
 const mapDispatchToProps = dispatch => ({
