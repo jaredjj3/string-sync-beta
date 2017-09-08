@@ -24,30 +24,61 @@ const dupState = (state: CaretState): CaretState => {
 };
 
 class Caret extends React.Component<CaretProps, CaretState> {
+  static HEIGHT: number = 240;
+
+  state: CaretState = {
+    shouldRAF: false,
+    currentTime: 0,
+    pos: { x: 200, y: 20 }
+  };
+
   RAFHandle: number = null;
+  canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
 
-  // componentWillReceiveProps(nextProps: CaretProps): void {
-  //   const shouldRAF = nextProps.videoPlayer && isVideoActive(nextProps.videoState);
-  //   const nextState = dupState(this.state);
-  //   this.setState(Object.assign(nextState, { shouldRAF }));
-  // }
+  componentDidMount(): void {
+    const { x, y } = this.state.pos;
+    const { HEIGHT } = Caret;
+    const h = HEIGHT / 4;
 
-  // componentDidUpdate(): void {
-  //   if (this.state.shouldRAF) {
-  //     this.RAFHandle = window.requestAnimationFrame(() => this.updateStateWithPlayer())
-  //   } else {
-  //     window.cancelAnimationFrame(this.RAFHandle);
-  //     this.RAFHandle = null;
-  //   }
-  // }
+    this.ctx.beginPath();
+    this.ctx.moveTo(x, y);
+    this.ctx.lineTo(x, y + Caret.HEIGHT);
+    this.ctx.stroke();
+  }
 
-  // shouldComponentUpdate(nextProps: CaretProps, nextState: CaretState): boolean {
-  //   return (
-  //     nextState.shouldRAF ||
-  //     this.props.videoPlayer !== nextProps.videoPlayer ||
-  //     this.props.videoState !== nextProps.videoState
-  //   );
-  // }
+  componentWillReceiveProps(nextProps: CaretProps): void {
+    const shouldRAF = nextProps.videoPlayer && isVideoActive(nextProps.videoState);
+    const nextState = dupState(this.state);
+    this.setState(Object.assign(nextState, { shouldRAF }));
+  }
+
+  componentDidUpdate(): void {
+    if (this.state.shouldRAF) {
+      this.RAFHandle = window.requestAnimationFrame(() => this.updateStateWithPlayer());
+    } else {
+      window.cancelAnimationFrame(this.RAFHandle);
+      this.RAFHandle = null;
+    }
+  }
+
+  shouldComponentUpdate(nextProps: CaretProps, nextState: CaretState): boolean {
+    return (
+      nextState.shouldRAF ||
+      this.props.videoPlayer !== nextProps.videoPlayer ||
+      this.props.videoState !== nextProps.videoState
+    );
+  }
+
+  setCanvas = (c: HTMLCanvasElement): void => {
+    if (!c || (this.canvas && this.ctx)) {
+      return;
+    }
+
+    this.canvas = c;
+    this.ctx = c.getContext('2d');
+    this.ctx.strokeStyle = '#FC354C';
+  }
 
   updateStateWithPlayer = (): void => {
 
@@ -55,8 +86,8 @@ class Caret extends React.Component<CaretProps, CaretState> {
 
   render(): JSX.Element {
     return (
-      <div>
-        Caret
+      <div className="Caret">
+        <canvas className="Caret__canvas" ref={this.setCanvas} />
       </div>
     );
   }
