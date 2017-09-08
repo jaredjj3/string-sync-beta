@@ -42,5 +42,6 @@ const _getCurrentTime = (videoPlayer: any) => {
 
 export const withNegativeTimeDeltaGuard = (videoPlayer: any): any => {
   videoPlayer.getCurrentTime = _getCurrentTime(videoPlayer);
+  videoPlayer.hasNegativeTimeDeltaGuard = true;
   return videoPlayer;
 };
