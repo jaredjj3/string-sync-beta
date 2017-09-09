@@ -5,17 +5,18 @@ import Icon from 'antd/lib/icon';
 import { VexTab, Artist, Flow, Formatter, Player } from 'services/vexflow';
 import { isEqual } from 'lodash';
 
-import { Device } from 'types/device';
+import { Viewport } from 'types/device';
 import { BuildStructs } from 'types/buildStructs';
 
 const { Renderer } = Flow;
 
 interface ScoreProps {
-  device: Device;
+  viewport: Viewport;
   measuresPerLine: number;
   numMeasures: number;
   buildStructs: BuildStructs;
   tabPlayer: Player;
+  formatter: Formatter;
   setMeasuresPerLine(measuresPerLine: number): void;
   setNumMeasures(numMeasures: number): void;
   setArtist(artist: Artist): void;
@@ -51,19 +52,14 @@ class Score extends React.Component<ScoreProps, ScoreState> {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
   renderer: any;
-  formatter: Formatter;
   artist: Artist;
 
-  constructor(props: ScoreProps) {
-    super(props);
-
-    this.formatter = new Formatter();
-  }
-
   componentDidMount(): void {
+    const { formatter } = this.props;
+
     this.renderScore();
-    this.maybeSetMeasuresPerLine(this.formatter.measuresPerLine);
-    this.maybeSetNumMeasures(this.formatter.measures.length);
+    this.maybeSetMeasuresPerLine(formatter.measuresPerLine);
+    this.maybeSetNumMeasures(formatter.measures.length);
     this.props.setArtist(this.artist);
   }
 
@@ -71,15 +67,17 @@ class Score extends React.Component<ScoreProps, ScoreState> {
     return (
       this.props.measuresPerLine !== nextProps.measuresPerLine ||
       this.props.numMeasures !== nextProps.numMeasures ||
-      !isEqual(this.props.device, nextProps.device)
+      !isEqual(this.props.viewport, nextProps.viewport)
       // TODO: after the seeds are fixed: this.props.buildStructs !== nextProps.buildStructs
     );
   }
 
   componentDidUpdate(): void {
+    const { formatter } = this.props;
+
     this.renderScore();
-    this.maybeSetMeasuresPerLine(this.formatter.chunkSize);
-    this.maybeSetNumMeasures(this.formatter.measures.length);
+    this.maybeSetMeasuresPerLine(formatter.chunkSize);
+    this.maybeSetNumMeasures(formatter.measures.length);
     this.props.setArtist(this.artist);
     this.props.tabPlayer.artist = this.artist;
   }
@@ -111,14 +109,14 @@ class Score extends React.Component<ScoreProps, ScoreState> {
   }
 
   renderScore(): void {
-    const { viewport } = this.props.device;
+    const { viewport, formatter } = this.props;
 
     let artist = new Artist(10, 0, viewport.width - 10, { scale: 1.0 });
     let tab = new VexTab(artist);
 
     try {
       tab.parse(test);
-      const formatted = this.formatter.update(test, viewport.width, tab.elements);
+      const formatted = formatter.update(test, viewport.width, tab.elements);
 
       artist = new Artist(10, 0, viewport.width - 10, { scale: 1.0 });
       tab = new VexTab(artist);
@@ -160,11 +158,12 @@ class Score extends React.Component<ScoreProps, ScoreState> {
 import { setMeasuresPerLine, setNumMeasures, setArtist, resetTab } from 'data/tab/actions';
 
 const mapStateToProps = state => ({
-  device: state.device,
+  viewport: state.device.viewport,
   measuresPerLine: state.tab.measuresPerLine,
   numMeasures: state.tab.numMeasures,
   buildStructs: state.notation.buildStructs,
-  tabPlayer: state.tab.player
+  tabPlayer: state.tab.player,
+  formatter: state.tab.formatter
 });
 
 const mapDispatchToProps = dispatch => ({

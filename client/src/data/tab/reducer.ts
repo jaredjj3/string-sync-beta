@@ -7,7 +7,7 @@ import {
   RESET_TAB
 } from './actions';
 
-import { Artist, Player } from 'services/vexflow';
+import { Artist, Player, Formatter } from 'services/vexflow';
 
 interface StoreTab {
   focusedMeasure: number;
@@ -16,6 +16,7 @@ interface StoreTab {
   numMeasures: number;
   artist: Artist;
   player: Player;
+  formatter: Formatter;
 }
 
 const defaultState: StoreTab = Object.freeze({
@@ -24,7 +25,8 @@ const defaultState: StoreTab = Object.freeze({
   measuresPerLine: 1,
   numMeasures: 0,
   artist: null,
-  player: new Player()
+  player: new Player(),
+  formatter: new Formatter()
 });
 
 const dup = (state: StoreTab): StoreTab => {
