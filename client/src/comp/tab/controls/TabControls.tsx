@@ -6,7 +6,6 @@ import Col from 'antd/lib/col';
 import Icon from 'antd/lib/icon';
 
 interface TabControlsProps {
-  focusedLine: number;
   focusedMeasure: number;
   numMeasures: number;
   isFretboardVisible: boolean;
@@ -86,7 +85,6 @@ import { focusMeasure } from 'data/tab/actions';
 import { togglePanel } from 'data/panels/actions';
 
 const mapStateToProps = state => ({
-  focusedLine: state.tab.focusedLine,
   focusedMeasure: state.tab.focusedMeasure,
   numMeasures: state.tab.numMeasures,
   isFretboardVisible: state.panels.fretboard

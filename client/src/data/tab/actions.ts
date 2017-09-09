@@ -1,3 +1,4 @@
+import isBetween from 'util/isBetween';
 import { Artist, Player } from 'services/vexflow';
 
 export const SET_MEASURES_PER_LINE = 'SET_MEASURES_PER_LINE';
@@ -22,15 +23,34 @@ export const setArtist = (artist: Artist) => ({
   artist
 });
 
-export const focusMeasure = (measure: number) => ({
-  type: FOCUS_MEASURE,
-  measure
-});
+export const focusMeasure = (measure: number) => (dispatch, getState) => {
+  const { focusedMeasure, numMeasures } = getState().tab;
 
-export const focusLine = (line: number) => ({
-  type: FOCUS_LINE,
-  line
-});
+  const shouldDispatch = (
+    numMeasures > 0 &&
+    measure !== focusedMeasure &&
+    isBetween(measure, 0, numMeasures - 1)
+  );
+
+  if (shouldDispatch) {
+    return dispatch({ type: FOCUS_MEASURE, measure });
+  }
+};
+
+export const focusLine = (line: number) => (dispatch, getState) => {
+  const { focusedLine, numMeasures, measuresPerLine } = getState().tab;
+  const numLines = numMeasures / measuresPerLine;
+
+  const shouldDispatch = (
+    numLines > 0 &&
+    line !== getState().tab.focusedLine &&
+    isBetween(line, 0, numLines - 1)
+  );
+
+  if (shouldDispatch) {
+    return dispatch({ type: FOCUS_LINE, line });
+  }
+};
 
 export const resetTab = () => ({
   type: RESET_TAB

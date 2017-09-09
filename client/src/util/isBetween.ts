@@ -8,7 +8,7 @@ const isBetween = (probe: number, val1: number, val2: number): boolean => {
     upperBound = val2;
   }
 
-  return probe > lowerBound && probe < upperBound;
+  return probe >= lowerBound && probe <= upperBound;
 };
 
 export default isBetween;
