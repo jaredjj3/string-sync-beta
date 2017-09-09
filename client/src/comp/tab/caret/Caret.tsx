@@ -4,70 +4,62 @@ import { connect } from 'react-redux';
 import { isVideoActive } from 'util/videoStateCategory';
 
 import { Point } from 'types/point';
-import { Artist } from 'services/vexflow';
+import { Player } from 'services/vexflow';
 
 interface CaretProps {
-  videoPlayer: any;
-  videoState: string;
-  artist: Artist;
-}
-
-interface CaretState {
   shouldRAF: boolean;
-  currentTime: number;
-  pos: Point;
+  tabPlayer: Player;
+  viewport: any;
 }
 
-const dupState = (state: CaretState): CaretState => {
-  const pos = Object.assign(state.pos);
-  return Object.assign({}, state, pos);
-};
+interface CaretState {}
 
 class Caret extends React.Component<CaretProps, CaretState> {
   static HEIGHT: number = 240;
-
-  state: CaretState = {
-    shouldRAF: false,
-    currentTime: 0,
-    pos: { x: 200, y: 20 }
-  };
+  static START_POS_Y: number = 10;
 
   RAFHandle: number = null;
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
 
   componentDidMount(): void {
-    const { x, y } = this.state.pos;
-    const { HEIGHT } = Caret;
-    const h = HEIGHT / 4;
+    this.resize(this.props.viewport);
+  }
+
+  componentWillReceiveProps(nextProps: CaretProps): void {
+    if (nextProps.shouldRAF) {
+      this.RAFHandle = window.requestAnimationFrame(this.renderCaret);
+    }
+  }
+
+  resize (viewport: any): void {
+    const { canvas } = this;
+
+    const ratio = window.devicePixelRatio || 1;
+    const { width } = viewport;
+    const height = 277;
+
+    canvas.width = width * ratio;
+    canvas.height = height * ratio;
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+
+    this.ctx.scale(ratio, ratio);
+    this.ctx.strokeStyle = '#FC354C';
+  }
+
+  clearCanvas(): void {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+
+  drawCaret = (): void => {
+    const x = this.props.tabPlayer.caretPosX();
+    const y = Caret.START_POS_Y;
 
     this.ctx.beginPath();
     this.ctx.moveTo(x, y);
     this.ctx.lineTo(x, y + Caret.HEIGHT);
     this.ctx.stroke();
-  }
-
-  componentWillReceiveProps(nextProps: CaretProps): void {
-    const shouldRAF = nextProps.videoPlayer && isVideoActive(nextProps.videoState);
-    const nextState = dupState(this.state);
-    this.setState(Object.assign(nextState, { shouldRAF }));
-  }
-
-  componentDidUpdate(): void {
-    if (this.state.shouldRAF) {
-      this.RAFHandle = window.requestAnimationFrame(() => this.updateStateWithPlayer());
-    } else {
-      window.cancelAnimationFrame(this.RAFHandle);
-      this.RAFHandle = null;
-    }
-  }
-
-  shouldComponentUpdate(nextProps: CaretProps, nextState: CaretState): boolean {
-    return (
-      nextState.shouldRAF ||
-      this.props.videoPlayer !== nextProps.videoPlayer ||
-      this.props.videoState !== nextProps.videoState
-    );
   }
 
   setCanvas = (c: HTMLCanvasElement): void => {
@@ -77,11 +69,22 @@ class Caret extends React.Component<CaretProps, CaretState> {
 
     this.canvas = c;
     this.ctx = c.getContext('2d');
-    this.ctx.strokeStyle = '#FC354C';
   }
 
-  updateStateWithPlayer = (): void => {
-
+  renderCaret = (): void => {
+    try {
+      this.clearCanvas();
+      this.drawCaret();
+    } catch (e) {
+      // noop
+    } finally {
+      if (this.props.shouldRAF) {
+        this.RAFHandle = window.requestAnimationFrame(this.renderCaret);
+      } else {
+        window.cancelAnimationFrame(this.RAFHandle);
+        this.RAFHandle = null;
+      }
+    }
   }
 
   render(): JSX.Element {
@@ -94,9 +97,9 @@ class Caret extends React.Component<CaretProps, CaretState> {
 }
 
 const mapStateToProps = state => ({
-  videoPlayer: state.video.player,
-  videoState: state.video.state,
-  artist: state.tab.artist
+  shouldRAF: state.video.player && isVideoActive(state.video.state),
+  tabPlayer: state.tab.player,
+  viewport: state.device.viewport
 });
 
 const mapDispatchToProps = dispatch => ({
