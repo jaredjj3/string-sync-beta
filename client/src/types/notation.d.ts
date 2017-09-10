@@ -10,7 +10,6 @@ export interface Notation {
   artist: string;
   thumbnailUrl: string;
   tags: Array<string>;
-  buildStructs?: string;
-  scrollStructs?: ScrollStructs;
+  vextab: string;
   youtubeVideoId?: string | number;
 }

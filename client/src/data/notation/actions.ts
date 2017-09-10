@@ -2,10 +2,16 @@ import * as API from './api';
 import { Notation } from 'types/notation';
 
 export const RECEIVE_NOTATION = 'RECEIVE_NOTATION';
+export const UPDATE_VEXTAB = 'UPDATE_VEXTAB';
 
 export const receiveNotation = (notation: Notation) => ({
   type: RECEIVE_NOTATION,
   notation,
+});
+
+export const updateVextab = (vextab: string) => ({
+  type: UPDATE_VEXTAB,
+  vextab
 });
 
 // TODO: make a higher order function that produces this behavior.

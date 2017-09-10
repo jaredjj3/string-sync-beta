@@ -8,7 +8,6 @@ import Tab from 'comp/tab';
 import TabControls from 'comp/tab/controls';
 import Collapse from 'antd/lib/collapse';
 import Icon from 'antd/lib/icon';
-import Affix from 'antd/lib/affix';
 
 import { Notation } from 'types/notation';
 import { Device } from 'types/device';

@@ -1,4 +1,4 @@
-import { RECEIVE_NOTATION } from './actions';
+import { RECEIVE_NOTATION, UPDATE_VEXTAB } from './actions';
 import { Notation } from 'types/notation';
 
 import dup from 'util/dup/notation';
@@ -22,7 +22,11 @@ export default (state = defaultState, action): Notation => {
 
   switch (action.type) {
     case RECEIVE_NOTATION:
-      return action.notation;
+      return dup(action.notation);
+
+    case UPDATE_VEXTAB:
+      nextState.vextab = action.vextab;
+      return nextState;
 
     default:
       return nextState;

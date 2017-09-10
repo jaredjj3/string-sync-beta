@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import VextabEditor from './vextab/editor';
 import Video from 'comp/video';
 import VideoControls from 'comp/video/controls';
 import Fretboard from 'comp/fretboard';
@@ -8,7 +9,6 @@ import Tab from 'comp/tab';
 import TabControls from 'comp/tab/controls';
 import Collapse from 'antd/lib/collapse';
 import Icon from 'antd/lib/icon';
-import Affix from 'antd/lib/affix';
 
 import { Notation } from 'types/notation';
 import { Device } from 'types/device';
@@ -47,6 +47,7 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
             <Fretboard />
           </Panel>
         </Collapse>
+        <VextabEditor />
         <Tab />
         <div className="NotationEdit__controls">
           <Collapse activeKey={showFretboardControls ? 'fretboardControls' : null}>
