@@ -16,6 +16,7 @@
 #  thumbnail_updated_at   :datetime
 #  duration               :integer
 #  dead_time              :integer          default("0")
+#  tempo                  :integer          not null
 #
 
 class Notation < ApplicationRecord

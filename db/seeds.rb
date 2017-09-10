@@ -54,7 +54,8 @@ def create_notations(num)
       duration: 14.841 * 1000,
       artist_name: Faker::Name.name,
       thumbnail: File.open(Dir["app/assets/images/thumbnails/*.jpg"].sample),
-      vextab: BUILD_STRUCTS
+      vextab: BUILD_STRUCTS,
+      tempo: 120
     )
   end
 end

@@ -30,8 +30,9 @@ class Api::V1::NotationsController < ApplicationController
             :thumbnail,
             :name,
             :artist_name,
-            :build_structs,
-            :scroll_structs
+            :vextab,
+            :tempo,
+            :dead_time
           )
     end
 end

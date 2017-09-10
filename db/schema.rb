@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170910011021) do
+ActiveRecord::Schema.define(version: 20170910024426) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 20170910011021) do
     t.datetime "thumbnail_updated_at"
     t.integer  "duration"
     t.integer  "dead_time",              default: 0
+    t.integer  "tempo",                              null: false
     t.index ["user_id"], name: "index_notations_on_user_id", using: :btree
   end
 
