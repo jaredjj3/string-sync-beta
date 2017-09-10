@@ -12,4 +12,5 @@ export interface Notation {
   tags: Array<string>;
   vextab: string;
   youtubeVideoId?: string | number;
+  tempo: number;
 }

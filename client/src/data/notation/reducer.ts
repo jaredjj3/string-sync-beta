@@ -13,7 +13,8 @@ const defaultState: Notation = Object.freeze({
   vextab: '',
   youtubeVideoId: '',
   duration: 0,
-  deadTime: 0
+  deadTime: 0,
+  tempo: 60
 });
 
 export default (state = defaultState, action): Notation => {

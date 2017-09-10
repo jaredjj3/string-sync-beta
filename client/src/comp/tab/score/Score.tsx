@@ -16,6 +16,7 @@ interface ScoreProps {
   vextab: string;
   tabPlayer: Player;
   formatter: Formatter;
+  tempo: number;
   setMeasuresPerLine(measuresPerLine: number): void;
   setNumMeasures(numMeasures: number): void;
   setArtist(artist: Artist): void;
@@ -35,7 +36,8 @@ class Score extends React.Component<ScoreProps, ScoreState> {
       this.props.measuresPerLine !== nextProps.measuresPerLine ||
       this.props.numMeasures !== nextProps.numMeasures ||
       !isEqual(this.props.viewport, nextProps.viewport) ||
-      this.props.vextab !== nextProps.vextab
+      this.props.vextab !== nextProps.vextab ||
+      this.props.tempo !== nextProps.tempo
     );
   }
 
@@ -45,10 +47,13 @@ class Score extends React.Component<ScoreProps, ScoreState> {
     this.renderScore();
 
     if (this.artist) {
+      const { tabPlayer, tempo, setArtist } = this.props;
+
       this.maybeSetMeasuresPerLine(formatter.chunkSize);
       this.maybeSetNumMeasures(formatter.measures.length);
-      this.props.setArtist(this.artist);
-      this.props.tabPlayer.artist = this.artist;
+      setArtist(this.artist);
+      tabPlayer.artist = this.artist;
+      tabPlayer.tempo = tempo;
     }
   }
 
@@ -102,7 +107,10 @@ class Score extends React.Component<ScoreProps, ScoreState> {
       // noop
     }
 
-    this.artist = artist;
+    // TODO: Refactor
+    if (artist) {
+      this.artist = artist;
+    }
   }
 
   renderTabText(artist: Artist): void {
@@ -136,6 +144,7 @@ const mapStateToProps = state => ({
   measuresPerLine: state.tab.measuresPerLine,
   numMeasures: state.tab.numMeasures,
   vextab: state.notation.vextab,
+  tempo: state.notation.tempo,
   tabPlayer: state.tab.player,
   formatter: state.tab.formatter
 });

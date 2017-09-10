@@ -19,7 +19,7 @@ class Player {
   private _videoPlayer: VideoPlayer = null;
   private _artist: Artist = null;
   private _deadTime: number = 0; // ms
-  private _tempo: number = 100; // bpm TODO: remove default
+  private _tempo: number = 60;
   private _viewport: Viewport = null;
 
   get isReady(): boolean {
