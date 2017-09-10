@@ -16,8 +16,8 @@ interface CaretProps {
 interface CaretState {}
 
 class Caret extends React.Component<CaretProps, CaretState> {
-  static HEIGHT: number = 240;
-  static START_POS_Y: number = 10;
+  static HEIGHT: number = 300;
+  static START_POS_Y: number = 0;
 
   RAFHandle: number = null;
   canvas: HTMLCanvasElement;
@@ -61,15 +61,18 @@ class Caret extends React.Component<CaretProps, CaretState> {
 
     this.ctx.scale(ratio, ratio);
     this.ctx.strokeStyle = '#FC354C';
+    this.ctx.lineWidth = 10;
+    this.ctx.globalAlpha = 0.4;
   }
 
   clearCanvas(): void {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
-  drawCaret = (): void => {
-    const x = this.props.tabPlayer.caretPosX();
-    const y = Caret.START_POS_Y;
+  drawCaret = (x: number, y: number): void => {
+    if (x === null || y === null) {
+      return;
+    }
 
     this.ctx.beginPath();
     this.ctx.moveTo(x, y);
@@ -82,7 +85,7 @@ class Caret extends React.Component<CaretProps, CaretState> {
 
     try {
       this.clearCanvas();
-      this.drawCaret();
+      this.drawCaret(this.props.tabPlayer.caretPosX(), Caret.START_POS_Y);
       focusMeasure(tabPlayer.currTick.measure);
     } catch (e) {
       // noop

@@ -18,7 +18,8 @@ class Player {
   private _isDirty: boolean = false;
   private _videoPlayer: VideoPlayer = null;
   private _artist: Artist = null;
-  private _tempo: number = 120; // bpm TODO: REMOVE DEFAULT
+  private _deadTime: number = 0; // ms
+  private _tempo: number = 100; // bpm TODO: remove default
   private _viewport: Viewport = null;
 
   get isReady(): boolean {
@@ -44,6 +45,11 @@ class Player {
   set viewport(viewport: Viewport) {
     this._isDirty = this._isDirty || !isEqual(this._viewport, viewport);
     this._viewport = viewport;
+  }
+
+  set deadTime(deadTime: number) {
+    this._isDirty = this._isDirty || this._deadTime !== deadTime;
+    this._deadTime = deadTime;
   }
 
   // ticks per minute
@@ -75,7 +81,7 @@ class Player {
     if (this.currTick) {
       return this.currTick.posFunc(currentTickNum);
     } else {
-      return 0;
+      return null;
     }
   }
 
@@ -125,6 +131,12 @@ class Player {
     });
 
     this.allTicks = sortBy(values(this.tickNotes), tick => tick.value);
+    const offset = ((this._deadTime / 1000) / 60) * this.tpm;
+    this.allTicks = this.allTicks.map(tick => {
+      tick.value += offset;
+      return tick;
+    });
+
     this._isDirty = false;
     return true;
   }
