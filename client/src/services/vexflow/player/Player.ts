@@ -1,7 +1,7 @@
 import { VideoPlayer } from 'types/videoPlayer';
 import Artist from '../artist';
 import Flow from '../flow';
-import { has, sortBy, values, isEqual } from 'lodash';
+import { has, sortBy, values, isEqual, flatMap } from 'lodash';
 
 import isBetween from 'util/isBetween';
 import { interpolateFuncFor } from 'util/interpolate';
@@ -93,14 +93,17 @@ class Player {
 
     let totalTicks = new Fraction(0, 1);
     const voiceGroups = this._artist.getPlayerData().voices;
+    const tabVoices = this._artist.staves.map(stave => stave.tab_voices);
 
     voiceGroups.forEach((voiceGroup, measure) => {
       let maxVoiceTick = new Fraction(0, 1);
-      for (let voice of voiceGroup) {
+
+      voiceGroup.forEach((voice, voiceIndex) => {
         let totalVoiceTicks = new Fraction(0, 1);
 
-        for (let note of voice.getTickables()) {
+        voice.getTickables().forEach((note, tickIndex) => {
           if (!note.shouldIgnoreTicks()) {
+            const tabNote = tabVoices[measure][voiceIndex][tickIndex];
             const absTick = totalTicks.clone();
             absTick.add(totalVoiceTicks);
             absTick.simplify();
@@ -108,11 +111,13 @@ class Player {
             const key = absTick.toString();
             if (has(this.tickNotes, key)) {
               this.tickNotes[key].notes.push(note);
+              this.tickNotes[key].tabNotes.push(tabNote);
             } else {
               this.tickNotes[key] = {
                 tick: absTick,
                 value: absTick.value(),
                 notes: [note],
+                tabNotes: [tabNote],
                 measure
               };
             }
@@ -120,12 +125,12 @@ class Player {
             const noteTicks = note.getTicks();
             totalVoiceTicks.add(noteTicks.numerator, noteTicks.denominator);
           }
-        }
+        });
 
         if (totalVoiceTicks.value() > maxVoiceTick.value()) {
           maxVoiceTick.copy(totalVoiceTicks);
         }
-      }
+      });
 
       totalTicks.add(maxVoiceTick);
     });
@@ -170,7 +175,10 @@ class Player {
     const posFunc = this.posFuncFor(tick1, tick2, tickObjSpec);
     // TODO: implement const tickFunc = interpolateFuncFor(lowPos, highPos, lowTick, highTick);
 
-    return { lowTick, highTick, lowPos, highPos, posFunc, measure };
+    const pressed = flatMap(tick1.tabNotes, tabNote => tabNote.positions);
+    const lit = flatMap(tick2.tabNotes, tabNote => tabNote.positions);
+
+    return { lowTick, highTick, lowPos, highPos, posFunc, measure, pressed, lit };
   }
 
   private posFuncFor(tick1: any, tick2: any, spec: any): Function {

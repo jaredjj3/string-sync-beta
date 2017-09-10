@@ -44,8 +44,8 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
             <Fretboard />
           </Panel>
         </Collapse>
-        <VextabEditor />
         <Tab />
+        <VextabEditor />
         <div className="NotationEdit__controls">
           <Collapse activeKey={showFretboardControls ? 'fretboardControls' : null}>
             <Panel className="NotationEdit__panel" key="fretboardControls" header="">
