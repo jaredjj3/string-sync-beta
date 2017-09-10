@@ -15,6 +15,7 @@
 #  thumbnail_file_size    :integer
 #  thumbnail_updated_at   :datetime
 #  duration               :integer
+#  dead_time              :integer          default("0")
 #
 
 class Notation < ApplicationRecord
