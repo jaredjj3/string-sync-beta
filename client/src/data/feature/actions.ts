@@ -1,4 +1,4 @@
-declare type Feature = 'fretboard';
+declare type Feature = 'fretboard' | 'autoSave';
 
 export const ENABLE_FEATURES = 'ENABLE_FEATURES';
 export const DISABLE_FEATURES = 'DISABLE_FEATURES';

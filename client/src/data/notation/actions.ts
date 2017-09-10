@@ -1,5 +1,6 @@
 import * as API from './api';
 import { Notation } from 'types/notation';
+import dupNotation from 'util/dup/notation';
 
 export const RECEIVE_NOTATION = 'RECEIVE_NOTATION';
 export const UPDATE_VEXTAB = 'UPDATE_VEXTAB';
@@ -16,11 +17,10 @@ export const updateVextab = (vextab: string) => ({
 
 // TODO: make a higher order function that produces this behavior.
 export const fetchNotation = (() => {
+  const { notifyAll, notify } = window as any;
   let isFetching = false;
 
   return (notationId: number) => async dispatch => {
-    const { notifyAll } = window as any;
-
     if (isFetching) {
       return;
     }
@@ -37,3 +37,18 @@ export const fetchNotation = (() => {
     }
   };
 })();
+
+export const updateNotation = (updateStore = true) => async (dispatch, getState) => {
+  const { notifyAll, notify } = window as any;
+  const updateWithNotation = dupNotation(getState().notation);
+  try {
+    const notation = await API.updateNotation(updateWithNotation);
+    notify('Notation', 'update successful', { type: 'success', duration: 2 });
+
+    if (updateStore) {
+      dispatch(receiveNotation(notation));
+    }
+  } catch (e) {
+    notifyAll('Notation', e.responseJSON);
+  }
+};

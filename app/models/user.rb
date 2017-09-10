@@ -55,6 +55,8 @@ class User < ApplicationRecord
     role_names.length != (role_names - user_roles).length
   end
 
+  alias :has_role? :has_roles?
+
   def reset_session_token!
     self.session_token = User.generate_session_token
     self.save!

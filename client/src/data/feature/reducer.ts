@@ -2,10 +2,12 @@ import { ENABLE_FEATURES, DISABLE_FEATURES } from './actions';
 
 interface StoreFeatures {
   fretboard: boolean;
+  autoSave: boolean;
 }
 
 const defaultState: StoreFeatures = Object.freeze({
-  fretboard: true
+  fretboard: true,
+  autoSave: false
 });
 
 export default (state = defaultState, action): StoreFeatures => {

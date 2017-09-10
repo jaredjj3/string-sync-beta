@@ -9,6 +9,7 @@ import Tab from 'comp/tab';
 import TabControls from 'comp/tab/controls';
 import Collapse from 'antd/lib/collapse';
 import Icon from 'antd/lib/icon';
+import Button from 'antd/lib/button';
 
 import { Notation } from 'types/notation';
 import { Device } from 'types/device';
@@ -20,14 +21,27 @@ interface NotationEditProps {
   params: any;
   showFretboard: boolean;
   showFretboardControls: boolean;
+  autoSave: boolean;
   fetchNotation(id: number): void;
+  enableAutoSave(): void;
+  disableAutoSave(): void;
+  updateNotation(updateStore?: boolean): void;
 }
 
 interface NotationEditState {}
 
 class NotationEdit extends React.Component<NotationEditProps, NotationEditState> {
   componentDidMount(): void {
+    this.props.enableAutoSave();
     this.props.fetchNotation(this.props.params.id);
+  }
+
+  componentWillUnmount(): void {
+    this.props.disableAutoSave();
+  }
+
+  onButtonClick = (): void => {
+    this.props.updateNotation(false);
   }
 
   render(): JSX.Element {
@@ -44,6 +58,7 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
             <Fretboard />
           </Panel>
         </Collapse>
+        <Button onClick={this.onButtonClick}>Save</Button>
         <Tab />
         <VextabEditor />
         <div className="NotationEdit__controls">
@@ -59,15 +74,20 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
   }
 }
 
-import { fetchNotation } from 'data/notation/actions';
+import { fetchNotation, updateNotation } from 'data/notation/actions';
+import { enableFeatures, disableFeatures } from 'data/feature/actions';
 
 const mapStateToProps = state => ({
   showFretboard: state.panels.fretboard,
-  showFretboardControls: state.panels.fretboardControls
+  showFretboardControls: state.panels.fretboardControls,
+  autoSave: state.feature.autoSave
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchNotation: id => dispatch(fetchNotation(id))
+  fetchNotation: id => dispatch(fetchNotation(id)),
+  enableAutoSave: () => dispatch(enableFeatures(['autoSave'])),
+  disableAutoSave: () => dispatch(disableFeatures(['autoSave'])),
+  updateNotation: (updateStore) => dispatch(updateNotation(updateStore))
 });
 
 export default connect(

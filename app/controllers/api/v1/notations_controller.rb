@@ -14,6 +14,15 @@ class Api::V1::NotationsController < ApplicationController
   end
 
   def update
+    @notation = Notation.includes(:tags, :transcriber).find(params.require(:id))
+
+    if authorized_to_update?(@notation)
+      @notation.update!(notation_params)
+      render(:show, status: 200)
+    else
+      errors = [{ type: :error, messages: ["not authorized to update"] }]
+      render(json: errors, status: 422)
+    end
   end
 
   def destroy
@@ -35,5 +44,10 @@ class Api::V1::NotationsController < ApplicationController
             :dead_time,
             :duration
           )
+    end
+
+    def authorized_to_update?(notation)
+      current_user.present? &&
+          (notation.transcriber == current_user || current_user.has_role?(:admin))
     end
 end
