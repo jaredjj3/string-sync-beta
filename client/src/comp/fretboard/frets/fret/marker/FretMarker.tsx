@@ -57,8 +57,9 @@ class FretMarker extends React.PureComponent<FretMarkerProps, FretMarkerState> {
     const markerClassName = [
       'Marker',
       `Marker--string${string}`,
-      lit     ? 'Marker--lit' : 'Marker--hidden',
-      pressed ? 'Marker--pressed' : ''
+      !lit && !pressed ? 'Marker--hidden' : '',
+      lit  && !pressed ? 'Marker--lit' : '',
+      pressed          ? 'Marker--pressed' : ''
     ].join(' ').trim();
 
     return (

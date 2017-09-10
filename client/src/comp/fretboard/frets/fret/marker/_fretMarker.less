@@ -1,8 +1,7 @@
 @import "vars/overrides";
 
 .Marker--transition {
-  transition: opacity 150ms @ease-in;
-  transition: background-color 100ms @ease-in;
+  transition: all 100ms @ease-in;
 }
 
 .Marker {
@@ -10,7 +9,7 @@
   z-index: 10;
   width: 16px;
   height: 16px;
-  background-color: none;
+  background-color: #B3FB66;
   border-radius: 50%;
   margin: 3px 1px;
   cursor: pointer;
@@ -18,8 +17,10 @@
 }
 
 .Marker--lit {
-  background-color: yellow;
-  opacity: 0.1;
+  background-color: #B3FB66;
+  opacity: 0.3;
+  box-shadow: 0 0 2px 1px #B3FB66;
+  border: 2px solid #B3FB66;
   .Marker--transition
 }
 
@@ -29,7 +30,7 @@
 }
 
 .Marker--pressed {
-  background-color: #5FF72D;
+  background-color: #B3FB66;
   opacity: 1;
   .Marker--transition
 }
