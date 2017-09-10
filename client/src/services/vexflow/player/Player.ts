@@ -95,7 +95,7 @@ class Player {
     const voiceGroups = this._artist.getPlayerData().voices;
     const tabVoices = this._artist.staves.map(stave => stave.tab_voices);
 
-    voiceGroups.forEach((voiceGroup, measure) => {
+    voiceGroups.forEach((voiceGroup, voiceGroupIndex) => {
       let maxVoiceTick = new Fraction(0, 1);
 
       voiceGroup.forEach((voice, voiceIndex) => {
@@ -103,7 +103,7 @@ class Player {
 
         voice.getTickables().forEach((note, tickIndex) => {
           if (!note.shouldIgnoreTicks()) {
-            const tabNote = tabVoices[measure][voiceIndex][tickIndex];
+            const tabNote = tabVoices[voiceGroupIndex][voiceIndex][tickIndex];
             const absTick = totalTicks.clone();
             absTick.add(totalVoiceTicks);
             absTick.simplify();
@@ -118,7 +118,7 @@ class Player {
                 value: absTick.value(),
                 notes: [note],
                 tabNotes: [tabNote],
-                measure
+                stave: voiceGroupIndex
               };
             }
 
@@ -167,8 +167,8 @@ class Player {
     const positions = [tick1.notes[0].getBoundingBox().x, tick2.notes[0].getBoundingBox().x];
     const [lowPos, highPos] = positions;
 
-    const measures = [tick1.measure, tick2.measure];
-    const measure  = Math.min(...measures);
+    const staves = [tick1.stave, tick2.stave];
+    const stave = Math.min(...staves);
 
     const tickObjSpec = { lowTick, highTick, lowPos, highPos };
 
@@ -178,13 +178,13 @@ class Player {
     const pressed = flatMap(tick1.tabNotes, tabNote => tabNote.positions);
     const lit = flatMap(tick2.tabNotes, tabNote => tabNote.positions);
 
-    return { lowTick, highTick, lowPos, highPos, posFunc, measure, pressed, lit };
+    return { lowTick, highTick, lowPos, highPos, posFunc, stave, pressed, lit };
   }
 
   private posFuncFor(tick1: any, tick2: any, spec: any): Function {
     let highPos = spec.highPos;
 
-    if (tick1.measure !== tick2.measure) {
+    if (tick1.stave !== tick2.stave) {
       highPos = this._viewport.width - 10;
     }
 

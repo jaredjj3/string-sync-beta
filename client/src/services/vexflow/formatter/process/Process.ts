@@ -1,6 +1,6 @@
 import { Element, Param } from 'types/element';
 
-declare type NoteTokenType = string | 'command' | 'time' | 'chord' | 'fret';
+declare type NoteTokenType = string | 'command' | 'time' | 'chord' | 'fret' | 'abc';
 
 declare type CommandType = string | 'bar' | 'tuplet';
 
@@ -10,7 +10,7 @@ interface ProcessedElement {
 }
 
 // private utility functions/constants
-const NOTE_TOKEN_TYPES: Array<NoteTokenType> = ['command', 'time', 'chord', 'fret'];
+const NOTE_TOKEN_TYPES: Array<NoteTokenType> = ['command', 'time', 'chord', 'fret', 'abc'];
 
 const BARS_BY_TYPE: any = {
   'double-bar': '=||',
@@ -103,7 +103,7 @@ class Process {
 
   private static chord(token: Element.Token): string {
     const chordStr = token.chord.map(({ fret, string, decorator }) => (
-      `${fret}${decorator || ''}/${string}`
+      `${token.articulation || ''}${fret}${decorator || ''}/${string}`
     )).join('.');
 
     return `(${chordStr})${token.decorator || ''}`;
@@ -111,6 +111,10 @@ class Process {
 
   private static fret(token: Element.Token): string {
     return `${token.articulation || ''}${token.fret}${token.decorator || ''}/${token.string}`;
+  }
+
+  private static abc(token: Element.Token): string {
+    return `${token.abc.key}/${token.string}`;
   }
 
   private static annotations(token: Element.Token): string {
@@ -121,6 +125,11 @@ class Process {
 
   private static bar(token: Element.Token): string {
     return BARS_BY_TYPE[token.type];
+  }
+
+  private static rest(token: Element.Token): string {
+    const { position } = token.params;
+    return `#${position ? position : ''}#`;
   }
 
   private static tuplet(token: Element.Token): string {

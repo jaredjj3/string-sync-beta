@@ -1,7 +1,7 @@
 @import "vars/overrides";
 
 .Marker--transition {
-  transition: all 100ms @ease-in;
+  transition: all 200ms @ease-in;
 }
 
 .Marker {
@@ -18,7 +18,7 @@
 
 .Marker--lit {
   background-color: #B3FB66;
-  opacity: 0.2;
+  opacity: 0.1;
   box-shadow: 0 0 2px 1px #B3FB66;
   border: 2px solid #B3FB66;
   .Marker--transition
@@ -26,7 +26,7 @@
 
 .Marker--hidden {
   opacity: 0;
-  .Marker--transition
+  transition: opacity 750ms @ease-in;
 }
 
 .Marker--pressed {

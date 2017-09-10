@@ -10,7 +10,7 @@ interface CaretProps {
   shouldRAF: boolean;
   tabPlayer: Player;
   viewport: any;
-  focusMeasure(measure: number): void;
+  focusLine(measure: number): void;
 }
 
 interface CaretState {}
@@ -81,12 +81,12 @@ class Caret extends React.Component<CaretProps, CaretState> {
   }
 
   renderCaret = (): void => {
-    const { tabPlayer, focusMeasure } = this.props;
+    const { tabPlayer, focusLine } = this.props;
 
     try {
       this.clearCanvas();
       this.drawCaret(this.props.tabPlayer.caretPosX(), Caret.START_POS_Y);
-      focusMeasure(tabPlayer.currTick.measure);
+      focusLine(tabPlayer.currTick.stave);
     } catch (e) {
       // noop
     }
@@ -108,7 +108,7 @@ class Caret extends React.Component<CaretProps, CaretState> {
   }
 }
 
-import { focusMeasure } from 'data/tab/actions';
+import { focusLine } from 'data/tab/actions';
 
 const mapStateToProps = state => ({
   shouldRAF: state.video.player && isVideoActive(state.video.state),
@@ -117,7 +117,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  focusMeasure: (measure: number) => dispatch(focusMeasure(measure))
+  focusLine: (line: number) => dispatch(focusLine(line))
 });
 
 export default connect(

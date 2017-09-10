@@ -43,7 +43,7 @@ interface PlayerAttrs {
 
 class VideoControls extends React.Component<VideoControlsProps, VideoControlsState> {
   static DEFAULT_SEEK_SLIDER_VALUES: SeekSliderValues = [-1, 0, 101];
-  static MIN_HANDLE_DELTA: number = 6;
+  static MIN_HANDLE_DELTA: number = 3;
   static PLAYBACK_RATES: Array<number> = [1, 0.5, 0.75];
 
   state: VideoControlsState = {
