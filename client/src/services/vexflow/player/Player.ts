@@ -1,7 +1,7 @@
 import { VideoPlayer } from 'types/videoPlayer';
 import Artist from '../artist';
 import Flow from '../flow';
-import { has, sortBy, values } from 'lodash';
+import { has, sortBy, values, isEqual } from 'lodash';
 
 import isBetween from 'util/isBetween';
 import { interpolateFuncFor } from 'util/interpolate';
@@ -16,29 +16,34 @@ class Player {
   currTick: any = null;
 
   private _isDirty: boolean = false;
-  private _videoPlayer: VideoPlayer;
-  private _artist: Artist;
+  private _videoPlayer: VideoPlayer = null;
+  private _artist: Artist = null;
   private _tempo: number = 120; // bpm TODO: REMOVE DEFAULT
-  private _viewport: Viewport;
+  private _viewport: Viewport = null;
 
   get isReady(): boolean {
-    return this._videoPlayer && this._artist && !this._isDirty;
+    return this._videoPlayer && this._artist && this._viewport && !this._isDirty;
   }
 
   set videoPlayer(videoPlayer: VideoPlayer) {
+    this._isDirty = this._isDirty || this._videoPlayer !== videoPlayer;
     this._videoPlayer  = videoPlayer;
-    this._isDirty = true;
   }
 
   set artist(artist: Artist) {
+    this._isDirty = this._isDirty || this._artist !== artist;
     this._artist = artist;
     artist.attachPlayer(this);
-    this._isDirty = true;
   }
 
   set tempo(tempo: number) {
+    this._isDirty = this._isDirty || this._tempo !== tempo;
     this._tempo = tempo;
-    this._isDirty = true;
+  }
+
+  set viewport(viewport: Viewport) {
+    this._isDirty = this._isDirty || !isEqual(this._viewport, viewport);
+    this._viewport = viewport;
   }
 
   // ticks per minute
@@ -47,8 +52,12 @@ class Player {
   }
 
   caretPosX(): number {
-    if (this._isDirty && !this.prepare()) {
-      return 0;
+    if (this._isDirty) {
+      this.prepare();
+    }
+
+    if (!this.isReady) {
+      throw 'Player is not ready. See Player.isReady.';
     }
 
     const currentTime = this._videoPlayer.getCurrentTime() / 60; // minutes
@@ -77,10 +86,10 @@ class Player {
     }
 
     let totalTicks = new Fraction(0, 1);
+    const voiceGroups = this._artist.getPlayerData().voices;
 
-    for (let voiceGroup of this._artist.getPlayerData().voices) {
+    voiceGroups.forEach((voiceGroup, measure) => {
       let maxVoiceTick = new Fraction(0, 1);
-
       for (let voice of voiceGroup) {
         let totalVoiceTicks = new Fraction(0, 1);
 
@@ -97,7 +106,8 @@ class Player {
               this.tickNotes[key] = {
                 tick: absTick,
                 value: absTick.value(),
-                notes: [note]
+                notes: [note],
+                measure
               };
             }
 
@@ -112,7 +122,7 @@ class Player {
       }
 
       totalTicks.add(maxVoiceTick);
-    }
+    });
 
     this.allTicks = sortBy(values(this.tickNotes), tick => tick.value);
     this._isDirty = false;
@@ -134,14 +144,31 @@ class Player {
   }
 
   private currTickObj(tick1: any, tick2: any): any {
-    const lowTick  = tick1.value;
-    const highTick = tick2.value;
-    const lowPos   = tick1.notes[0].getBoundingBox().x;
-    const highPos  = tick2.notes[0].getBoundingBox().x;
-    const posFunc  = interpolateFuncFor(lowTick, highTick, lowPos, highPos);
-    const tickFunc = interpolateFuncFor(lowPos, highPos, lowTick, highTick);
+    const values = [tick1.value, tick2.value];
+    const [lowTick, highTick]  = values;
 
-    return { lowTick, highTick, lowPos, highPos, posFunc, tickFunc };
+    const positions = [tick1.notes[0].getBoundingBox().x, tick2.notes[0].getBoundingBox().x];
+    const [lowPos, highPos] = positions;
+
+    const measures = [tick1.measure, tick2.measure];
+    const measure  = Math.min(...measures);
+
+    const tickObjSpec = { lowTick, highTick, lowPos, highPos };
+
+    const posFunc = this.posFuncFor(tick1, tick2, tickObjSpec);
+    // TODO: implement const tickFunc = interpolateFuncFor(lowPos, highPos, lowTick, highTick);
+
+    return { lowTick, highTick, lowPos, highPos, posFunc, measure };
+  }
+
+  private posFuncFor(tick1: any, tick2: any, spec: any): Function {
+    let highPos = spec.highPos;
+
+    if (tick1.measure !== tick2.measure) {
+      highPos = this._viewport.width - 10;
+    }
+
+    return interpolateFuncFor(spec.lowTick, spec.highTick, spec.lowPos, highPos);
   }
 }
 

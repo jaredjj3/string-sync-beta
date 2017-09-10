@@ -21,6 +21,7 @@ class VexFormatter {
   formatted: string = '';
   measures: Array<string> = [];
   chunkSize: number = 0;
+  elements: Array<any> = [];
 
   get measuresPerLine(): number {
     const { width } = this;
@@ -42,6 +43,7 @@ class VexFormatter {
   }
 
   update(code: string, width: number, elements: Array<any>): string {
+    this.elements = elements;
     const shouldUpdate = this.code !== code || this.width !== width || this.formatted === '';
 
     this.code = code;

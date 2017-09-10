@@ -10,6 +10,7 @@ interface CaretProps {
   shouldRAF: boolean;
   tabPlayer: Player;
   viewport: any;
+  focusMeasure(measure: number): void;
 }
 
 interface CaretState {}
@@ -23,13 +24,27 @@ class Caret extends React.Component<CaretProps, CaretState> {
   ctx: CanvasRenderingContext2D;
 
   componentDidMount(): void {
-    this.resize(this.props.viewport);
+    const { tabPlayer, viewport } = this.props;
+    tabPlayer.viewport = viewport;
   }
 
   componentWillReceiveProps(nextProps: CaretProps): void {
+    const { tabPlayer, viewport } = nextProps;
+    tabPlayer.viewport = viewport;
+
     if (nextProps.shouldRAF) {
+      this.resize(viewport);
       this.RAFHandle = window.requestAnimationFrame(this.renderCaret);
     }
+  }
+
+  setCanvas = (c: HTMLCanvasElement): void => {
+    if (!c || (this.canvas && this.ctx)) {
+      return;
+    }
+
+    this.canvas = c;
+    this.ctx = c.getContext('2d');
   }
 
   resize (viewport: any): void {
@@ -37,7 +52,7 @@ class Caret extends React.Component<CaretProps, CaretState> {
 
     const ratio = window.devicePixelRatio || 1;
     const { width } = viewport;
-    const height = 277;
+    const height = 300;
 
     canvas.width = width * ratio;
     canvas.height = height * ratio;
@@ -62,19 +77,13 @@ class Caret extends React.Component<CaretProps, CaretState> {
     this.ctx.stroke();
   }
 
-  setCanvas = (c: HTMLCanvasElement): void => {
-    if (!c || (this.canvas && this.ctx)) {
-      return;
-    }
-
-    this.canvas = c;
-    this.ctx = c.getContext('2d');
-  }
-
   renderCaret = (): void => {
+    const { tabPlayer, focusMeasure } = this.props;
+
     try {
       this.clearCanvas();
       this.drawCaret();
+      focusMeasure(tabPlayer.currTick.measure);
     } catch (e) {
       // noop
     } finally {
@@ -96,6 +105,8 @@ class Caret extends React.Component<CaretProps, CaretState> {
   }
 }
 
+import { focusMeasure } from 'data/tab/actions';
+
 const mapStateToProps = state => ({
   shouldRAF: state.video.player && isVideoActive(state.video.state),
   tabPlayer: state.tab.player,
@@ -103,7 +114,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-
+  focusMeasure: (measure: number) => dispatch(focusMeasure(measure))
 });
 
 export default connect(
