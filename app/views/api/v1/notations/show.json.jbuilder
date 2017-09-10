@@ -8,3 +8,4 @@ json.vextab         @notation.vextab
 json.youtubeVideoId @notation.youtube_video_id
 json.duration       @notation.duration
 json.deadTime       @notation.dead_time
+json.tempo          @notation.tempo

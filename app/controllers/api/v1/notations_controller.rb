@@ -32,7 +32,8 @@ class Api::V1::NotationsController < ApplicationController
             :artist_name,
             :vextab,
             :tempo,
-            :dead_time
+            :dead_time,
+            :duration
           )
     end
 end
