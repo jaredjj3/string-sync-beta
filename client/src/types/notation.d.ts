@@ -5,6 +5,7 @@ export interface Notation {
   id: number;
   name: string;
   duration: number;
+  deadTime: number;
   transcriber: string;
   artist: string;
   thumbnailUrl: string;

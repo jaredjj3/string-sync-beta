@@ -10,18 +10,11 @@ const defaultState: Notation = Object.freeze({
   artist: '',
   thumbnailUrl: '',
   tags: [],
-  buildStructs: '',
-  scrollStructs: [],
+  vextab: '',
   youtubeVideoId: '',
-  duration: 0
+  duration: 0,
+  deadTime: 0
 });
-
-const process = (notation: any): Notation => {
-  notation.buildStructs = notation.buildStructs;
-  notation.scrollStructs = JSON.parse(notation.scrollStructs);
-
-  return notation;
-};
 
 export default (state = defaultState, action): Notation => {
   Object.freeze(state);
@@ -29,7 +22,7 @@ export default (state = defaultState, action): Notation => {
 
   switch (action.type) {
     case RECEIVE_NOTATION:
-      return process(action.notation);
+      return action.notation;
 
     default:
       return nextState;

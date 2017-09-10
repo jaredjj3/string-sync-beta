@@ -3,7 +3,8 @@ import dupScrollStructs from './scrollStructs';
 import { Notation } from 'types/notation';
 
 const  dupNotation = (notation: Notation): Notation => {
-  return Object.assign({}, notation);
+  const tags = Object.assign([], notation.tags);
+  return Object.assign({}, notation, { tags });
 };
 
 export default dupNotation;

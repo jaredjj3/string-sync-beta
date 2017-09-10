@@ -6,7 +6,6 @@ import { VexTab, Artist, Flow, Formatter, Player } from 'services/vexflow';
 import { isEqual } from 'lodash';
 
 import { Viewport } from 'types/device';
-import { BuildStructs } from 'types/buildStructs';
 
 const { Renderer } = Flow;
 
@@ -14,7 +13,7 @@ interface ScoreProps {
   viewport: Viewport;
   measuresPerLine: number;
   numMeasures: number;
-  buildStructs: BuildStructs;
+  vextab: string;
   tabPlayer: Player;
   formatter: Formatter;
   setMeasuresPerLine(measuresPerLine: number): void;
@@ -45,7 +44,7 @@ class Score extends React.Component<ScoreProps, ScoreState> {
       this.props.measuresPerLine !== nextProps.measuresPerLine ||
       this.props.numMeasures !== nextProps.numMeasures ||
       !isEqual(this.props.viewport, nextProps.viewport) ||
-      this.props.buildStructs !== nextProps.buildStructs
+      this.props.vextab !== nextProps.vextab
     );
   }
 
@@ -86,9 +85,9 @@ class Score extends React.Component<ScoreProps, ScoreState> {
   }
 
   renderScore(): void {
-    const { viewport, formatter, buildStructs } = this.props;
+    const { viewport, formatter, vextab } = this.props;
 
-    if (buildStructs.length === 0) {
+    if (vextab.length === 0) {
       return;
     }
 
@@ -96,8 +95,8 @@ class Score extends React.Component<ScoreProps, ScoreState> {
     let tab = new VexTab(artist);
 
     try {
-      tab.parse(buildStructs);
-      const formatted = formatter.update(buildStructs, viewport.width, tab.elements);
+      tab.parse(vextab);
+      const formatted = formatter.update(vextab, viewport.width, tab.elements);
 
       artist = new Artist(10, 0, viewport.width - 10, { scale: 1.0 });
       tab = new VexTab(artist);
@@ -142,7 +141,7 @@ const mapStateToProps = state => ({
   viewport: state.device.viewport,
   measuresPerLine: state.tab.measuresPerLine,
   numMeasures: state.tab.numMeasures,
-  buildStructs: state.notation.buildStructs,
+  vextab: state.notation.vextab,
   tabPlayer: state.tab.player,
   formatter: state.tab.formatter
 });
