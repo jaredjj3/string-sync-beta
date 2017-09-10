@@ -30,15 +30,6 @@ class Score extends React.Component<ScoreProps, ScoreState> {
   renderer: any;
   artist: Artist;
 
-  componentDidMount(): void {
-    const { formatter } = this.props;
-
-    this.renderScore();
-    this.maybeSetMeasuresPerLine(formatter.measuresPerLine);
-    this.maybeSetNumMeasures(formatter.measures.length);
-    this.props.setArtist(this.artist);
-  }
-
   shouldComponentUpdate(nextProps: ScoreProps): boolean {
     return (
       this.props.measuresPerLine !== nextProps.measuresPerLine ||
@@ -52,10 +43,13 @@ class Score extends React.Component<ScoreProps, ScoreState> {
     const { formatter } = this.props;
 
     this.renderScore();
-    this.maybeSetMeasuresPerLine(formatter.chunkSize);
-    this.maybeSetNumMeasures(formatter.measures.length);
-    this.props.setArtist(this.artist);
-    this.props.tabPlayer.artist = this.artist;
+
+    if (this.artist) {
+      this.maybeSetMeasuresPerLine(formatter.chunkSize);
+      this.maybeSetNumMeasures(formatter.measures.length);
+      this.props.setArtist(this.artist);
+      this.props.tabPlayer.artist = this.artist;
+    }
   }
 
   componentWillUnmount(): void {

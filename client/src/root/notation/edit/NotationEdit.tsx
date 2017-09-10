@@ -16,7 +16,6 @@ import { Device } from 'types/device';
 const { Panel } = Collapse;
 
 interface NotationEditProps {
-  notation: Notation;
   device: Device;
   params: any;
   showFretboard: boolean;
@@ -32,13 +31,11 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
   }
 
   render(): JSX.Element {
-    const { notation, showFretboard, showFretboardControls } = this.props;
+    const { showFretboard, showFretboardControls } = this.props;
 
     return (
       <div className="NotationEdit">
-        <Video
-          youtubeVideoId={notation.youtubeVideoId}
-        />
+        <Video />
         <Collapse
           activeKey={showFretboard ? 'fretboard' : null}
           bordered={false}
@@ -65,7 +62,6 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
 import { fetchNotation } from 'data/notation/actions';
 
 const mapStateToProps = state => ({
-  notation: state.notation,
   showFretboard: state.panels.fretboard,
   showFretboardControls: state.panels.fretboardControls
 });

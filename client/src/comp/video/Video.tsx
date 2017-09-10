@@ -69,10 +69,10 @@ class Video extends React.Component<VideoProps, VideoState> {
 }
 
 import { updateVideoPlayer, updateVideoState } from 'data/video/actions';
-import { setPlayer } from 'data/tab/actions';
 
 const mapStateToProps = state => ({
-  tabPlayer: state.tab.player
+  tabPlayer: state.tab.player,
+  youtubeVideoId: state.notation.youtubeVideoId
 });
 
 const mapDispatchToProps = dispatch => ({
