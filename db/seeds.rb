@@ -51,10 +51,10 @@ def create_notations(num)
       tags: tags.shuffle[0..2],
       name: Faker::Book.title,
       youtube_video_id: "https://youtu.be/w8uNZWDEYzQ",
-      duration: 14.841,
+      duration: 14.841 * 1000,
       artist_name: Faker::Name.name,
       thumbnail: File.open(Dir["app/assets/images/thumbnails/*.jpg"].sample),
-      build_structs: BUILD_STRUCTS
+      vextab: BUILD_STRUCTS
     )
   end
 end
