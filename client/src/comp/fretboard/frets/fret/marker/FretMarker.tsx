@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { isEqual } from 'lodash';
+
 interface FretMarkerProps {
   string: number;
   fret: number;
@@ -12,28 +14,36 @@ interface FretMarkerState {
 
 class FretMarker extends React.PureComponent<FretMarkerProps, FretMarkerState> {
   state: FretMarkerState = {
-    lit: false,
-    pressed: false
+    lit: Math.random() > 0.5,
+    pressed: Math.random() > 0.5
   };
 
-  componentWillMount(): void {
-    // fretman.addMarker(this)
+  shouldComponentUpdate(nextProps: FretMarkerProps, nextState: FretMarkerState): boolean {
+    return !isEqual(this.state, nextState);
   }
 
   light = (e?: React.SyntheticEvent<any>): void => {
-    console.log('lit');
+    if (!this.state.lit) {
+      this.setState(Object.assign({}, this.state, { lit: true }));
+    }
   }
 
-  hide = (e?: React.SyntheticEvent<any>): void => {
-    console.log('hidden');
+  unlight = (e?: React.SyntheticEvent<any>): void => {
+    if (this.state.lit) {
+      this.setState(Object.assign({}, this.state, { lit: false }));
+    }
   }
 
   press = (e?: React.SyntheticEvent<any>): void => {
-    console.log('pressed');
+    if (!this.state.pressed) {
+      this.setState(Object.assign({}, this.state, { pressed: true }));
+    }
   }
 
-  depress = (e?: React.SyntheticEvent<any>): void => {
-    console.log('depressed');
+  unpress = (e?: React.SyntheticEvent<any>): void => {
+    if (this.state.pressed) {
+      this.setState(Object.assign({}, this.state, { pressed: false }));
+    }
   }
 
   render(): JSX.Element {
@@ -50,8 +60,8 @@ class FretMarker extends React.PureComponent<FretMarkerProps, FretMarkerState> {
     return (
       <span
         className={markerClassName}
-        onMouseOver={this.light}
-        onMouseLeave={this.hide}
+        onMouseOver={this.press}
+        onMouseLeave={this.unpress}
       >
         &nbsp;
       </span>

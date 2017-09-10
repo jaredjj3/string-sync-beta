@@ -1,3 +1,5 @@
+@import "vars/overrides";
+
 .Marker {
   display: block;
   z-index: 10;
@@ -5,11 +7,21 @@
   height: 15px;
   background-color: lightyellow;
   border-radius: 50%;
-  opacity: 0.5;
+  opacity: 0.2;
   margin-top: 5px;
   margin-bottom: 5px;
+  cursor: pointer;
+  transition: opacity 100ms @ease-in;
+  transition: background-color 100ms @ease-in;
 }
 
 .Marker--hidden {
   opacity: 0;
+  transition: opacity 100ms @ease-in;
+}
+
+.Marker--pressed {
+  background-color: #5FF72D;
+  opacity: 1;
+  transition: opacity 100ms @ease-in;
 }
