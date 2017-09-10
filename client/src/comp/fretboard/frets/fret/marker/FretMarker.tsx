@@ -1,10 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
+import { Fretman } from 'services/vexflow';
 import { isEqual } from 'lodash';
 
 interface FretMarkerProps {
   string: number;
   fret: number;
+  fretman: Fretman;
 }
 
 interface FretMarkerState {
@@ -13,10 +16,11 @@ interface FretMarkerState {
 }
 
 class FretMarker extends React.PureComponent<FretMarkerProps, FretMarkerState> {
-  state: FretMarkerState = {
-    lit: Math.random() > 0.5,
-    pressed: Math.random() > 0.5
-  };
+  state: FretMarkerState = { lit: false, pressed: false };
+
+  componentDidMount(): void {
+    this.props.fretman.addMarker(this);
+  }
 
   shouldComponentUpdate(nextProps: FretMarkerProps, nextState: FretMarkerState): boolean {
     return !isEqual(this.state, nextState);
@@ -69,4 +73,15 @@ class FretMarker extends React.PureComponent<FretMarkerProps, FretMarkerState> {
   }
 }
 
-export default FretMarker;
+const mapStateToProps = state => ({
+  fretman: state.tab.fretman
+});
+
+const mapDispatchToProps = dispatch => ({
+
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FretMarker);

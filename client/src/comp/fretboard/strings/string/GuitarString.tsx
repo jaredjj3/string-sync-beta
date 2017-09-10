@@ -1,7 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { Fretman } from 'services/vexflow';
 
 interface GuitarStringProps {
   string: number;
+  fretman: Fretman;
 }
 
 interface GuitarStringState {
@@ -9,9 +13,23 @@ interface GuitarStringState {
 }
 
 class GuitarString extends React.PureComponent<GuitarStringProps, GuitarStringState> {
-  state: GuitarStringState = {
-    lit: false
-  };
+  state: GuitarStringState = { lit: false };
+
+  componentDidMount(): void {
+    this.props.fretman.addString(this);
+  }
+
+  light = (e?: React.SyntheticEvent<any>): void => {
+    if (!this.state.lit) {
+      this.setState(Object.assign({}, this.state, { lit: true }));
+    }
+  }
+
+  unlight = (e?: React.SyntheticEvent<any>): void => {
+    if (this.state.lit) {
+      this.setState(Object.assign({}, this.state, { lit: false }));
+    }
+  }
 
   render(): JSX.Element {
     const guitarStringClassName = [
@@ -26,4 +44,15 @@ class GuitarString extends React.PureComponent<GuitarStringProps, GuitarStringSt
   }
 }
 
-export default GuitarString;
+const mapStateToProps = state => ({
+  fretman: state.tab.fretman
+});
+
+const mapDispatchToProps = dispatch => ({
+
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GuitarString);

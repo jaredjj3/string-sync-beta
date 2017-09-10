@@ -89,13 +89,13 @@ class Caret extends React.Component<CaretProps, CaretState> {
       focusMeasure(tabPlayer.currTick.measure);
     } catch (e) {
       // noop
-    } finally {
-      if (this.props.shouldRAF) {
-        this.RAFHandle = window.requestAnimationFrame(this.renderCaret);
-      } else {
-        window.cancelAnimationFrame(this.RAFHandle);
-        this.RAFHandle = null;
-      }
+    }
+
+    if (this.props.shouldRAF) {
+      this.RAFHandle = window.requestAnimationFrame(this.renderCaret);
+    } else {
+      window.cancelAnimationFrame(this.RAFHandle);
+      this.RAFHandle = null;
     }
   }
 

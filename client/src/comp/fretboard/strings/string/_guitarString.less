@@ -1,7 +1,10 @@
+@import "vars/overrides";
+
 .GuitarString {
   width: 100vw;
   background: #aaa;
   opacity: 0.4;
+  transition: box-shadow 100ms @ease-in;
 }
 
 .GuitarString--thin {
@@ -13,5 +16,6 @@
 }
 
 .GuitarString--lit {
-  background: lime;
+  box-shadow: 0 0 15px 2px red;
+  transition: box-shadow 100ms @ease-in;
 }
