@@ -25,29 +25,6 @@ interface ScoreProps {
 
 interface ScoreState {}
 
-const test = `
-tabstave
-notation=true
-key=A
-time=4/4
-clef=none
-notes =|: :q (5/2.5/3.7/4) :8 7-5h6/3 ^3^ 5h6-7/5 ^3^ :q 7V/4 |
-notes :8 t12p7/4 s5s3/4 :8 3s:16:5-7/5 :h p5/4 $Fi,Ga,Ro!$
-
-tabstave
-notation=true
-key=A
-time=4/4
-clef=none
-
-notes :q (5/4.5/5) (7/4.7/5)s(5/4.5/5) ^3^
-notes :8 7-5/4 $.a./b.$ (5/4.5/5)h(7/5) =:|
-notes :8 (12/5.12/4)ds(5/5.5/4)u 3b4/5
-notes :h (5V/6.5/4.6/3.7/2) $.italic.let ring$
-notes =|: :q (5/2.5/3.7/4) :8 7-5h6/3 ^3^ 5h6-7/5 ^3^ :q 7V/4 |
-notes :8 t12p7/4 s5s3/4 :8 3s:16:5-7/5 :h p5/4 $Fi,Ga,Ro!$
-`;
-
 class Score extends React.Component<ScoreProps, ScoreState> {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
@@ -67,8 +44,8 @@ class Score extends React.Component<ScoreProps, ScoreState> {
     return (
       this.props.measuresPerLine !== nextProps.measuresPerLine ||
       this.props.numMeasures !== nextProps.numMeasures ||
-      !isEqual(this.props.viewport, nextProps.viewport)
-      // TODO: after the seeds are fixed: this.props.buildStructs !== nextProps.buildStructs
+      !isEqual(this.props.viewport, nextProps.viewport) ||
+      this.props.buildStructs !== nextProps.buildStructs
     );
   }
 
@@ -109,14 +86,18 @@ class Score extends React.Component<ScoreProps, ScoreState> {
   }
 
   renderScore(): void {
-    const { viewport, formatter } = this.props;
+    const { viewport, formatter, buildStructs } = this.props;
+
+    if (buildStructs.length === 0) {
+      return;
+    }
 
     let artist = new Artist(10, 0, viewport.width - 10, { scale: 1.0 });
     let tab = new VexTab(artist);
 
     try {
-      tab.parse(test);
-      const formatted = formatter.update(test, viewport.width, tab.elements);
+      tab.parse(buildStructs);
+      const formatted = formatter.update(buildStructs, viewport.width, tab.elements);
 
       artist = new Artist(10, 0, viewport.width - 10, { scale: 1.0 });
       tab = new VexTab(artist);
@@ -125,7 +106,7 @@ class Score extends React.Component<ScoreProps, ScoreState> {
       artist.render(this.renderer);
       this.renderTabText(artist);
     } catch (e) {
-      console.error(e);
+      // noop
     }
 
     this.artist = artist;

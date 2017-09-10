@@ -10,13 +10,14 @@ const defaultState: Notation = Object.freeze({
   artist: '',
   thumbnailUrl: '',
   tags: [],
-  buildStructs: { measures: [] },
+  buildStructs: '',
   scrollStructs: [],
-  youtubeVideoId: ''
+  youtubeVideoId: '',
+  duration: 0
 });
 
 const process = (notation: any): Notation => {
-  notation.buildStructs = JSON.parse(notation.buildStructs);
+  notation.buildStructs = notation.buildStructs;
   notation.scrollStructs = JSON.parse(notation.scrollStructs);
 
   return notation;
