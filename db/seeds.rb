@@ -1,3 +1,19 @@
+BUILD_STRUCTS = <<-BUILD.split("\n").map { |line| line.strip }.join("\n")
+tabstave
+notation=true
+key=A
+time=4/4
+clef=none
+notes =|: :q (5/2.5/3.7/4) :8 7-5h6/3 ^3^ 5h6-7/5 ^3^ :q 7V/4 |
+notes :8 t12p7/4 s5s3/4 :8 3s:16:5-7/5 :h p5/4 $Fi,Ga,Ro!$
+notes :q (5/4.5/5) (7/4.7/5)s(5/4.5/5) ^3^
+notes :8 7-5/4 $.a./b.$ (5/4.5/5)h(7/5) =:|
+notes :8 (12/5.12/4)ds(5/5.5/4)u 3b4/5
+notes :h (5V/6.5/4.6/3.7/2) $.italic.let ring$
+notes =|: :q (5/2.5/3.7/4) :8 7-5h6/3 ^3^ 5h6-7/5 ^3^ :q 7V/4 |
+notes :8 t12p7/4 s5s3/4 :8 3s:16:5-7/5 :h p5/4 $Fi,Ga,Ro!$
+BUILD
+
 def init
   Rails.application.eager_load!
 end
@@ -38,8 +54,7 @@ def create_notations(num)
       duration: 14.841,
       artist_name: Faker::Name.name,
       thumbnail: File.open(Dir["app/assets/images/thumbnails/*.jpg"].sample),
-      build_structs: "{\"measures\":[{\"width\":300,\"slices\":[{\"duration\":\"q\",\"positions\":[{\"str\":2,\"fret\":5},{\"str\":3,\"fret\":4},{\"str\":4,\"fret\":5}]},{\"duration\":\"q\",\"positions\":[{\"str\":5,\"fret\":3}]},{\"duration\":\"q\",\"positions\":[{\"str\":4,\"fret\":5}]},{\"duration\":\"q\",\"positions\":[{\"str\":2,\"fret\":5}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":3}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":4}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":3}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":1}]}]},{\"width\":200,\"slices\":[{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":5},{\"str\":3,\"fret\":7},{\"str\":4,\"fret\":6},{\"str\":5,\"fret\":7}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":7}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":9}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":9},{\"str\":3,\"fret\":7},{\"str\":4,\"fret\":9}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":10}]},{\"duration\":\"8\",\"positions\":[{\"str\":1,\"fret\":7}]}]},{\"width\":200,\"slices\":[{\"duration\":\"h\",\"positions\":[{\"str\":5,\"fret\":12},{\"str\":4,\"fret\":14},{\"str\":3,\"fret\":12},{\"str\":2,\"fret\":13}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":17}]},{\"duration\":\"8\",\"positions\":[{\"str\":1,\"fret\":13}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":17}]}]},{\"width\":200,\"slices\":[{\"duration\":\"8\",\"positions\":[{\"str\":1,\"fret\":10},{\"str\":2,\"fret\":11},{\"str\":3,\"fret\":10},{\"str\":4,\"fret\":12},{\"str\":5,\"fret\":10}]},{\"duration\":\"8\",\"positions\":[{\"str\":1,\"fret\":8},{\"str\":2,\"fret\":8},{\"str\":3,\"fret\":9},{\"str\":4,\"fret\":10}]},{\"duration\":\"8\",\"positions\":[{\"str\":1,\"fret\":10}]},{\"duration\":\"8\",\"positions\":[{\"str\":1,\"fret\":12}]}]},{\"width\":200,\"slices\":[{\"duration\":\"8\",\"positions\":[{\"str\":1,\"fret\":12},{\"str\":2,\"fret\":10},{\"str\":3,\"fret\":10},{\"str\":4,\"fret\":10}]},{\"duration\":\"8\",\"positions\":[{\"str\":1,\"fret\":10}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":13}]},{\"duration\":\"8\",\"positions\":[{\"str\":1,\"fret\":7}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":10}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":8}]}]},{\"width\":200,\"slices\":[{\"duration\":\"8\",\"positions\":[{\"str\":1,\"fret\":7},{\"str\":2,\"fret\":8},{\"str\":3,\"fret\":7},{\"str\":4,\"fret\":9},{\"str\":5,\"fret\":7}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":8}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":9}]},{\"duration\":\"8\",\"positions\":[{\"str\":1,\"fret\":6}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":9}]},{\"duration\":\"8\",\"positions\":[{\"str\":1,\"fret\":5}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":8}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":6}]}]},{\"width\":200,\"slices\":[{\"duration\":\"8\",\"positions\":[{\"str\":1,\"fret\":5},{\"str\":2,\"fret\":6},{\"str\":3,\"fret\":7},{\"str\":6,\"fret\":6}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":6}]},{\"duration\":\"8\",\"positions\":[{\"str\":1,\"fret\":8}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":6},{\"str\":3,\"fret\":5},{\"str\":4,\"fret\":7},{\"str\":5,\"fret\":5}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":6}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":8}]}]},{\"width\":200,\"slices\":[{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":5},{\"str\":3,\"fret\":6},{\"str\":4,\"fret\":5},{\"str\":5,\"fret\":7},{\"str\":6,\"fret\":5}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":6}]},{\"duration\":\"8\",\"positions\":[{\"str\":2,\"fret\":5}]},{\"duration\":\"8\",\"positions\":[{\"str\":3,\"fret\":7}]},{\"duration\":\"8\",\"positions\":[{\"str\":3,\"fret\":6}]},{\"duration\":\"8\",\"positions\":[{\"str\":4,\"fret\":7}]},{\"duration\":\"8\",\"positions\":[{\"str\":1,\"fret\":5}]},{\"duration\":\"8\",\"positions\":[{\"str\":1,\"fret\":3}]}]}]}",
-      scroll_structs: "[{\"measureIndex\":0,\"sliceIndex\":0,\"time\":0.16632903242492675},{\"measureIndex\":1,\"sliceIndex\":0,\"time\":2.163549938964844},{\"measureIndex\":1,\"sliceIndex\":3,\"time\":3.003947972343445},{\"measureIndex\":2,\"sliceIndex\":1,\"time\":4.947321076293945},{\"measureIndex\":3,\"sliceIndex\":1,\"time\":6.763068061035156},{\"measureIndex\":4,\"sliceIndex\":0,\"time\":7.7035779732971195},{\"measureIndex\":5,\"sliceIndex\":0,\"time\":9.552988997138977},{\"measureIndex\":6,\"sliceIndex\":0,\"time\":11.421135053405761},{\"measureIndex\":7,\"sliceIndex\":0,\"time\":13.280906031471252},{\"measureIndex\":7,\"sliceIndex\":7,\"time\":14.802483059127807}]"
+      build_structs: BUILD_STRUCTS
     )
   end
 end
