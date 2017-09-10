@@ -49,9 +49,4 @@ class Notation < ApplicationRecord
         errors[:youtube_video_id] << "must be valid youtube url"
       end
     end
-
-    def ensure_structs
-      self.build_structs  ||= { measures: [slices: []] }.to_json
-      self.scroll_structs ||= [].to_json
-    end
 end
