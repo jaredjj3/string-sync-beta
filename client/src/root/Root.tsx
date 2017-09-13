@@ -9,7 +9,7 @@ import NotationEdit from './notation/edit';
 import NotationShow from './notation/show';
 import Search from './search';
 import Signup from './signup';
-import Upload from './upload';
+import Upload from './notation/new';
 
 type RedirectTypes = 'AUTH' | 'PROTECT';
 
