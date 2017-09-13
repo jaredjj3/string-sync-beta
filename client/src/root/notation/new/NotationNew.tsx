@@ -1,7 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-interface NotationNewProps {}
+import Button from 'antd/lib/button';
+import Checkbox from 'antd/lib/checkbox';
+import Form from 'antd/lib/form';
+import Icon from 'antd/lib/icon';
+import Input from 'antd/lib/input';
+
+interface NotationNewProps {
+  form: any;
+}
 
 interface NotationNewState {}
 
@@ -28,4 +36,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(NotationNew);
+)(Form.create()(NotationNew));
