@@ -34,6 +34,8 @@ class Notation < ApplicationRecord
 
   before_create(:extract_youtube_id)
 
+  accepts_nested_attributes_for(:tags)
+
   def extract_youtube_id
     self.youtube_video_id = youtube_video_id_match(self.youtube_video_id)[1]
   end
