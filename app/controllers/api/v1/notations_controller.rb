@@ -42,7 +42,8 @@ class Api::V1::NotationsController < ApplicationController
             :vextab,
             :tempo,
             :dead_time,
-            :duration
+            :duration,
+            tags_attributes: [:id]
           )
     end
 
