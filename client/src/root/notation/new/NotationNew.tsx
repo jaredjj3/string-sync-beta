@@ -18,6 +18,18 @@ interface NotationNewState {
 }
 
 class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
+  static YOUTUBE_REGEX: RegExp = /^(?:https?:\/\/)?(?:www\.)?youtu(?:\.be|be\.com)\/(?:watch\?v=)?([\w-]{10,})/;
+  static FORM_ITEM_LAYOUT: any = {
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 24 },
+    },
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 24 },
+    },
+  };
+
   state: NotationNewState = {
     loading: false
   };
@@ -29,10 +41,23 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
   }
 
   render(): JSX.Element {
+    const { YOUTUBE_REGEX, FORM_ITEM_LAYOUT } = NotationNew;
+    const { getFieldDecorator } = this.props.form;
+
     return (
       <div className="Form">
         <h1 className="Form__title">UPLOAD</h1>
         <Form onSubmit={this.handleSubmit}>
+          <FormItem label="YouTube URL" hasFeedback {...FORM_ITEM_LAYOUT}>
+            {getFieldDecorator('youtubeVideoId', {
+              rules: [
+                { required: true, message: 'YouTube URL is required' },
+                { pattern: YOUTUBE_REGEX, message: 'must be valid YouTube URL' }
+              ]
+            })(
+              <Input />
+            )}
+          </FormItem>
           <FormItem>
             <Button
               type="primary"

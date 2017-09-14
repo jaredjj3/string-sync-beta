@@ -96,7 +96,7 @@ class Login extends React.Component<SignupProps, SignupState> {
       <div className="Form">
         <h1 className="Form__title">SIGNUP</h1>
         <Form onSubmit={this.handleSubmit}>
-          <FormItem label="email" hasFeedback {...formItemLayout} >
+          <FormItem label="email" hasFeedback {...formItemLayout}>
             {getFieldDecorator('email', {
               rules: [
                 { type: 'email', message: 'please enter a valid email' },
