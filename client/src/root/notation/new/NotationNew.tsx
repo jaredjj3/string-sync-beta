@@ -8,11 +8,15 @@ import Icon from 'antd/lib/icon';
 import Input from 'antd/lib/input';
 import Select from 'antd/lib/select';
 
+import { Tag } from 'types/tag';
+
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 interface NotationNewProps {
   form: any;
+  tags: Array<Tag>;
+  fetchTags(): void;
 }
 
 interface NotationNewState {
@@ -36,6 +40,14 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
     loading: false
   };
 
+  componentDidMount(): void {
+    const { tags, fetchTags } = this.props;
+
+    if (tags.length === 0) {
+      fetchTags();
+    }
+  }
+
   handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
@@ -44,7 +56,8 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
 
   render(): JSX.Element {
     const { YOUTUBE_REGEX, FORM_ITEM_LAYOUT } = NotationNew;
-    const { getFieldDecorator } = this.props.form;
+    const { tags, form } = this.props;
+    const { getFieldDecorator } = form;
 
     return (
       <div className="Form">
@@ -79,8 +92,11 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
               rules: [{ required: true, message: 'at least one tag is required' }]
             })(
               <Select mode="multiple">
-                <Option value="1">acoustic</Option>
-                <Option value="2">ambient</Option>
+                {
+                  tags.map(tag => (
+                    <Option key={tag.name} value={tag.id.toString()}>{tag.name}</Option>
+                  ))
+                }
               </Select>
             )}
           </FormItem>
@@ -100,12 +116,14 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
   }
 }
 
-const mapStateToProps = state => ({
+import { fetchTags } from 'data/tags/actions';
 
+const mapStateToProps = state => ({
+  tags: state.tags
 });
 
 const mapDispatchToProps = dispatch => ({
-
+  fetchTags: () => dispatch(fetchTags())
 });
 
 export default connect(
