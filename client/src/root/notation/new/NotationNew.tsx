@@ -6,8 +6,10 @@ import Checkbox from 'antd/lib/checkbox';
 import Form from 'antd/lib/form';
 import Icon from 'antd/lib/icon';
 import Input from 'antd/lib/input';
+import Select from 'antd/lib/select';
 
 const FormItem = Form.Item;
+const Option = Select.Option;
 
 interface NotationNewProps {
   form: any;
@@ -59,10 +61,27 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
             )}
           </FormItem>
           <FormItem label="Title" hasFeedback {...FORM_ITEM_LAYOUT}>
-            {getFieldDecorator('title', {
+            {getFieldDecorator('name', {
               rules: [{ required: true, message: 'title is required' }]
             })(
               <Input />
+            )}
+          </FormItem>
+          <FormItem label="Artist" hasFeedback {...FORM_ITEM_LAYOUT}>
+            {getFieldDecorator('artist', {
+              rules: [{ required: true, message: 'artist is required' }]
+            })(
+              <Input />
+            )}
+          </FormItem>
+          <FormItem label="Tags" {...FORM_ITEM_LAYOUT}>
+            {getFieldDecorator('tags', {
+              rules: [{ required: true, message: 'at least one tag is required' }]
+            })(
+              <Select mode="multiple">
+                <Option value="1">acoustic</Option>
+                <Option value="2">ambient</Option>
+              </Select>
             )}
           </FormItem>
           <FormItem>

@@ -136,13 +136,6 @@ class Search extends React.Component<SearchProps, SearchState> {
   private _isMatch = (query: string, notation: Notation): boolean => {
     const lowerCaseQuery = query.toLowerCase();
 
-    // fuzzy search
-    // return (
-    //   fuzzySearch(lowerCaseQuery, notation.name.toLowerCase())        ||
-    //   fuzzySearch(lowerCaseQuery, notation.artist.toLowerCase())      ||
-    //   fuzzySearch(lowerCaseQuery, notation.transcriber.toLowerCase())
-    // );
-
     // strict search
     return (
       notation.name.toLowerCase().includes(lowerCaseQuery)        ||
