@@ -49,11 +49,18 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
         <h1 className="Form__title">UPLOAD</h1>
         <Form onSubmit={this.handleSubmit}>
           <FormItem label="YouTube URL" hasFeedback {...FORM_ITEM_LAYOUT}>
-            {getFieldDecorator('youtubeVideoId', {
+            {getFieldDecorator('youtube_video_id', {
               rules: [
                 { required: true, message: 'YouTube URL is required' },
                 { pattern: YOUTUBE_REGEX, message: 'must be valid YouTube URL' }
               ]
+            })(
+              <Input />
+            )}
+          </FormItem>
+          <FormItem label="Title" hasFeedback {...FORM_ITEM_LAYOUT}>
+            {getFieldDecorator('title', {
+              rules: [{ required: true, message: 'title is required' }]
             })(
               <Input />
             )}
