@@ -17,6 +17,7 @@
 #  duration               :integer
 #  dead_time              :integer          default("0")
 #  tempo                  :integer          not null
+#  featured               :boolean          default("false"), not null
 #
 
 class Notation < ApplicationRecord
