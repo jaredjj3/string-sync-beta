@@ -19,6 +19,8 @@ const MenuItemGroup = Menu.ItemGroup;
 interface DesktopNavProps {
   location: Location;
   isLoggedIn: boolean;
+  isTeacher: boolean;
+  isAdmin: boolean;
   logout(): void;
 }
 
@@ -39,6 +41,8 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
     '/search' : NavKeys.SEARCH,
   };
 
+  state: DesktopNavState = { current: null };
+
   componentWillMount(): void {
     this.setState({ current: DesktopNav.NAV_KEYS_BY_LOCATION[this.props.location.pathname] });
   }
@@ -49,7 +53,10 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
 
   goTo = (params: ClickParam): void => {
     const location = invert(DesktopNav.NAV_KEYS_BY_LOCATION)[params.key];
-    browserHistory.push(location);
+
+    if (location) {
+      browserHistory.push(location);
+    }
   }
 
   logout = (e: React.SyntheticEvent<HTMLDivElement>): void => {
@@ -60,7 +67,7 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
   }
 
   render(): JSX.Element {
-    const { isLoggedIn } = this.props;
+    const { isLoggedIn, isTeacher, isAdmin } = this.props;
 
     return (
       <nav className="Nav--desktop">
@@ -84,12 +91,24 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
               {
                 isLoggedIn ?
                 <SubMenu title={<Icon type="setting" />} className="Nav--desktop__menuItem">
-                  <Item>
-                    <Link to="upload">
-                      <Icon type="upload" />
-                      <span>upload</span>
-                    </Link>
-                  </Item>
+                  {
+                    isTeacher || isAdmin ?
+                      <Item>
+                        <Link to="upload">
+                          <Icon type="upload" />
+                          <span>upload</span>
+                        </Link>
+                      </Item> : null
+                  }
+                  {
+                    isAdmin ?
+                      <Item>
+                        <Link to="dashboard">
+                          <Icon type="compass" />
+                          <span>dashboard</span>
+                        </Link>
+                      </Item> : null
+                  }
                   <Item>
                     <div onClick={this.logout}>
                       <Icon type="logout" />
@@ -112,7 +131,9 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
 import { logout } from 'data/session/actions';
 
 const mapStateToProps = state => ({
-  isLoggedIn: Boolean(state.session.currentUser.id)
+  isLoggedIn: Boolean(state.session.currentUser.id),
+  isTeacher: state.session.currentUser.roles.includes('teacher'),
+  isAdmin: state.session.currentUser.roles.includes('admin')
 });
 
 const mapDispatchToProps = dispatch => ({

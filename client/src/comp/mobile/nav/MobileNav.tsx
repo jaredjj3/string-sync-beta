@@ -46,6 +46,8 @@ class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
     '/signup' : MobileNavKeys.SIGNUP
   };
 
+  state: MobileNavState = { current: null };
+
   componentWillMount(): void {
     this.setState({ current: MobileNav.NAV_KEYS_BY_LOCATION[this.props.location.pathname] });
   }

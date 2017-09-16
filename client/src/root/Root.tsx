@@ -10,6 +10,7 @@ import NotationShow from './notation/show';
 import Search from './search';
 import Signup from './signup';
 import Upload from './notation/new';
+import Dashboard from './dashboard';
 
 type RedirectTypes = 'AUTH' | 'PROTECT';
 
@@ -50,6 +51,7 @@ const Root = ({ store }): any => {
           <Route path="signup" component={Signup} onEnter={maybeRedirect('AUTH')}/>
           <Route path="search" component={Search} />
           <Route path="upload" component={Upload} onEnter={maybeRedirect('PROTECT')} />
+          <Route path="dashboard" component={Dashboard} onEnter={maybeRedirect('PROTECT')} />
           <Route path="n/:id" component={NotationShow} />
           <Route path="n/:id/edit" component={NotationEdit} />
         </Route>
