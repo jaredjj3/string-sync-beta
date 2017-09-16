@@ -37,7 +37,9 @@ class Search extends React.Component<SearchProps, SearchState> {
   }
 
   componentDidMount(): void {
-    this.props.fetchNotations();
+    if (this.props.library.notations.length === 0) {
+      this.props.fetchNotations();
+    }
 
     this.maybeSetTags(this.props);
   }

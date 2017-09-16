@@ -17,7 +17,9 @@ interface AdminDashboardState {}
 
 class AdminDashboard extends React.Component<AdminDashboardProps, AdminDashboardState> {
   componentDidMount(): void {
-    this.props.fetchNotations();
+    if (this.props.notations.length === 0) {
+      this.props.fetchNotations();
+    }
   }
 
   handleChange = (id: number): any => {

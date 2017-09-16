@@ -1,17 +1,6 @@
 class Api::V1::NotationsController < ApplicationController
   def index
-    @notations = filters_params.to_h.
-        reduce(Notation.includes(:tags, :transcriber).all) do |query, (filter_name, filter_value)|
-          next query if filter_value.blank?
-          case filter_name.to_sym
-          when :featured
-            featured = ActiveRecord::Type::Boolean.new.send(:cast_value, filter_value)
-            query.where(featured: featured)
-          else
-            query
-          end
-        end
-
+    @notations = Notation.includes(:tags, :transcriber).all
     render(:index, status: 200)
   end
 
