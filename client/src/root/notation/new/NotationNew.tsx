@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 
 import Button from 'antd/lib/button';
 import Checkbox from 'antd/lib/checkbox';
@@ -18,6 +19,7 @@ const Option = Select.Option;
 interface NotationNewProps {
   form: any;
   tags: Array<Tag>;
+  notationId: number;
   fetchTags(): void;
   createNotation(notation: any): void;
 }
@@ -81,6 +83,7 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
 
         try {
           await this.props.createNotation(Object.assign({}, notation, this.state.notation));
+          browserHistory.push(`/n/${this.props.notationId}/edit`);
         } catch (error) {
           console.error('error ', error);
         } finally {
@@ -159,7 +162,8 @@ import { fetchTags } from 'data/tags/actions';
 import { createNotation } from 'data/notation/actions';
 
 const mapStateToProps = state => ({
-  tags: state.tags
+  tags: state.tags,
+  notationId: state.notation.id
 });
 
 const mapDispatchToProps = dispatch => ({
