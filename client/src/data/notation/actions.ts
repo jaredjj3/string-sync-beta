@@ -38,15 +38,15 @@ export const fetchNotation = (() => {
   };
 })();
 
-export const updateNotation = () => async (dispatch, getState) => {
+export const updateNotation = (notation = null) => async (dispatch, getState) => {
   const { notifyAll, notify } = window as any;
-  const updateWithNotation = dupNotation(getState().notation);
+  const updateWithNotation = dupNotation(notation || getState().notation);
 
   try {
-    const notation = await API.updateNotation(updateWithNotation);
+    const updatedNotation = await API.updateNotation(updateWithNotation);
     notify('Notation', 'update successful', { type: 'success', duration: 2 });
 
-    dispatch(receiveNotation(notation));
+    dispatch(receiveNotation(updatedNotation));
   } catch ({ responseJSON }) {
     if (responseJSON) {
       notifyAll('Notation', responseJSON);

@@ -10,5 +10,5 @@ class Tagging < ApplicationRecord
   belongs_to(:notation)
   belongs_to(:tag)
 
-  validates(:notation, :tag, presence: true)
+  # validates(:notation, :tag, presence: true)
 end

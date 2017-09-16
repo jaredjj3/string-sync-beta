@@ -1,6 +1,17 @@
 class Api::V1::NotationsController < ApplicationController
   def index
-    @notations = Notation.includes(:tags, :transcriber).where(featured: true)
+    @notations = filters_params.to_h.
+        reduce(Notation.includes(:tags, :transcriber).all) do |query, (filter_name, filter_value)|
+          next query if filter_value.blank?
+          case filter_name.to_sym
+          when :featured
+            featured = ActiveRecord::Type::Boolean.new.send(:cast_value, filter_value)
+            query.where(featured: featured)
+          else
+            query
+          end
+        end
+
     render(:index, status: 200)
   end
 
@@ -48,8 +59,15 @@ class Api::V1::NotationsController < ApplicationController
             :tempo,
             :dead_time,
             :duration,
+            :featured,
             taggings_attributes: [:tag_id]
           )
+    end
+
+    def filters_params
+      params.
+          fetch(:filters, {}).
+          permit(:featured)
     end
 
     def authorized_to_create?

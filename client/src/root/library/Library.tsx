@@ -28,9 +28,7 @@ interface LibraryState {}
 
 class Library extends React.Component<LibraryProps, LibraryState> {
   componentDidMount(): void {
-    if (this.props.library.notations.length === 0) {
-      this.props.fetchNotations();
-    }
+    this.props.fetchNotations();
   }
 
   shouldComponentUpdate(nextProps: LibraryProps): boolean {
@@ -91,7 +89,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchNotations: () => dispatch(fetchNotations())
+  fetchNotations: () => dispatch(fetchNotations({ featured: true }))
 });
 
 export default connect(

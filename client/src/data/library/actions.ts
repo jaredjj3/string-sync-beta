@@ -14,7 +14,7 @@ export const fetchNotations = (() => {
   // TODO: Investigate why the Search component would unmount on initial
   // load, causing this AJAX request to be called twice erroneously.
   // There's a chance it's related to the dev environment.
-  return () => async dispatch => {
+  return (filters = { featured: null }) => async dispatch => {
     const { notifyAll } = window as any;
 
     if (isFetching) {
@@ -24,7 +24,7 @@ export const fetchNotations = (() => {
     isFetching = true;
 
     try {
-      const notations = await API.fetchNotations();
+      const notations = await API.fetchNotations(filters);
       dispatch(receiveNotations(notations));
     } catch ({ responseJSON }) {
       notifyAll('Library', responseJSON);

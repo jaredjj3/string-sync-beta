@@ -55,7 +55,8 @@ def create_notations(num)
       artist_name: Faker::Name.name,
       thumbnail: File.open(Dir["app/assets/images/thumbnails/*.jpg"].sample),
       vextab: BUILD_STRUCTS,
-      tempo: 120
+      tempo: 120,
+      featured: rand < 0.5
     )
   end
 end
@@ -65,10 +66,12 @@ def create_saved_notations
   User.all.each { |user| user.saved_notations << notations.sample(rand(notations.size)) }
 end
 
-init
-delete_all
-create_roles
-create_users
-create_tags
-create_notations(100)
-create_saved_notations
+ActiveRecord::Base.transaction do
+  init
+  delete_all
+  create_roles
+  create_users
+  create_tags
+  create_notations(100)
+  create_saved_notations
+end

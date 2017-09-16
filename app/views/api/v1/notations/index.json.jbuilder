@@ -6,4 +6,5 @@ json.array! @notations do |notation|
   json.artist       notation.artist_name
   json.thumbnailUrl notation.thumbnail.url
   json.tags         notation.tags.map(&:name)
+  json.featured     notation.featured
 end

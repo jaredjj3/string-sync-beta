@@ -43,7 +43,7 @@ class LibraryCarousel extends React.Component<LibraryCarouselProps, LibraryCarou
           lazyLoad
           className="LibraryCarousel"
           dotsClass="slick-dots LibraryCarousel__dots"
-          autoplay={true}
+          autoplay={tagNotations.notations.length > 3}
           speed={700}
           autoplaySpeed={this.state.autoplaySpeed}
           ref={c => this.carousel = c && c.refs.slick}
