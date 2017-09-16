@@ -13,8 +13,6 @@ export const fetchTags = (() => {
   return () => async dispatch => {
     const { notifyAll } = window as any;
 
-    console.log('fetchTags');
-
     if (isFetching) {
       return;
     }

@@ -19,6 +19,7 @@ interface NotationNewProps {
   form: any;
   tags: Array<Tag>;
   fetchTags(): void;
+  createNotation(notation: any): void;
 }
 
 interface NotationNewState {
@@ -42,13 +43,8 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
   state: NotationNewState = {
     loading: false,
     notation: {
-      name: '',
-      artist: '',
       thumbnailFile: null,
-      thumbnailUrl: '',
-      videoUrl: '',
-      tags: [],
-      duration: 0
+      thumbnailUrl: ''
     }
   };
 
@@ -68,7 +64,7 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
       const notation = Object.assign({}, this.state.notation);
       notation.thumbnailFile = file;
       notation.thumbnailUrl = fileReader.result;
-      const nextState = Object.assign({}, this.state, { notation });
+      this.setState(Object.assign({}, this.state, { notation }));
     };
 
     if (file) {
@@ -78,8 +74,20 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
 
   handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>): void => {
     e.preventDefault();
+    this.props.form.validateFields(async (err, notation) => {
+      if (!err) {
+        const nextNotation = Object.assign({}, this.state.notation);
+        this.setState(Object.assign({}, this.state, { loading: true, notation: nextNotation }));
 
-    console.log('form submitted');
+        try {
+          await this.props.createNotation(Object.assign({}, notation, this.state.notation));
+        } catch (error) {
+          console.error('error ', error);
+        } finally {
+          this.setState(Object.assign({}, this.state, { loading: false }));
+        }
+      }
+    });
   }
 
   render(): JSX.Element {
@@ -92,7 +100,7 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
         <h1 className="Form__title">UPLOAD</h1>
         <Form onSubmit={this.handleSubmit}>
           <FormItem label="YouTube URL" hasFeedback {...FORM_ITEM_LAYOUT}>
-            {getFieldDecorator('youtube_video_id', {
+            {getFieldDecorator('youtubeVideoId', {
               rules: [
                 { required: true, message: 'YouTube URL is required' },
                 { pattern: YOUTUBE_REGEX, message: 'must be valid YouTube URL' }
@@ -109,14 +117,14 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
             )}
           </FormItem>
           <FormItem label="Artist" hasFeedback {...FORM_ITEM_LAYOUT}>
-            {getFieldDecorator('artist', {
+            {getFieldDecorator('artistName', {
               rules: [{ required: true, message: 'artist is required' }]
             })(
               <Input />
             )}
           </FormItem>
           <FormItem label="Tags" {...FORM_ITEM_LAYOUT}>
-            {getFieldDecorator('tags', {
+            {getFieldDecorator('tagIds', {
               rules: [{ required: true, message: 'at least one tag is required' }]
             })(
               <Select mode="multiple">
@@ -148,13 +156,15 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
 }
 
 import { fetchTags } from 'data/tags/actions';
+import { createNotation } from 'data/notation/actions';
 
 const mapStateToProps = state => ({
   tags: state.tags
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchTags: () => dispatch(fetchTags())
+  fetchTags: () => dispatch(fetchTags()),
+  createNotation: (notation) => dispatch(createNotation(notation))
 });
 
 export default connect(

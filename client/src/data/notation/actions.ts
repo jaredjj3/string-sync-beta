@@ -38,7 +38,7 @@ export const fetchNotation = (() => {
   };
 })();
 
-export const updateNotation = (updateStore = true) => async (dispatch, getState) => {
+export const updateNotation = () => async (dispatch, getState) => {
   const { notifyAll, notify } = window as any;
   const updateWithNotation = dupNotation(getState().notation);
 
@@ -46,20 +46,20 @@ export const updateNotation = (updateStore = true) => async (dispatch, getState)
     const notation = await API.updateNotation(updateWithNotation);
     notify('Notation', 'update successful', { type: 'success', duration: 2 });
 
-    if (updateStore) {
-      dispatch(receiveNotation(notation));
+    dispatch(receiveNotation(notation));
+  } catch ({ responseJSON }) {
+    if (responseJSON) {
+      notifyAll('Notation', responseJSON);
     }
-  } catch (e) {
-    notifyAll('Notation', e.responseJSON);
   }
 };
 
-export const createNotation = (payload) => async dispatch => {
+export const createNotation = (notation) => async dispatch => {
   const { notifyAll, notify } = window as any;
 
   try {
-    const notation = await API.createNotation(payload);
-    dispatch(receiveNotation(notation));
+    const createdNotation = await API.createNotation(notation);
+    dispatch(receiveNotation(createdNotation));
     notify('Notation', 'create successful', { type: 'success', duration: 2 });
   } catch ({ responseJSON }) {
     if (responseJSON) {
