@@ -1,23 +1,20 @@
 const $ = (window as any).$;
 
 const formData = (notation) => {
-  const { name, artistName, thumbnailFile, youtubeVideoId, tagIds, duration, deadTime } = notation;
+  const { name, artistName, thumbnailFile, youtubeVideoId, tagIds, duration, deadTime, tempo } = notation;
   const data = new FormData();
 
   data.append('notation[name]', name);
   data.append('notation[artist_name]', artistName);
   data.append('notation[youtube_video_id]', youtubeVideoId);
+  data.append('notation[tempo]', (tempo && tempo.toString()) || '120');
+  data.append('notation[dead_time]', (deadTime && deadTime.toString()) || '0');
+  data.append('notation[duration]', (duration && duration.toString()) || '0');
 
   if (tagIds) {
-    data.append('notation[tags_attributes][]', tagIds.map(id => JSON.stringify({ id })));
-  }
-
-  if (typeof deadTime === 'number') {
-    data.append('notation[dead_time]', deadTime.toString());
-  }
-
-  if (typeof duration === 'number') {
-    data.append('notation[duration]', duration.toString());
+    tagIds.map((id, ndx) => {
+      data.append(`notation[taggings_attributes][${ndx}][tag_id]`, id);
+    });
   }
 
   if (thumbnailFile) {

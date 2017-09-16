@@ -10,7 +10,13 @@ class Api::V1::NotationsController < ApplicationController
   end
 
   def create
-    # TODO: Fill this.
+    if authorized_to_create?
+      @notation = Notation.create!(notation_params.merge(transcriber: current_user))
+      render(:show, status: 200)
+    else
+      errors = [{ type: :error, messages: ["not authorized to create"] }]
+      render(json: errors, status: 422)
+    end
   end
 
   def update
@@ -34,8 +40,7 @@ class Api::V1::NotationsController < ApplicationController
       params.
           require(:notation).
           permit(
-            :id,
-            :video_url,
+            :youtube_video_id,
             :thumbnail,
             :name,
             :artist_name,
@@ -43,8 +48,12 @@ class Api::V1::NotationsController < ApplicationController
             :tempo,
             :dead_time,
             :duration,
-            tags_attributes: [:id]
+            taggings_attributes: [:tag_id]
           )
+    end
+
+    def authorized_to_create?
+      current_user.present? && current_user.has_role?(%i(admin teacher))
     end
 
     def authorized_to_update?(notation)

@@ -34,16 +34,20 @@ class Notation < ApplicationRecord
 
   before_create(:extract_youtube_id)
 
-  accepts_nested_attributes_for(:tags)
+  accepts_nested_attributes_for(:taggings)
 
   def extract_youtube_id
     self.youtube_video_id = youtube_video_id_match(self.youtube_video_id)[1]
   end
 
+  def taggings_attributes=(*)
+    super.tap { taggings.each { |tagging| tagging.notation = self } }
+  end
+
   private
 
     def youtube_video_id_match(url)
-      url.match(/^(?:https?:\/\/)?(?:www\.)?youtu(?:\.be|be\.com)\/(?:watch\?v=)?([\w-]{10,})/)
+      url.try(:match, /^(?:https?:\/\/)?(?:www\.)?youtu(?:\.be|be\.com)\/(?:watch\?v=)?([\w-]{10,})/)
     end
 
     def has_valid_video_url
