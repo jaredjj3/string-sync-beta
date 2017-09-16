@@ -48,7 +48,7 @@ def create_notations(num)
   num.times do
     Notation.create!(
       user_id: teachers.sample.id,
-      tags: tags.shuffle[0..2],
+      taggings_attributes: tags.shuffle[0..2].map { |tag| { tag_id: tag.id } },
       name: Faker::Book.title,
       youtube_video_id: "https://youtu.be/w8uNZWDEYzQ",
       duration: 14.841 * 1000,
