@@ -1,6 +1,6 @@
 class Api::V1::NotationsController < ApplicationController
   def index
-    @notations = Notation.includes(:tags, :transcriber).all
+    @notations = Notation.includes(:tags, :transcriber).joins(:featured).all
     render(:index, status: 200)
   end
 
