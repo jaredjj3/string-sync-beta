@@ -7,8 +7,10 @@ import Form from 'antd/lib/form';
 import Icon from 'antd/lib/icon';
 import Input from 'antd/lib/input';
 import Select from 'antd/lib/select';
+import Upload from 'antd/lib/upload';
 
 import { Tag } from 'types/tag';
+import { Notation } from 'types/notation';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -21,6 +23,7 @@ interface NotationNewProps {
 
 interface NotationNewState {
   loading: boolean;
+  notation: any;
 }
 
 class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
@@ -37,7 +40,16 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
   };
 
   state: NotationNewState = {
-    loading: false
+    loading: false,
+    notation: {
+      name: '',
+      artist: '',
+      thumbnailFile: null,
+      thumbnailUrl: '',
+      videoUrl: '',
+      tags: [],
+      duration: 0
+    }
   };
 
   componentDidMount(): void {
@@ -45,6 +57,22 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
 
     if (tags.length === 0) {
       fetchTags();
+    }
+  }
+
+  updateFile = (e: React.SyntheticEvent<HTMLInputElement>): void => {
+    const file = e.currentTarget.files[0];
+    const fileReader = new FileReader();
+
+    fileReader.onloadend = () => {
+      const notation = Object.assign({}, this.state.notation);
+      notation.thumbnailFile = file;
+      notation.thumbnailUrl = fileReader.result;
+      const nextState = Object.assign({}, this.state, { notation });
+    };
+
+    if (file) {
+      fileReader.readAsDataURL(file);
     }
   }
 
@@ -99,6 +127,9 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
                 }
               </Select>
             )}
+          </FormItem>
+          <FormItem label="Thumbnail" required {...FORM_ITEM_LAYOUT}>
+            <input type="file" onChange={this.updateFile} />
           </FormItem>
           <FormItem>
             <Button
