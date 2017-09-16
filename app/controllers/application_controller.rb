@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :exception
+  protect_from_forgery
 
   helper_method :current_user
   helper_method :logged_in?
@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
       if !role.is_a?(Symbol) && !role.is_a?(Role)
         raise ArgumentError.new("must be a symbol or a role")
       end
-      
+
       role = Role.where(name: role).first! if role.is_a?(Symbol)
       logged_in? && current_user.roles.include?(role)
     end

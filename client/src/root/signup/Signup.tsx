@@ -68,7 +68,10 @@ class Login extends React.Component<SignupProps, SignupState> {
         this.setState({ loading: true });
 
         try {
-          await this.props.signup({ user });
+          const signupUser = Object.assign({}, user);
+          delete signupUser.confirm;
+
+          await this.props.signup({ user: signupUser });
         } catch (error) {
           console.error('error ', error);
         } finally {
