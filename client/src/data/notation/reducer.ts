@@ -1,4 +1,4 @@
-import { RECEIVE_NOTATION, UPDATE_VEXTAB } from './actions';
+import { RECEIVE_NOTATION, RESET_NOTATION, UPDATE_VEXTAB } from './actions';
 import { Notation } from 'types/notation';
 
 import dup from 'util/dup/notation';
@@ -14,6 +14,7 @@ const defaultState: Notation = Object.freeze({
   youtubeVideoId: '',
   duration: 0,
   deadTime: 0,
+  featured: false,
   tempo: 60
 });
 
@@ -28,6 +29,9 @@ export default (state = defaultState, action): Notation => {
     case UPDATE_VEXTAB:
       nextState.vextab = action.vextab;
       return nextState;
+
+    case RESET_NOTATION:
+      return dup(defaultState);
 
     default:
       return nextState;

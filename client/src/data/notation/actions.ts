@@ -4,6 +4,7 @@ import dupNotation from 'util/dup/notation';
 
 export const RECEIVE_NOTATION = 'RECEIVE_NOTATION';
 export const UPDATE_VEXTAB = 'UPDATE_VEXTAB';
+export const RESET_NOTATION = 'RESET_NOTATION';
 
 export const receiveNotation = (notation: Notation) => ({
   type: RECEIVE_NOTATION,
@@ -13,6 +14,10 @@ export const receiveNotation = (notation: Notation) => ({
 export const updateVextab = (vextab: string) => ({
   type: UPDATE_VEXTAB,
   vextab
+});
+
+export const resetNotation = () => ({
+  type: RESET_NOTATION
 });
 
 // TODO: make a higher order function that produces this behavior.
