@@ -1,13 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Video from 'comp/video';
-import VideoControls from 'comp/video/controls';
-import Fretboard from 'comp/fretboard';
-import Tab from 'comp/tab';
-import TabControls from 'comp/tab/controls';
 import Collapse from 'antd/lib/collapse';
+import Fretboard from 'comp/fretboard';
 import Icon from 'antd/lib/icon';
+import Tab from 'comp/tab';
+import TabVideoControls from 'comp/tabVideoControls';
+import Video from 'comp/video';
 
 import { Notation } from 'types/notation';
 import { Device } from 'types/device';
@@ -49,14 +48,7 @@ class NotationShow extends React.Component<NotationShowProps, NotationShowState>
           </Panel>
         </Collapse>
         <Tab />
-        <div className="NotationShow__controls">
-          <Collapse activeKey={showFretboardControls ? 'fretboardControls' : null}>
-            <Panel className="NotationShow__panel" key="fretboardControls" header="">
-              <TabControls />
-            </Panel>
-          </Collapse>
-          <VideoControls />
-        </div>
+        <TabVideoControls />
       </div>
     );
   }
