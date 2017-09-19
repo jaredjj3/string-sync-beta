@@ -6,6 +6,7 @@ import Icon from 'antd/lib/icon';
 import SeekSlider from './seekSlider';
 import LoopSlider from './loopSlider';
 import Play from './play';
+import PlaybackRate from './playbackRate';
 
 interface TabVideoControlsProps {}
 
@@ -53,6 +54,9 @@ class TabVideoControls extends React.PureComponent<TabVideoControlsProps, TabVid
               type="flex" align="middle" justify="end"
             >
               <Play />
+              <span style={{ marginLeft: '15px' }}>
+                <PlaybackRate />
+              </span>
             </Row>
           </Col>
           <Col span={16}>

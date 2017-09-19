@@ -4,15 +4,40 @@ import { connect } from 'react-redux';
 import Row from 'antd/lib/row';
 import Icon from 'antd/lib/icon';
 
+import formatTime from 'util/formatTime';
+
 interface PlayProps {
   isMobile: boolean;
   isVideoActive: boolean;
+  shouldRAF: boolean;
   videoPlayer: any;
 }
 
-interface PlayState {}
+interface PlayState {
+  currentTime: string;
+}
 
 class Play extends React.Component<PlayProps, PlayState> {
+  state: PlayState = {
+    currentTime: '0.0'
+  };
+
+  RAFHandle: number = null;
+
+  componentDidUpdate(): void {
+    if (this.props.shouldRAF) {
+      this.RAFHandle = window.requestAnimationFrame(this.updateTime);
+    } else {
+      window.cancelAnimationFrame(this.RAFHandle);
+      this.RAFHandle = null;
+    }
+  }
+
+  updateTime = (): void => {
+    const currentTime = formatTime(this.props.videoPlayer.getCurrentTime());
+    this.setState(Object.assign({}, this.state, { currentTime }));
+  }
+
   pauseVideo = (): void => {
     this.props.videoPlayer.pauseVideo();
   }
@@ -23,6 +48,7 @@ class Play extends React.Component<PlayProps, PlayState> {
 
   render(): JSX.Element {
     const { isMobile, isVideoActive } = this.props;
+    const { currentTime } = this.state;
 
     return (
       <Row type="flex">
@@ -33,19 +59,9 @@ class Play extends React.Component<PlayProps, PlayState> {
                 <Icon type="pause-circle-o" onClick={this.pauseVideo} /> :
                 <Icon type="play-circle-o" onClick={this.playVideo} />
             }
-            {isMobile ? null : <span style={{ marginLeft: '5px' }}>{`${0.0}s`}</span>}
+            {isMobile ? null : <span style={{ marginLeft: '5px' }}>{`${currentTime}s`}</span>}
           </Row>
         </span>
-        {
-          isMobile ?
-            null :
-            <span style={{ marginLeft: '10px' }}>
-              <Row type="flex" align="middle" justify="center">
-                <Icon type="clock-circle" />
-                <span style={{ marginLeft: '5px' }}>{`${100}%`}</span>
-              </Row>
-            </span>
-        }
       </Row>
     );
   }
@@ -56,7 +72,8 @@ import { isVideoActive } from 'util/videoStateCategory';
 const mapStateToProps = state => ({
   isMobile: state.device.type === 'MOBILE' || state.device.isTouch,
   isVideoActive: isVideoActive(state.video.state),
-  videoPlayer: state.video.player
+  videoPlayer: state.video.player,
+  shouldRAF: state.video.player && isVideoActive(state.video.state)
 });
 
 const mapDispatchToProps = dispatch => ({
