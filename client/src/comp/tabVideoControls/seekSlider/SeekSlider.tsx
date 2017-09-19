@@ -11,7 +11,6 @@ import { Interpolator } from 'util/interpolator';
 import { VideoPlayer } from 'types/videoPlayer';
 
 interface SeekSliderProps {
-  shouldRAF: boolean;
   videoPlayer: VideoPlayer;
   isVideoActive: boolean;
   duration: number
@@ -50,18 +49,23 @@ class SeekSlider extends React.PureComponent<SeekSliderProps, SeekSliderState> {
 
   shouldComponentUpdate(nextProps: SeekSliderProps, nextState: SeekSliderState): boolean {
     return (
-      nextProps.shouldRAF ||
+      this.shouldRAF ||
       this.state.seekSliderValue !== nextState.seekSliderValue
     );
   }
 
   componentDidUpdate(): void {
-    if (this.props.shouldRAF) {
+    if (this.shouldRAF) {
       this.RAFHandle = window.requestAnimationFrame(this.updateSeekSliderValue);
     } else {
       window.cancelAnimationFrame(this.RAFHandle);
       this.RAFHandle = null;
     }
+  }
+
+  get shouldRAF(): boolean {
+    const { videoPlayer, isVideoActive } = this.props;
+    return videoPlayer && isVideoActive && !this.isScrubbing;
   }
 
   get areConvertorFuncsSet(): boolean {
@@ -88,6 +92,8 @@ class SeekSlider extends React.PureComponent<SeekSliderProps, SeekSliderState> {
 
     this.shouldPlayOnScrubEnd = false;
     this.isScrubbing = false;
+
+    this.updateSeekSliderValue();
   }
 
   tipFormatter = (value: number): string => {
@@ -150,7 +156,6 @@ class SeekSlider extends React.PureComponent<SeekSliderProps, SeekSliderState> {
 import { isVideoActive } from 'util/videoStateCategory';
 
 const mapStateToProps = state => ({
-  shouldRAF: state.video.player && isVideoActive(state.video.state),
   isVideoActive: isVideoActive(state.video.state),
   videoPlayer: state.video.player,
   duration: state.notation.duration / 1000
