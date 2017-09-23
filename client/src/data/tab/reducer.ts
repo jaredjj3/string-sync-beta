@@ -4,7 +4,9 @@ import {
   SET_ARTIST,
   FOCUS_MEASURE,
   FOCUS_LINE,
-  RESET_TAB
+  RESET_TAB,
+  UPDATE_TUNING,
+  RESET_TUNING
 } from './actions';
 
 import { Artist, Player, Formatter, Fretman } from 'services/vexflow';
@@ -18,6 +20,7 @@ interface StoreTab {
   player: Player;
   formatter: Formatter;
   fretman: Fretman;
+  tuning: string;
 }
 
 const defaultState: StoreTab = Object.freeze({
@@ -28,7 +31,8 @@ const defaultState: StoreTab = Object.freeze({
   artist: null,
   player: new Player(),
   formatter: new Formatter(),
-  fretman: new Fretman()
+  fretman: new Fretman(),
+  tuning: 'EADBGE'
 });
 
 const dup = (state: StoreTab): StoreTab => {
@@ -61,6 +65,14 @@ export default (state = defaultState, action): StoreTab => {
 
     case SET_ARTIST:
       nextState.artist = action.artist;
+      return nextState;
+
+    case UPDATE_TUNING:
+      nextState.tuning = action.tuning;
+      return nextState;
+
+    case RESET_TUNING:
+      nextState.tuning = defaultState.tuning.repeat(1);
       return nextState;
 
     case RESET_TAB:

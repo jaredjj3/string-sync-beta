@@ -10,7 +10,6 @@ import behavior from './behavior/reducer';
 import tab from './tab/reducer';
 import panels from './panels/reducer';
 import tags from './tags/reducer';
-import tuning from './tuning/reducer';
 
 export default combineReducers({
   device,
@@ -23,5 +22,4 @@ export default combineReducers({
   tab,
   panels,
   tags,
-  tuning,
 });

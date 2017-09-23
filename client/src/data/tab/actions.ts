@@ -7,6 +7,17 @@ export const SET_ARTIST = 'SET_ARTIST';
 export const FOCUS_MEASURE = 'FOCUS_MEASURE';
 export const FOCUS_LINE = 'FOCUS_LINE';
 export const RESET_TAB = 'RESET_TAB';
+export const UPDATE_TUNING = 'UPDATE_TUNING';
+export const RESET_TUNING = 'RESET_TUNING';
+
+export const updateTuning = (tuning: string) => ({
+  type: UPDATE_TUNING,
+  tuning
+});
+
+export const  resetTuning = () => ({
+  type: RESET_TUNING
+});
 
 export const setMeasuresPerLine = (measuresPerLine: number) => ({
   type: SET_MEASURES_PER_LINE,

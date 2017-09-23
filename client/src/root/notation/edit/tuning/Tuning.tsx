@@ -39,10 +39,10 @@ class Tuning extends React.Component<TuningProps, TuningState> {
   }
 }
 
-import { updateTuning, resetTuning } from 'data/tuning/actions';
+import { updateTuning, resetTuning } from 'data/tab/actions';
 
 const mapStateToProps = state => ({
-  tuning: state.tuning
+  tuning: state.tab.tuning
 });
 
 const mapDispatchToProps = dispatch => ({
