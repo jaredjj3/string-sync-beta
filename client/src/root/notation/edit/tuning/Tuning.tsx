@@ -12,7 +12,7 @@ class Tuning extends React.Component<TuningProps, TuningState> {
     return (
       <div className="TuningContainer">
         <div className="Tuning">
-          <h1>Tuning</h1>
+          <h2>Tuning</h2>
           <Input size="large" style={{ marginTop: '10px' }} />
         </div>
       </div>
