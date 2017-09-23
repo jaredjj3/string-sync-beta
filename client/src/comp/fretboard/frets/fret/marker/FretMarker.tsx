@@ -50,6 +50,18 @@ class FretMarker extends React.PureComponent<FretMarkerProps, FretMarkerState> {
     }
   }
 
+  handleMouseOver = (e: React.SyntheticEvent<any>): void => {
+    this.press();
+  }
+
+  handleMouseLeave = (e: React.SyntheticEvent<any>): void => {
+    this.unpress();
+  }
+
+  handleClick = (e: React.SyntheticEvent<any>): void => {
+
+  }
+
   render(): JSX.Element {
     const { string, fret } = this.props;
     const { lit, pressed } = this.state;
@@ -65,8 +77,9 @@ class FretMarker extends React.PureComponent<FretMarkerProps, FretMarkerState> {
     return (
       <span
         className={markerClassName}
-        onMouseOver={this.press}
-        onMouseLeave={this.unpress}
+        onMouseOver={this.handleMouseOver}
+        onMouseLeave={this.handleMouseLeave}
+        onClick={this.handleClick}
       >
         &nbsp;
       </span>
