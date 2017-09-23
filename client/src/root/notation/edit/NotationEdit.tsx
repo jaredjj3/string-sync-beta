@@ -10,6 +10,7 @@ import TabControls from 'comp/tab/controls';
 import Collapse from 'antd/lib/collapse';
 import Icon from 'antd/lib/icon';
 import Button from 'antd/lib/button';
+import Tuning from './tuning';
 
 import { Notation } from 'types/notation';
 import { Device } from 'types/device';
@@ -58,17 +59,20 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
             <Fretboard />
           </Panel>
         </Collapse>
-        <Button onClick={this.onButtonClick}>Save</Button>
-        <Tab />
-        <VextabEditor />
-        <div className="NotationEdit__controls">
-          <Collapse activeKey={showFretboardControls ? 'fretboardControls' : null}>
-            <Panel className="NotationEdit__panel" key="fretboardControls" header="">
-              <TabControls />
-            </Panel>
-          </Collapse>
-          <VideoControls />
-        </div>
+        <Tuning />
+        {/*
+          <Button onClick={this.onButtonClick}>Save</Button>
+          <Tab />
+          <VextabEditor />
+          <div className="NotationEdit__controls">
+            <Collapse activeKey={showFretboardControls ? 'fretboardControls' : null}>
+              <Panel className="NotationEdit__panel" key="fretboardControls" header="">
+                <TabControls />
+              </Panel>
+            </Collapse>
+            <VideoControls />
+          </div>
+          */}
       </div>
     );
   }

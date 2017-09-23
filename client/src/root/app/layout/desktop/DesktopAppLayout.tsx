@@ -22,7 +22,7 @@ const DesktopAppLayout = ({ location, children }): JSX.Element => (
       </Content>
       <Footer className="AppLayout__footer--desktop">
         <div className="AppLayout__footer__content">
-          <span>StringSync ©2017 Created by Jared Johnson</span>
+          <span>StringSync © 2017 Created by Jared Johnson</span>
         </div>
       </Footer>
     </Layout>
