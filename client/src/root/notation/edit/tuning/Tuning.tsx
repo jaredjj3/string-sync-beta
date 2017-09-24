@@ -5,6 +5,7 @@ import Input from 'antd/lib/input';
 
 interface TuningProps {
   tuning: Array<string>;
+  scaleVisualizer: any;
   updateTuning(tuning: Array<string>): void;
   resetTuning(): void;
 }
@@ -28,7 +29,10 @@ class Tuning extends React.Component<TuningProps, TuningState> {
   handleChange = (e: any): void => {
     const tuning = e.target.value;
     this.setState(Object.assign({}, this.state, { tuning }));
-    this.props.updateTuning(tuning.split(' '));
+
+    const tuningArray = tuning.split(' ');
+    this.props.updateTuning(tuningArray);
+    this.props.scaleVisualizer.tuning = tuningArray;
   }
 
   render(): JSX.Element {
@@ -53,7 +57,8 @@ class Tuning extends React.Component<TuningProps, TuningState> {
 import { updateTuning, resetTuning } from 'data/tab/actions';
 
 const mapStateToProps = state => ({
-  tuning: state.tab.tuning
+  tuning: state.tab.tuning,
+  scaleVisualizer: state.tab.scaleVisualizer
 });
 
 const mapDispatchToProps = dispatch => ({

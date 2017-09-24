@@ -1,4 +1,5 @@
 import Player from '../player';
+import { flatMap } from 'lodash';
 
 class Fretman {
   lit: Array<any> = [];
@@ -39,6 +40,27 @@ class Fretman {
     shouldPressMarkers.forEach(marker => marker.press());
 
     this.lit = [...shouldLightMarkers, ...shouldLightStrings];
+    this.pressed = shouldPressMarkers;
+  }
+
+  updateWithScaleVisualizer(scaleVisualizer: any): void {
+    const { positionsByNote, lit, pressed } = scaleVisualizer;
+
+    const shouldLightMarkers = flatMap(Array.from(lit), note => (
+      positionsByNote[note].map(pos => this.markerAt(pos.string, pos.fret))
+    ));
+
+    const shouldPressMarkers = flatMap(Array.from(pressed), note => (
+      positionsByNote[note].map(pos => this.markerAt(pos.string, pos.fret))
+    ));
+
+    this.lit.forEach(component => component.unlight());
+    this.pressed.forEach(component => component.unpress());
+
+    shouldLightMarkers.forEach(marker => marker.light());
+    shouldPressMarkers.forEach(marker => marker.press());
+
+    this.lit = shouldLightMarkers;
     this.pressed = shouldPressMarkers;
   }
 

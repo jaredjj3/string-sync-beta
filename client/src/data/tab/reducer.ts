@@ -79,7 +79,7 @@ export default (state = defaultState, action): StoreTab => {
       return nextState;
 
     case RESET_TUNING:
-      nextState.tuning = defaultState.tuning.repeat(1);
+      nextState.tuning = Object.assign([], defaultState.tuning);
       return nextState;
 
     case RESET_TAB:
