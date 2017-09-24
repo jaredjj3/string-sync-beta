@@ -51,7 +51,7 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
 
     return (
       <div className="NotationEdit">
-        <Video />
+        {/*<Video />*/}
         <Collapse
           activeKey={showFretboard ? 'fretboard' : null}
           bordered={false}
