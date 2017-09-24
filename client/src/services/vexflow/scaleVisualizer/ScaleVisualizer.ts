@@ -36,6 +36,10 @@ class ScaleVisualizer {
     return Object.assign([], this._tuning);
   }
 
+  afterUpdate = (scaleVisualizer: ScaleVisualizer) => {
+    // noop
+  }
+
   noteAt(pos: Position): string {
     const { NOTES } = ScaleVisualizer;
 
@@ -49,12 +53,16 @@ class ScaleVisualizer {
     this._validateNote(note);
     this.litNotes.add(note);
     this.fretman.updateWithScaleVisualizer(this);
+
+    this.afterUpdate(this);
   }
 
   unlight(note: string): void {
     this._validateNote(note);
     this.litNotes.delete(note);
     this.fretman.updateWithScaleVisualizer(this);
+
+    this.afterUpdate(this);
   }
 
   togglePress(note: string): void {
@@ -67,6 +75,8 @@ class ScaleVisualizer {
     }
 
     this.fretman.updateWithScaleVisualizer(this);
+
+    this.afterUpdate(this);
   }
 
   private _validateNote(note: string): void {
