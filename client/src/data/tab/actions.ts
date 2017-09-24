@@ -10,7 +10,7 @@ export const RESET_TAB = 'RESET_TAB';
 export const UPDATE_TUNING = 'UPDATE_TUNING';
 export const RESET_TUNING = 'RESET_TUNING';
 
-export const updateTuning = (tuning: string) => ({
+export const updateTuning = (tuning: Array<string>) => ({
   type: UPDATE_TUNING,
   tuning
 });

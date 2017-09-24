@@ -4,5 +4,6 @@ import Flow from './flow';
 import Formatter from './formatter';
 import Player from './player';
 import Fretman from './fretman';
+import ScaleVisualizer from './scaleVisualizer';
 
-export { VexTab, Artist, Flow, Formatter, Player, Fretman };
+export { VexTab, Artist, Flow, Formatter, Player, Fretman, ScaleVisualizer };

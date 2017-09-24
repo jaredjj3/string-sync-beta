@@ -83,7 +83,8 @@ const mapStateToProps = state => ({
     isVideoActive(state.video.state)
   ),
   tabPlayer: state.tab.player,
-  fretman: state.tab.fretman
+  fretman: state.tab.fretman,
+  scaleVisualizer: state.tab.scaleVisualizer
 });
 
 const mapDispatchToProps = dispatch => ({

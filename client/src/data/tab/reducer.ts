@@ -9,7 +9,7 @@ import {
   RESET_TUNING
 } from './actions';
 
-import { Artist, Player, Formatter, Fretman } from 'services/vexflow';
+import { Artist, Player, Formatter, Fretman, ScaleVisualizer } from 'services/vexflow';
 
 interface StoreTab {
   focusedMeasure: number;
@@ -20,8 +20,13 @@ interface StoreTab {
   player: Player;
   formatter: Formatter;
   fretman: Fretman;
-  tuning: string;
+  tuning: Array<string>;
 }
+
+const fretman = new Fretman();
+const player = new Player();
+const formatter = new Formatter();
+const scaleVisualizer = new ScaleVisualizer(fretman);
 
 const defaultState: StoreTab = Object.freeze({
   focusedMeasure: 0,
@@ -29,14 +34,16 @@ const defaultState: StoreTab = Object.freeze({
   measuresPerLine: 1,
   numMeasures: 0,
   artist: null,
-  player: new Player(),
-  formatter: new Formatter(),
-  fretman: new Fretman(),
-  tuning: 'EADBGE'
+  player,
+  formatter,
+  fretman,
+  scaleVisualizer,
+  tuning: ['E', 'A', 'D', 'G', 'B', 'E']
 });
 
 const dup = (state: StoreTab): StoreTab => {
   const nextState = Object.assign({}, state);
+  nextState.tuning = Object.assign([], state.tuning);
   return nextState;
 };
 

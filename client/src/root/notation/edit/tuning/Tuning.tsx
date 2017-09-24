@@ -4,24 +4,35 @@ import { connect } from 'react-redux';
 import Input from 'antd/lib/input';
 
 interface TuningProps {
-  tuning: string;
-  updateTuning(tuning: string): void;
+  tuning: Array<string>;
+  updateTuning(tuning: Array<string>): void;
   resetTuning(): void;
 }
 
-interface TuningState {}
+interface TuningState {
+  tuning: string;
+}
 
 class Tuning extends React.Component<TuningProps, TuningState> {
+  state: TuningState = { tuning: 'E A D G B E' };
+
+  componentWillReceiveProps(nextProps: TuningProps): void {
+    const tuning = nextProps.tuning.join(' ');
+    this.setState(Object.assign({}, this.state, { tuning }));
+  }
+
   componentWillUnmount(): void {
     this.props.resetTuning();
   }
 
   handleChange = (e: any): void => {
-    this.props.updateTuning(e.target.value);
+    const tuning = e.target.value;
+    this.setState(Object.assign({}, this.state, { tuning }));
+    this.props.updateTuning(tuning.split(' '));
   }
 
   render(): JSX.Element {
-    const { tuning } = this.props;
+    const { tuning } = this.state;
 
     return (
       <div className="TuningContainer">
@@ -46,7 +57,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateTuning: (tuning: string) => dispatch(updateTuning(tuning)),
+  updateTuning: (tuning: Array<string>) => dispatch(updateTuning(tuning)),
   resetTuning: () => dispatch(resetTuning())
 });
 
