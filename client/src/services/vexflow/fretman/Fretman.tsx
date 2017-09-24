@@ -44,18 +44,28 @@ class Fretman {
   }
 
   updateWithScaleVisualizer(scaleVisualizer: any): void {
-    const { positionsByNote, lit, pressed } = scaleVisualizer;
+    const { positionsByNote, litNotes, pressedNotes } = scaleVisualizer;
 
-    const shouldLightMarkers = flatMap(Array.from(lit), note => (
+    const shouldLightMarkers = flatMap(Array.from(litNotes), note => (
       positionsByNote[note].map(pos => this.markerAt(pos.string, pos.fret))
     ));
 
-    const shouldPressMarkers = flatMap(Array.from(pressed), note => (
+    const shouldPressMarkers = flatMap(Array.from(pressedNotes), note => (
       positionsByNote[note].map(pos => this.markerAt(pos.string, pos.fret))
     ));
 
-    this.lit.forEach(component => component.unlight());
-    this.pressed.forEach(component => component.unpress());
+    const shouldLightMarkersSet = new Set(shouldLightMarkers);
+    const shouldUnlightMarkers = this.lit.filter(comp => (
+      !shouldLightMarkersSet.has(comp)
+    ));
+
+    const shouldPressMarkersSet = new Set(shouldPressMarkers);
+    const shouldUnpressMarkers = this.pressed.filter(comp => (
+      !shouldPressMarkersSet.has(comp)
+    ));
+
+    shouldUnlightMarkers.forEach(component => component.unlight());
+    shouldUnpressMarkers.forEach(component => component.unpress());
 
     shouldLightMarkers.forEach(marker => marker.light());
     shouldPressMarkers.forEach(marker => marker.press());

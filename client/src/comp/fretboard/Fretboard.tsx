@@ -84,7 +84,7 @@ const mapStateToProps = state => ({
   ),
   tabPlayer: state.tab.player,
   fretman: state.tab.fretman,
-  scaleVisualizer: state.tab.scaleVisualizer
+  scaleVisualizer: state.tab.scaleVisualizer,
 });
 
 const mapDispatchToProps = dispatch => ({

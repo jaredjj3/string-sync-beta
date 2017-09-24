@@ -32,7 +32,7 @@ class Tuning extends React.Component<TuningProps, TuningState> {
 
     const tuningArray = tuning.split(' ');
     this.props.updateTuning(tuningArray);
-    this.props.scaleVisualizer.tuning = tuningArray;
+    this.props.scaleVisualizer.tuning = Object.assign([], tuningArray);
   }
 
   render(): JSX.Element {
