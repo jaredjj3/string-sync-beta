@@ -16,6 +16,10 @@ class PressedNotes extends React.Component<PressedNotesProps, PressedNotesState>
     pressedNotes: []
   };
 
+  componentDidMount(): void {
+    this.props.scaleVisualizer.afterUpdate = this.updatePressedNotes;
+  }
+
   componentWillReceiveNewProps(nextProps: PressedNotesProps): void {
     if (this.props.scaleVisualizer !== nextProps.scaleVisualizer) {
       nextProps.scaleVisualizer.afterUpdate = this.updatePressedNotes;
@@ -27,7 +31,7 @@ class PressedNotes extends React.Component<PressedNotesProps, PressedNotesState>
   }
 
   updatePressedNotes = (scaleVisualizer: ScaleVisualizer): void => {
-    const pressedNotes = Object.assign([], scaleVisualizer.pressedNotes);
+    const pressedNotes = Array.from(scaleVisualizer.pressedNotes);
     this.setState(Object.assign({}, this.state, { pressedNotes }));
   }
 
@@ -35,9 +39,13 @@ class PressedNotes extends React.Component<PressedNotesProps, PressedNotesState>
     const { pressedNotes } = this.state;
 
     return (
-      <div>
-        <h2>pressedNotes</h2>
-        {pressedNotes.join(', ')}
+      <div className="PressedNotesContainer">
+        <div className="PressedNotes">
+          <h2>pressedNotes</h2>
+          <div className="PressedNotes__notes">
+            {`Set(${pressedNotes.length}) {${pressedNotes.sort().join(', ')}}`}
+          </div>
+        </div>
       </div>
     );
   }

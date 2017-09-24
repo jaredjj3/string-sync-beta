@@ -11,6 +11,7 @@ import Collapse from 'antd/lib/collapse';
 import Icon from 'antd/lib/icon';
 import Button from 'antd/lib/button';
 import Tuning from './tuning';
+import PressedNotes from './pressedNotes';
 
 import { Notation } from 'types/notation';
 import { Device } from 'types/device';
@@ -60,6 +61,7 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
           </Panel>
         </Collapse>
         <Tuning />
+        <PressedNotes />
         {/*
           <Button onClick={this.onButtonClick}>Save</Button>
           <Tab />
