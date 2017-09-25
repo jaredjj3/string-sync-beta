@@ -10,6 +10,7 @@ interface FretMarkerProps {
   fretman: Fretman;
   scaleVisualizer: ScaleVisualizer;
   tuning: Array<string>;
+  scaleVisualization: boolean;
 }
 
 interface FretMarkerState {
@@ -27,7 +28,7 @@ class FretMarker extends React.PureComponent<FretMarkerProps, FretMarkerState> {
   shouldComponentUpdate(nextProps: FretMarkerProps, nextState: FretMarkerState): boolean {
     return (
       !isEqual(this.state, nextState) ||
-      !isEqual(this.props.tuning, nextProps.tuning)
+      this.props.scaleVisualization !== nextProps.scaleVisualization
     );
   }
 
@@ -58,12 +59,16 @@ class FretMarker extends React.PureComponent<FretMarkerProps, FretMarkerState> {
   handleMouseOver = (e: React.SyntheticEvent<any>): void => {
     this.press();
 
-    const { scaleVisualizer, string, fret } = this.props;
-    const note = scaleVisualizer.noteAt({ string, fret });
+    if (this.props.scaleVisualization) {
+      const { scaleVisualizer, string, fret } = this.props;
+      const note = scaleVisualizer.noteAt({ string, fret });
 
-    // try {
-    //   scaleVisualizer.light(note);
-    // } catch (e) { }
+      try {
+        scaleVisualizer.light(note);
+      } catch (e) {
+        console.error(e);
+      }
+    }
   }
 
   handleMouseLeave = (e: React.SyntheticEvent<any>): void => {
@@ -75,18 +80,26 @@ class FretMarker extends React.PureComponent<FretMarkerProps, FretMarkerState> {
       this.unpress();
     }
 
-    // try {
-    //   scaleVisualizer.unlight(note);
-    // } catch (e) { }
+    if (this.props.scaleVisualization) {
+      try {
+        scaleVisualizer.unlight(note);
+      } catch (e) {
+        console.error(e);
+      }
+    }
   }
 
   handleClick = (e: React.SyntheticEvent<any>): void => {
     const { scaleVisualizer, string, fret } = this.props;
     const note = scaleVisualizer.noteAt({ string, fret });
 
-    try {
-      scaleVisualizer.togglePress(note);
-    } catch (e) { }
+    if (this.props.scaleVisualization) {
+      try {
+        scaleVisualizer.togglePress(note);
+      } catch (e) {
+        console.error(e);
+      }
+    }
   }
 
   render(): JSX.Element {
@@ -118,7 +131,8 @@ class FretMarker extends React.PureComponent<FretMarkerProps, FretMarkerState> {
 const mapStateToProps = state => ({
   fretman: state.tab.fretman,
   scaleVisualizer: state.tab.scaleVisualizer,
-  tuning: state.tab.tuning
+  tuning: state.tab.tuning,
+  scaleVisualization: state.feature.scaleVisualization
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -75,10 +75,11 @@ class ScaleVisualizer {
     }
 
     this.fretman.updateWithScaleVisualizer(this);
-
     this.afterUpdate(this);
   }
 
+  // Prevent invalid notes from propagating through the
+  // lifecycle of a update execution.
   private _validateNote(note: string): void {
     const { NOTES } = ScaleVisualizer;
 
@@ -87,6 +88,13 @@ class ScaleVisualizer {
     }
   }
 
+  // Every time the tuning setter is called, the positionsByNote instance variable
+  // is recalculated using this method. It first maps out all of the fretboard notes
+  // for the given tuning, then it iterates over each [string, fret] combination to
+  // produce the positionsByNote map. Special attention is made to the ordering of
+  // the strings when iterating over them.
+  //
+  // TODO: Abstract this logic into its own class.
   private _updatePositionsByNote(): ScaleVisualizer {
     const { NOTES } = ScaleVisualizer;
 
