@@ -8,11 +8,10 @@ import Icon from 'antd/lib/icon';
 import PressedNotes from './pressedNotes';
 import ScaleVisualizationToggle from './scaleVisualizationToggle';
 import Tab from 'comp/tab';
-import TabControls from 'comp/tab/controls';
+import TabVideoControls from 'comp/tabVideoControls';
 import Tuning from './tuning';
 import VextabEditor from './vextab/editor';
 import Video from 'comp/video';
-import VideoControls from 'comp/video/controls';
 
 import { Notation } from 'types/notation';
 import { Device } from 'types/device';
@@ -70,14 +69,7 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
         <Button onClick={this.handleSaveButtonClick}>Save</Button>
         <Tab />
         <VextabEditor />
-        <div className="NotationEdit__controls">
-          <Collapse activeKey={showFretboardControls ? 'fretboardControls' : null}>
-            <Panel className="NotationEdit__panel" key="fretboardControls" header="">
-              <TabControls />
-            </Panel>
-          </Collapse>
-          <VideoControls />
-        </div>
+        <TabVideoControls />
       </div>
     );
   }
