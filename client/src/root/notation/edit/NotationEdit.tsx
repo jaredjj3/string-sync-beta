@@ -1,17 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import Button from 'antd/lib/button';
+import Collapse from 'antd/lib/collapse';
+import Fretboard from 'comp/fretboard';
+import Icon from 'antd/lib/icon';
+import PressedNotes from './pressedNotes';
+import ScaleVisualizationToggle from './scaleVisualizationToggle';
+import Tab from 'comp/tab';
+import TabControls from 'comp/tab/controls';
+import Tuning from './tuning';
 import VextabEditor from './vextab/editor';
 import Video from 'comp/video';
 import VideoControls from 'comp/video/controls';
-import Fretboard from 'comp/fretboard';
-import Tab from 'comp/tab';
-import TabControls from 'comp/tab/controls';
-import Collapse from 'antd/lib/collapse';
-import Icon from 'antd/lib/icon';
-import Button from 'antd/lib/button';
-import Tuning from './tuning';
-import PressedNotes from './pressedNotes';
 
 import { Notation } from 'types/notation';
 import { Device } from 'types/device';
@@ -24,9 +25,12 @@ interface NotationEditProps {
   showFretboard: boolean;
   showFretboardControls: boolean;
   autoSave: boolean;
+  scaleVisualization: boolean;
   fetchNotation(id: number): void;
   enableAutoSave(): void;
   disableAutoSave(): void;
+  enableScaleVisualization(): void;
+  disableScaleVisualization(): void;
   updateNotation(updateStore?: boolean): void;
 }
 
@@ -42,16 +46,16 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
     this.props.disableAutoSave();
   }
 
-  onButtonClick = (): void => {
+  handleSaveButtonClick = (): void => {
     this.props.updateNotation(false);
   }
 
   render(): JSX.Element {
-    const { showFretboard, showFretboardControls } = this.props;
+    const { showFretboard, showFretboardControls, scaleVisualization } = this.props;
 
     return (
       <div className="NotationEdit">
-        {/*<Video />*/}
+        <Video />
         <Collapse
           activeKey={showFretboard ? 'fretboard' : null}
           bordered={false}
@@ -61,20 +65,19 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
           </Panel>
         </Collapse>
         <Tuning />
+        <ScaleVisualizationToggle />
         <PressedNotes />
-        {/*
-          <Button onClick={this.onButtonClick}>Save</Button>
-          <Tab />
-          <VextabEditor />
-          <div className="NotationEdit__controls">
-            <Collapse activeKey={showFretboardControls ? 'fretboardControls' : null}>
-              <Panel className="NotationEdit__panel" key="fretboardControls" header="">
-                <TabControls />
-              </Panel>
-            </Collapse>
-            <VideoControls />
-          </div>
-          */}
+        <Button onClick={this.handleSaveButtonClick}>Save</Button>
+        <Tab />
+        <VextabEditor />
+        <div className="NotationEdit__controls">
+          <Collapse activeKey={showFretboardControls ? 'fretboardControls' : null}>
+            <Panel className="NotationEdit__panel" key="fretboardControls" header="">
+              <TabControls />
+            </Panel>
+          </Collapse>
+          <VideoControls />
+        </div>
       </div>
     );
   }
@@ -86,7 +89,8 @@ import { enableFeatures, disableFeatures } from 'data/feature/actions';
 const mapStateToProps = state => ({
   showFretboard: state.panels.fretboard,
   showFretboardControls: state.panels.fretboardControls,
-  autoSave: state.feature.autoSave
+  autoSave: state.feature.autoSave,
+  scaleVisualization: state.feature.scaleVisualization
 });
 
 const mapDispatchToProps = dispatch => ({

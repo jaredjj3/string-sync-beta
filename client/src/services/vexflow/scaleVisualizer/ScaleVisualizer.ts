@@ -40,6 +40,11 @@ class ScaleVisualizer {
     // noop
   }
 
+  reset(): void {
+    this.pressedNotes = new Set();
+    this.fretman.updateWithScaleVisualizer(this);
+  }
+
   noteAt(pos: Position): string {
     const { NOTES } = ScaleVisualizer;
 
