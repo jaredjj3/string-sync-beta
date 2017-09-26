@@ -1,5 +1,12 @@
 <%- if Rails.env.development? %>
   <script src="/assets/bundle.js"></script>
+  <script>
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+  </script>
 <%- end %>
 
 <div id="root"></div>

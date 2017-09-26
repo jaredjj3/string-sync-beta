@@ -3,7 +3,7 @@ const $ = (window as any).$;
 const formData = (notation) => {
   const {
     name, artistName, thumbnailFile, youtubeVideoId, tagIds,
-    duration, deadTime, tempo, featured
+    duration, deadTime, tempo, featured, vextab
   } = notation;
 
   const data = new FormData();
@@ -14,6 +14,10 @@ const formData = (notation) => {
 
   if (artistName) {
     data.append('notation[artist_name]', artistName);
+  }
+
+  if (vextab) {
+    data.append('notation[vextab]', vextab);
   }
 
   if (youtubeVideoId) {

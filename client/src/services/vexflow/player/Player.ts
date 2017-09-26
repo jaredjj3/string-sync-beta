@@ -13,6 +13,7 @@ const { Fraction } = Flow;
 class Player {
   tickNotes: any = {};
   allTicks: Array<any> = [];
+  barTicks: Array<any> = [];
   currTick: any = null;
 
   private _isDirty: boolean = false;
@@ -102,12 +103,12 @@ class Player {
         let totalVoiceTicks = new Fraction(0, 1);
 
         voice.getTickables().forEach((note, tickIndex) => {
-          if (!note.shouldIgnoreTicks()) {
-            const tabNote = tabVoices[voiceGroupIndex][voiceIndex][tickIndex];
-            const absTick = totalTicks.clone();
-            absTick.add(totalVoiceTicks);
-            absTick.simplify();
+          const tabNote = tabVoices[voiceGroupIndex][voiceIndex][tickIndex];
+          const absTick = totalTicks.clone();
+          absTick.add(totalVoiceTicks);
+          absTick.simplify();
 
+          if (!note.shouldIgnoreTicks()) {
             const key = absTick.toString();
             if (has(this.tickNotes, key)) {
               this.tickNotes[key].notes.push(note);
@@ -124,6 +125,14 @@ class Player {
 
             const noteTicks = note.getTicks();
             totalVoiceTicks.add(noteTicks.numerator, noteTicks.denominator);
+          } else if (note.constructor.name === 'BarNote') {
+            this.barTicks.push({
+              tick: absTick,
+              value: absTick.value(),
+              notes: [note],
+              tabNotes: [tabNote],
+              stave: voiceGroupIndex
+            });
           }
         });
 

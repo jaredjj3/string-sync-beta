@@ -30,7 +30,7 @@ interface NotationEditProps {
   disableAutoSave(): void;
   enableScaleVisualization(): void;
   disableScaleVisualization(): void;
-  updateNotation(updateStore?: boolean): void;
+  updateNotation(): void;
 }
 
 interface NotationEditState {}
@@ -46,7 +46,7 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
   }
 
   handleSaveButtonClick = (): void => {
-    this.props.updateNotation(false);
+    this.props.updateNotation();
   }
 
   render(): JSX.Element {
@@ -89,7 +89,7 @@ const mapDispatchToProps = dispatch => ({
   fetchNotation: id => dispatch(fetchNotation(id)),
   enableAutoSave: () => dispatch(enableFeatures(['autoSave'])),
   disableAutoSave: () => dispatch(disableFeatures(['autoSave'])),
-  updateNotation: (updateStore) => dispatch(updateNotation(updateStore))
+  updateNotation: () => dispatch(updateNotation())
 });
 
 export default connect(
