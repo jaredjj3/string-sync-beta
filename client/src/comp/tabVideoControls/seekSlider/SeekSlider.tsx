@@ -49,7 +49,7 @@ class SeekSlider extends React.PureComponent<SeekSliderProps, SeekSliderState> {
 
   shouldComponentUpdate(nextProps: SeekSliderProps, nextState: SeekSliderState): boolean {
     return (
-      this.shouldRAF ||
+      this.shouldRAF(nextProps) ||
       this.state.seekSliderValue !== nextState.seekSliderValue
     );
   }
@@ -63,8 +63,8 @@ class SeekSlider extends React.PureComponent<SeekSliderProps, SeekSliderState> {
     }
   }
 
-  get shouldRAF(): boolean {
-    const { videoPlayer, isVideoActive } = this.props;
+  shouldRAF(props: SeekSliderProps = this.props): boolean {
+    const { videoPlayer, isVideoActive } = props;
     return videoPlayer && isVideoActive && !this.isScrubbing;
   }
 

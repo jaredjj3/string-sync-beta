@@ -2,8 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Slider from 'antd/lib/slider';
+import { Player } from 'services/vexflow';
 
-interface LoopSliderProps {}
+interface LoopSliderProps {
+  tabPlayer: Player;
+}
 
 interface LoopSliderState {
   marks: any;
@@ -11,24 +14,21 @@ interface LoopSliderState {
 
 class LoopSlider extends React.Component<LoopSliderProps, LoopSliderState> {
   state: LoopSliderState = {
-    marks: { 0: '0', 100: '100' },
+    marks: { 0: '', 100: '' },
   };
 
   componentDidMount(): void {
-    this.setMarks();
+    this.props.tabPlayer.loopSlider = this;
   }
 
-  setMarks(): any {
-    const marks = {
-      0: '',
-      20: '',
-      40: '',
-      60: '',
-      80: '',
-      100: ''
-    };
+  componentWillUnmount(): void {
+    this.props.tabPlayer.loopSlider = null;
+  }
 
-    this.setState(Object.assign({}, this.state, { marks }));
+  setMarks(marks: any): any {
+    if (marks) {
+      this.setState(Object.assign({}, this.state, { marks }));
+    }
   }
 
   measureTipFormatter = (value: number): string => {
@@ -46,6 +46,7 @@ class LoopSlider extends React.Component<LoopSliderProps, LoopSliderState> {
       <div>
         <Slider
           range
+          defaultValue={[0, 100]}
           step={null}
           marks={marks}
           tipFormatter={this.measureTipFormatter}
@@ -56,7 +57,8 @@ class LoopSlider extends React.Component<LoopSliderProps, LoopSliderState> {
 }
 
 const mapStateToProps = state => ({
-
+  tabPlayer: state.tab.player,
+  duration: state.tab.duration
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -36,6 +36,10 @@ class Caret extends React.Component<CaretProps, CaretState> {
       this.resize(viewport);
       this.RAFHandle = window.requestAnimationFrame(this.renderCaret);
     }
+
+    if (!tabPlayer.isReady) {
+      tabPlayer.prepare();
+    }
   }
 
   setCanvas = (c: HTMLCanvasElement): void => {
@@ -88,7 +92,7 @@ class Caret extends React.Component<CaretProps, CaretState> {
       this.drawCaret(this.props.tabPlayer.caretPosX(), Caret.START_POS_Y);
       focusLine(tabPlayer.currTick.stave);
     } catch (e) {
-      // noop
+      console.error(e);
     }
 
     if (this.props.shouldRAF) {

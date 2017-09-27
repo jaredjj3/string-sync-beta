@@ -1,3 +1,4 @@
+import React from 'react';
 import { VideoPlayer } from 'types/videoPlayer';
 import Artist from '../artist';
 import Flow from '../flow';
@@ -15,7 +16,9 @@ class Player {
   allTicks: Array<any> = [];
   barTicks: Array<any> = [];
   currTick: any = null;
+  loopSliderMarks: any = {};
 
+  private _loopSlider: any;
   private _isDirty: boolean = false;
   private _videoPlayer: VideoPlayer = null;
   private _artist: Artist = null;
@@ -51,6 +54,20 @@ class Player {
   set deadTime(deadTime: number) {
     this._isDirty = this._isDirty || this._deadTime !== deadTime;
     this._deadTime = deadTime;
+  }
+
+  set loopSlider(loopSlider: any) {
+    this._loopSlider = loopSlider;
+
+    if (loopSlider && this.isReady) {
+      loopSlider.setMarks(this.loopSliderMarks);
+    } else {
+      this.prepare();
+    }
+  }
+
+  get loopSlider(): any {
+    return this._loopSlider;
   }
 
   // ticks per minute
@@ -92,6 +109,7 @@ class Player {
       return false;
     }
 
+    this.barTicks = [];
     let totalTicks = new Fraction(0, 1);
     const voiceGroups = this._artist.getPlayerData().voices;
     const tabVoices = this._artist.staves.map(stave => stave.tab_voices);
@@ -146,13 +164,38 @@ class Player {
 
     this.allTicks = sortBy(values(this.tickNotes), tick => tick.value);
     const offset = ((this._deadTime / 1000) / 60) * this.tpm;
+
     this.allTicks = this.allTicks.map(tick => {
       tick.value += offset;
       return tick;
     });
 
+    this.barTicks = this.barTicks.map(tick => {
+      tick.value += offset;
+      return tick;
+    });
+
+    if (this.loopSlider) {
+      this.calcLoopSliderMarks();
+      this.loopSlider.setMarks(this.loopSliderMarks);
+    }
+
     this._isDirty = false;
     return true;
+  }
+
+  private calcLoopSliderMarks(): void {
+    const allTickValues = this.allTicks.
+      map(tick => tick.value).
+      concat(this.barTicks.map(tick => tick.value));
+
+    const maxTickValue = Math.max(...allTickValues);
+
+    return this.loopSliderMarks = this.barTicks.reduce((loopSliderMarks, tick) => {
+      const normalizedTickValue = (tick.value / maxTickValue) * 100;
+      loopSliderMarks[normalizedTickValue] = '';
+      return loopSliderMarks;
+    }, {});
   }
 
   private calcCurrTick(probeTick: number): any {
