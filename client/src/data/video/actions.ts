@@ -1,6 +1,7 @@
 export const UPDATE_VIDEO_PLAYER = 'UPDATE_VIDEO_PLAYER';
 export const UPDATE_VIDEO_STATE = 'UPDATE_VIDEO_STATE';
 export const UPDATE_VIDEO_LOOP = 'UPDATE_VIDEO_LOOP';
+export const RESET_VIDEO = 'RESET_VIDEO';
 
 export const updateVideoPlayer = videoPlayer => ({
   type: UPDATE_VIDEO_PLAYER,
@@ -15,4 +16,8 @@ export const updateVideoState = videoState => ({
 export const updateLoop = loop => ({
   type: UPDATE_VIDEO_LOOP,
   loop
+});
+
+export const resetLoop = () => ({
+  type: RESET_VIDEO
 });

@@ -1,7 +1,8 @@
 import {
   UPDATE_VIDEO_PLAYER,
   UPDATE_VIDEO_STATE,
-  UPDATE_VIDEO_LOOP
+  UPDATE_VIDEO_LOOP,
+  RESET_VIDEO
 } from './actions';
 
 import { withNegativeTimeDeltaGuard } from 'util/withNegativeTimeDeltaGuard';
@@ -35,6 +36,9 @@ export default (state = defaultState, action) => {
     case UPDATE_VIDEO_LOOP:
       nextState.loop = action.loop;
       return nextState;
+
+    case RESET_VIDEO:
+      return defaultState;
 
     default:
       return nextState;
