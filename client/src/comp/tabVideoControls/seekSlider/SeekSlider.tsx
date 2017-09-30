@@ -13,7 +13,8 @@ import { VideoPlayer } from 'types/videoPlayer';
 interface SeekSliderProps {
   videoPlayer: VideoPlayer;
   isVideoActive: boolean;
-  duration: number
+  duration: number;
+  loop: [number, number];
 }
 
 interface SeekSliderState {
@@ -41,8 +42,10 @@ class SeekSlider extends React.PureComponent<SeekSliderProps, SeekSliderState> {
   }
 
   componentWillReceiveProps(nextProps: SeekSliderProps): void {
-    this._toTime = this._toTime || interpolator({ x: 0, y: 0 }, { x: 100, y: nextProps.duration });
-    this._toSeekSliderValue = this._toSeekSliderValue || interpolator({ x: 0, y: 0 }, { x: nextProps.duration, y: 100 });
+    if (!this.areConvertorFuncsSet && nextProps.duration > 0) {
+      this._toTime = interpolator({ x: 0, y: 0 }, { x: 100, y: nextProps.duration });
+      this._toSeekSliderValue = interpolator({ x: 0, y: 0 }, { x: nextProps.duration, y: 100 });
+    }
 
     this.updateSeekSliderValue();
   }
@@ -73,11 +76,22 @@ class SeekSlider extends React.PureComponent<SeekSliderProps, SeekSliderState> {
   }
 
   updateSeekSliderValue = (): void => {
-    if (!this.props.videoPlayer || !this.areConvertorFuncsSet) {
+    const { videoPlayer, loop } = this.props;
+
+    if (!videoPlayer || !this.areConvertorFuncsSet) {
       return;
     }
 
-    const seekSliderValue = this._toSeekSliderValue(this.props.videoPlayer.getCurrentTime()) || 0;
+    const currentTime = videoPlayer.getCurrentTime();
+    let seekSliderValue = 0;
+
+    if (currentTime > loop[1]) {
+      seekSliderValue = this._toSeekSliderValue(loop[0]);
+      videoPlayer.seekTo(loop[0]);
+    } else {
+      seekSliderValue = this._toSeekSliderValue(currentTime);
+    }
+
     this.setState(Object.assign({}, this.state, { seekSliderValue }));
   }
 
@@ -158,7 +172,8 @@ import { isVideoActive } from 'util/videoStateCategory';
 const mapStateToProps = state => ({
   isVideoActive: isVideoActive(state.video.state),
   videoPlayer: state.video.player,
-  duration: state.notation.duration / 1000
+  duration: state.notation.duration / 1000,
+  loop: state.video.loop
 });
 
 const mapDispatchToProps = dispatch => ({

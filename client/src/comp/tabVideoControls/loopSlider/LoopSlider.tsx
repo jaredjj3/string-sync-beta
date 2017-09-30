@@ -26,8 +26,14 @@ class LoopSlider extends React.Component<LoopSliderProps, LoopSliderState> {
   private _toSeekSliderValue: Interpolator = null;
 
   componentWillReceiveProps(nextProps: LoopSliderProps): void {
-    this._toTime = this._toTime || interpolator({ x: 0, y: 0 }, { x: 100, y: nextProps.duration });
-    this._toSeekSliderValue = this._toSeekSliderValue || interpolator({ x: 0, y: 0 }, { x: nextProps.duration, y: 100 });
+    if (!this.areConvertorFuncsSet && nextProps.duration > 0) {
+      this._toTime = interpolator({ x: 0, y: 0 }, { x: 100, y: nextProps.duration });
+      this._toSeekSliderValue = interpolator({ x: 0, y: 0 }, { x: nextProps.duration, y: 100 });
+    }
+  }
+
+  get areConvertorFuncsSet(): boolean {
+    return this._toSeekSliderValue !== null && this._toTime !== null;
   }
 
   handleChange = (values: [number, number]): void => {
