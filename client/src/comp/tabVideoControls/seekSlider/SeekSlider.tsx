@@ -41,8 +41,8 @@ class SeekSlider extends React.PureComponent<SeekSliderProps, SeekSliderState> {
   }
 
   componentWillReceiveProps(nextProps: SeekSliderProps): void {
-    this._toTime = interpolator({ x: 0, y: 0 }, { x: 100, y: nextProps.duration });
-    this._toSeekSliderValue = interpolator({ x: 0, y: 0 }, { x: nextProps.duration, y: 100 });
+    this._toTime = this._toTime || interpolator({ x: 0, y: 0 }, { x: 100, y: nextProps.duration });
+    this._toSeekSliderValue = this._toSeekSliderValue || interpolator({ x: 0, y: 0 }, { x: nextProps.duration, y: 100 });
 
     this.updateSeekSliderValue();
   }
@@ -55,7 +55,7 @@ class SeekSlider extends React.PureComponent<SeekSliderProps, SeekSliderState> {
   }
 
   componentDidUpdate(): void {
-    if (this.shouldRAF) {
+    if (this.shouldRAF && !this.isScrubbing) {
       this.RAFHandle = window.requestAnimationFrame(this.updateSeekSliderValue);
     } else {
       window.cancelAnimationFrame(this.RAFHandle);

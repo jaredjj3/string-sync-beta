@@ -3,53 +3,61 @@ import { connect } from 'react-redux';
 
 import Slider from 'antd/lib/slider';
 import { Player } from 'services/vexflow';
+import interpolator from 'util/interpolator';
+import formatTime from 'util/formatTime';
+
+import { Interpolator } from 'util/interpolator';
 
 interface LoopSliderProps {
-  tabPlayer: Player;
+  duration: number;
 }
 
 interface LoopSliderState {
-  marks: any;
+  values: [number, number];
 }
 
 class LoopSlider extends React.Component<LoopSliderProps, LoopSliderState> {
   state: LoopSliderState = {
-    marks: { 0: '', 100: '' },
+    values: [0, 100]
   };
 
-  componentDidMount(): void {
-    this.props.tabPlayer.loopSlider = this;
+  private _toTime: Interpolator = null;
+  private _toSeekSliderValue: Interpolator = null;
+
+  componentWillReceiveProps(nextProps: LoopSliderProps): void {
+    this._toTime = this._toTime || interpolator({ x: 0, y: 0 }, { x: 100, y: nextProps.duration });
+    this._toSeekSliderValue = this._toSeekSliderValue || interpolator({ x: 0, y: 0 }, { x: nextProps.duration, y: 100 });
   }
 
-  componentWillUnmount(): void {
-    this.props.tabPlayer.loopSlider = null;
+  handleChange = (values: [number, number]): void => {
+    this.setState(Object.assign({}, this.state, { values }));
   }
 
-  setMarks(marks: any): any {
-    if (marks) {
-      this.setState(Object.assign({}, this.state, { marks }));
+  handleAfterChange = (values: [number, number]): void => {
+
+  }
+
+  tipFormatter = (value: number): string => {
+    if (this._toTime === null) {
+      return '0.0';
     }
-  }
 
-  measureTipFormatter = (value: number): string => {
-    const { marks } = this.state;
-
-    const marksKeys = Object.keys(marks);
-    const currentMeasure = marksKeys.indexOf(value.toString()) + 1;
-    return `${currentMeasure} / ${marksKeys.length}`;
+    return formatTime(this._toTime(value));
   }
 
   render(): JSX.Element {
-    const { marks } = this.state;
+    const { values } = this.state;
 
     return (
       <div>
         <Slider
           range
+          value={values}
+          step={0.01}
           defaultValue={[0, 100]}
-          step={null}
-          marks={marks}
-          tipFormatter={this.measureTipFormatter}
+          tipFormatter={this.tipFormatter}
+          onChange={this.handleChange}
+          onAfterChange={this.handleAfterChange}
         />
       </div>
     );
@@ -57,8 +65,7 @@ class LoopSlider extends React.Component<LoopSliderProps, LoopSliderState> {
 }
 
 const mapStateToProps = state => ({
-  tabPlayer: state.tab.player,
-  duration: state.tab.duration
+  duration: state.notation.duration / 1000
 });
 
 const mapDispatchToProps = dispatch => ({

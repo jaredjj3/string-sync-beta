@@ -191,11 +191,15 @@ class Player {
 
     const maxTickValue = Math.max(...allTickValues);
 
-    return this.loopSliderMarks = this.barTicks.reduce((loopSliderMarks, tick) => {
+    this.loopSliderMarks = this.barTicks.reduce((loopSliderMarks, tick) => {
       const normalizedTickValue = (tick.value / maxTickValue) * 100;
       loopSliderMarks[normalizedTickValue] = '';
       return loopSliderMarks;
     }, {});
+
+    this.loopSliderMarks['100'] = '';
+
+    return this.loopSliderMarks;
   }
 
   private calcCurrTick(probeTick: number): any {
