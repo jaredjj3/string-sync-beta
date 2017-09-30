@@ -12,6 +12,7 @@ import TabVideoControls from 'comp/tabVideoControls';
 import Tuning from './tuning';
 import VextabEditor from './vextab/editor';
 import Video from 'comp/video';
+import DeadTime from './deadTime';
 
 import { Notation } from 'types/notation';
 import { Device } from 'types/device';
@@ -66,6 +67,7 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
         <Tuning />
         <ScaleVisualizationToggle />
         <PressedNotes />
+        <DeadTime />
         <Button onClick={this.handleSaveButtonClick}>Save</Button>
         <Tab />
         <VextabEditor />
