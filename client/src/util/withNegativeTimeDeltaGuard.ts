@@ -8,7 +8,7 @@
 import { isVideoActive } from './videoStateCategory';
 import PLAYER_STATES from 'util/const/PLAYER_STATES';
 
-const YOUTUBE_PREDICTION_OFFSET: number = 0.1;
+const YOUTUBE_PREDICTION_OFFSET: number = 0.015;
 
 const _shouldHaveDefaultBehavior = (videoPlayer: any, lastCalledAt: number) => {
   return (

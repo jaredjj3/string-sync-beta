@@ -10,6 +10,7 @@ import { Interpolator } from 'util/interpolator';
 
 interface LoopSliderProps {
   duration: number;
+  updateLoop(loop: Array<number>): void;
 }
 
 interface LoopSliderState {
@@ -34,7 +35,12 @@ class LoopSlider extends React.Component<LoopSliderProps, LoopSliderState> {
   }
 
   handleAfterChange = (values: [number, number]): void => {
+    if (this._toTime === null) {
+      return;
+    }
 
+    const loop = values.map(value => this._toTime(value));
+    this.props.updateLoop(loop);
   }
 
   tipFormatter = (value: number): string => {
@@ -64,12 +70,14 @@ class LoopSlider extends React.Component<LoopSliderProps, LoopSliderState> {
   }
 }
 
+import { updateLoop } from 'data/video/actions';
+
 const mapStateToProps = state => ({
   duration: state.notation.duration / 1000
 });
 
 const mapDispatchToProps = dispatch => ({
-
+  updateLoop: loop => dispatch(updateLoop(loop))
 });
 
 export default connect(
