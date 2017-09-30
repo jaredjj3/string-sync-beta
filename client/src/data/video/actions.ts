@@ -18,6 +18,6 @@ export const updateLoop = loop => ({
   loop
 });
 
-export const resetLoop = () => ({
+export const resetVideo = () => ({
   type: RESET_VIDEO
 });

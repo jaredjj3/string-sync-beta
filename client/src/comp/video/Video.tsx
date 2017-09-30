@@ -16,6 +16,7 @@ interface VideoProps {
   updateVideoPlayer(videoPlayer: any): void;
   updateVideoState(videoState: string): void;
   togglePanel(key: string): Function;
+  resetVideo(): void;
 }
 
 interface VideoState {}
@@ -39,6 +40,10 @@ class Video extends React.Component<VideoProps, VideoState> {
       start: 0,
     }
   };
+
+  componentWillUnmount(): void {
+    this.props.resetVideo();
+  }
 
   updateVideoPlayer = (e: React.SyntheticEvent<any>): void => {
     const videoPlayer = (e.target as any);
@@ -68,7 +73,7 @@ class Video extends React.Component<VideoProps, VideoState> {
   }
 }
 
-import { updateVideoPlayer, updateVideoState } from 'data/video/actions';
+import { updateVideoPlayer, updateVideoState, resetVideo } from 'data/video/actions';
 
 const mapStateToProps = state => ({
   tabPlayer: state.tab.player,
@@ -77,7 +82,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   updateVideoPlayer: videoPlayer => dispatch(updateVideoPlayer(videoPlayer)),
-  updateVideoState: videoState => dispatch(updateVideoState(videoState))
+  updateVideoState: videoState => dispatch(updateVideoState(videoState)),
+  resetVideo: () => dispatch(resetVideo())
 });
 
 export default connect(
