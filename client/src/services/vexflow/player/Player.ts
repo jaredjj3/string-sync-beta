@@ -110,6 +110,7 @@ class Player {
     }
 
     this.barTicks = [];
+    this.allTicks = [];
     let totalTicks = new Fraction(0, 1);
     const voiceGroups = this._artist.getPlayerData().voices;
     const tabVoices = this._artist.staves.map(stave => stave.tab_voices);
@@ -165,15 +166,22 @@ class Player {
     this.allTicks = sortBy(values(this.tickNotes), tick => tick.value);
     const offset = ((this._deadTime / 1000) / 60) * this.tpm;
 
-    this.allTicks = this.allTicks.map(tick => {
-      tick.value += offset;
-      return tick;
-    });
+    if (offset !== 0) {
+      this.allTicks = this.allTicks.map(tick => {
+        const nextTick = Object.assign({}, tick);
+        nextTick.value += offset;
+        return nextTick;
+      });
 
-    this.barTicks = this.barTicks.map(tick => {
-      tick.value += offset;
-      return tick;
-    });
+      this.barTicks = this.barTicks.map(tick => {
+        const nextTick = Object.assign({}, tick);
+        nextTick.value += offset;
+        return nextTick;
+      });
+
+      this.allTicks.unshift(Object.assign({}, this.allTicks[0], { value: 0 }));
+      this.barTicks.unshift(Object.assign({}, this.barTicks[0], { value: 0 }));
+    }
 
     if (this.loopSlider) {
       this.calcLoopSliderMarks();

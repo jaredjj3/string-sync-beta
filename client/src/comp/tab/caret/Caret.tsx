@@ -10,6 +10,8 @@ interface CaretProps {
   shouldRAF: boolean;
   tabPlayer: Player;
   viewport: any;
+  deadTime: number;
+  tempo: number;
   focusLine(measure: number): void;
 }
 
@@ -31,6 +33,14 @@ class Caret extends React.Component<CaretProps, CaretState> {
   componentWillReceiveProps(nextProps: CaretProps): void {
     const { tabPlayer, viewport } = nextProps;
     tabPlayer.viewport = viewport;
+
+    if (nextProps.tempo) {
+      tabPlayer.tempo = nextProps.tempo;
+    }
+
+    if (typeof nextProps.deadTime === 'number') {
+      tabPlayer.deadTime = nextProps.deadTime;
+    }
 
     if (nextProps.shouldRAF) {
       this.resize(viewport);
@@ -89,7 +99,7 @@ class Caret extends React.Component<CaretProps, CaretState> {
 
     try {
       this.clearCanvas();
-      this.drawCaret(this.props.tabPlayer.caretPosX(), Caret.START_POS_Y);
+      this.drawCaret(tabPlayer.caretPosX(), Caret.START_POS_Y);
       focusLine(tabPlayer.currTick.stave);
     } catch (e) {
       console.error(e);
@@ -117,7 +127,9 @@ import { focusLine } from 'data/tab/actions';
 const mapStateToProps = state => ({
   shouldRAF: state.video.player && isVideoActive(state.video.state),
   tabPlayer: state.tab.player,
-  viewport: state.device.viewport
+  viewport: state.device.viewport,
+  deadTime: state.notation.deadTime,
+  tempo: state.notation.tempo
 });
 
 const mapDispatchToProps = dispatch => ({
