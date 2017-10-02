@@ -24,9 +24,7 @@ const formData = (notation) => {
     data.append('notation[youtube_video_id]', youtubeVideoId);
   }
 
-  if (tempo) {
-    data.append('notation[tempo]', (tempo && tempo.toString()) || '120');
-  }
+  data.append('notation[tempo]', (tempo && tempo.toString()) || '120');
 
   if (deadTime) {
     data.append('notation[dead_time]', (deadTime && deadTime.toString()) || '0');
