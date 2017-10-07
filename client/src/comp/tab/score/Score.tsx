@@ -90,21 +90,19 @@ class Score extends React.Component<ScoreProps, ScoreState> {
       return;
     }
 
-    let artist = new Artist(10, 0, viewport.width - 10, { scale: 1.0 });
-    let tab = new VexTab(artist);
+    let artist = null;
 
     try {
-      tab.parse(vextab);
-      const formatted = formatter.update(vextab, viewport.width, tab.elements);
+      const formatted = formatter.update(vextab, viewport.width);
 
       artist = new Artist(10, 0, viewport.width - 10, { scale: 1.0 });
-      tab = new VexTab(artist);
+      const tab = new VexTab(artist);
       tab.parse(formatted);
 
       artist.render(this.renderer);
       this.renderTabText(artist);
     } catch (e) {
-      // noop
+      console.error(e);
     }
 
     // TODO: Refactor

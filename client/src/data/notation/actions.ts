@@ -22,7 +22,6 @@ export const resetNotation = () => ({
 
 // TODO: make a higher order function that produces this behavior.
 export const fetchNotation = (() => {
-  const { notifyAll, notify } = window as any;
   let isFetching = false;
 
   return (notationId: number) => async dispatch => {
@@ -35,8 +34,8 @@ export const fetchNotation = (() => {
     try {
       const notation = await API.fetchNotation(notationId);
       dispatch(receiveNotation(notation));
-    } catch ({ responseJSON }) {
-      notifyAll('Notation', responseJSON);
+    } catch (e) {
+      console.error(e);
     } finally {
       isFetching = false;
     }

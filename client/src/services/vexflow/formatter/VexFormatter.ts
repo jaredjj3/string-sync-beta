@@ -1,8 +1,11 @@
-import Process from './process';
 import isBetween from 'util/isBetween';
+import { startsWith, last, chunk } from 'lodash';
 
-import inChunksOf from 'util/inChunksOf';
-import { merge } from 'lodash';
+interface FormatBuffer {
+  options: Array<string>;
+  measures: Array<{ notes: string, text?: string }>;
+  lastDirective: string;
+}
 
 interface Param {
   key: string;
@@ -13,8 +16,7 @@ interface Param {
 // spaced tablature so that it fits within a certain viewport.
 
 class VexFormatter {
-  // Object properties that characterize a note token
-  static CHAR_TOKEN_PROPS: Array<string> = ['command', 'time', 'chord', 'fret'];
+  static DIRECTIVES: Array<string> = ['options', 'measure'];
 
   code: string = '';
   width: number = 0;
@@ -43,22 +45,66 @@ class VexFormatter {
     }
   }
 
-  update(code: string, width: number, elements: Array<any>): string {
-    this.elements = elements;
+  update(code: string, width: number): string {
     const shouldUpdate = this.code !== code || this.width !== width || this.formatted === '';
 
     this.code = code;
     this.width = width;
 
     if (shouldUpdate) {
-      this._format(elements);
+      this._format();
     }
 
     return this.formatted;
   }
 
-  private _format(elements: Array<any>): void {
-    
+  private _format(): void {
+    const buffer: FormatBuffer = this.code.
+      split(/\r\n|\r|\n/).
+      map(line => line.trim()).
+      reduce(this._distributeLines, { options: [], measures: [], lastDirective: null });
+
+    this._updateFormattedWithBuffer(buffer);
+  }
+
+  private _distributeLines(buffer: FormatBuffer, line: any): FormatBuffer {
+    if (VexFormatter.DIRECTIVES.includes(line)) {
+      buffer.lastDirective = line;
+
+      if (line === 'measure') {
+        buffer.measures.push({ notes: null, text: null });
+      }
+
+      return buffer;
+    }
+
+    switch (buffer.lastDirective) {
+      case 'options':
+        buffer.options.push(line);
+        return buffer;
+
+      case 'measure':
+        const lastBufferMeasure = last(buffer.measures);
+
+        if (startsWith(line, 'notes')) {
+          lastBufferMeasure.notes = line + '\n';
+        } else if (startsWith(line, 'text')) {
+          lastBufferMeasure.text = line + '\n';
+        }
+
+        return buffer;
+
+      default:
+        return buffer;
+    }
+  }
+
+  private _updateFormattedWithBuffer = (buffer: FormatBuffer): void => {
+    const options = '\n' + buffer.options.join('\n') + '\n';
+    const measures = buffer.measures.map(measure => measure.notes + (measure.text ? measure.text : ''));
+    const chunkedMeasures = chunk(measures, this.measuresPerLine).map(measure => measure.join('\n'));
+
+    this.formatted = options + chunkedMeasures.join(options);
   }
 }
 
