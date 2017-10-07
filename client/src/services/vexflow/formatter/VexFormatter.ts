@@ -20,6 +20,7 @@ class VexFormatter {
   width: number = 0;
   formatted: string = '';
   measures: Array<string> = [];
+  textMeasures: Array<string> = [];
   chunkSize: number = 0;
   elements: Array<any> = [];
 
@@ -57,54 +58,7 @@ class VexFormatter {
   }
 
   private _format(elements: Array<any>): void {
-    const deconstructed = this._deconstruct(elements);
-    const reconstructed = this._reconstruct(deconstructed);
-
-    this.measures = reconstructed.components.notes.reduce((_measures, note, index) => {
-      if (note.type === 'bar' && index < reconstructed.components.notes.length - 1) {
-        _measures.push([]);
-      }
-
-      _measures[_measures.length - 1].push(note.vextab);
-
-      return _measures;
-    }, []).map(measure => measure.join(' '));
-
-    const tabstave = `tabstave ${reconstructed.components.options.vextab}`;
-
-    this.chunkSize = Math.min(this.measuresPerLine, this.measures.length);
-    const formatted = inChunksOf(this.chunkSize, this.measures, measureGroup => (
-      [tabstave].concat([`notes ${measureGroup.join(' ')}`]).concat(['options space=60'])
-    )).map(measure => measure.join('\n'));
-
-    formatted.unshift('options space=20');
-    formatted.push('options space=300');
-
-    this.formatted = formatted.join('\n\n');
-  }
-
-  private _deconstruct(elements: Array<any>): Array<any> {
-    return elements.map(element => Process.element(element));
-  }
-
-  private _reconstruct(deconstructed: Array<any>): any {
-    // For now, ignore all the auxilary options.
-    const tabstaves = deconstructed.filter(element => element.type === 'tabstave');
-    return tabstaves.reduce((masterTabstave, tabstave) => {
-      const src = tabstave.components;
-      const dst = masterTabstave.components;
-
-      masterTabstave.components.notes = dst.notes.concat(src.notes);
-      masterTabstave.components.text = dst.text.concat(src.text);
-      // FIXME:
-      // masterTabstave.components.options.vextab = dst.options.vextab.concat(src.options.vextab);
-
-      return masterTabstave;
-    });
-  }
-
-  private _measuresFrom(components: any): any {
-
+    
   }
 }
 
