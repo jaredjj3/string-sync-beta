@@ -61,7 +61,7 @@ export const focusMeasure = (measure: number) => (dispatch, getState) => {
 
 export const focusLine = (line: number) => (dispatch, getState) => {
   const { focusedLine, numMeasures, measuresPerLine } = getState().tab;
-  const numLines = numMeasures / measuresPerLine;
+  const numLines = Math.ceil(numMeasures / measuresPerLine);
 
   const shouldDispatch = (
     numLines > 0 &&

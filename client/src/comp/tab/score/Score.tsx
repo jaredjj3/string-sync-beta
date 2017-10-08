@@ -103,7 +103,7 @@ class Score extends React.Component<ScoreProps, ScoreState> {
       const formattedVextab = tabFormatter.process(unformattedTab.elements);
 
       const postArtist = new Artist(
-        10, 0, viewportWidth - 50, { tab_stave_lower_spacing: 300 }
+        10, 20, viewportWidth - 50, { tab_stave_lower_spacing: 300 }
       );
       const formattedTab = new VexTab(postArtist);
       formattedTab.parse(formattedVextab);

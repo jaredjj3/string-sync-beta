@@ -20,7 +20,7 @@ interface TabProps {
 
 interface TabState {}
 
-class Tab extends React.PureComponent<TabProps, TabState> {
+class Tab extends React.Component<TabProps, TabState> {
   static defaultProps: any = {
     showControls: false
   };
