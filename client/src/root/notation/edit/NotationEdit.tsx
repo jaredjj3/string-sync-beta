@@ -65,6 +65,7 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
           <Bpm />
         </Row>
         <VextabEditor />
+        <TabVideoControls />
       </div>
     );
   }

@@ -101,10 +101,8 @@ class Caret extends React.Component<CaretProps, CaretState> {
       this.clearCanvas();
       this.drawCaret(tabPlayer.caretPosX(), Caret.START_POS_Y);
 
-      const { stave } = tabPlayer.currTick;
-
-      if (stave) {
-        focusLine(stave);
+      if (tabPlayer.currTick) {
+        focusLine(tabPlayer.currTick.stave);
       }
     } catch (e) {
       console.error(e);

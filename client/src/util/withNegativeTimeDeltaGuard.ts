@@ -5,15 +5,15 @@
 // overrides the getCurrentTime method to keep track of the last reported
 // time and to handle the value if the time delta is negative.
 
-import { isVideoActive } from './videoStateCategory';
+import { isVideoPassive } from './videoStateCategory';
 import PLAYER_STATES from 'util/const/PLAYER_STATES';
 
 const YOUTUBE_PREDICTION_OFFSET: number = 0.015;
 
 const _shouldHaveDefaultBehavior = (videoPlayer: any, lastCalledAt: number) => {
   return (
-    Date.now() - lastCalledAt > YOUTUBE_PREDICTION_OFFSET ||
-    !isVideoActive(PLAYER_STATES[videoPlayer.getPlayerState])
+    (Date.now() - lastCalledAt) > YOUTUBE_PREDICTION_OFFSET ||
+    isVideoPassive(PLAYER_STATES[videoPlayer.getPlayerState()])
   );
 };
 
