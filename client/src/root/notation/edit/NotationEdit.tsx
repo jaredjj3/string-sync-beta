@@ -1,18 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Button from 'antd/lib/button';
 import Collapse from 'antd/lib/collapse';
 import Fretboard from 'comp/fretboard';
 import Icon from 'antd/lib/icon';
-import PressedNotes from './pressedNotes';
-import ScaleVisualizationToggle from './scaleVisualizationToggle';
+import Save from './save';
 import Tab from 'comp/tab';
 import TabVideoControls from 'comp/tabVideoControls';
-import Tuning from './tuning';
 import VextabEditor from './vextab/editor';
 import Video from 'comp/video';
 import DeadTime from './deadTime';
+import Row from 'antd/lib/row';
 import Bpm from './bpm';
 
 import { Notation } from 'types/notation';
@@ -32,7 +30,6 @@ interface NotationEditProps {
   disableAutoSave(): void;
   enableScaleVisualization(): void;
   disableScaleVisualization(): void;
-  updateNotation(): void;
 }
 
 interface NotationEditState {}
@@ -45,10 +42,6 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
 
   componentWillUnmount(): void {
     this.props.disableAutoSave();
-  }
-
-  handleSaveButtonClick = (): void => {
-    this.props.updateNotation();
   }
 
   render(): JSX.Element {
@@ -65,21 +58,17 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
             <Fretboard />
           </Panel>
         </Collapse>
-        <Tuning />
-        <ScaleVisualizationToggle />
-        <PressedNotes />
-        <DeadTime />
-        <Bpm />
-        <Button onClick={this.handleSaveButtonClick}>Save</Button>
-        <Tab />
-        <VextabEditor />
-        <TabVideoControls />
+        <Row className="NotationEdit__syncControls" type="flex" align="middle">
+          <Save />
+          <DeadTime />
+          <Bpm />
+        </Row>
       </div>
     );
   }
 }
 
-import { fetchNotation, updateNotation } from 'data/notation/actions';
+import { fetchNotation } from 'data/notation/actions';
 import { enableFeatures, disableFeatures } from 'data/feature/actions';
 
 const mapStateToProps = state => ({
@@ -93,7 +82,6 @@ const mapDispatchToProps = dispatch => ({
   fetchNotation: id => dispatch(fetchNotation(id)),
   enableAutoSave: () => dispatch(enableFeatures(['autoSave'])),
   disableAutoSave: () => dispatch(disableFeatures(['autoSave'])),
-  updateNotation: () => dispatch(updateNotation())
 });
 
 export default connect(

@@ -45,7 +45,7 @@ class DeadTime extends React.Component<DeadTimeProps, DeadTimeState> {
     const { deadTimeValue } = this.state;
 
     return (
-      <div className="DeadTime">
+      <div className="SyncControls__slider">
         <h2>Dead Time</h2>
         <Slider
           step={1}

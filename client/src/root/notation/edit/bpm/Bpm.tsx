@@ -39,7 +39,7 @@ class Bpm extends React.Component<BpmProps, BpmState> {
     const { bpmValue } = this.state;
 
     return (
-      <div>
+      <div className="SyncControls__slider">
         <h2>Bpm</h2>
         <Slider
           step={1}
