@@ -15,7 +15,7 @@ interface ScoreProps {
   numMeasures: number;
   vextab: string;
   tabPlayer: Player;
-  formatter: Formatter;
+  tabFormatter: Formatter;
   tempo: number;
   setMeasuresPerLine(measuresPerLine: number): void;
   setNumMeasures(numMeasures: number): void;
@@ -44,15 +44,15 @@ class Score extends React.Component<ScoreProps, ScoreState> {
   }
 
   componentDidUpdate(): void {
-    const { formatter } = this.props;
+    const { tabFormatter } = this.props;
 
     this.renderScore();
 
     if (this.artist) {
       const { tabPlayer, tempo, setArtist } = this.props;
 
-      this.maybeSetMeasuresPerLine(formatter.chunkSize);
-      this.maybeSetNumMeasures(formatter.measures.length);
+      // this.maybeSetMeasuresPerLine(tabFormatter.chunkSize);
+      // this.maybeSetNumMeasures(tabFormatter.measures.length);
       setArtist(this.artist);
       tabPlayer.artist = this.artist;
       tabPlayer.tempo = tempo;
@@ -86,30 +86,30 @@ class Score extends React.Component<ScoreProps, ScoreState> {
   }
 
   renderScore(): void {
-    const { viewport, formatter, vextab, setTabParseError, clearTabParseError } = this.props;
+    const { viewport, tabFormatter, vextab, setTabParseError, clearTabParseError } = this.props;
 
     if (vextab.length === 0) {
       return;
     }
 
-    let artist = null;
+    const preArtist = new Artist(10, 0, viewport.width - 10, { scale: 1.0 });
+    const unformattedTab = new VexTab(preArtist);
 
     try {
-      // const formatted = formatter.update(vextab, viewport.width);
+      unformattedTab.parse(vextab);
+      const formattedVextab = tabFormatter.process(unformattedTab.elements, viewport.width);
+      console.log(formattedVextab);
 
-      artist = new Artist(10, 0, viewport.width - 10, { scale: 1.0 });
-      const tab = new VexTab(artist);
-      tab.parse(vextab);
+      const postArtist = new Artist(10, 0, viewport.width - 10, { scale: 1.0 });
+      const formattedTab = new VexTab(postArtist);
+      formattedTab.parse(formattedVextab);
 
-      artist.render(this.renderer);
+      postArtist.render(this.renderer);
+      this.artist = postArtist;
+
       clearTabParseError();
     } catch (error) {
       setTabParseError(error.message);
-    }
-
-    // TODO: Refactor
-    if (artist) {
-      this.artist = artist;
     }
   }
 
@@ -153,7 +153,7 @@ const mapStateToProps = state => ({
   vextab: state.notation.vextab,
   tempo: state.notation.tempo,
   tabPlayer: state.tab.player,
-  formatter: state.tab.formatter
+  tabFormatter: state.tab.formatter
 });
 
 const mapDispatchToProps = dispatch => ({
