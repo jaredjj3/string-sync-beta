@@ -1,37 +1,13 @@
 BUILD_STRUCTS = <<-BUILD.split("\n").map { |line| line.strip }.join("\n")
-options
+options space=20
+
 tabstave
 notation=true
-key=A
-time=4/4
-clef=none
+key=A time=4/4
 
-measure
-notes =|: :q (5/2.5/3.7/4) :8 7-5h6/3 ^3^ 5h6-7/5 ^3^ :q 7V/4 |
-text :q, Measure 1 Text
-
-measure
-notes :8 t12p7/4 s5s3/4 :8 3s:16:5-7/5 :h p5/4 $Fi,Ga,Ro!$
-:wh, A Major
-
-measure
-notes :q (5/4.5/5) (7/4.7/5)s(5/4.5/5) ^3^
-text :h, 🤖
-
-measure
-notes :8 7-5/4 $.a./b.$ (5/4.5/5)h(7/5) =:|
-
-measure
-notes :8 (12/5.12/4)ds(5/5.5/4)u 3b4/5
-
-measure
-notes :h (5V/6.5/4.6/3.7/2) $.italic.let ring$
-
-measure
-notes =|: :q (5/2.5/3.7/4) :8 7-5h6/3 ^3^ 5h6-7/5 ^3^ :q 7V/4 |
-
-measure
-notes :8 t12p7/4 s5s3/4 :8 3s:16:5-7/5 :h p5/4 $Fi,Ga,Ro!$
+notes :q =|: (5/2.5/3.7/4) :8 7-5h6/3 ^3^ 5h6-7/5 ^3^ :q 7V/4 |
+notes :8 t12p7/4 s5s3/4 :8 3s:16:5-7/5 :h p5/4
+text :w, |#segno, ,|, :hd, , #tr
 BUILD
 
 def init
