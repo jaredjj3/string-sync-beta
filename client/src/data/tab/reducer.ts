@@ -6,7 +6,9 @@ import {
   FOCUS_LINE,
   RESET_TAB,
   UPDATE_TUNING,
-  RESET_TUNING
+  RESET_TUNING,
+  SET_TAB_PARSE_ERROR,
+  CLEAR_TAB_PARSE_ERROR
 } from './actions';
 
 import { Artist, Player, Formatter, Fretman, ScaleVisualizer } from 'services/vexflow';
@@ -21,6 +23,7 @@ interface StoreTab {
   formatter: Formatter;
   fretman: Fretman;
   tuning: Array<string>;
+  parseError: string;
 }
 
 const fretman = new Fretman();
@@ -38,7 +41,8 @@ const defaultState: StoreTab = Object.freeze({
   formatter,
   fretman,
   scaleVisualizer,
-  tuning: ['E', 'A', 'D', 'G', 'B', 'E']
+  tuning: ['E', 'A', 'D', 'G', 'B', 'E'],
+  parseError: null
 });
 
 const dup = (state: StoreTab): StoreTab => {
@@ -80,6 +84,14 @@ export default (state = defaultState, action): StoreTab => {
 
     case RESET_TUNING:
       nextState.tuning = Object.assign([], defaultState.tuning);
+      return nextState;
+
+    case CLEAR_TAB_PARSE_ERROR:
+      nextState.parseError = null;
+      return nextState;
+
+    case SET_TAB_PARSE_ERROR:
+      nextState.parseError = action.parseError;
       return nextState;
 
     case RESET_TAB:

@@ -1,31 +1,45 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { Input } from 'antd';
+import Input from 'antd/lib/input';
+import Alert from 'antd/lib/alert';
 
 const { TextArea } = Input;
 
 interface VextabEditorProps {
   vextab: string;
+  parseError: string;
   updateVextab(vextab: string): void;
+  clearTabParseErrors(): void;
 }
 
 interface VextabEditorState {}
 
-class VextabEditor extends React.PureComponent<VextabEditorProps, VextabEditorState> {
-  shouldComponentUpdate(nextProps: VextabEditorProps): boolean {
-    return this.props.vextab !== nextProps.vextab;
-  }
-
+class VextabEditor extends React.Component<VextabEditorProps, VextabEditorState> {
   handleChange = (e: React.SyntheticEvent<any>): void => {
     this.props.updateVextab((e.target as any).value);
   }
 
   render(): JSX.Element {
-    const { vextab } = this.props;
+    const { vextab, parseError } = this.props;
 
     return (
       <div className="VextabEditor">
+        <div style={{ marginBottom: '20px' }}>
+          {
+            parseError ?
+              <Alert
+                message="Parse Error"
+                description={parseError}
+                type="error"
+              /> :
+              <Alert
+                message="Parse Success"
+                description="No errors :)"
+                type="success"
+              />
+          }
+        </div>
         <TextArea
           className="VextabEditor__textarea"
           placeholder="Write Vextab here..."
@@ -39,13 +53,16 @@ class VextabEditor extends React.PureComponent<VextabEditorProps, VextabEditorSt
 }
 
 import { updateVextab } from 'data/notation/actions';
+import { clearTabParseError } from 'data/tab/actions';
 
 const mapStateToProps = state => ({
-  vextab: state.notation.vextab
+  vextab: state.notation.vextab,
+  parseError: state.tab.parseError
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateVextab: vextab => dispatch(updateVextab(vextab))
+  updateVextab: vextab => dispatch(updateVextab(vextab)),
+  clearTabParseError: () => dispatch(clearTabParseError())
 });
 
 export default connect(

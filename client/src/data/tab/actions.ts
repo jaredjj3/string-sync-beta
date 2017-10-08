@@ -9,6 +9,8 @@ export const FOCUS_LINE = 'FOCUS_LINE';
 export const RESET_TAB = 'RESET_TAB';
 export const UPDATE_TUNING = 'UPDATE_TUNING';
 export const RESET_TUNING = 'RESET_TUNING';
+export const SET_TAB_PARSE_ERROR = 'SET_TAB_PARSE_ERROR';
+export const CLEAR_TAB_PARSE_ERROR = 'CLEAR_TAB_PARSE_ERROR';
 
 export const updateTuning = (tuning: Array<string>) => ({
   type: UPDATE_TUNING,
@@ -32,6 +34,15 @@ export const setNumMeasures = (numMeasures: number) => ({
 export const setArtist = (artist: Artist) => ({
   type: SET_ARTIST,
   artist
+});
+
+export const setTabParseError = (parseError: string) => ({
+  type: SET_TAB_PARSE_ERROR,
+  parseError
+});
+
+export const clearTabParseError = () => ({
+  type: CLEAR_TAB_PARSE_ERROR
 });
 
 export const focusMeasure = (measure: number) => (dispatch, getState) => {

@@ -58,11 +58,13 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
             <Fretboard />
           </Panel>
         </Collapse>
+        <Tab />
         <Row className="NotationEdit__syncControls" type="flex" align="middle">
           <Save />
           <DeadTime />
           <Bpm />
         </Row>
+        <VextabEditor />
       </div>
     );
   }

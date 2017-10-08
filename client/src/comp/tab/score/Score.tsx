@@ -21,6 +21,8 @@ interface ScoreProps {
   setNumMeasures(numMeasures: number): void;
   setArtist(artist: Artist): void;
   resetTab(): void;
+  setTabParseError(parseError: string): void;
+  clearTabParseError(): void;
 }
 
 interface ScoreState {}
@@ -84,7 +86,7 @@ class Score extends React.Component<ScoreProps, ScoreState> {
   }
 
   renderScore(): void {
-    const { viewport, formatter, vextab } = this.props;
+    const { viewport, formatter, vextab, setTabParseError, clearTabParseError } = this.props;
 
     if (vextab.length === 0) {
       return;
@@ -100,9 +102,9 @@ class Score extends React.Component<ScoreProps, ScoreState> {
       tab.parse(vextab);
 
       artist.render(this.renderer);
-      this.renderTabText(artist);
-    } catch (e) {
-      console.error(e);
+      clearTabParseError();
+    } catch (error) {
+      setTabParseError(error.message);
     }
 
     // TODO: Refactor
@@ -135,7 +137,14 @@ class Score extends React.Component<ScoreProps, ScoreState> {
   }
 }
 
-import { setMeasuresPerLine, setNumMeasures, setArtist, resetTab } from 'data/tab/actions';
+import {
+  setMeasuresPerLine,
+  setNumMeasures,
+  setArtist,
+  resetTab,
+  setTabParseError,
+  clearTabParseError
+} from 'data/tab/actions';
 
 const mapStateToProps = state => ({
   viewport: state.device.viewport,
@@ -151,7 +160,9 @@ const mapDispatchToProps = dispatch => ({
   setMeasuresPerLine: (measuresPerLine: number) => dispatch(setMeasuresPerLine(measuresPerLine)),
   setNumMeasures: (numMeasures: number) => dispatch(setNumMeasures(numMeasures)),
   setArtist: (artist: Artist) => dispatch(setArtist(artist)),
-  resetTab: () => dispatch(resetTab())
+  resetTab: () => dispatch(resetTab()),
+  setTabParseError: (parseError: string) => dispatch(setTabParseError(parseError)),
+  clearTabParseError: () => dispatch(clearTabParseError())
 });
 
 export default connect(
