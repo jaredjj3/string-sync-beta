@@ -3,14 +3,13 @@ import { connect } from 'react-redux';
 
 import Icon from 'antd/lib/icon';
 import { VexTab, Artist, Flow, Formatter, Player } from 'services/vexflow';
-import { isEqual } from 'lodash';
 
 import { Viewport } from 'types/device';
 
 const { Renderer } = Flow;
 
 interface ScoreProps {
-  viewport: Viewport;
+  viewportWidth: number;
   measuresPerLine: number;
   numMeasures: number;
   vextab: string;
@@ -33,11 +32,15 @@ class Score extends React.Component<ScoreProps, ScoreState> {
   renderer: any;
   artist: Artist;
 
+  componentWillReceiveProps(nextProps: ScoreProps): void {
+    nextProps.tabFormatter.width = nextProps.viewportWidth;
+  }
+
   shouldComponentUpdate(nextProps: ScoreProps): boolean {
     return (
       this.props.measuresPerLine !== nextProps.measuresPerLine ||
       this.props.numMeasures !== nextProps.numMeasures ||
-      !isEqual(this.props.viewport, nextProps.viewport) ||
+      this.props.viewportWidth !== nextProps.viewportWidth ||
       this.props.vextab !== nextProps.vextab ||
       this.props.tempo !== nextProps.tempo
     );
@@ -51,8 +54,8 @@ class Score extends React.Component<ScoreProps, ScoreState> {
     if (this.artist) {
       const { tabPlayer, tempo, setArtist } = this.props;
 
-      // this.maybeSetMeasuresPerLine(tabFormatter.chunkSize);
-      // this.maybeSetNumMeasures(tabFormatter.measures.length);
+      this.maybeSetMeasuresPerLine(tabFormatter.measuresPerLine);
+      this.maybeSetNumMeasures(tabFormatter.numMeasures);
       setArtist(this.artist);
       tabPlayer.artist = this.artist;
       tabPlayer.tempo = tempo;
@@ -86,21 +89,22 @@ class Score extends React.Component<ScoreProps, ScoreState> {
   }
 
   renderScore(): void {
-    const { viewport, tabFormatter, vextab, setTabParseError, clearTabParseError } = this.props;
+    const { viewportWidth, tabFormatter, vextab, setTabParseError, clearTabParseError } = this.props;
 
     if (vextab.length === 0) {
       return;
     }
 
-    const preArtist = new Artist(10, 0, viewport.width - 10, { scale: 1.0 });
+    const preArtist = new Artist(0, 0, viewportWidth);
     const unformattedTab = new VexTab(preArtist);
 
     try {
       unformattedTab.parse(vextab);
-      const formattedVextab = tabFormatter.process(unformattedTab.elements, viewport.width);
-      console.log(formattedVextab);
+      const formattedVextab = tabFormatter.process(unformattedTab.elements);
 
-      const postArtist = new Artist(10, 0, viewport.width - 10, { scale: 1.0 });
+      const postArtist = new Artist(
+        10, 0, viewportWidth - 50, { tab_stave_lower_spacing: 300 }
+      );
       const formattedTab = new VexTab(postArtist);
       formattedTab.parse(formattedVextab);
 
@@ -147,7 +151,7 @@ import {
 } from 'data/tab/actions';
 
 const mapStateToProps = state => ({
-  viewport: state.device.viewport,
+  viewportWidth: state.device.viewport.width,
   measuresPerLine: state.tab.measuresPerLine,
   numMeasures: state.tab.numMeasures,
   vextab: state.notation.vextab,

@@ -1,15 +1,62 @@
 import Deconstructor from './deconstructor';
 
 import isBetween from 'util/isBetween';
+import { last } from 'lodash';
 
 class VexFormatter {
   static PADDING: number = 20; // px
 
-  process(elements: Array<any>, width: number): string {
+  formattedVextab: string = '';
+  numMeasures: number = 0;
+  width: number = 0;
+
+  get measuresPerLine(): number {
+    const { width } = this;
+
+    switch (true) {
+      case width <= 646:
+        return 1;
+      case isBetween(width, 646, 768):
+        return 2;
+      case isBetween(width, 768, 992):
+        return 3;
+      case isBetween(width, 992, 1200):
+        return 4;
+      case isBetween(width, 1200, 1680):
+        return 5;
+      default:
+        return Math.ceil(width / 336);
+    }
+  }
+
+  process(elements: Array<any>): string {
     const deconstructed = this._deconstruct(elements);
     const measures = this._reconstruct(deconstructed);
 
-    return measures.map(({ head, body }) => (head + '\n' + body).trim()).join('\n\n');
+    this.numMeasures = measures.length;
+
+    const measuresPerLine = this.measuresPerLine;
+    const chunkedMeasures = measures.reduce((_chunkedMeasures, measure) => {
+      const shouldMakeNewLine = (
+        _chunkedMeasures.length === 0 ||
+        last(_chunkedMeasures).length >= measuresPerLine ||
+        last(last(_chunkedMeasures)).head !== measure.head
+      );
+
+      if (shouldMakeNewLine) {
+        _chunkedMeasures.push([]);
+      }
+
+      last(_chunkedMeasures).push(measure);
+
+      return _chunkedMeasures;
+    }, []);
+
+    return this.formattedVextab = chunkedMeasures.reduce((formattedVextab, measureGroup) => {
+      formattedVextab += ('\n' + measureGroup[0].head + '\n');
+      formattedVextab += measureGroup.map(measure => measure.body).join('\n');
+      return formattedVextab;
+    }, '');
   }
 
   private _deconstruct(elements: Array<any>): Array<any> {
