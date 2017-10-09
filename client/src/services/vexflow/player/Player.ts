@@ -258,7 +258,7 @@ class Player {
       ctx.strokeStyle = strokeStyle;
     }
 
-    tick.lowTabNotes.forEach(tabNote => tabNote.draw());
+    tick.lowTabNotes.forEach(tabNote => tabNote.drawPositions());
     ctx.restore();
   }
 
