@@ -11,7 +11,22 @@ import { Viewport } from 'types/device';
 
 const { Fraction } = Flow;
 
+interface NoteStyle {
+  fillStyle?: string,
+  strokeStyle?: string
+}
+
 class Player {
+  static DEFAULT_NOTE_STYLE: any = {
+    fillStyle: '#000000',
+    strokeStyle: '#000000'
+  };
+
+  static PRESSED_NOTE_STYLE: any = {
+    fillStyle: '#FF0000',
+    strokeStyle: '#FF0000'
+  };
+
   tickNotes: any = {};
   allTicks: Array<any> = [];
   barTicks: Array<any> = [];
@@ -93,7 +108,21 @@ class Player {
     );
 
     if (shouldReassignCurrTick) {
+
+      // Ensure that the currTick that is about to get replaced
+      // is redrawn to be black.
+      if (this.currTick) {
+        this._drawTickNotes(this.currTick, Player.DEFAULT_NOTE_STYLE);
+      }
+
+      // Get a new currTick
       this.currTick = this.calcCurrTick(currentTickNum);
+
+      // Draw the notes to be the pressed style if a currTick object
+      // is successfully created.
+      if (this.currTick) {
+        this._drawTickNotes(this.currTick, Player.PRESSED_NOTE_STYLE);
+      }
     }
 
     if (this.currTick) {
@@ -210,6 +239,29 @@ class Player {
     return this.loopSliderMarks;
   }
 
+  private _drawTickNotes(tick: any, style: NoteStyle = Player.DEFAULT_NOTE_STYLE): void {
+    // style and draw staveNotes
+    tick.lowStaveNotes.forEach(note => note.setStyle(style));
+    tick.lowStaveNotes[0].draw();
+
+    // style and draw tabNotes
+    const ctx = tick.lowTabNotes[0].context;
+    ctx.save();
+
+    const { fillStyle, strokeStyle } = style;
+
+    if (fillStyle) {
+      ctx.fillStyle = fillStyle;
+    }
+
+    if (strokeStyle) {
+      ctx.strokeStyle = strokeStyle;
+    }
+
+    tick.lowTabNotes.forEach(tabNote => tabNote.draw());
+    ctx.restore();
+  }
+
   private calcCurrTick(probeTick: number): any {
     // skip last tick
     for (let i = 0; i < this.allTicks.length - 1; i++) {
@@ -242,7 +294,10 @@ class Player {
     const pressed = flatMap(tick1.tabNotes, tabNote => tabNote.positions);
     const lit = flatMap(tick2.tabNotes, tabNote => tabNote.positions);
 
-    return { lowTick, highTick, lowPos, highPos, posFunc, stave, pressed, lit };
+    const lowStaveNotes = tick1.notes;
+    const lowTabNotes = tick1.tabNotes;
+
+    return { lowTick, highTick, lowPos, highPos, posFunc, stave, pressed, lit, lowStaveNotes, lowTabNotes };
   }
 
   private posFuncFor(tick1: any, tick2: any, spec: any): Function {

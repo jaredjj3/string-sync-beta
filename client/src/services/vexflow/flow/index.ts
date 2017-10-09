@@ -1,3 +1,3 @@
-import { Flow } from 'vexflow';
+import Vex from 'vexflow';
 
-export default Flow;
+export default Vex.Flow;

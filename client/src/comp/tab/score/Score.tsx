@@ -72,8 +72,8 @@ class Score extends React.Component<ScoreProps, ScoreState> {
     }
 
     this.canvas = c;
-    this.ctx = c.getContext('2d');
     this.renderer = new Renderer(c, Renderer.Backends.CANVAS);
+    this.ctx = this.renderer.getContext();
   }
 
   maybeSetMeasuresPerLine = (measuresPerLine: number): void => {
