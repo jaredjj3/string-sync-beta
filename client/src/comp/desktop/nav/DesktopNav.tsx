@@ -21,6 +21,7 @@ interface DesktopNavProps {
   isLoggedIn: boolean;
   isTeacher: boolean;
   isAdmin: boolean;
+  isVisible: boolean;
   logout(): void;
 }
 
@@ -67,64 +68,68 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
   }
 
   render(): JSX.Element {
-    const { isLoggedIn, isTeacher, isAdmin } = this.props;
+    const { isLoggedIn, isTeacher, isAdmin, isVisible } = this.props;
 
-    return (
-      <nav className="Nav--desktop">
-        <Row type="flex" justify="space-between" align="middle">
-          <Col xs={0} sm={0} md={8} lg={8}>
-            <Logo showLogo={true} />
-          </Col>
-          <Col xs={0} sm={0} md={6} lg={6} push={1}>
-            <Menu
-              selectedKeys={[this.state.current]}
-              mode="horizontal"
-              style={{ fontSize: '18px', borderBottom: '0', background: 'none' }}
-              onClick={this.goTo}
-            >
-              <Item key={NavKeys.SEARCH} className="Nav--desktop__menuItem">
-                <Icon type="search" />
-              </Item>
-              <Item key={NavKeys.HOME} className="Nav--desktop__menuItem">
-                <Icon type="home" />
-              </Item>
-              {
-                isLoggedIn ?
-                <SubMenu title={<Icon type="setting" />} className="Nav--desktop__menuItem">
-                  {
-                    isTeacher || isAdmin ?
-                      <Item>
-                        <Link to="upload">
-                          <Icon type="upload" />
-                          <span>upload</span>
-                        </Link>
-                      </Item> : null
-                  }
-                  {
-                    isAdmin ?
-                      <Item>
-                        <Link to="dashboard">
-                          <Icon type="compass" />
-                          <span>dashboard</span>
-                        </Link>
-                      </Item> : null
-                  }
-                  <Item>
-                    <div onClick={this.logout}>
-                      <Icon type="logout" />
-                      <span>logout</span>
-                    </div>
-                  </Item>
-                </SubMenu> :
-                <Item key={NavKeys.LOGIN} className="Nav--desktop__menuItem">
-                  <Icon type="user" />
+    if (!isVisible) {
+      return null;
+    } else {
+      return (
+        <nav className="Nav--desktop">
+          <Row type="flex" justify="space-between" align="middle">
+            <Col xs={0} sm={0} md={8} lg={8}>
+              <Logo showLogo={true} />
+            </Col>
+            <Col xs={0} sm={0} md={6} lg={6} push={1}>
+              <Menu
+                selectedKeys={[this.state.current]}
+                mode="horizontal"
+                style={{ fontSize: '18px', borderBottom: '0', background: 'none' }}
+                onClick={this.goTo}
+              >
+                <Item key={NavKeys.SEARCH} className="Nav--desktop__menuItem">
+                  <Icon type="search" />
                 </Item>
-              }
-            </Menu>
-          </Col>
-        </Row>
-      </nav>
-    );
+                <Item key={NavKeys.HOME} className="Nav--desktop__menuItem">
+                  <Icon type="home" />
+                </Item>
+                {
+                  isLoggedIn ?
+                  <SubMenu title={<Icon type="setting" />} className="Nav--desktop__menuItem">
+                    {
+                      isTeacher || isAdmin ?
+                        <Item>
+                          <Link to="upload">
+                            <Icon type="upload" />
+                            <span>upload</span>
+                          </Link>
+                        </Item> : null
+                    }
+                    {
+                      isAdmin ?
+                        <Item>
+                          <Link to="dashboard">
+                            <Icon type="compass" />
+                            <span>dashboard</span>
+                          </Link>
+                        </Item> : null
+                    }
+                    <Item>
+                      <div onClick={this.logout}>
+                        <Icon type="logout" />
+                        <span>logout</span>
+                      </div>
+                    </Item>
+                  </SubMenu> :
+                  <Item key={NavKeys.LOGIN} className="Nav--desktop__menuItem">
+                    <Icon type="user" />
+                  </Item>
+                }
+              </Menu>
+            </Col>
+          </Row>
+        </nav>
+      );
+    }
   }
 }
 
@@ -133,7 +138,8 @@ import { logout } from 'data/session/actions';
 const mapStateToProps = state => ({
   isLoggedIn: Boolean(state.session.currentUser.id),
   isTeacher: state.session.currentUser.roles.includes('teacher'),
-  isAdmin: state.session.currentUser.roles.includes('admin')
+  isAdmin: state.session.currentUser.roles.includes('admin'),
+  isVisible: state.features.navbar
 });
 
 const mapDispatchToProps = dispatch => ({
