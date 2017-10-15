@@ -2,7 +2,7 @@ import React from 'react';
 import { VideoPlayer } from 'types/videoPlayer';
 import Artist from '../artist';
 import Flow from '../flow';
-import { has, sortBy, values, isEqual, flatMap } from 'lodash';
+import { has, sortBy, values, isEqual, flatMap, last } from 'lodash';
 
 import isBetween from 'util/isBetween';
 import { interpolateFuncFor } from 'util/interpolate';
@@ -30,6 +30,7 @@ class Player {
   tickNotes: any = {};
   allTicks: Array<any> = [];
   barTicks: Array<any> = [];
+  litPosMap: Array<any> = [];
   currTick: any = null;
   loopSliderMarks: any = {};
 
@@ -40,6 +41,7 @@ class Player {
   private _deadTime: number = 0; // ms
   private _tempo: number = 60;
   private _viewport: Viewport = null;
+  private _measures: Array<any> = [];
 
   get isReady(): boolean {
     return this._videoPlayer && this._artist && this._viewport && !this._isDirty;
@@ -53,6 +55,18 @@ class Player {
   set artist(artist: Artist) {
     this._isDirty = this._isDirty || this._artist !== artist;
     this._artist = artist;
+
+    const notes = flatMap(artist.staves, stave => stave.tab_notes);
+    this._measures = notes.reduce((measures, note) => {
+      if (note.constructor.name === 'BarNote') {
+        measures.push([]);
+      } else {
+        last(measures).push(note);
+      }
+
+      return measures;
+    }, []);
+
     artist.attachPlayer(this);
   }
 
@@ -139,6 +153,7 @@ class Player {
     }
 
     this.barTicks = [];
+    this.litPosMap = [];
     this.allTicks = [];
     let totalTicks = new Fraction(0, 1);
     const voiceGroups = this._artist.getPlayerData().voices;
@@ -167,7 +182,8 @@ class Player {
                 value: absTick.value(),
                 notes: [note],
                 tabNotes: [tabNote],
-                stave: voiceGroupIndex
+                stave: voiceGroupIndex,
+                measureNum: this.barTicks.length - 1
               };
             }
 
@@ -179,7 +195,8 @@ class Player {
               value: absTick.value(),
               notes: [note],
               tabNotes: [tabNote],
-              stave: voiceGroupIndex
+              stave: voiceGroupIndex,
+              measureNum: this.barTicks.length
             });
           }
         });
@@ -216,6 +233,8 @@ class Player {
       this.calcLoopSliderMarks();
       this.loopSlider.setMarks(this.loopSliderMarks);
     }
+
+    this.litPosMap = this._litPosMapFrom(this.barTicks, this.allTicks);
 
     this._isDirty = false;
     return true;
@@ -291,13 +310,24 @@ class Player {
     const posFunc = this.posFuncFor(tick1, tick2, tickObjSpec);
     // TODO: implement const tickFunc = interpolateFuncFor(lowPos, highPos, lowTick, highTick);
 
+    const lit = this.litPosMap[tick1.measureNum].positions;
     const pressed = flatMap(tick1.tabNotes, tabNote => tabNote.positions);
-    const lit = flatMap(tick2.tabNotes, tabNote => tabNote.positions);
 
     const lowStaveNotes = tick1.notes;
     const lowTabNotes = tick1.tabNotes;
 
-    return { lowTick, highTick, lowPos, highPos, posFunc, stave, pressed, lit, lowStaveNotes, lowTabNotes };
+    return {
+      lowTick,
+      highTick,
+      lowPos,
+      highPos,
+      posFunc,
+      stave,
+      pressed,
+      lit,
+      lowStaveNotes,
+      lowTabNotes
+    };
   }
 
   private posFuncFor(tick1: any, tick2: any, spec: any): Function {
@@ -308,6 +338,57 @@ class Player {
     }
 
     return interpolateFuncFor(spec.lowTick, spec.highTick, spec.lowPos, highPos);
+  }
+
+  private _litPosMapFrom(barTicks: Array<any>, allTicks: Array<any>): Array<any> {
+    const litPosMap = [];
+
+    // Setup an array of tick ranges. The info on positions will
+    // be added later.
+    // skip last element
+    for (let i = 0; i < barTicks.length - 1; i++) {
+      litPosMap.push({
+        low: barTicks[i].value,
+        high: barTicks[i + 1].value,
+        positions: []
+      });
+    }
+
+    const maxTick = Math.max(...allTicks.map(tick => tick.value));
+    const highTick = last(litPosMap).high;
+    if (highTick < maxTick) {
+      litPosMap.push({ low: highTick, high: maxTick, positions: [] });
+    }
+
+    const allTickMap = sortBy(
+      allTicks.map(tick => {
+        const { value } = tick;
+        const positions = flatMap(tick.tabNotes, tabNote => tabNote.positions);
+        return { value, positions };
+      }),
+      tick => tick.value
+    );
+
+    let allTickIndex = 0;
+    let litPosMapIndex = 0;
+    while (allTickIndex < allTicks.length) {
+      const probe = litPosMap[litPosMapIndex];
+      const tick = allTickMap[allTickIndex];
+
+      if (!probe) {
+        break;
+      }
+
+      if (isBetween(tick.value, probe.low, probe.high)) {
+        const dupPositions = tick.positions.map(pos => Object.assign({}, pos));
+        Object.assign(probe.positions, dupPositions);
+        allTickIndex++;
+      } else {
+        litPosMapIndex++;
+      }
+    }
+
+    return litPosMap;
   }
 }
 
