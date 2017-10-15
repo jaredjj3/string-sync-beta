@@ -3,8 +3,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 import Icon from 'antd/lib/icon';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
 
 interface BannerProps {
+  isLoggedIn: boolean;
   name: string;
   artist: string;
   transcriber: string;
@@ -14,24 +17,41 @@ interface BannerState {}
 
 class Banner extends React.Component<BannerProps, BannerState> {
   render(): JSX.Element {
-    const { name, artist, transcriber } = this.props;
+    const { isLoggedIn, name, artist, transcriber } = this.props;
 
     return (
       <div className="NotationShowBanner" >
-        <span className="NotationShowBanner__text">
-          {`${name} by ${artist} (${transcriber})`}
-        </span>
-        <span>
-          <Link to="/">
-            <Icon type="home" />
-          </Link>
-        </span>
+        <Row type="flex" align="middle" justify="center">
+          <Col span={5} />
+          <Col className="NotationShowBanner__text" span={14}>
+            {`${name} by ${artist} (${transcriber})`}
+          </Col>
+          <Col span={5}>
+            <Row className="NotationShowBanner__icons" type="flex" justify="end">
+              {
+                isLoggedIn ?
+                null :
+                <span>
+                  <Link to="login">
+                    <Icon type="user" />
+                  </Link>
+                </span>
+              }
+              <span>
+                <Link to="/">
+                  <Icon type="home" />
+                </Link>
+              </span>
+            </Row>
+          </Col>
+        </Row>
       </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
+  isLoggedIn: Boolean(state.session.currentUser.id),
   name: state.notation.name,
   artist: state.notation.artist,
   transcriber: state.notation.transcriber
