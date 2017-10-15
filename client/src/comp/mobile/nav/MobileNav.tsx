@@ -58,14 +58,6 @@ class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
     this.setState({ current: MobileNav.NAV_KEYS_BY_LOCATION[location] });
   }
 
-  shouldComponentUpdate(nextProps: MobileNavProps, nextState: MobileNavState): boolean {
-    return (
-      !isEqual(this.state, nextState) ||
-      this.props.isLoggedIn !== nextProps.isLoggedIn ||
-      this.props.location !== nextProps.location
-    );
-  }
-
   goTo = (navKey: MobileNavKeys): OnClickFunction => {
     return (e: React.SyntheticEvent<any>): void => {
       this.setState({ current: navKey });
