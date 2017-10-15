@@ -1,5 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
+
+import Icon from 'antd/lib/icon';
 
 interface BannerProps {
   name: string;
@@ -17,6 +20,11 @@ class Banner extends React.Component<BannerProps, BannerState> {
       <div className="NotationShowBanner" >
         <span className="NotationShowBanner__text">
           {`${name} by ${artist} (${transcriber})`}
+        </span>
+        <span>
+          <Link to="/">
+            <Icon type="home" />
+          </Link>
         </span>
       </div>
     );
