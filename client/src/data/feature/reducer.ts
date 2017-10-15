@@ -4,12 +4,14 @@ interface StoreFeatures {
   fretboard: boolean;
   autoSave: boolean;
   scaleVisualization: boolean;
+  navbar: boolean;
 }
 
 const defaultState: StoreFeatures = Object.freeze({
   fretboard: true,
   autoSave: false,
   scaleVisualization: false,
+  navbar: true
 });
 
 export default (state = defaultState, action): StoreFeatures => {
