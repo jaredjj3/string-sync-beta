@@ -7,6 +7,7 @@ import Icon from 'antd/lib/icon';
 import Tab from 'comp/tab';
 import TabVideoControls from 'comp/tabVideoControls';
 import Video from 'comp/video';
+import Banner from './banner';
 
 import { Notation } from 'types/notation';
 import { Device } from 'types/device';
@@ -38,6 +39,7 @@ class NotationShow extends React.Component<NotationShowProps, NotationShowState>
 
     return (
       <div className="NotationShow">
+        <Banner />
         <Video />
         <Collapse
           activeKey={showFretboard ? 'fretboard' : null}
