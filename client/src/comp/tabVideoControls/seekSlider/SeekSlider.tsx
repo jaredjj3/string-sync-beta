@@ -87,7 +87,9 @@ class SeekSlider extends React.PureComponent<SeekSliderProps, SeekSliderState> {
 
     if (currentTime > loop[1]) {
       seekSliderValue = this._toSeekSliderValue(loop[0]);
+      videoPlayer.pauseVideo();
       videoPlayer.seekTo(loop[0]);
+      videoPlayer.playVideo();
     } else {
       seekSliderValue = this._toSeekSliderValue(currentTime);
     }

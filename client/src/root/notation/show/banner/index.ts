@@ -1,5 +1,5 @@
 import Banner from './Banner';
 
-import './banner.less';
+import './_banner.less';
 
 export default Banner;
