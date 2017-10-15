@@ -41,7 +41,6 @@ class Player {
   private _deadTime: number = 0; // ms
   private _tempo: number = 60;
   private _viewport: Viewport = null;
-  private _measures: Array<any> = [];
 
   get isReady(): boolean {
     return this._videoPlayer && this._artist && this._viewport && !this._isDirty;
@@ -55,18 +54,6 @@ class Player {
   set artist(artist: Artist) {
     this._isDirty = this._isDirty || this._artist !== artist;
     this._artist = artist;
-
-    const notes = flatMap(artist.staves, stave => stave.tab_notes);
-    this._measures = notes.reduce((measures, note) => {
-      if (note.constructor.name === 'BarNote') {
-        measures.push([]);
-      } else {
-        last(measures).push(note);
-      }
-
-      return measures;
-    }, []);
-
     artist.attachPlayer(this);
   }
 
