@@ -21,6 +21,8 @@ interface NotationShowProps {
   showFretboardControls: boolean;
   fetchNotation(id: number): void;
   resetNotation(): void;
+  showNav(): void;
+  hideNav(): void;
 }
 
 interface NotationShowState {}
@@ -28,10 +30,12 @@ interface NotationShowState {}
 class NotationShow extends React.Component<NotationShowProps, NotationShowState> {
   componentDidMount(): void {
     this.props.fetchNotation(this.props.params.id);
+    this.props.hideNav();
   }
 
   componentWillUnmount(): void {
     this.props.resetNotation();
+    this.props.showNav();
   }
 
   render(): JSX.Element {
@@ -57,6 +61,7 @@ class NotationShow extends React.Component<NotationShowProps, NotationShowState>
 }
 
 import { fetchNotation, resetNotation } from 'data/notation/actions';
+import { enableFeatures, disableFeatures } from 'data/feature/actions';
 
 const mapStateToProps = state => ({
   showFretboard: state.panels.fretboard,
@@ -65,7 +70,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   fetchNotation: id => dispatch(fetchNotation(id)),
-  resetNotation: () => dispatch(resetNotation())
+  resetNotation: () => dispatch(resetNotation()),
+  showNav: () => dispatch(enableFeatures(['navbar'])),
+  hideNav: () => dispatch(disableFeatures(['navbar']))
 });
 
 export default connect(
