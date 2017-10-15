@@ -132,7 +132,7 @@ import { logout } from 'data/session/actions';
 
 const mapStateToProps = state => ({
   isLoggedIn: Boolean(state.session.currentUser.id),
-  isVisible: state.features.navbar
+  isVisible: state.feature.navbar
 });
 
 const mapDispatchToProps = dispatch => ({

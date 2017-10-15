@@ -139,7 +139,7 @@ const mapStateToProps = state => ({
   isLoggedIn: Boolean(state.session.currentUser.id),
   isTeacher: state.session.currentUser.roles.includes('teacher'),
   isAdmin: state.session.currentUser.roles.includes('admin'),
-  isVisible: state.features.navbar
+  isVisible: state.feature.navbar
 });
 
 const mapDispatchToProps = dispatch => ({
