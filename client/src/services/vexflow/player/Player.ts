@@ -155,6 +155,7 @@ class Player {
     this.barTicks = [];
     this.litPosMap = [];
     this.allTicks = [];
+    this.tickNotes = [];
     let totalTicks = new Fraction(0, 1);
     const voiceGroups = this._artist.getPlayerData().voices;
     const tabVoices = this._artist.staves.map(stave => stave.tab_voices);
@@ -341,6 +342,10 @@ class Player {
   }
 
   private _litPosMapFrom(barTicks: Array<any>, allTicks: Array<any>): Array<any> {
+    if (barTicks.length === 0) {
+      return [];
+    }
+
     const litPosMap = [];
 
     // Setup an array of tick ranges. The info on positions will
@@ -355,12 +360,19 @@ class Player {
     }
 
     const maxTick = Math.max(...allTicks.map(tick => tick.value));
-    const highTick = last(litPosMap).high;
-    if (highTick < maxTick) {
-      litPosMap.push({ low: highTick, high: maxTick, positions: [] });
+    const lastLitPosMap = last(litPosMap);
+    let highTick;
+    if (lastLitPosMap) {
+      highTick = lastLitPosMap.high;
+    } else {
+      return [];
     }
 
-    const allTickMap = sortBy(
+    if (highTick < maxTick) {
+      litPosMap.push({ low: highTick, high: maxTick + 1, positions: [] });
+    }
+
+    const allTicksMap = sortBy(
       allTicks.map(tick => {
         const { value } = tick;
         const positions = flatMap(tick.tabNotes, tabNote => tabNote.positions);
@@ -373,15 +385,16 @@ class Player {
     let litPosMapIndex = 0;
     while (allTickIndex < allTicks.length) {
       const probe = litPosMap[litPosMapIndex];
-      const tick = allTickMap[allTickIndex];
+      const tick = allTicksMap[allTickIndex];
 
       if (!probe) {
         break;
       }
 
-      if (isBetween(tick.value, probe.low, probe.high)) {
+      // isBetween is inclusive -- we don't want that behavior here
+      if (tick.value >= probe.low && tick.value < probe.high) {
         const dupPositions = tick.positions.map(pos => Object.assign({}, pos));
-        Object.assign(probe.positions, dupPositions);
+        probe.positions = probe.positions.concat(dupPositions);
         allTickIndex++;
       } else {
         litPosMapIndex++;
