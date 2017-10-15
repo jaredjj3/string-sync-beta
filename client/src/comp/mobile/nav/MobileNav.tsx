@@ -24,6 +24,7 @@ interface OnClickFunction {
 interface MobileNavProps {
   location: Location;
   isLoggedIn: boolean;
+  isVisible: boolean;
   logout(): void;
 }
 
@@ -80,53 +81,58 @@ class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
   }
 
   render(): JSX.Element {
-    const { isLoggedIn } = this.props;
+    const { isLoggedIn, isVisible } = this.props;
     const iconStyle = (keys: Array<string>) => ({
       fontSize: '24px',
       color: keys.some(key => key === this.state.current) ? '#FC354C' : '#666666'
     });
 
-    return (
-      <nav>
-        <NavBar
-          mode="light"
-          iconName="up"
-          className="Nav--mobile"
-          leftContent={
-            <Icon
-              className="Nav--mobile__link"
-              onClick={this.goTo(MobileNavKeys.SEARCH)}
-              type="search"
-              style={iconStyle([MobileNavKeys.SEARCH])}
-            />
-          }
-          rightContent={
-            isLoggedIn ?
-              <LogoutModal logout={this.logout} /> :
+    if (!isVisible) {
+      return null;
+    } else {
+      return (
+        <nav>
+          <NavBar
+            mode="light"
+            iconName="up"
+            className="Nav--mobile"
+            leftContent={
               <Icon
                 className="Nav--mobile__link"
-                onClick={this.goTo(MobileNavKeys.LOGIN)}
-                type="user"
-                style={iconStyle([MobileNavKeys.LOGIN, MobileNavKeys.SIGNUP])}
+                onClick={this.goTo(MobileNavKeys.SEARCH)}
+                type="search"
+                style={iconStyle([MobileNavKeys.SEARCH])}
               />
-          }
-        >
-          <Icon
-            className="Nav--mobile__link"
-            onClick={this.goTo(MobileNavKeys.HOME)}
-            type="home"
-            style={iconStyle([MobileNavKeys.HOME])}
-          />
-        </NavBar>
-      </nav>
-    );
+            }
+            rightContent={
+              isLoggedIn ?
+                <LogoutModal logout={this.logout} /> :
+                <Icon
+                  className="Nav--mobile__link"
+                  onClick={this.goTo(MobileNavKeys.LOGIN)}
+                  type="user"
+                  style={iconStyle([MobileNavKeys.LOGIN, MobileNavKeys.SIGNUP])}
+                />
+            }
+          >
+            <Icon
+              className="Nav--mobile__link"
+              onClick={this.goTo(MobileNavKeys.HOME)}
+              type="home"
+              style={iconStyle([MobileNavKeys.HOME])}
+            />
+          </NavBar>
+        </nav>
+      );
+    }
   }
 }
 
 import { logout } from 'data/session/actions';
 
 const mapStateToProps = state => ({
-  isLoggedIn: Boolean(state.session.currentUser.id)
+  isLoggedIn: Boolean(state.session.currentUser.id),
+  isVisible: state.features.navbar
 });
 
 const mapDispatchToProps = dispatch => ({
