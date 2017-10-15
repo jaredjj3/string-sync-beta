@@ -11,9 +11,13 @@ interface BannerState {}
 
 class Banner extends React.Component<BannerProps, BannerState> {
   render(): JSX.Element {
+    const { name, artist, transcriber } = this.props;
+
     return (
       <div className="NotationShowBanner" >
-        Banner
+        <span className="NotationShowBanner__text">
+          {`${name} by ${artist} (${transcriber})`}
+        </span>
       </div>
     );
   }
