@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import Row from 'antd/lib/row';
 import Icon from 'antd/lib/icon';
+import ToolTip from 'antd/lib/tooltip';
 
 import formatTime from 'util/formatTime';
 
@@ -51,18 +52,15 @@ class Play extends React.Component<PlayProps, PlayState> {
     const { currentTime } = this.state;
 
     return (
-      <Row type="flex">
-        <span>
-          <Row type="flex" align="middle" justify="center">
-            {
-              isVideoActive ?
-                <Icon type="pause-circle-o" onClick={this.pauseVideo} /> :
-                <Icon type="play-circle-o" onClick={this.playVideo} />
-            }
-            {isMobile ? null : <span style={{ marginLeft: '5px' }}>{`${currentTime}s`}</span>}
-          </Row>
-        </span>
-      </Row>
+      <span>
+        <ToolTip placement="top" title={`${currentTime}s`}>
+          {
+            isVideoActive ?
+              <Icon type="pause-circle-o" onClick={this.pauseVideo} /> :
+              <Icon type="play-circle-o" onClick={this.playVideo} />
+          }
+        </ToolTip>
+      </span>
     );
   }
 }

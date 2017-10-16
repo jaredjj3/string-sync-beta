@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import Row from 'antd/lib/row';
 import Icon from 'antd/lib/icon';
+import ToolTip from 'antd/lib/tooltip';
 
 import { VideoPlayer } from 'types/videoPlayer';
 
@@ -32,20 +33,17 @@ class PlaybackRate extends React.Component<PlaybackRateProps, PlaybackRateState>
     const { isMobile } = this.props;
     const playbackRate = PlaybackRate.PLAYBACK_RATES[this.state.playbackRateIndex];
 
-    return (
-      <div>
-        {
-          isMobile ?
-            null :
-            <span style={{ marginLeft: '10px' }}>
-              <Row type="flex" align="middle" justify="center">
-                <Icon type="clock-circle" onClick={this.handleClick} />
-                <span style={{ marginLeft: '5px' }}>{`${playbackRate * 100}%`}</span>
-              </Row>
-            </span>
-        }
-      </div>
-    );
+    if (isMobile) {
+      return null;
+    } else {
+      return(
+        <span>
+          <ToolTip placement="top" title={`${playbackRate * 100}%`}>
+            <Icon type="clock-circle" onClick={this.handleClick} />
+          </ToolTip>
+        </span>
+      );
+    }
   }
 }
 

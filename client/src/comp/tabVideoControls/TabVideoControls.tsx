@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
@@ -8,12 +9,16 @@ import LoopSlider from './loopSlider';
 import Play from './play';
 import PlaybackRate from './playbackRate';
 
-interface TabVideoControlsProps {}
+interface TabVideoControlsProps {
+  isMobile: boolean;
+}
 
 interface TabVideoControlsState {}
 
-class TabVideoControls extends React.PureComponent<TabVideoControlsProps, TabVideoControlsState> {
+class TabVideoControls extends React.Component<TabVideoControlsProps, TabVideoControlsState> {
   render(): JSX.Element {
+    const { isMobile } = this.props;
+
     return (
       <div className="TabVideoControls">
         <Row
@@ -26,8 +31,15 @@ class TabVideoControls extends React.PureComponent<TabVideoControlsProps, TabVid
               type="flex" align="middle" justify="end"
             >
               <span>
-                <Icon type="left-circle-o" />
+                <Icon type="left-square-o" />
               </span>
+              {
+                isMobile ?
+                  null :
+                  <span>
+                    <Icon type="left-circle-o" />
+                  </span>
+              }
             </Row>
           </Col>
           <Col span={16}>
@@ -38,8 +50,15 @@ class TabVideoControls extends React.PureComponent<TabVideoControlsProps, TabVid
               className="TabVideoControls__row__icons"
               type="flex" align="middle" justify="start"
             >
+              {
+                isMobile ?
+                null :
+                <span>
+                  <Icon type="right-circle-o" />
+                </span>
+              }
               <span>
-                <Icon type="right-circle-o" />
+                <Icon type="right-square-o" />
               </span>
             </Row>
           </Col>
@@ -54,9 +73,7 @@ class TabVideoControls extends React.PureComponent<TabVideoControlsProps, TabVid
               type="flex" align="middle" justify="end"
             >
               <Play />
-              <span style={{ marginLeft: '15px' }}>
-                <PlaybackRate />
-              </span>
+              <PlaybackRate />
             </Row>
           </Col>
           <Col span={16}>
@@ -78,4 +95,15 @@ class TabVideoControls extends React.PureComponent<TabVideoControlsProps, TabVid
   }
 }
 
-export default TabVideoControls;
+const mapStateToProps = state => ({
+  isMobile: state.device.type === 'MOBILE' || state.device.isTouch,
+});
+
+const mapDispatchToProps = dispatch => ({
+
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TabVideoControls);
