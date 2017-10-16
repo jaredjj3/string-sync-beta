@@ -4,7 +4,7 @@
   "scripts": {
     "webpack": "./node_modules/.bin/webpack -w",
     "heroku-postbuild": "webpack --config webpack.config.prod.js",
-    "dev": "./node_modules/.bin/webpack-dev-server --open --colors --inline --hot"
+    "dev": "./node_modules/.bin/webpack-dev-server --colors --inline --hot"
   },
   "engines": {
     "node": ">=6.3.0",
