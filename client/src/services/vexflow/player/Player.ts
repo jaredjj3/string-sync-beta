@@ -177,7 +177,7 @@ class Player {
 
             const noteTicks = note.getTicks();
             totalVoiceTicks.add(noteTicks.numerator, noteTicks.denominator);
-          } else if (note.constructor.name === 'BarNote') {
+          } else if (note.getDuration() === 'b') {
             this.barTicks.push({
               tick: absTick,
               value: absTick.value(),
