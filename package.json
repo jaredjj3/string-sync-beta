@@ -47,7 +47,7 @@
     "ts-loader": "^2.3.7",
     "typescript": "^2.5.3",
     "vexflow": "^1.2.83",
-    "vextab": "git@github.com:jaredjj3/vextab.git",
+    "vextab": "https://github.com/jaredjj3/vextab.git",
     "webpack": "^2.4.1",
     "webpack-dev-server": "^2.9.1"
   },
