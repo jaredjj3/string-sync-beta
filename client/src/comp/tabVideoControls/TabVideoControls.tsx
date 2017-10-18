@@ -1,13 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Icon from 'antd/lib/icon';
-import SeekSlider from './seekSlider';
 import LoopSlider from './loopSlider';
 import Play from './play';
 import PlaybackRate from './playbackRate';
+import Row from 'antd/lib/row';
+import SeekSlider from './seekSlider';
+import ToolTip from 'antd/lib/tooltip';
 
 interface TabVideoControlsProps {
   isMobile: boolean;
@@ -31,15 +32,15 @@ class TabVideoControls extends React.Component<TabVideoControlsProps, TabVideoCo
               type="flex" align="middle" justify="end"
             >
               <span>
-                <Icon type="left-square-o" />
+                <ToolTip placement="top" title="prev line">
+                  {isMobile ? null : <Icon type="left-square-o" />}
+                </ToolTip>
               </span>
-              {
-                isMobile ?
-                  null :
-                  <span>
-                    <Icon type="left-circle-o" />
-                  </span>
-              }
+              <span>
+                <ToolTip placement="top" title="prev measure">
+                  <Icon type="left-circle-o" />
+                </ToolTip>
+              </span>
             </Row>
           </Col>
           <Col span={16}>
@@ -50,15 +51,15 @@ class TabVideoControls extends React.Component<TabVideoControlsProps, TabVideoCo
               className="TabVideoControls__row__icons"
               type="flex" align="middle" justify="start"
             >
-              {
-                isMobile ?
-                null :
-                <span>
-                  <Icon type="right-circle-o" />
-                </span>
-              }
               <span>
-                <Icon type="right-square-o" />
+                <ToolTip placement="top" title="next measure">
+                  <Icon type="right-circle-o" />
+                </ToolTip>
+              </span>
+              <span>
+                <ToolTip placement="top" title="next line">
+                  {isMobile ? null : <Icon type="right-square-o" />}
+                </ToolTip>
               </span>
             </Row>
           </Col>
