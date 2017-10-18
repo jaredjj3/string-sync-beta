@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Controls from './controls';
 import Caret from './caret';
 import Overlap from 'comp/overlap';
 import Score from './score';
