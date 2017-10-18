@@ -248,8 +248,12 @@ class Player {
 
   private _drawTickNotes(tick: any, style: NoteStyle = Player.DEFAULT_NOTE_STYLE): void {
     // style and draw staveNotes
-    tick.lowStaveNotes.forEach(note => note.setStyle(style));
-    tick.lowStaveNotes[0].draw();
+    tick.lowStaveNotes.forEach(note => {
+      note.setStyle(style);
+      note.setLedgerLineStyle(style);
+    });
+    tick.lowStaveNotes[0].drawNoteHeads();
+    tick.lowStaveNotes[0].drawLedgerLines();
 
     // style and draw tabNotes
     const ctx = tick.lowTabNotes[0].context;
