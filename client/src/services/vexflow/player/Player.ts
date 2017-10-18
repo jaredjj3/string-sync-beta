@@ -326,13 +326,14 @@ class Player {
     const tickObjSpec = { lowTick, highTick, lowPos, highPos };
 
     const posFunc = this.posFuncFor(tick1, tick2, tickObjSpec);
-    // TODO: implement const tickFunc = interpolateFuncFor(lowPos, highPos, lowTick, highTick);
 
     const lit = this.litPosMap[tick1.measureNum].positions;
     const pressed = flatMap(tick1.tabNotes, tabNote => tabNote.positions);
 
     const lowStaveNotes = tick1.notes;
     const lowTabNotes = tick1.tabNotes;
+
+    const measure = tick1.measureNum;
 
     return {
       lowTick,
@@ -341,6 +342,7 @@ class Player {
       highPos,
       posFunc,
       stave,
+      measure,
       pressed,
       lit,
       lowStaveNotes,
