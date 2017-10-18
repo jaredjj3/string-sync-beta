@@ -228,6 +228,32 @@ class Player {
     return true;
   }
 
+  timeAtMeasure(measureNum: number): number {
+    if (!this.isReady) {
+      return 0;
+    }
+
+    const focusedTick = sortBy(
+      this.allTicks.filter(tick => tick.measureNum === measureNum),
+      tick => tick.value
+    )[0];
+
+    return focusedTick ? (focusedTick.value / this.tpm) * 60 : 0;
+  }
+
+  timeAtLine(lineNum: number): number {
+    if (!this.isReady) {
+      return 0;
+    }
+
+    const focusedTick = sortBy(
+      this.allTicks.filter(tick => tick.stave === lineNum),
+      tick => tick.value
+    )[0];
+
+    return focusedTick ? (focusedTick.value / this.tpm) * 60 : 0;
+  }
+
   private calcLoopSliderMarks(): void {
     const allTickValues = this.allTicks.
       map(tick => tick.value).

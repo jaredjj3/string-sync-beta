@@ -3,14 +3,18 @@ import { connect } from 'react-redux';
 
 import { isVideoActive } from 'util/videoStateCategory';
 import { Point } from 'types/point';
+import { VideoPlayer } from 'types';
 import { Player } from 'services/vexflow';
 
 interface CaretProps {
   shouldRAF: boolean;
   tabPlayer: Player;
   viewport: any;
+  videoPlayer: VideoPlayer;
   deadTime: number;
   tempo: number;
+  focusedLine: number;
+  focusedMeasure: number;
   focusLine(measure: number): void;
 }
 
@@ -30,7 +34,7 @@ class Caret extends React.Component<CaretProps, CaretState> {
   }
 
   componentWillReceiveProps(nextProps: CaretProps): void {
-    const { tabPlayer, viewport } = nextProps;
+    const { tabPlayer, viewport, focusedMeasure, focusedLine, videoPlayer } = nextProps;
     tabPlayer.viewport = viewport;
 
     if (nextProps.tempo) {
@@ -42,8 +46,24 @@ class Caret extends React.Component<CaretProps, CaretState> {
     }
 
     if (nextProps.shouldRAF) {
+      // video is active
       this.resize(viewport);
       this.RAFHandle = window.requestAnimationFrame(this.renderCaret);
+    } else {
+      // video is passive
+      const measureChanged = focusedMeasure !== this.props.focusedMeasure;
+      const lineChanged = focusedLine !== this.props.focusedLine;
+
+      let focusedTime;
+      if (measureChanged) {
+        focusedTime = tabPlayer.timeAtMeasure(focusedMeasure);
+        videoPlayer.seekTo(focusedTime);
+        this.renderCaret();
+      } else if (lineChanged) {
+        focusedTime = tabPlayer.timeAtLine(focusedLine);
+        videoPlayer.seekTo(focusedTime);
+        this.renderCaret();
+      }
     }
 
     if (!tabPlayer.isReady) {
@@ -134,6 +154,7 @@ import { focusLine } from 'data/tab/actions';
 const mapStateToProps = state => ({
   shouldRAF: state.video.player && isVideoActive(state.video.state),
   tabPlayer: state.tab.player,
+  videoPlayer: state.video.player,
   viewport: state.device.viewport,
   deadTime: state.notation.deadTime,
   tempo: state.notation.tempo,
