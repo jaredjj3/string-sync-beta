@@ -10,8 +10,11 @@ import Row from 'antd/lib/row';
 import SeekSlider from './seekSlider';
 import ToolTip from 'antd/lib/tooltip';
 
+import { VideoPlayer } from 'types';
+
 interface TabVideoControlsProps {
   isMobile: boolean;
+  videoPlayer: VideoPlayer;
   focusPrevMeasure(): void;
   focusNextMeasure(): void;
   focusPrevLine(): void;
@@ -21,6 +24,13 @@ interface TabVideoControlsProps {
 interface TabVideoControlsState {}
 
 class TabVideoControls extends React.Component<TabVideoControlsProps, TabVideoControlsState> {
+  pauseVideoThen = (callback: Function): any => {
+    return (e: React.SyntheticEvent<any>) => {
+      this.props.videoPlayer.pauseVideo();
+      callback();
+    };
+  }
+
   render(): JSX.Element {
     const {
       isMobile,
@@ -46,13 +56,13 @@ class TabVideoControls extends React.Component<TabVideoControlsProps, TabVideoCo
                   isMobile ?
                   null :
                   <ToolTip placement="top" title="prev line">
-                    <Icon type="left-square-o" onClick={focusPrevLine} />
+                    <Icon type="left-square-o" onClick={this.pauseVideoThen(focusPrevLine)} />
                   </ToolTip>
                 }
               </span>
               <span>
                 <ToolTip placement="top" title="prev measure">
-                  <Icon type="left-circle-o" onClick={focusPrevMeasure} />
+                  <Icon type="left-circle-o" onClick={this.pauseVideoThen(focusPrevMeasure)} />
                 </ToolTip>
               </span>
             </Row>
@@ -67,7 +77,7 @@ class TabVideoControls extends React.Component<TabVideoControlsProps, TabVideoCo
             >
               <span>
                 <ToolTip placement="top" title="next measure">
-                  <Icon type="right-circle-o" onClick={focusNextMeasure} />
+                  <Icon type="right-circle-o" onClick={this.pauseVideoThen(focusNextMeasure)} />
                 </ToolTip>
               </span>
               <span>
@@ -75,7 +85,7 @@ class TabVideoControls extends React.Component<TabVideoControlsProps, TabVideoCo
                   isMobile ?
                     null :
                     <ToolTip placement="top" title="next line">
-                      <Icon type="right-square-o" onClick={focusNextLine} />
+                      <Icon type="right-square-o" onClick={this.pauseVideoThen(focusNextLine)} />
                     </ToolTip>
                 }
               </span>
@@ -123,6 +133,7 @@ import {
 
 const mapStateToProps = state => ({
   isMobile: state.device.type === 'MOBILE' || state.device.isTouch,
+  videoPlayer: state.video.player
 });
 
 const mapDispatchToProps = dispatch => ({

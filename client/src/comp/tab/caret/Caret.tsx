@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { isVideoActive } from 'util/videoStateCategory';
-
 import { Point } from 'types/point';
 import { Player } from 'services/vexflow';
 
@@ -138,6 +137,8 @@ const mapStateToProps = state => ({
   viewport: state.device.viewport,
   deadTime: state.notation.deadTime,
   tempo: state.notation.tempo,
+  focusedLine: state.tab.focusedLine,
+  focusedMeasure: state.tab.focusedMeasure
 });
 
 const mapDispatchToProps = dispatch => ({
