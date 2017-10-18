@@ -132,7 +132,7 @@ const mapStateToProps = state => ({
   tabPlayer: state.tab.player,
   viewport: state.device.viewport,
   deadTime: state.notation.deadTime,
-  tempo: state.notation.tempo
+  tempo: state.notation.tempo,
 });
 
 const mapDispatchToProps = dispatch => ({

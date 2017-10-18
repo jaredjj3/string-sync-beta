@@ -12,13 +12,23 @@ import ToolTip from 'antd/lib/tooltip';
 
 interface TabVideoControlsProps {
   isMobile: boolean;
+  focusPrevMeasure(): void;
+  focusNextMeasure(): void;
+  focusPrevLine(): void;
+  focusNextLine(): void;
 }
 
 interface TabVideoControlsState {}
 
 class TabVideoControls extends React.Component<TabVideoControlsProps, TabVideoControlsState> {
   render(): JSX.Element {
-    const { isMobile } = this.props;
+    const {
+      isMobile,
+      focusPrevMeasure,
+      focusNextMeasure,
+      focusPrevLine,
+      focusNextLine
+    } = this.props;
 
     return (
       <div className="TabVideoControls">
@@ -32,13 +42,17 @@ class TabVideoControls extends React.Component<TabVideoControlsProps, TabVideoCo
               type="flex" align="middle" justify="end"
             >
               <span>
-                <ToolTip placement="top" title="prev line">
-                  {isMobile ? null : <Icon type="left-square-o" />}
-                </ToolTip>
+                {
+                  isMobile ?
+                  null :
+                  <ToolTip placement="top" title="prev line">
+                    <Icon type="left-square-o" onClick={focusPrevLine} />
+                  </ToolTip>
+                }
               </span>
               <span>
                 <ToolTip placement="top" title="prev measure">
-                  <Icon type="left-circle-o" />
+                  <Icon type="left-circle-o" onClick={focusPrevMeasure} />
                 </ToolTip>
               </span>
             </Row>
@@ -53,13 +67,17 @@ class TabVideoControls extends React.Component<TabVideoControlsProps, TabVideoCo
             >
               <span>
                 <ToolTip placement="top" title="next measure">
-                  <Icon type="right-circle-o" />
+                  <Icon type="right-circle-o" onClick={focusNextMeasure} />
                 </ToolTip>
               </span>
               <span>
-                <ToolTip placement="top" title="next line">
-                  {isMobile ? null : <Icon type="right-square-o" />}
-                </ToolTip>
+                {
+                  isMobile ?
+                    null :
+                    <ToolTip placement="top" title="next line">
+                      <Icon type="right-square-o" onClick={focusNextLine} />
+                    </ToolTip>
+                }
               </span>
             </Row>
           </Col>
@@ -96,12 +114,22 @@ class TabVideoControls extends React.Component<TabVideoControlsProps, TabVideoCo
   }
 }
 
+import {
+  focusPrevMeasure,
+  focusNextMeasure,
+  focusPrevLine,
+  focusNextLine
+} from 'data/tab/actions';
+
 const mapStateToProps = state => ({
   isMobile: state.device.type === 'MOBILE' || state.device.isTouch,
 });
 
 const mapDispatchToProps = dispatch => ({
-
+  focusPrevMeasure: () => dispatch(focusPrevMeasure()),
+  focusNextMeasure: () => dispatch(focusNextMeasure()),
+  focusPrevLine: () => dispatch(focusPrevLine()),
+  focusNextLine: () => dispatch(focusNextLine())
 });
 
 export default connect(

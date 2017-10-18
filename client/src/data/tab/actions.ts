@@ -59,6 +59,16 @@ export const focusMeasure = (measure: number) => (dispatch, getState) => {
   }
 };
 
+export const focusNextMeasure = () => (dispatch, getState) => {
+  const { focusedMeasure } = getState().tab;
+  return dispatch(focusMeasure((focusedMeasure + 1)));
+};
+
+export const focusPrevMeasure = () => (dispatch, getState) => {
+  const { focusedMeasure } = getState().tab;
+  return dispatch(focusMeasure((focusedMeasure - 1)));
+};
+
 export const focusLine = (line: number) => (dispatch, getState) => {
   const { focusedLine, numMeasures, measuresPerLine } = getState().tab;
   const numLines = Math.ceil(numMeasures / measuresPerLine);
@@ -72,6 +82,16 @@ export const focusLine = (line: number) => (dispatch, getState) => {
   if (shouldDispatch) {
     return dispatch({ type: FOCUS_LINE, line });
   }
+};
+
+export const focusNextLine = () => (dispatch, getState) => {
+  const { focusedLine } = getState().tab;
+  return dispatch(focusLine((focusedLine + 1)));
+};
+
+export const focusPrevLine = () => (dispatch, getState) => {
+  const { focusedLine } = getState().tab;
+  return dispatch(focusLine((focusedLine - 1)));
 };
 
 export const resetTab = () => ({
