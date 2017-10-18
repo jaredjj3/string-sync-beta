@@ -49,6 +49,11 @@ class Caret extends React.Component<CaretProps, CaretState> {
 
     if (!tabPlayer.isReady) {
       tabPlayer.prepare();
+
+      if (tabPlayer.isReady) {
+        this.resize(viewport);
+        this.renderCaret();
+      }
     }
   }
 
