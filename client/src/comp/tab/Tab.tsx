@@ -53,7 +53,6 @@ class Tab extends React.Component<TabProps, TabState> {
             <Caret />
           </Layer>
         </Overlap>
-        {this.props.showControls ? <Controls /> : null}
       </div>
     );
   }

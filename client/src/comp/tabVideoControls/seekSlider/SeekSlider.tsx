@@ -50,13 +50,6 @@ class SeekSlider extends React.Component<SeekSliderProps, SeekSliderState> {
     this.updateSeekSliderValue();
   }
 
-  // shouldComponentUpdate(nextProps: SeekSliderProps, nextState: SeekSliderState): boolean {
-  //   return (
-  //     this.shouldRAF(nextProps) ||
-  //     this.state.seekSliderValue !== nextState.seekSliderValue
-  //   );
-  // }
-
   componentDidUpdate(): void {
     if (this.shouldRAF && !this.isScrubbing) {
       this.RAFHandle = window.requestAnimationFrame(this.updateSeekSliderValue);
