@@ -48,7 +48,7 @@ class Caret extends React.Component<CaretProps, CaretState> {
     if (nextProps.shouldRAF) {
       // video is active
       this.resize(viewport);
-      this.RAFHandle = window.requestAnimationFrame(this.renderCaret);
+      this.RAFHandle = window.requestAnimationFrame(this.renderCaret(videoPlayer.getCurrentTime()));
     } else {
       // video is passive
       const measureChanged = focusedMeasure !== this.props.focusedMeasure;
@@ -58,12 +58,12 @@ class Caret extends React.Component<CaretProps, CaretState> {
       if (measureChanged) {
         focusedTime = tabPlayer.timeAtMeasure(focusedMeasure);
         videoPlayer.seekTo(focusedTime);
-        this.renderCaret();
       } else if (lineChanged) {
         focusedTime = tabPlayer.timeAtLine(focusedLine);
         videoPlayer.seekTo(focusedTime);
-        this.renderCaret();
       }
+
+      this.renderCaret(focusedTime)();
     }
 
     if (!tabPlayer.isReady) {
@@ -71,7 +71,7 @@ class Caret extends React.Component<CaretProps, CaretState> {
 
       if (tabPlayer.isReady) {
         this.resize(viewport);
-        this.renderCaret();
+        this.renderCaret(videoPlayer.getCurrentTime())();
       }
     }
   }
@@ -129,26 +129,29 @@ class Caret extends React.Component<CaretProps, CaretState> {
     this.ctx.stroke();
   }
 
-  renderCaret = (): void => {
-    const { tabPlayer, focusMeasure } = this.props;
+  renderCaret = (time: number): any => {
+    const { tabPlayer, focusMeasure, videoPlayer } = this.props;
 
-    try {
-      this.clearCanvas();
-      this.drawCaret(tabPlayer.caretPosX(), Caret.START_POS_Y);
+    return () => {
 
-      if (tabPlayer.currTick) {
-        focusMeasure(tabPlayer.currTick.measure);
+      try {
+        this.clearCanvas();
+        this.drawCaret(tabPlayer.caretPosX(time), Caret.START_POS_Y);
+      } catch (e) {
+        console.error(e);
       }
-    } catch (e) {
-      console.error(e);
-    }
 
-    if (this.props.shouldRAF) {
-      this.RAFHandle = window.requestAnimationFrame(this.renderCaret);
-    } else {
-      window.cancelAnimationFrame(this.RAFHandle);
-      this.RAFHandle = null;
-    }
+      if (this.props.shouldRAF) {
+        if (tabPlayer.currTick) {
+          focusMeasure(tabPlayer.currTick.measure);
+        }
+
+        return this.RAFHandle = window.requestAnimationFrame(this.renderCaret(videoPlayer.getCurrentTime()));
+      } else {
+        window.cancelAnimationFrame(this.RAFHandle);
+        return this.RAFHandle = null;
+      }
+    };
   }
 
   render(): JSX.Element {

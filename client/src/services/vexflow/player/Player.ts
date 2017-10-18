@@ -91,7 +91,7 @@ class Player {
     return this._tempo ? this._tempo * (Flow.RESOLUTION / 4) : 0;
   }
 
-  caretPosX(): number {
+  caretPosX(time: number): number {
     if (this._isDirty) {
       this.prepare();
     }
@@ -100,12 +100,11 @@ class Player {
       throw 'Player is not ready. See Player.isReady.';
     }
 
-    const currentTime = this._videoPlayer.getCurrentTime() / 60; // minutes
-    const currentTickNum = this.tpm * currentTime;
+    const tickNum = this.tpm * time / 60;
 
     const shouldReassignCurrTick = (
       !this.currTick ||
-      !isBetween(currentTickNum, this.currTick.lowTick, this.currTick.highTick)
+      !isBetween(tickNum, this.currTick.lowTick, this.currTick.highTick)
     );
 
     if (shouldReassignCurrTick) {
@@ -117,7 +116,7 @@ class Player {
       }
 
       // Get a new currTick
-      this.currTick = this.calcCurrTick(currentTickNum);
+      this.currTick = this.calcCurrTick(tickNum);
 
       // Draw the notes to be the pressed style if a currTick object
       // is successfully created.
@@ -127,7 +126,7 @@ class Player {
     }
 
     if (this.currTick) {
-      return this.currTick.posFunc(currentTickNum);
+      return this.currTick.posFunc(tickNum);
     } else {
       return null;
     }
@@ -238,7 +237,7 @@ class Player {
       tick => tick.value
     )[0];
 
-    return focusedTick ? (focusedTick.value / this.tpm) * 60 : 0;
+    return focusedTick ? ((focusedTick.value + 1) / this.tpm) * 60 : 0;
   }
 
   timeAtLine(lineNum: number): number {
@@ -251,7 +250,7 @@ class Player {
       tick => tick.value
     )[0];
 
-    return focusedTick ? (focusedTick.value / this.tpm) * 60 : 0;
+    return focusedTick ? ((focusedTick.value + 1) / this.tpm) * 60 : 0;
   }
 
   private calcLoopSliderMarks(): void {

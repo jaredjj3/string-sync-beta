@@ -21,7 +21,7 @@ interface SeekSliderState {
   seekSliderValue: number;
 }
 
-class SeekSlider extends React.PureComponent<SeekSliderProps, SeekSliderState> {
+class SeekSlider extends React.Component<SeekSliderProps, SeekSliderState> {
   RAFHandle: number = null;
   isScrubbing: boolean = false;
   shouldPlayOnScrubEnd: boolean = false;
@@ -50,12 +50,12 @@ class SeekSlider extends React.PureComponent<SeekSliderProps, SeekSliderState> {
     this.updateSeekSliderValue();
   }
 
-  shouldComponentUpdate(nextProps: SeekSliderProps, nextState: SeekSliderState): boolean {
-    return (
-      this.shouldRAF(nextProps) ||
-      this.state.seekSliderValue !== nextState.seekSliderValue
-    );
-  }
+  // shouldComponentUpdate(nextProps: SeekSliderProps, nextState: SeekSliderState): boolean {
+  //   return (
+  //     this.shouldRAF(nextProps) ||
+  //     this.state.seekSliderValue !== nextState.seekSliderValue
+  //   );
+  // }
 
   componentDidUpdate(): void {
     if (this.shouldRAF && !this.isScrubbing) {
@@ -85,7 +85,7 @@ class SeekSlider extends React.PureComponent<SeekSliderProps, SeekSliderState> {
     const currentTime = videoPlayer.getCurrentTime();
     let seekSliderValue = 0;
 
-    if (currentTime < loop[0] || currentTime > loop[1]) {
+    if (currentTime > loop[1]) {
       seekSliderValue = this._toSeekSliderValue(loop[0]);
       videoPlayer.pauseVideo();
       videoPlayer.seekTo(loop[0]);

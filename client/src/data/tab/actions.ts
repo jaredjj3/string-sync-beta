@@ -49,6 +49,7 @@ export const focusMeasure = (measure: number) => (dispatch, getState) => {
   const { focusedMeasure, numMeasures } = getState().tab;
 
   const shouldDispatch = (
+    typeof measure === 'number' &&
     numMeasures > 0 &&
     measure !== focusedMeasure &&
     isBetween(measure, 0, numMeasures - 1)
@@ -74,6 +75,7 @@ export const focusLine = (line: number) => (dispatch, getState) => {
   const numLines = Math.ceil(numMeasures / measuresPerLine);
 
   const shouldDispatch = (
+    typeof line === 'number' &&
     numLines > 0 &&
     line !== getState().tab.focusedLine &&
     isBetween(line, 0, numLines - 1)
