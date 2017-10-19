@@ -47,12 +47,6 @@ class Video extends React.Component<VideoProps, VideoState> {
 
   updateVideoPlayer = (e: React.SyntheticEvent<any>): void => {
     const videoPlayer = (e.target as any);
-
-    videoPlayer.mute();
-    videoPlayer.playVideo();
-    videoPlayer.pauseVideo();
-    videoPlayer.setVolume(100);
-
     this.props.updateVideoPlayer(videoPlayer);
     this.props.tabPlayer.videoPlayer = videoPlayer;
   }
