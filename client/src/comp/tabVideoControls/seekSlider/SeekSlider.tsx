@@ -12,9 +12,9 @@ import { VideoPlayer } from 'types/videoPlayer';
 
 interface SeekSliderProps {
   videoPlayer: VideoPlayer;
-  isVideoActive: boolean;
   duration: number;
   loop: [number, number];
+  shouldRAF: boolean;
 }
 
 interface SeekSliderState {
@@ -51,17 +51,12 @@ class SeekSlider extends React.Component<SeekSliderProps, SeekSliderState> {
   }
 
   componentDidUpdate(): void {
-    if (this.shouldRAF && !this.isScrubbing) {
+    if (this.props.shouldRAF && !this.isScrubbing) {
       this.RAFHandle = window.requestAnimationFrame(this.updateSeekSliderValue);
     } else {
       window.cancelAnimationFrame(this.RAFHandle);
       this.RAFHandle = null;
     }
-  }
-
-  shouldRAF(props: SeekSliderProps = this.props): boolean {
-    const { videoPlayer, isVideoActive } = props;
-    return videoPlayer && isVideoActive && !this.isScrubbing;
   }
 
   get areConvertorFuncsSet(): boolean {
@@ -76,9 +71,10 @@ class SeekSlider extends React.Component<SeekSliderProps, SeekSliderState> {
     }
 
     const currentTime = videoPlayer.getCurrentTime();
+    const isOutsideLoop = (currentTime < loop[0] - 1) || currentTime > loop[1];
     let seekSliderValue = 0;
 
-    if (currentTime > loop[1]) {
+    if (!this.isScrubbing && isOutsideLoop) {
       seekSliderValue = this._toSeekSliderValue(loop[0]);
       videoPlayer.pauseVideo();
       videoPlayer.seekTo(loop[0]);
@@ -165,7 +161,7 @@ class SeekSlider extends React.Component<SeekSliderProps, SeekSliderState> {
 import { isVideoActive } from 'util/videoStateCategory';
 
 const mapStateToProps = state => ({
-  isVideoActive: isVideoActive(state.video.state),
+  shouldRAF: state.video.player && isVideoActive(state.video.state),
   videoPlayer: state.video.player,
   duration: state.notation.duration / 1000,
   loop: state.video.loop
