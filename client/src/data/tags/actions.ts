@@ -11,7 +11,6 @@ export const fetchTags = (() => {
   let isFetching = false;
 
   return () => async dispatch => {
-    const { notifyAll } = window as any;
 
     if (isFetching) {
       return;
@@ -22,8 +21,11 @@ export const fetchTags = (() => {
     try {
       const tags = await API.fetchTags();
       dispatch(receiveTags(tags));
-    } catch ({ responseJSON }) {
-      notifyAll('Tags', responseJSON);
+    } catch (e) {
+      window.notification.error({
+        message: 'Tags',
+        description: 'something went wrong'
+      });
     } finally {
       isFetching = false;
     }

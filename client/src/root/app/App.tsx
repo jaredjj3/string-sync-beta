@@ -17,7 +17,6 @@ import { add, remove } from 'eventlistener';
 import { debounce } from 'lodash';
 
 import { User } from 'types/user';
-import { NotificationStruct } from 'types/notificationStruct';
 
 const { Header, Content, Footer } = Layout;
 
@@ -80,14 +79,14 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   private _processUser(): void {
-    const currentUser = (window as any).currentUser || getNullUser();
-    delete (window as any).currentUser;
+    const currentUser = window.currentUser || getNullUser();
+    delete window.currentUser;
     this.props.receiveUser(currentUser);
   }
 
   private _installNotificationSystem(): void {
     notification.config({ duration: 3 });
-    (window as any).notification = notification;
+    window.notification = notification;
   }
 
   private _maybeUpdateViewport = (e: Event): void => {

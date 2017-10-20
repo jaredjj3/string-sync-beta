@@ -9,25 +9,57 @@ export const receiveUser = user => ({
 });
 
 export const login = user => async dispatch => {
-  const { notify, notifyAll } = window as any;
-
   try {
     const currentUser = await API.login(user);
     dispatch(receiveUser(currentUser));
-    notify('Login', `logged in as @${currentUser.username}`, { type: 'info', duration: 2 });
+
+    window.notification.success({
+      message: 'Login',
+      description: `logged in as @${currentUser.username}`,
+      duration: 2
+    });
   } catch ({ responseJSON }) {
-    notifyAll('Login', responseJSON, { duration: 10 });
+    const { messages }  = responseJSON;
+    if (messages) {
+      messages.forEach(description => window.notification.error({
+        message: 'Notation',
+        description,
+        duration: 10
+      }));
+    } else {
+      window.notification.error({
+        message: 'Notation',
+        description: 'something went wrong',
+        duration: 2
+      });
+    }
   }
 };
 
 export const logout = () => async dispatch => {
-  const { notify, notifyAll } = window as any;
-
   try {
     await API.logout();
     dispatch(receiveUser(getNullUser()));
-    notify('Logout', 'successful', { type: 'success', duration: 2 });
+
+    window.notification.success({
+      message: 'Logout',
+      description: 'sucessful',
+      duration: 2
+    });
   } catch ({ responseJSON }) {
-    notifyAll('Logout', responseJSON);
+    const { messages }  = responseJSON;
+    if (messages) {
+      messages.forEach(description => window.notification.error({
+        message: 'Notation',
+        description,
+        duration: 10
+      }));
+    } else {
+      window.notification.error({
+        message: 'Notation',
+        description: 'something went wrong',
+        duration: 2
+      });
+    }
   }
 };

@@ -15,8 +15,6 @@ export const fetchNotations = (() => {
   // load, causing this AJAX request to be called twice erroneously.
   // There's a chance it's related to the dev environment.
   return (filters = { featured: null }) => async dispatch => {
-    const { notifyAll } = window as any;
-
     if (isFetching) {
       return;
     }
@@ -27,7 +25,10 @@ export const fetchNotations = (() => {
       const notations = await API.fetchNotations(filters);
       dispatch(receiveNotations(notations));
     } catch ({ responseJSON }) {
-      notifyAll('Library', responseJSON);
+      window.notification.error({
+        message: 'Library',
+        description: responseJSON || 'something went wrong'
+      });
     } finally {
       isFetching = false;
     }

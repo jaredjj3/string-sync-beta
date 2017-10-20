@@ -3,11 +3,18 @@ import ReactDOM from 'react-dom';
 
 import Root from './root';
 import store from 'data/store';
+import { NotificationApi } from 'antd/lib/notification';
+import { User } from 'types';
 
-document.addEventListener('DOMContentLoaded', (): void => {
-  if (!(window as any).Promise) {
-    document.writeln(`<script src="https://as.alipayobjects.com/g/component/es6-promise/3.2.2/es6-promise.min.js"'+'>'+'<'+'/'+'script>`);
+declare global {
+  interface Window {
+    notification: NotificationApi;
+    currentUser: User;
+    $: any;
+    store: any;
   }
+}
 
-  ReactDOM.render(<Root store={store} />, document.getElementById('root'));
-});
+document.addEventListener('DOMContentLoaded', (): void => (
+  ReactDOM.render(<Root store={store} />, document.getElementById('root'))
+));

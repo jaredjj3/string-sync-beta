@@ -43,31 +43,60 @@ export const fetchNotation = (() => {
 })();
 
 export const updateNotation = (notation = null) => async (dispatch, getState) => {
-  const { notifyAll, notify } = window as any;
   const updateWithNotation = dupNotation(notation || getState().notation);
-
   try {
     const updatedNotation = await API.updateNotation(updateWithNotation);
-    notify('Notation', 'update successful', { type: 'success', duration: 2 });
+
+    window.notification.success({
+      message: 'Notation',
+      description: 'update successful',
+      duration: 2
+    });
 
     dispatch(receiveNotation(updatedNotation));
   } catch ({ responseJSON }) {
-    if (responseJSON) {
-      notifyAll('Notation', responseJSON);
+    const { messages } = responseJSON;
+    if (messages) {
+      messages.forEach(description => window.notification.error({
+        message: 'Notation',
+        description,
+        duration: 2
+      }));
+    } else {
+      window.notification.error({
+        message: 'Notation',
+        description: 'something went wrong',
+        duration: 2
+      });
     }
   }
 };
 
 export const createNotation = (notation) => async dispatch => {
-  const { notifyAll, notify } = window as any;
-
   try {
     const createdNotation = await API.createNotation(notation);
     dispatch(receiveNotation(createdNotation));
-    notify('Notation', 'create successful', { type: 'success', duration: 2 });
+
+    window.notification.success({
+      message: 'Notation',
+      description: 'create successful',
+      duration: 2
+    });
+
   } catch ({ responseJSON }) {
-    if (responseJSON) {
-      notifyAll('Notation', responseJSON);
+    const { messages } = responseJSON;
+    if (messages) {
+      messages.forEach(description => window.notification.error({
+        message: 'Notation',
+        description,
+        duration: 2
+      }));
+    } else {
+      window.notification.error({
+        message: 'Notation',
+        description: 'something went wrong',
+        duration: 2
+      });
     }
   }
 };

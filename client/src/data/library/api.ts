@@ -1,4 +1,4 @@
-const $ = (window as any).$;
+const { $ } = window;
 
 export const fetchNotations = (filters: any) => (
   $.ajax({

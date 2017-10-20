@@ -4,9 +4,7 @@ import reducer from './reducer';
 import middleware from './middleware';
 
 const preLoadedState = {
-  session: {
-    currentUser: (window as any).currentUser
-  }
+  session: { currentUser: window.currentUser }
 };
 
 const store = createStore(
@@ -15,5 +13,5 @@ const store = createStore(
   middleware,
 );
 
-(window as any).store = store;
+window.store = store;
 export default store;
