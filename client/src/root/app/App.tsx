@@ -5,13 +5,12 @@ import AppLayout from './layout';
 import DesktopNav from 'comp/desktop/nav';
 import Icon from 'antd/lib/icon';
 import Layout from 'antd/lib/layout';
+import notification from 'antd/lib/notification';
 import LocaleProvider from 'antd/lib/locale-provider';
 import MobileNav from 'comp/mobile/nav';
 import enUS from 'antd/lib/locale-provider/en_US.js';
 
 import getNullUser from 'util/getNullUser';
-import notify from 'util/notify';
-import { NotifyOptions } from 'util/notify';
 import { Device } from 'types/device';
 import { Location } from 'types/location';
 import { add, remove } from 'eventlistener';
@@ -87,16 +86,8 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   private _installNotificationSystem(): void {
-    (window as any).notify = notify.bind(this);
-
-    (window as any).notifyAll =
-      (title: string, notifications: Array<NotificationStruct>, opts: NotifyOptions = {}): void => {
-        notifications.map(notification => {
-          const { type } = notification;
-          const notificationListItems = notification.messages.map(msg => <li>{msg}</li>);
-          notify.call(this, title, <ul>{notificationListItems}</ul>, { type, ...opts });
-        });
-      };
+    notification.config({ duration: 3 });
+    (window as any).notification = notification;
   }
 
   private _maybeUpdateViewport = (e: Event): void => {
