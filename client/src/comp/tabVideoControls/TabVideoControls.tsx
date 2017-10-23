@@ -9,6 +9,7 @@ import PlaybackRate from './playbackRate';
 import Row from 'antd/lib/row';
 import SeekSlider from './seekSlider';
 import ToolTip from 'antd/lib/tooltip';
+import { DesktopOnly } from 'comp/desktop';
 
 import { VideoPlayer } from 'types';
 
@@ -47,49 +48,53 @@ class TabVideoControls extends React.Component<TabVideoControlsProps, TabVideoCo
           type="flex" align="middle" justify="center"
         >
           <Col span={4}>
-            <Row
-              className="TabVideoControls__row__icons"
-              type="flex" align="middle" justify="end"
-            >
-              <span>
-                {
-                  isMobile ?
-                  null :
-                  <ToolTip placement="top" title="prev line">
-                    <Icon type="left-square-o" onClick={this.pauseVideoThen(focusPrevLine)} />
+            <DesktopOnly>
+              <Row
+                className="TabVideoControls__row__icons"
+                type="flex" align="middle" justify="end"
+              >
+                <span>
+                  {
+                    isMobile ?
+                    null :
+                    <ToolTip placement="top" title="prev line">
+                      <Icon type="left-square-o" onClick={this.pauseVideoThen(focusPrevLine)} />
+                    </ToolTip>
+                  }
+                </span>
+                <span>
+                  <ToolTip placement="top" title="prev measure">
+                    <Icon type="left-circle-o" onClick={this.pauseVideoThen(focusPrevMeasure)} />
                   </ToolTip>
-                }
-              </span>
-              <span>
-                <ToolTip placement="top" title="prev measure">
-                  <Icon type="left-circle-o" onClick={this.pauseVideoThen(focusPrevMeasure)} />
-                </ToolTip>
-              </span>
-            </Row>
+                </span>
+              </Row>
+            </DesktopOnly>
           </Col>
           <Col span={16}>
             <LoopSlider />
           </Col>
           <Col span={4}>
-            <Row
-              className="TabVideoControls__row__icons"
-              type="flex" align="middle" justify="start"
-            >
-              <span>
-                <ToolTip placement="top" title="next measure">
-                  <Icon type="right-circle-o" onClick={this.pauseVideoThen(focusNextMeasure)} />
-                </ToolTip>
-              </span>
-              <span>
-                {
-                  isMobile ?
-                    null :
-                    <ToolTip placement="top" title="next line">
-                      <Icon type="right-square-o" onClick={this.pauseVideoThen(focusNextLine)} />
-                    </ToolTip>
-                }
-              </span>
-            </Row>
+            <DesktopOnly>
+              <Row
+                className="TabVideoControls__row__icons"
+                type="flex" align="middle" justify="start"
+              >
+                <span>
+                  <ToolTip placement="top" title="next measure">
+                    <Icon type="right-circle-o" onClick={this.pauseVideoThen(focusNextMeasure)} />
+                  </ToolTip>
+                </span>
+                <span>
+                  {
+                    isMobile ?
+                      null :
+                      <ToolTip placement="top" title="next line">
+                        <Icon type="right-square-o" onClick={this.pauseVideoThen(focusNextLine)} />
+                      </ToolTip>
+                  }
+                </span>
+              </Row>
+            </DesktopOnly>
           </Col>
         </Row>
         <Row

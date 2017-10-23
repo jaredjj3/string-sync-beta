@@ -1,5 +1,5 @@
 import Player from '../player';
-import { flatMap } from 'lodash';
+import { flatMap, compact } from 'lodash';
 
 class Fretman {
   lit: Array<any> = [];
@@ -20,24 +20,30 @@ class Fretman {
   }
 
   updateWithPlayer(player: Player): void {
-    const shouldLightMarkers = player.currTick.lit.map(pos => (
-      this.markerAt(parseInt(pos.str, 10), parseInt(pos.fret, 10))
-    ));
+    const shouldLightMarkers = compact(
+      player.currTick.lit.map(pos => (
+        this.markerAt(parseInt(pos.str, 10), parseInt(pos.fret, 10))
+      ))
+    );
 
-    const shouldPressMarkers = player.currTick.pressed.map(pos => (
-      this.markerAt(parseInt(pos.str, 10), parseInt(pos.fret, 10))
-    ));
+    const shouldPressMarkers = compact(
+      player.currTick.pressed.map(pos => (
+        this.markerAt(parseInt(pos.str, 10), parseInt(pos.fret, 10))
+      ))
+    );
 
-    const shouldLightStrings = player.currTick.pressed.map(pos => (
-      this.strings[parseInt(pos.str, 10)]
-    ));
+    const shouldLightStrings = compact(
+      player.currTick.pressed.map(pos => (
+        this.strings[parseInt(pos.str, 10)]
+      ))
+    );
 
     this.lit.forEach(component => component.unlight());
     this.pressed.forEach(component => component.unpress());
 
-    shouldLightMarkers.forEach(marker => marker.light());
-    shouldLightStrings.forEach(string => string.light());
-    shouldPressMarkers.forEach(marker => marker.press());
+    shouldLightMarkers.forEach(marker => marker && marker.light());
+    shouldLightStrings.forEach(string => string && string.light());
+    shouldPressMarkers.forEach(marker => marker && marker.press());
 
     this.lit = [...shouldLightMarkers, ...shouldLightStrings];
     this.pressed = shouldPressMarkers;

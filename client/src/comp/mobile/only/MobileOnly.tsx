@@ -3,12 +3,12 @@ import { compose } from 'recompose';
 
 import { permitDevice } from 'enhancers';
 
-const DesktopOnly = ({ children }) => (
-  <div className="DesktopOnly">
+const MobileOnly = ({ children }) => (
+  <div className="MobileOnly">
     {children}
   </div>
 );
 
 export default compose(
-  permitDevice('DESKTOP')
-)(DesktopOnly);
+  permitDevice('MOBILE')
+)(MobileOnly);

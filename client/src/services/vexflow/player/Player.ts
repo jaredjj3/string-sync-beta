@@ -277,6 +277,7 @@ class Player {
       note.setStyle(style);
       note.setLedgerLineStyle(style);
     });
+
     tick.lowStaveNotes[0].drawNoteHeads();
     tick.lowStaveNotes[0].drawLedgerLines();
 
@@ -294,7 +295,11 @@ class Player {
       ctx.strokeStyle = strokeStyle;
     }
 
-    tick.lowTabNotes.forEach(tabNote => tabNote.drawPositions());
+    tick.lowTabNotes.forEach(tabNote => {
+      try {
+        tabNote.drawPositions();
+      } catch (e) { }
+    });
     ctx.restore();
   }
 

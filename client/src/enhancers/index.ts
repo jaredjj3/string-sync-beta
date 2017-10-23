@@ -1,7 +1,7 @@
-import restrictDevice from './restrictDevice';
+import permitDevice from './permitDevice';
 import withDeviceType from './withDeviceType';
 
 export {
-  restrictDevice,
+  permitDevice,
   withDeviceType,
 };
