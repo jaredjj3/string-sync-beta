@@ -79,8 +79,9 @@ class Caret extends React.Component<CaretProps, CaretState> {
   // Address unwanted rendering when the focusedMeasure changes
   shouldComponentUpdate(nextProps: CaretProps): boolean {
     const measureChanged = nextProps.focusedMeasure !== this.props.focusedMeasure;
+    const lineChanged = nextProps.focusedLine !== this.props.focusedLine;
 
-    if (measureChanged) {
+    if (measureChanged || lineChanged) {
       return !nextProps.shouldRAF;
     } else {
       return true;
