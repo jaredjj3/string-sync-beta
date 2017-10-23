@@ -32,12 +32,12 @@ class Video extends React.Component<VideoProps, VideoState> {
       modestbranding: 1,
       playsinline: 1,
       rel: 0,
-      controls: 0,
       showinfo: 0,
       disablekb: 1,
       fs: 0,
       autoplay: 0,
       start: 0,
+      loop: 1,
     }
   };
 
