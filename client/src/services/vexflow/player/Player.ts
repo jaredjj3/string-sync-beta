@@ -97,7 +97,8 @@ class Player {
     }
 
     if (!this.isReady) {
-      throw 'Player is not ready. See Player.isReady.';
+      return;
+      // throw 'Player is not ready. See Player.isReady.';
     }
 
     const tickNum = this.tpm * time / 60;

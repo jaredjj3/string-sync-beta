@@ -35,7 +35,6 @@ class Fretboard extends React.Component<FretboardProps, FretboardState> {
   }
 
   updateFretman = (fretman: Fretman, tabPlayer: Player): void => {
-
     try {
       fretman.updateWithPlayer(tabPlayer);
     } catch (e) {
