@@ -54,7 +54,6 @@ class NotationShow extends React.Component<NotationShowProps, NotationShowState>
           </Panel>
         </Collapse>
         <Tab />
-        <TabVideoControls />
       </div>
     );
   }
