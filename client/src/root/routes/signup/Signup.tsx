@@ -37,7 +37,7 @@ class Signup extends React.Component<SignupProps, SignupState> {
 
   maybeGoToLibrary(): void {
     if (this.props.isLoggedIn) {
-      this.props.history.push('/');
+      this.props.history.push('/library');
     }
   }
 

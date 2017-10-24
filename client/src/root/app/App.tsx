@@ -1,21 +1,23 @@
 import React from 'react';
 
 import enUS from 'antd/lib/locale-provider/en_US.js';
-import LocaleProvider from 'antd/lib/locale-provider';
+import { LocaleProvider, Layout } from 'antd';
 
-import Footer from './footer';
 import Functionality from './functionality';
 import Header from './header';
-import Routing from './routing';
+import Content from './content';
+import Footer from './footer';
 
 const App = () => (
   <div className="App">
     <LocaleProvider locale={enUS}>
-      <div className="App__content">
+      <div className="App__layout">
         <Functionality />
-        <Header />
-        <Routing />
-        <Footer />
+        <Layout>
+          <Header />
+          <Content />
+          <Footer />
+        </Layout>
       </div>
     </LocaleProvider>
   </div>

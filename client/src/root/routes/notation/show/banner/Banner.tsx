@@ -39,7 +39,7 @@ class Banner extends React.Component<BannerProps, BannerState> {
               }
               <span>
                 <Link to="/library">
-                  <Icon type="home" />
+                  <Icon type="book" />
                 </Link>
               </span>
             </Row>

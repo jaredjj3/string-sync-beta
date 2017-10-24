@@ -12,7 +12,7 @@ import Search from './search';
 import Signup from './signup';
 import Upload from './notation/new';
 
-const Routing = () => (
+const Routes = () => (
   <div className="App--routes">
     <Route exact path="/" component={Home} />
     <Route path="/about" component={About} />
@@ -27,4 +27,4 @@ const Routing = () => (
   </div>
 );
 
-export default Routing;
+export default Routes;

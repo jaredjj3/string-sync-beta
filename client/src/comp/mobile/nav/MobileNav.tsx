@@ -70,7 +70,7 @@ class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
     e.preventDefault();
     e.stopPropagation();
     this.props.logout();
-    this.props.history.push('/');
+    this.props.history.push('/home');
   }
 
   render(): JSX.Element {
@@ -111,7 +111,7 @@ class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
             <Icon
               className="Nav--mobile__link"
               onClick={this.goTo(MobileNavKeys.HOME)}
-              type="home"
+              type="book"
               style={iconStyle([MobileNavKeys.HOME])}
             />
           </NavBar>

@@ -1,3 +1,5 @@
-import Header from './Header';
+import AppHeader from './AppHeader';
 
-export default Header;
+import './_appHeader.less';
+
+export default AppHeader;
