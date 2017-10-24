@@ -6,9 +6,11 @@ import Routes from 'root/routes';
 const { Content } = Layout;
 
 const AppContent = () => (
-  <Content>
-    <Routes />
-  </Content>
+  <div className="App__content">
+    <Content>
+      <Routes />
+    </Content>
+  </div>
 );
 
 export default AppContent;

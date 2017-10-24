@@ -10,8 +10,6 @@ import { TagNotations } from '../../Library';
 
 import inChunksOf from 'util/inChunksOf';
 
-import './_carousel.less';
-
 interface LibraryCarouselProps {
   tagNotations: TagNotations;
 }
