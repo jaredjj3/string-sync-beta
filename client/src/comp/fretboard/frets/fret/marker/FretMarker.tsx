@@ -18,7 +18,7 @@ interface FretMarkerState {
   pressed: boolean;
 }
 
-class FretMarker extends React.PureComponent<FretMarkerProps, FretMarkerState> {
+class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
   state: FretMarkerState = { lit: false, pressed: false };
 
   componentDidMount(): void {

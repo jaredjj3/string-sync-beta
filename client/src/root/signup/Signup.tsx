@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, browserHistory } from 'react-router';
+import { Link, withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
 
 import Button from 'antd/lib/button';
 import Checkbox from 'antd/lib/checkbox';
@@ -15,6 +16,7 @@ const FormItem = Form.Item;
 interface SignupProps {
   form: any;
   isLoggedIn: boolean;
+  history: any;
   signup(user: { user: User }): void;
 }
 
@@ -23,7 +25,7 @@ interface SignupState {
   loading: boolean;
 }
 
-class Login extends React.Component<SignupProps, SignupState> {
+class Signup extends React.Component<SignupProps, SignupState> {
   state: SignupState = {
     confirmDirty: false,
     loading: false
@@ -35,7 +37,7 @@ class Login extends React.Component<SignupProps, SignupState> {
 
   maybeGoToLibrary(): void {
     if (this.props.isLoggedIn) {
-      browserHistory.push('/');
+      this.props.history.push('/');
     }
   }
 
@@ -180,7 +182,8 @@ const mapDispatchToProps = dispatch => ({
   signup: user => dispatch(signup(user))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Form.create()(Login));
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withRouter,
+  Form.create()
+)(Signup);

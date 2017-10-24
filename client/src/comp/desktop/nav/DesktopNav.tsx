@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, browserHistory } from 'react-router';
+import { Link, withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
 
 import Col from 'antd/lib/col';
 import Icon from 'antd/lib/icon';
@@ -22,6 +23,7 @@ interface DesktopNavProps {
   isTeacher: boolean;
   isAdmin: boolean;
   isVisible: boolean;
+  history: any;
   logout(): void;
 }
 
@@ -49,14 +51,14 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
   }
 
   componentWillReceiveProps(nextProps: DesktopNavProps, nextState: DesktopNavState): void {
-    this.setState({ current: DesktopNav.NAV_KEYS_BY_LOCATION[nextProps.location.pathname] });
+    this.setState({ current: DesktopNav.NAV_KEYS_BY_LOCATION[nextProps.location.pathname] || null });
   }
 
   goTo = (params: ClickParam): void => {
     const location = invert(DesktopNav.NAV_KEYS_BY_LOCATION)[params.key];
 
     if (location) {
-      browserHistory.push(location);
+      this.props.history.push(location);
     }
   }
 
@@ -64,7 +66,7 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
     e.preventDefault();
     e.stopPropagation();
     this.props.logout();
-    browserHistory.push('/');
+    this.props.history.push('/');
   }
 
   render(): JSX.Element {
@@ -146,7 +148,7 @@ const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logout())
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DesktopNav);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withRouter(DesktopNav)
+);

@@ -16,7 +16,7 @@ const { Panel } = Collapse;
 
 interface NotationShowProps {
   device: Device;
-  params: any;
+  match: any;
   showFretboard: boolean;
   showFretboardControls: boolean;
   fetchNotation(id: number): void;
@@ -29,7 +29,7 @@ interface NotationShowState {}
 
 class NotationShow extends React.Component<NotationShowProps, NotationShowState> {
   componentDidMount(): void {
-    this.props.fetchNotation(this.props.params.id);
+    this.props.fetchNotation(this.props.match.params.id);
     this.props.hideNav();
   }
 

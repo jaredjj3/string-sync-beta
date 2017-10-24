@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import Icon from 'antd/lib/icon';
 import Row from 'antd/lib/row';
@@ -32,13 +32,13 @@ class Banner extends React.Component<BannerProps, BannerState> {
                 isLoggedIn ?
                 null :
                 <span>
-                  <Link to="login">
+                  <Link to="/login">
                     <Icon type="user" />
                   </Link>
                 </span>
               }
               <span>
-                <Link to="/">
+                <Link to="/library">
                   <Icon type="home" />
                 </Link>
               </span>

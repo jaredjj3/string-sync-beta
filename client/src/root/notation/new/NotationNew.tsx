@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
 
 import Button from 'antd/lib/button';
 import Checkbox from 'antd/lib/checkbox';
@@ -19,6 +20,7 @@ const Option = Select.Option;
 interface NotationNewProps {
   form: any;
   tags: Array<Tag>;
+  history: any;
   notationId: number;
   fetchTags(): void;
   createNotation(notation: any): void;
@@ -83,7 +85,7 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
 
         try {
           await this.props.createNotation(Object.assign({}, notation, this.state.notation));
-          browserHistory.push(`/n/${this.props.notationId}/edit`);
+          this.props.history.push(`/n/${this.props.notationId}/edit`);
         } catch (error) {
           console.error('error ', error);
         } finally {
@@ -171,7 +173,8 @@ const mapDispatchToProps = dispatch => ({
   createNotation: (notation) => dispatch(createNotation(notation))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Form.create()(NotationNew));
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withRouter,
+  Form.create()
+)(NotationNew);

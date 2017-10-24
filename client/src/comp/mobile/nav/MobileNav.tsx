@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, browserHistory } from 'react-router';
+import { Link, withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
 
 import Col from 'antd/lib/col';
 import Icon from 'antd/lib/icon';
@@ -25,6 +26,7 @@ interface MobileNavProps {
   location: Location;
   isLoggedIn: boolean;
   isVisible: boolean;
+  history: any;
   logout(): void;
 }
 
@@ -54,14 +56,13 @@ class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
   }
 
   componentWillReceiveProps(nextProps: MobileNavProps, nextState: MobileNavState): void {
-    const location = `/${nextProps.location.pathname.replace('/', '')}`;
-    this.setState({ current: MobileNav.NAV_KEYS_BY_LOCATION[location] });
+    this.setState({ current: MobileNav.NAV_KEYS_BY_LOCATION[nextProps.location.pathname] || null });
   }
 
   goTo = (navKey: MobileNavKeys): OnClickFunction => {
     return (e: React.SyntheticEvent<any>): void => {
       this.setState({ current: navKey });
-      browserHistory.push(invert(MobileNav.NAV_KEYS_BY_LOCATION)[navKey]);
+      this.props.history.push(invert(MobileNav.NAV_KEYS_BY_LOCATION)[navKey]);
     };
   }
 
@@ -69,7 +70,7 @@ class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
     e.preventDefault();
     e.stopPropagation();
     this.props.logout();
-    browserHistory.push('/');
+    this.props.history.push('/');
   }
 
   render(): JSX.Element {
@@ -131,7 +132,7 @@ const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logout())
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MobileNav);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withRouter(MobileNav)
+);
