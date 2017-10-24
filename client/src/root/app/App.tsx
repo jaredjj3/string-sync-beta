@@ -6,6 +6,7 @@ import LocaleProvider from 'antd/lib/locale-provider';
 import UserProcessor from './userProcessor';
 import ViewportManager from './viewportManager';
 import Routing from './routing';
+import NotificationSys from './notificationSys';
 
 const App = () => (
   <div className="App">
@@ -14,6 +15,7 @@ const App = () => (
         <Routing />
         <UserProcessor />
         <ViewportManager />
+        <NotificationSys />
       </div>
     </LocaleProvider>
   </div>
