@@ -3,19 +3,19 @@ import React from 'react';
 import enUS from 'antd/lib/locale-provider/en_US.js';
 import LocaleProvider from 'antd/lib/locale-provider';
 
-import UserProcessor from './userProcessor';
-import ViewportManager from './viewportManager';
+import Footer from './footer';
+import Functionality from './functionality';
+import Header from './header';
 import Routing from './routing';
-import NotificationSys from './notificationSys';
 
 const App = () => (
   <div className="App">
     <LocaleProvider locale={enUS}>
       <div className="App__content">
+        <Functionality />
+        <Header />
         <Routing />
-        <UserProcessor />
-        <ViewportManager />
-        <NotificationSys />
+        <Footer />
       </div>
     </LocaleProvider>
   </div>

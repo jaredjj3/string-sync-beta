@@ -30,7 +30,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  queryDevice: () => dispatch(queryDevice()),
   updateViewport: () => dispatch(updateViewport())
 });
 
