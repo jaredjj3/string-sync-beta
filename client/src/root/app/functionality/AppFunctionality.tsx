@@ -1,15 +1,17 @@
 import React from 'react';
 
+import Hidden from 'comp/hidden';
+
 import UserProcessor from './userProcessor';
 import ViewportManager from './viewportManager';
 import NotificationSys from './notificationSys';
 
 const AppFunctionality = () => (
-  <div className="AppFunctionality">
+  <Hidden>
     <UserProcessor />
     <ViewportManager />
     <NotificationSys />
-  </div>
+  </Hidden>
 );
 
 export default AppFunctionality;
