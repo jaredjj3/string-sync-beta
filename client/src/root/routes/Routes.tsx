@@ -13,7 +13,7 @@ import Signup from './signup';
 import Upload from './notation/new';
 
 const Routes = () => (
-  <div className="App--routes">
+  <div className="App__routes">
     <Route exact path="/" component={Home} />
     <Route path="/about" component={About} />
     <Route path="/library" component={Library} />
