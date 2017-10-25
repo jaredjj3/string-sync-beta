@@ -43,10 +43,10 @@ enum MobileNavKeys {
 
 class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
   static NAV_KEYS_BY_LOCATION: object = {
-    '/'       : MobileNavKeys.HOME,
-    '/login'  : MobileNavKeys.LOGIN,
-    '/search' : MobileNavKeys.SEARCH,
-    '/signup' : MobileNavKeys.SIGNUP
+    '/library' : MobileNavKeys.HOME,
+    '/login'   : MobileNavKeys.LOGIN,
+    '/search'  : MobileNavKeys.SEARCH,
+    '/signup'  : MobileNavKeys.SIGNUP
   };
 
   state: MobileNavState = { current: null };
@@ -70,7 +70,7 @@ class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
     e.preventDefault();
     e.stopPropagation();
     this.props.logout();
-    this.props.history.push('/home');
+    this.props.history.push('/library');
   }
 
   render(): JSX.Element {
@@ -84,7 +84,7 @@ class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
       return null;
     } else {
       return (
-        <nav>
+        <nav className="Nav--mobileContainer">
           <NavBar
             mode="light"
             iconName="up"
@@ -134,5 +134,5 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withRouter(MobileNav)
-);
+  withRouter
+)(MobileNav);

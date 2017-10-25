@@ -1,17 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { compose, branch, renderComponent } from 'recompose';
-import Gradient from 'comp/gradient';
+import { compose, branch, renderNothing } from 'recompose';
 
 import { Layout } from 'antd';
 import DesktopNav from 'comp/desktop/nav';
+import MobileNav from 'comp/mobile/nav';
 import { withDeviceType, identity } from 'enhancers';
 
 const { Header } = Layout;
 
 const AppHeader = () => (
   <div>
-    <Gradient />
     <Header className="App__header">
       <DesktopNav />
     </Header>
@@ -27,5 +26,5 @@ const mapStateToProps = state => ({
 export default compose(
   connect(mapStateToProps),
   withDeviceType,
-  branch(shouldShowHeader, identity, renderComponent(Gradient))
+  branch(shouldShowHeader, identity, renderNothing)
 )(AppHeader);
