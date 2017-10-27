@@ -125,7 +125,7 @@ import { logout } from 'data/session/actions';
 
 const mapStateToProps = state => ({
   isLoggedIn: Boolean(state.session.currentUser.id),
-  isVisible: state.feature.navbar
+  isVisible: state.feature.navbar && state.device.type === 'MOBILE'
 });
 
 const mapDispatchToProps = dispatch => ({

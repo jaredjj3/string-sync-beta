@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Collapse from 'antd/lib/collapse';
+import { Collapse, Icon, Row, Col } from 'antd';
 import Fretboard from 'comp/fretboard';
-import Icon from 'antd/lib/icon';
 import Tab from 'comp/tab';
 import TabVideoControls from 'comp/tabVideoControls';
 import Video from 'comp/video';
 import Banner from './banner';
+import { TabNavNext, TabNavPrev } from 'comp/tab/nav';
 
 import { Notation } from 'types/notation';
 import { Device } from 'types/device';
@@ -53,7 +53,11 @@ class NotationShow extends React.Component<NotationShowProps, NotationShowState>
             <Fretboard />
           </Panel>
         </Collapse>
-        <Tab />
+        <Row type="flex" align="middle" justify="center">
+          <TabNavPrev />
+          <Tab />
+          <TabNavNext />
+        </Row>
       </div>
     );
   }
