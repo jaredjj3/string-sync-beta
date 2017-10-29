@@ -11,20 +11,23 @@ interface BannerProps {
   name: string;
   artist: string;
   transcriber: string;
+  notationId: number;
 }
 
 interface BannerState {}
 
 class Banner extends React.Component<BannerProps, BannerState> {
   render(): JSX.Element {
-    const { isLoggedIn, name, artist, transcriber } = this.props;
+    const { isLoggedIn, name, artist, transcriber, notationId } = this.props;
+
+    const bannerText = notationId < 0 ? 'Loading...' : `${name} by ${artist} (${transcriber})`;
 
     return (
       <div className="NotationShowBanner" >
         <Row type="flex" align="middle" justify="center">
           <Col span={5} />
           <Col className="NotationShowBanner__text" span={14}>
-            {`${name} by ${artist} (${transcriber})`}
+            {bannerText}
           </Col>
           <Col span={5}>
             <Row className="NotationShowBanner__icons" type="flex" justify="end">
@@ -54,7 +57,8 @@ const mapStateToProps = state => ({
   isLoggedIn: Boolean(state.session.currentUser.id),
   name: state.notation.name,
   artist: state.notation.artist,
-  transcriber: state.notation.transcriber
+  transcriber: state.notation.transcriber,
+  notationId: state.notation.id
 });
 
 const mapDispatchToProps = dispatch => ({
