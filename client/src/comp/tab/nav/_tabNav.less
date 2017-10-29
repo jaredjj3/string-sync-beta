@@ -1,3 +1,21 @@
+@import "vars/overrides";
+
 .TabNav {
   font-size: 24px;
+  font-weight: 700;
+  width: 100%;
+  padding: 3px 0;
+  background: @layout-body-background;
+  border: none;
+}
+
+.TabNav--enabled {
+  &:active {
+    color: darken(@outline-color, 10%);
+    background: lightgray;
+  }
+}
+
+.TabNav--disabled {
+  color: lighten(@outline-color, 10%);
 }

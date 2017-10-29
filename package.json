@@ -23,6 +23,7 @@
     "babel-preset-es2015": "^6.16.0",
     "babel-preset-react": "^6.16.0",
     "babel-preset-react-native": "^2.1.0",
+    "classnames": "^2.2.5",
     "css-loader": "^0.28.7",
     "eventlistener": "0.0.1",
     "extract-text-webpack-plugin": "^2.1.0",

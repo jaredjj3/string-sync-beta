@@ -53,11 +53,11 @@ class NotationShow extends React.Component<NotationShowProps, NotationShowState>
             <Fretboard />
           </Panel>
         </Collapse>
-        <Row type="flex" align="middle" justify="center">
+        <Tab />
+        <div className="NotationShow__tabNavContainer">
           <TabNavPrev />
-          <Tab />
           <TabNavNext />
-        </Row>
+        </div>
       </div>
     );
   }
