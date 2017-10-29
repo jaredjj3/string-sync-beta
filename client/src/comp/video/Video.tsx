@@ -6,7 +6,7 @@ import VideoControls from './controls';
 
 import PLAYER_STATES from 'util/const/PLAYER_STATES';
 
-import { Device } from 'types/device';
+import { Device } from 'types';
 import { Player } from 'services/vexflow';
 
 interface VideoProps {
@@ -49,6 +49,8 @@ class Video extends React.Component<VideoProps, VideoState> {
     const videoPlayer = (e.target as any);
     this.props.updateVideoPlayer(videoPlayer);
     this.props.tabPlayer.videoPlayer = videoPlayer;
+
+    window.setTimeout(() => videoPlayer.playVideo(), 2000);
   }
 
   updateVideoState = (e: any): void => {
@@ -77,7 +79,7 @@ import { updateVideoPlayer, updateVideoState, resetVideo } from 'data/video/acti
 
 const mapStateToProps = state => ({
   tabPlayer: state.tab.player,
-  youtubeVideoId: state.notation.youtubeVideoId
+  youtubeVideoId: state.notation.youtubeVideoId,
 });
 
 const mapDispatchToProps = dispatch => ({

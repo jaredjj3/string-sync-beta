@@ -30,6 +30,7 @@ interface NotationEditProps {
   disableAutoSave(): void;
   enableScaleVisualization(): void;
   disableScaleVisualization(): void;
+  resetNotation(): void;
 }
 
 interface NotationEditState {}
@@ -41,6 +42,7 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
   }
 
   componentWillUnmount(): void {
+    this.props.resetNotation();
     this.props.disableAutoSave();
   }
 
@@ -71,7 +73,7 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
   }
 }
 
-import { fetchNotation } from 'data/notation/actions';
+import { fetchNotation, resetNotation } from 'data/notation/actions';
 import { enableFeatures, disableFeatures } from 'data/feature/actions';
 
 const mapStateToProps = state => ({
@@ -85,6 +87,7 @@ const mapDispatchToProps = dispatch => ({
   fetchNotation: id => dispatch(fetchNotation(id)),
   enableAutoSave: () => dispatch(enableFeatures(['autoSave'])),
   disableAutoSave: () => dispatch(disableFeatures(['autoSave'])),
+  resetNotation: () => dispatch(resetNotation())
 });
 
 export default connect(
