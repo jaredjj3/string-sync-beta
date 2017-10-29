@@ -35,7 +35,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       showinfo: 0,
       disablekb: 1,
       fs: 0,
-      autoplay: 0,
+      autoplay: 1,
       start: 0,
       loop: 1,
     }
@@ -49,8 +49,6 @@ class Video extends React.Component<VideoProps, VideoState> {
     const videoPlayer = (e.target as any);
     this.props.updateVideoPlayer(videoPlayer);
     this.props.tabPlayer.videoPlayer = videoPlayer;
-
-    window.setTimeout(() => videoPlayer.playVideo(), 2000);
   }
 
   updateVideoState = (e: any): void => {
