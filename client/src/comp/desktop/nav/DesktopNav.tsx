@@ -31,16 +31,18 @@ interface DesktopNavState {
 }
 
 enum NavKeys {
-  SEARCH = 'SEARCH',
-  HOME   = 'HOME',
-  LOGIN  = 'LOGIN'
+  SEARCH  = 'SEARCH',
+  LIBRARY = 'LIBRARY',
+  LOGIN   = 'LOGIN',
+  HOME    = 'HOME'
 }
 
 class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
   static NAV_KEYS_BY_LOCATION: object = {
-    '/library' : NavKeys.HOME,
+    '/library' : NavKeys.LIBRARY,
     '/login'   : NavKeys.LOGIN,
     '/search'  : NavKeys.SEARCH,
+    '/'        : NavKeys.HOME
   };
 
   state: DesktopNavState = { current: null };
@@ -65,7 +67,7 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
     e.preventDefault();
     e.stopPropagation();
     this.props.logout();
-    this.props.history.push('/home');
+    this.props.history.push('/library');
   }
 
   render(): JSX.Element {
@@ -83,10 +85,13 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
               style={{ fontSize: '18px', borderBottom: '0', background: 'none' }}
               onClick={this.goTo}
             >
+              <Item key={NavKeys.HOME} className="Nav--desktop__menuItem">
+                <Icon type="home" />
+              </Item>
               <Item key={NavKeys.SEARCH} className="Nav--desktop__menuItem">
                 <Icon type="search" />
               </Item>
-              <Item key={NavKeys.HOME} className="Nav--desktop__menuItem">
+              <Item key={NavKeys.LIBRARY} className="Nav--desktop__menuItem">
                 <Icon type="book" />
               </Item>
               {
