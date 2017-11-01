@@ -1,9 +1,11 @@
+import identity from './indentity';
+import inContainer from './inContainer';
 import permitDevice from './permitDevice';
 import withDeviceType from './withDeviceType';
-import identity from './indentity';
 
 export {
+  identity,
+  inContainer,
   permitDevice,
   withDeviceType,
-  identity,
 };

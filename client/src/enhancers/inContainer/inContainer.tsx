@@ -1,8 +1,6 @@
-
 import React from 'react';
-import { compose, nest } from 'recompose';
 
-const inContainer = (Wrapped: any, props) => (
+const inContainer = (Wrapped: any, props: any) => () => (
   <div {...props}>
     <Wrapped />
   </div>

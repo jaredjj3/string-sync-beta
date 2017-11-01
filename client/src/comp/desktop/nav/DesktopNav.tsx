@@ -34,15 +34,13 @@ enum NavKeys {
   SEARCH  = 'SEARCH',
   LIBRARY = 'LIBRARY',
   LOGIN   = 'LOGIN',
-  HOME    = 'HOME'
 }
 
 class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
   static NAV_KEYS_BY_LOCATION: object = {
     '/library' : NavKeys.LIBRARY,
     '/login'   : NavKeys.LOGIN,
-    '/search'  : NavKeys.SEARCH,
-    '/'        : NavKeys.HOME
+    '/search'  : NavKeys.SEARCH
   };
 
   state: DesktopNavState = { current: null };
@@ -85,9 +83,6 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
               style={{ fontSize: '18px', borderBottom: '0', background: 'none' }}
               onClick={this.goTo}
             >
-              <Item key={NavKeys.HOME} className="Nav--desktop__menuItem">
-                <Icon type="home" />
-              </Item>
               <Item key={NavKeys.SEARCH} className="Nav--desktop__menuItem">
                 <Icon type="search" />
               </Item>
