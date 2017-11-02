@@ -36,16 +36,6 @@ const DesktopLanding = () => (
                 </div>
               </figure>
             </div>
-            <div className="Landing--desktop__libraryBtnContainer">
-              <Button
-                size="large"
-                type="primary"
-              >
-                <Link to="library">
-                  Discover New Music!
-                </Link>
-              </Button>
-            </div>
           </Row>
         </Col>
         <Col
@@ -55,6 +45,16 @@ const DesktopLanding = () => (
           <Signup />
         </Col>
       </Row>
+      <div className="Landing--desktop__libraryBtnContainer">
+        <Button
+          size="large"
+          type="primary"
+        >
+          <Link to="library">
+            Discover New Music!
+          </Link>
+        </Button>
+      </div>
     </section>
   </div>
 );
