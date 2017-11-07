@@ -27,7 +27,6 @@ def create_users
 
   [
     { username: "jaredjj3", email: "jaredjj3@gmail.com", password: "password", roles: roles },
-    { username: "samblakelock", email: "samblakelock@gmail.com", password: "password", roles: roles }
   ].each { |user| User.create!(user) }
 end
 
