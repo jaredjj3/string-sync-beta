@@ -1,9 +1,18 @@
 import React from 'react';
+import { withRouter } from 'react-router';
+import { lifecycle, compose } from 'recompose';
 
 const MobileLanding = () => (
-  <div className="Landing--mobile">
-    MobileLanding
+  <div>
+    Redirecting...
   </div>
 );
 
-export default MobileLanding;
+export default compose(
+  withRouter,
+  lifecycle({
+    componentDidMount(): void {
+      this.props.history.push('/library');
+    }
+  })
+)(MobileLanding);
