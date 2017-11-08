@@ -73,55 +73,57 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
     return (
       <nav className="Nav--desktop">
         <Row type="flex" justify="space-between" align="middle">
-          <Col xs={0} sm={0} md={8} lg={8}>
+          <Col xs={0} sm={0} md={12} lg={12}>
             <Logo showLogo={true} />
           </Col>
-          <Col xs={0} sm={0} md={6} lg={6} push={1}>
-            <Menu
-              selectedKeys={[this.state.current]}
-              mode="horizontal"
-              style={{ fontSize: '18px', borderBottom: '0', background: 'none' }}
-              onClick={this.goTo}
-            >
-              <Item key={NavKeys.SEARCH} className="Nav--desktop__menuItem">
-                <Icon type="search" />
-              </Item>
-              <Item key={NavKeys.LIBRARY} className="Nav--desktop__menuItem">
-                <Icon type="book" />
-              </Item>
-              {
-                isLoggedIn ?
-                <SubMenu title={<Icon type="setting" />} className="Nav--desktop__menuItem">
-                  {
-                    isTeacher || isAdmin ?
-                      <Item>
-                        <Link to="upload">
-                          <Icon type="upload" />
-                          <span>upload</span>
-                        </Link>
-                      </Item> : null
-                  }
-                  {
-                    isAdmin ?
-                      <Item>
-                        <Link to="dashboard">
-                          <Icon type="compass" />
-                          <span>dashboard</span>
-                        </Link>
-                      </Item> : null
-                  }
-                  <Item>
-                    <div onClick={this.logout}>
-                      <Icon type="logout" />
-                      <span>logout</span>
-                    </div>
-                  </Item>
-                </SubMenu> :
-                <Item key={NavKeys.LOGIN} className="Nav--desktop__menuItem">
-                  <Icon type="user" />
+          <Col xs={0} sm={0} md={12} lg={12}>
+            <div className="Nav--desktop__right">
+              <Menu
+                selectedKeys={[this.state.current]}
+                mode="horizontal"
+                style={{ fontSize: '14px', borderBottom: '0', background: 'none' }}
+                onClick={this.goTo}
+              >
+                <Item key={NavKeys.SEARCH} className="Nav--desktop__menuItem">
+                  search
                 </Item>
-              }
-            </Menu>
+                <Item key={NavKeys.LIBRARY} className="Nav--desktop__menuItem">
+                  library
+                </Item>
+                {
+                  isLoggedIn ?
+                  <SubMenu title="settings" className="Nav--desktop__menuItem">
+                    {
+                      isTeacher || isAdmin ?
+                        <Item>
+                          <Link to="upload">
+                            <Icon type="upload" />
+                            <span>upload</span>
+                          </Link>
+                        </Item> : null
+                    }
+                    {
+                      isAdmin ?
+                        <Item>
+                          <Link to="dashboard">
+                            <Icon type="compass" />
+                            <span>dashboard</span>
+                          </Link>
+                        </Item> : null
+                    }
+                    <Item>
+                      <div onClick={this.logout}>
+                        <Icon type="logout" />
+                        <span>logout</span>
+                      </div>
+                    </Item>
+                  </SubMenu> :
+                  <Item key={NavKeys.LOGIN} className="Nav--desktop__menuItem">
+                    login
+                  </Item>
+                }
+              </Menu>
+            </div>
           </Col>
         </Row>
       </nav>
@@ -142,6 +144,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default compose(
+  withRouter,
   connect(mapStateToProps, mapDispatchToProps),
-  withRouter
 )(DesktopNav);

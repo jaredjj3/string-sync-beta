@@ -33,4 +33,6 @@ const Routes = () => (
   </div>
 );
 
+const scrollToTop = (): void => window.scrollTo(null, 0);
+
 export default Routes;
