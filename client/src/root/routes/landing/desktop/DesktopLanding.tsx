@@ -28,22 +28,22 @@ const DesktopLanding = () => (
       <ul className="AltActionBar__links">
         <li>
           <Link to="/about">
-            About
+            about
           </Link>
         </li>
         <li>
           <a href="http://instagram.com/stringsynced">
-            Social
+            social
           </a>
         </li>
         <li>
           <Link to="/library">
-            Library
+            library
           </Link>
         </li>
         <li>
           <Link to="/login">
-            Login
+            login
           </Link>
         </li>
       </ul>

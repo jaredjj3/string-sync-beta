@@ -84,6 +84,9 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
                 style={{ fontSize: '14px', borderBottom: '0', background: 'none' }}
                 onClick={this.goTo}
               >
+                <Item key="ABOUT" className="Nav--desktop__menuItem">
+                  about
+                </Item>
                 <Item key={NavKeys.SEARCH} className="Nav--desktop__menuItem">
                   search
                 </Item>
