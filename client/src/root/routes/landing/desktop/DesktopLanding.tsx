@@ -15,7 +15,7 @@ const youtubeOptions = {
     rel: 0,
     showinfo: 0,
     disablekb: 1,
-    fs: 0,
+    fs: 1,
     autoplay: 0,
     start: 0,
     loop: 1,
@@ -32,6 +32,16 @@ const DesktopLanding = () => (
           </Link>
         </li>
         <li>
+          <a href="http://instagram.com/stringsynced">
+            Social
+          </a>
+        </li>
+        <li>
+          <Link to="/library">
+            Library
+          </Link>
+        </li>
+        <li>
           <Link to="/login">
             Login
           </Link>
@@ -39,20 +49,49 @@ const DesktopLanding = () => (
       </ul>
     </div>
     <section>
-      <h1 className="Landing--desktop__mainTitle">
+      <h1 className="Landing--desktop__title">
         Learn more. Think less.
       </h1>
-      <Button
-        size="large"
-        type="primary"
-      >
-        <Link to="/library">
-          Discover New Music!
-        </Link>
-      </Button>
+      <div className="Landing--desktop__actionBar">
+        <span>
+          <Button size="large" type="primary">
+            <Link to="/library">
+              Discover new music!
+            </Link>
+          </Button>
+        </span>
+        <span>
+          <Button size="large">
+            <Link to="/signup">
+              Join StringSync!
+            </Link>
+          </Button>
+        </span>
+      </div>
     </section>
     <section>
-      
+      <div className="Landing--desktop__concept">
+        <Youtube
+          opts={youtubeOptions}
+          videoId="8Rz287ddt2E"
+          onPlay={() => window.scrollTo(null, 92)}
+        />
+        <div className="Landing--desktop__concept__link">
+          <Link to="/n/1">
+            Learn <em>The Cool Side of the Pillow</em>
+          </Link>
+        </div>
+        <div style={{ marginTop: '10px', marginBottom: '10px' }}>
+          or
+        </div>
+        <div>
+          <Button type="primary">
+            <Link to="/library">
+              Learn music like this!
+            </Link>
+          </Button>
+        </div>
+      </div>
     </section>
   </div>
 );
