@@ -12,7 +12,6 @@ const { Header } = Layout;
 
 const AppHeader = () => (
   <div>
-    <Gradient />
     <Header className="App__header">
       <DesktopNav />
     </Header>
