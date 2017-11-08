@@ -31,18 +31,9 @@ class Banner extends React.Component<BannerProps, BannerState> {
           </Col>
           <Col span={5}>
             <Row className="NotationShowBanner__icons" type="flex" justify="end">
-              {
-                isLoggedIn ?
-                null :
-                <span>
-                  <Link to="/login">
-                    <Icon type="user" />
-                  </Link>
-                </span>
-              }
               <span>
                 <Link to="/library">
-                  <Icon type="book" />
+                  <Icon type="close" style={{ fontSize: '24px' }} />
                 </Link>
               </span>
             </Row>
@@ -54,7 +45,6 @@ class Banner extends React.Component<BannerProps, BannerState> {
 }
 
 const mapStateToProps = state => ({
-  isLoggedIn: Boolean(state.session.currentUser.id),
   name: state.notation.name,
   artist: state.notation.artist,
   transcriber: state.notation.transcriber,
