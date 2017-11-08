@@ -5,12 +5,14 @@ import { compose, branch, renderNothing } from 'recompose';
 import { Layout } from 'antd';
 import DesktopNav from 'comp/desktop/nav';
 import MobileNav from 'comp/mobile/nav';
+import Gradient from 'comp/gradient';
 import { withDeviceType, identity } from 'enhancers';
 
 const { Header } = Layout;
 
 const AppHeader = () => (
   <div>
+    <Gradient />
     <Header className="App__header">
       <DesktopNav />
     </Header>

@@ -16,7 +16,6 @@ const App = () => (
       <div className="App__layout">
         <AppFunctionality />
         <Layout>
-          <Gradient />
           <Header />
           <Content />
           <Footer />

@@ -6,8 +6,6 @@ import MobileLanding from './mobile';
 
 import { withDeviceType } from 'enhancers';
 
-// functional
-
 export default compose(
   withDeviceType,
   branch(

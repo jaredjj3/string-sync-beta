@@ -1,8 +1,33 @@
 .Landing--desktop {
-  margin-top: 7.5%;
+  max-width: 980px;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+
+.Landing--desktop__altActionBar {
+  .AltActionBar__links {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .AltActionBar__links li {
+    font-size: 16px;
+    margin: 0 14px;
+  }
+
+  .AltActionBar__links li:last-child {
+    margin-right: 0;
+  }
+
+  .AltActionBar__links li:hover {
+    text-decoration: underline;
+  }
 }
 
 .Landing--desktop__mainTitle {
+  font-size: 64px;
+  font-weight: 200;
   margin-bottom: 20px;
   margin-right: 0 auto;
   margin-left: 0 auto;
@@ -29,19 +54,6 @@
   background: black;
 
   img {
-    max-width: 100%;
-    max-height: 100%;
-  }
-}
-
-.Landing--desktop__iPhone__content {
-  position: absolute;
-  top: 37px;
-  left: 20px;
-  width: 246px;
-  height: 560px;
-  
-  video {
     max-width: 100%;
     max-height: 100%;
   }

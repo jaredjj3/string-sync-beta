@@ -3,58 +3,56 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { compose, lifecycle } from 'recompose';
 
-import Signup from 'root/routes/signup';
+import Youtube from 'react-youtube';
+import Logo from 'comp/logo';
 import { Row, Col, Button } from 'antd';
 import { enableFeatures, disableFeatures } from 'data/feature/actions';
 
+const youtubeOptions = {
+  playerVars: {
+    modestbranding: 1,
+    playsinline: 1,
+    rel: 0,
+    showinfo: 0,
+    disablekb: 1,
+    fs: 0,
+    autoplay: 0,
+    start: 0,
+    loop: 1,
+  }
+};
+
 const DesktopLanding = () => (
   <div className="Landing--desktop">
+    <div className="Landing--desktop__altActionBar">
+      <ul className="AltActionBar__links">
+        <li>
+          <Link to="/about">
+            About
+          </Link>
+        </li>
+        <li>
+          <Link to="/login">
+            Login
+          </Link>
+        </li>
+      </ul>
+    </div>
     <section>
       <h1 className="Landing--desktop__mainTitle">
-        StringSync is easy. Promise.
+        Learn more. Think less.
       </h1>
-      <Row
-        className="Landing--desktop__engage"
-        type="flex"
-        align="middle"
-        justify="center"
+      <Button
+        size="large"
+        type="primary"
       >
-        <Col
-          className="Landing--desktop__engage__block"
-          span={12}
-        >
-          <Row type="flex" align="middle" justify="center">
-            <div>
-              <figure className="Landing--desktop__iPhone">
-                <div className="Landing--desktop__iPhone__frame">
-                  <img src="http://ideasof.andersaberg.com/images/apple/pic4.png" />
-                </div>
-                <div className="Landing--desktop__iPhone__content">
-                  <video autoPlay loop>
-                    <source src="https://i.imgur.com/lh36VC9.mp4"/>
-                  </video>
-                </div>
-              </figure>
-            </div>
-          </Row>
-        </Col>
-        <Col
-          className="Landing--desktop__engage__block"
-          span={12}
-        >
-          <Signup />
-        </Col>
-      </Row>
-      <div className="Landing--desktop__libraryBtnContainer">
-        <Button
-          size="large"
-          type="primary"
-        >
-          <Link to="library">
-            Discover New Music!
-          </Link>
-        </Button>
-      </div>
+        <Link to="/library">
+          Discover New Music!
+        </Link>
+      </Button>
+    </section>
+    <section>
+      
     </section>
   </div>
 );
