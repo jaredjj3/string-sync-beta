@@ -1,6 +1,6 @@
 import { sortBy, partition } from 'lodash';
 
-type RAFFunc = (dt: number) => void;
+type RAFFunc = (dt?: number) => any;
 
 interface RAFSpec {
   name: string;
