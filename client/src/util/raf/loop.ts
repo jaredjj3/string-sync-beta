@@ -20,6 +20,8 @@ const sortByPrecedence = <T>(collection: Array<T>): Array<T> => {
   return [...sortBy(withPrecedence, ({ precedence }) => precedence ), ...withoutPrecedence];
 };
 
+// The RAFLoop's purpose is to centralize functions for requestAnimationFrame() (or RAF).
+// This is particularly useful when multiple systems need to RAF and execute consistently.
 class RAFLoop {
   public throttleMs: number = 0;
 
