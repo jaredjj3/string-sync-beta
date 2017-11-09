@@ -1,5 +1,6 @@
 import { sortBy, partition } from 'lodash';
 
+// defintions
 type RAFFunc = (dt?: number) => any;
 
 interface RAFSpec {
@@ -12,6 +13,7 @@ interface RAFSpec {
 
 type EventName = 'onAnimationStart' | 'onAnimationLoop' | 'onAnimationEnd';
 
+// utility functions
 const sortByPrecedence = <T>(collection: Array<T>): Array<T> => {
   const [withPrecedence, withoutPrecedence] = partition(collection, o => (
     o.hasOwnProperty('precedence'))
@@ -20,6 +22,18 @@ const sortByPrecedence = <T>(collection: Array<T>): Array<T> => {
   return [...sortBy(withPrecedence, ({ precedence }) => precedence ), ...withoutPrecedence];
 };
 
+const isPrecedenceUnique = (probeSpec: RAFSpec, specs: Array<RAFSpec>): boolean => (
+  probeSpec.precedence && specs.some(({ precedence }) => precedence === probeSpec.precedence)
+);
+
+const hasRafFunc = (spec: RAFSpec): boolean => (
+  spec.hasOwnProperty('onAnimationStart') ||
+  spec.hasOwnProperty('onAnimationLoop')  ||
+  spec.hasOwnProperty('onAnimationEnd')
+);
+
+// main
+//
 // The RAFLoop's purpose is to centralize functions for requestAnimationFrame() (or RAF).
 // This is particularly useful when multiple systems need to RAF and execute consistently.
 class RAFLoop {
@@ -43,6 +57,7 @@ class RAFLoop {
   }
 
   public register(spec: RAFSpec): void {
+    this._validate(spec);
     this._specs.push(spec);
     this._specs = sortByPrecedence(this._specs);
   }
@@ -92,6 +107,16 @@ class RAFLoop {
     });
 
     this._lastInvokeMs = Date.now();
+  }
+
+  private _validate(spec: RAFSpec): void {
+    if (!isPrecedenceUnique(spec, this._specs)) {
+      throw `precedence ${spec.precedence} is already assigned`;
+    }
+
+    if (!hasRafFunc(spec)) {
+      throw `must specify at least one: 'onAnimationStart', 'onAnimationLoop', 'onAnimationEnd'`;
+    }
   }
 }
 
