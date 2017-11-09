@@ -15,6 +15,13 @@ interface RAFSpec {
 type EventName = 'onAnimationStart' | 'onAnimationLoop' | 'onAnimationEnd';
 
 // utility functions
+const RAF = (
+  window.requestAnimationFrame ||
+  window.mozRequestAnimationFrame ||
+  window.webkitRequestAnimationFrame ||
+  window.msRequestAnimationFrame
+);
+
 const sortSpecs = <T>(collection: Array<T>): Array<T> => {
   const [withPrecedence, withoutPrecedence] = partition(collection, o => (
     o.hasOwnProperty('precedence'))
@@ -33,7 +40,6 @@ const hasRafFunc = (spec: RAFSpec): boolean => (
 );
 
 // main
-//
 // The RAFLoop's purpose is to centralize functions for requestAnimationFrame() (or RAF).
 // This is particularly useful when multiple systems need to RAF and execute consistently.
 class RAFLoop {
@@ -48,7 +54,7 @@ class RAFLoop {
     if (!this.isActive) {
       return 0;
     } else {
-      return this._lastInvokeMs - Date.now();
+      return Date.now() - this._lastInvokeMs;
     }
   }
 
@@ -72,7 +78,7 @@ class RAFLoop {
     if (!this.isActive) {
       this._invoke('onAnimationStart');
       this._isActive = true;
-      this._rafId = window.requestAnimationFrame(this._loop);
+      this._rafId = RAF(this._loop);
     }
   }
 
@@ -91,14 +97,14 @@ class RAFLoop {
       this._invoke('onAnimationLoop');
     }
 
-    this._rafId = window.requestAnimationFrame(this._loop);
+    this._rafId = RAF(this._loop);
   }
 
   private _shouldLoop(): boolean {
-    return Date.now() - this._lastInvokeMs >= this.throttleMs;
+    return this.isActive && this.dt >= this.throttleMs;
   }
 
-  private _invoke(eventName: EventName): void {
+  private _invoke = (eventName: EventName): void => {
     const dt = this.dt;
 
     this._specs.forEach(spec => {
