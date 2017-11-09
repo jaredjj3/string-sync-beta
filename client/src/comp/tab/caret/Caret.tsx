@@ -111,8 +111,8 @@ class Caret extends React.Component<CaretProps, CaretState> {
 
     this.ctx.scale(ratio, ratio);
     this.ctx.strokeStyle = '#FC354C';
-    this.ctx.lineWidth = 10;
-    this.ctx.globalAlpha = 0.4;
+    this.ctx.lineWidth = 2;
+    this.ctx.globalAlpha = 0.75;
   }
 
   clearCanvas(): void {
