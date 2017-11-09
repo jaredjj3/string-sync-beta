@@ -9,22 +9,22 @@ interface RAFSpec {
   onAnimationStart?: RAFFunc;
   onAnimationLoop?: RAFFunc;
   onAnimationEnd?: RAFFunc;
+  _n: number; // fallback to perserve order when two specs have the same precedence
 }
 
 type EventName = 'onAnimationStart' | 'onAnimationLoop' | 'onAnimationEnd';
 
 // utility functions
-const sortByPrecedence = <T>(collection: Array<T>): Array<T> => {
+const sortSpecs = <T>(collection: Array<T>): Array<T> => {
   const [withPrecedence, withoutPrecedence] = partition(collection, o => (
     o.hasOwnProperty('precedence'))
   );
 
-  return [...sortBy(withPrecedence, ({ precedence }) => precedence ), ...withoutPrecedence];
-};
+  const sortedWithPrecedence = sortBy(withPrecedence, ({ precedence, _n }) => [precedence, _n ]);
+  const sortedWithoutPrecedence = sortBy(withoutPrecedence, ({ _n }) => _n);
 
-const isPrecedenceUnique = (probeSpec: RAFSpec, specs: Array<RAFSpec>): boolean => (
-  probeSpec.precedence && specs.some(({ precedence }) => precedence === probeSpec.precedence)
-);
+  return [...sortedWithPrecedence, ...sortedWithoutPrecedence];
+};
 
 const hasRafFunc = (spec: RAFSpec): boolean => (
   spec.hasOwnProperty('onAnimationStart') ||
@@ -58,8 +58,10 @@ class RAFLoop {
 
   public register(spec: RAFSpec): void {
     this._validate(spec);
-    this._specs.push(spec);
-    this._specs = sortByPrecedence(this._specs);
+
+    const nextSpec = Object.assign({}, spec, { _n: this._specs.length });
+    this._specs.push(nextSpec);
+    this._specs = sortSpecs(this._specs);
   }
 
   public unregister(specName: string): void {
@@ -110,10 +112,6 @@ class RAFLoop {
   }
 
   private _validate(spec: RAFSpec): void {
-    if (!isPrecedenceUnique(spec, this._specs)) {
-      throw `precedence ${spec.precedence} is already assigned`;
-    }
-
     if (!hasRafFunc(spec)) {
       throw `must specify at least one: 'onAnimationStart', 'onAnimationLoop', 'onAnimationEnd'`;
     }
