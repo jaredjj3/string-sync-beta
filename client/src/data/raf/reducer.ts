@@ -1,4 +1,4 @@
-import { RESET_RAF } from './actions';
+import { RESET_RAF_LOOP } from './actions';
 import RAFLoop from 'util/raf/loop';
 
 interface StoreRAF {
@@ -13,7 +13,7 @@ const RAFReducer = (state = defaultState, action): StoreRAF => {
   const nextState = Object.assign({}, state);
 
   switch (action.type) {
-    case RESET_RAF:
+    case RESET_RAF_LOOP:
       nextState.loop = new RAFLoop();
       return nextState;
 
