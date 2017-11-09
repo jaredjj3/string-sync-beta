@@ -89,8 +89,9 @@ class RAFLoop {
   private _loop = (): void => {
     if (this._shouldLoop()) {
       this._invoke('onAnimationLoop');
-      this._rafId = window.requestAnimationFrame(this._loop);
     }
+
+    this._rafId = window.requestAnimationFrame(this._loop);
   }
 
   private _shouldLoop(): boolean {
