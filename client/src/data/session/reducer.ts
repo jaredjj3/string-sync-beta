@@ -18,7 +18,7 @@ const dup = (state: Session): Session => {
 };
 
 export default (state = defaultState, action): Session => {
-  Object.freeze(state);
+
   const nextState = dup(state);
 
   switch (action.type) {
