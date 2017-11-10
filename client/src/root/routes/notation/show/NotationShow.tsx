@@ -1,13 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
 import { Collapse, Icon, Row, Col } from 'antd';
+import { withRAFLoop } from 'enhancers';
 import Fretboard from 'comp/fretboard';
 import Tab from 'comp/tab';
 import TabVideoControls from 'comp/tabVideoControls';
 import Video from 'comp/video';
 import Banner from './banner';
 import { TabNavNext, TabNavPrev } from 'comp/tab/nav';
+import { isVideoActive } from 'util/videoStateCategory';
 
 import { Notation } from 'types/notation';
 import { Device } from 'types/device';
@@ -19,10 +22,13 @@ interface NotationShowProps {
   match: any;
   showFretboard: boolean;
   showFretboardControls: boolean;
+  shouldRAF: boolean;
+  RAFLoop: any;
   fetchNotation(id: number): void;
   resetNotation(): void;
   showNav(): void;
   hideNav(): void;
+  resetRAFLoop(): void;
 }
 
 interface NotationShowState {}
@@ -33,9 +39,20 @@ class NotationShow extends React.Component<NotationShowProps, NotationShowState>
     this.props.hideNav();
   }
 
+  componentWillReceiveProps(nextProps: NotationShowProps): void {
+    const { RAFLoop } = nextProps;
+
+    if (nextProps.shouldRAF) {
+      RAFLoop.start();
+    } else {
+      RAFLoop.stop();
+    }
+  }
+
   componentWillUnmount(): void {
     this.props.resetNotation();
     this.props.showNav();
+    this.props.resetRAFLoop();
   }
 
   render(): JSX.Element {
@@ -67,6 +84,7 @@ import { fetchNotation, resetNotation } from 'data/notation/actions';
 import { enableFeatures, disableFeatures } from 'data/feature/actions';
 
 const mapStateToProps = state => ({
+  shouldRAF: state.video.player && isVideoActive(state.video.state),
   showFretboard: state.panels.fretboard,
   showFretboardControls: state.panels.fretboardControls
 });
@@ -78,7 +96,7 @@ const mapDispatchToProps = dispatch => ({
   hideNav: () => dispatch(disableFeatures(['navbar']))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  withRAFLoop,
+  connect(mapStateToProps, mapDispatchToProps)
 )(NotationShow);

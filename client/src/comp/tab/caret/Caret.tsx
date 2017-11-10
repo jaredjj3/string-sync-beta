@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
 import { isVideoActive } from 'util/videoStateCategory';
 import { Point } from 'types/point';
 import { VideoPlayer } from 'types';
 import { Player } from 'services/vexflow';
+import { withRAFLoop } from 'enhancers';
 
 interface CaretProps {
   shouldRAF: boolean;
@@ -15,6 +17,7 @@ interface CaretProps {
   tempo: number;
   focusedLine: number;
   focusedMeasure: number;
+  RAFLoop: any;
   focusMeasure(measure: number): void;
 }
 
@@ -31,10 +34,11 @@ class Caret extends React.Component<CaretProps, CaretState> {
   componentDidMount(): void {
     const { tabPlayer, viewport } = this.props;
     tabPlayer.viewport = viewport;
+    this.resize(viewport);
   }
 
   componentWillReceiveProps(nextProps: CaretProps): void {
-    const { tabPlayer, viewport, focusedMeasure, focusedLine, videoPlayer } = nextProps;
+    const { tabPlayer, viewport, focusedMeasure, focusedLine, videoPlayer, shouldRAF, RAFLoop } = nextProps;
     tabPlayer.viewport = viewport;
 
     if (nextProps.tempo) {
@@ -45,47 +49,35 @@ class Caret extends React.Component<CaretProps, CaretState> {
       tabPlayer.deadTime = nextProps.deadTime;
     }
 
-    if (nextProps.shouldRAF) {
-      // video is active
-      this.resize(viewport);
-      this.RAFHandle = window.requestAnimationFrame(this.renderCaret(videoPlayer.getCurrentTime()));
-    } else {
-      // video is passive
-      const measureChanged = focusedMeasure !== this.props.focusedMeasure;
-      const lineChanged = focusedLine !== this.props.focusedLine;
-
-      let focusedTime;
-      if (measureChanged) {
-        focusedTime = tabPlayer.timeAtMeasure(focusedMeasure);
-        videoPlayer.seekTo(focusedTime);
-      } else if (lineChanged) {
-        focusedTime = tabPlayer.timeAtLine(focusedLine);
-        videoPlayer.seekTo(focusedTime);
-      }
-
-      this.renderCaret(focusedTime)();
-    }
-
     if (!tabPlayer.isReady) {
       tabPlayer.prepare();
+    }
 
-      if (tabPlayer.isReady) {
-        this.resize(viewport);
-        this.renderCaret(videoPlayer.getCurrentTime())();
+    if (shouldRAF && tabPlayer.isReady) {
+      this.resize(viewport);
+
+      if (!RAFLoop.has('Caret.renderCaret')) {
+        this.registerRAFLoop();
       }
+    } else {
+      this.unregisterRAFLoop();
     }
   }
 
-  // Address unwanted rendering when the focusedMeasure changes
-  shouldComponentUpdate(nextProps: CaretProps): boolean {
-    const measureChanged = nextProps.focusedMeasure !== this.props.focusedMeasure;
-    const lineChanged = nextProps.focusedLine !== this.props.focusedLine;
+  componentWillUnmount(): void {
+    this.unregisterRAFLoop();
+  }
 
-    if (measureChanged || lineChanged) {
-      return !nextProps.shouldRAF;
-    } else {
-      return true;
-    }
+  registerRAFLoop = (): void => {
+    this.props.RAFLoop.register({
+      name: 'Caret.renderCaret',
+      precedence: 1,
+      onAnimationLoop: this.renderCaret
+    });
+  }
+
+  unregisterRAFLoop = (): void => {
+    this.props.RAFLoop.unregister('Caret.renderCaret');
   }
 
   setCanvas = (c: HTMLCanvasElement): void => {
@@ -130,29 +122,16 @@ class Caret extends React.Component<CaretProps, CaretState> {
     this.ctx.stroke();
   }
 
-  renderCaret = (time: number): any => {
+  renderCaret = (): any => {
     const { tabPlayer, focusMeasure, videoPlayer } = this.props;
+    const currentTime = videoPlayer.getCurrentTime();
 
-    return () => {
-
-      try {
-        this.clearCanvas();
-        this.drawCaret(tabPlayer.caretPosX(time), Caret.START_POS_Y);
-      } catch (e) {
-        console.error(e);
-      }
-
-      if (this.props.shouldRAF) {
-        if (tabPlayer.currTick) {
-          focusMeasure(tabPlayer.currTick.measure);
-        }
-
-        return this.RAFHandle = window.requestAnimationFrame(this.renderCaret(videoPlayer.getCurrentTime()));
-      } else {
-        window.cancelAnimationFrame(this.RAFHandle);
-        return this.RAFHandle = null;
-      }
-    };
+    try {
+      this.clearCanvas();
+      this.drawCaret(tabPlayer.caretPosX(currentTime), Caret.START_POS_Y);
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   render(): JSX.Element {
@@ -181,7 +160,7 @@ const mapDispatchToProps = dispatch => ({
   focusMeasure: (measure: number) => dispatch(focusMeasure(measure))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  withRAFLoop,
+  connect(mapStateToProps, mapDispatchToProps)
 )(Caret);

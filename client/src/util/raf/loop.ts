@@ -41,14 +41,14 @@ const hasRafFunc = (spec: RAFSpec): boolean => (
 // The RAFLoop's purpose is to centralize functions for requestAnimationFrame() (or RAF).
 // This is particularly useful when multiple systems need to RAF and execute consistently.
 class RAFLoop {
-  public throttleMs: number = 0;
+  throttleMs: number = 0;
 
   private _isActive: boolean = false; // exposed by the public isActive() getter
   private _specs: Array<RAFSpec> = [];
   private _lastInvokeMs: number = 0;
   private _rafId: number = null;
 
-  public get dt(): number {
+  get dt(): number {
     if (!this.isActive) {
       return 0;
     } else {
@@ -56,11 +56,11 @@ class RAFLoop {
     }
   }
 
-  public get isActive(): boolean {
+  get isActive(): boolean {
     return this._isActive;
   }
 
-  public register(spec: RAFSpec): void {
+  register(spec: RAFSpec): void {
     this._validate(spec);
 
     const nextSpec = Object.assign({}, spec, { _n: this._specs.length });
@@ -68,11 +68,11 @@ class RAFLoop {
     this._specs = sortSpecs(this._specs);
   }
 
-  public unregister(specName: string): void {
+  unregister(specName: string): void {
     this._specs = this._specs.filter(({ name }) => name !== specName);
   }
 
-  public start(): void {
+  start(): void {
     if (!this.isActive) {
       this._invoke('onAnimationStart');
       this._isActive = true;
@@ -80,7 +80,7 @@ class RAFLoop {
     }
   }
 
-  public stop(): void {
+  stop(): void {
     if (this.isActive) {
       this._invoke('onAnimationEnd');
       this._lastInvokeMs = 0;
@@ -88,6 +88,10 @@ class RAFLoop {
       window.cancelAnimationFrame(this._rafId);
       this._rafId = null;
     }
+  }
+
+  has(specName: string): boolean {
+    return this._specs.some(({ name }) => name === specName);
   }
 
   private _loop = (): void => {

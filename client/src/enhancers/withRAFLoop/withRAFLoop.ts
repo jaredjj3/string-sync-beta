@@ -9,7 +9,9 @@ const mapDispatchToProps = dispatch => ({
   resetRAFLoop: () => dispatch(resetRAFLoop())
 });
 
-const withRafLoop = (Component: any) => connect(
+const withRAFLoop = (Component: any) => connect(
   mapStateToProps,
   mapDispatchToProps
 )(Component);
+
+export default withRAFLoop;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
 import Frets from './frets';
 import Strings from './strings';
@@ -8,9 +9,12 @@ import Col from 'antd/lib/col';
 
 import { Player, Fretman } from 'services/vexflow';
 import { isVideoActive } from 'util/videoStateCategory';
+import { withRAFLoop } from 'enhancers';
+import RAFLoop from 'util/raf/loop';
 
 interface FretboardProps {
   shouldRAF: boolean;
+  RAFLoop: any;
   tabPlayer: Player;
   fretman: Fretman;
 }
@@ -24,31 +28,34 @@ const fretIndicators = Object.assign([], Frets.DOTS).map((dots, fret) => (
 class Fretboard extends React.Component<FretboardProps, FretboardState> {
   static FRET_INDICATORS: Array<string> = fretIndicators;
 
-  RAFHandle: number = null;
-
   componentWillReceiveProps(nextProps: FretboardProps): void {
     if (nextProps.shouldRAF) {
-      this.RAFHandle = window.requestAnimationFrame(() => {
-        this.updateFretman(nextProps.fretman, nextProps.tabPlayer);
-      });
+      this.registerRAFLoop();
+    } else {
+      this.unregisterRAFLoop();
     }
   }
 
-  updateFretman = (fretman: Fretman, tabPlayer: Player): void => {
+  updateFretman = (): void => {
+    const { fretman, tabPlayer } = this.props;
+
     try {
       fretman.updateWithPlayer(tabPlayer);
     } catch (e) {
       // noop
     }
+  }
 
-    if (this.props.shouldRAF) {
-      this.RAFHandle = window.requestAnimationFrame(() => {
-        this.updateFretman(fretman, tabPlayer);
-      });
-    } else {
-      window.cancelAnimationFrame(this.RAFHandle);
-      this.RAFHandle = null;
-    }
+  registerRAFLoop = (): void => {
+    this.props.RAFLoop.register({
+      name: 'Fretboard.updateFretman',
+      precedence: 0,
+      onAnimationLoop: this.updateFretman
+    });
+  }
+
+  unregisterRAFLoop = (): void => {
+    this.props.RAFLoop.unregister('Fretboard.updateFretman');
   }
 
   render(): JSX.Element {
@@ -90,7 +97,7 @@ const mapDispatchToProps = dispatch => ({
 
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  withRAFLoop,
+  connect(mapStateToProps, mapDispatchToProps)
 )(Fretboard);
