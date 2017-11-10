@@ -17,9 +17,7 @@ type EventName = 'onAnimationStart' | 'onAnimationLoop' | 'onAnimationEnd';
 // utility functions
 const RAF = (
   window.requestAnimationFrame ||
-  window.mozRequestAnimationFrame ||
-  window.webkitRequestAnimationFrame ||
-  window.msRequestAnimationFrame
+  window.webkitRequestAnimationFrame
 );
 
 const sortSpecs = <T>(collection: Array<T>): Array<T> => {
