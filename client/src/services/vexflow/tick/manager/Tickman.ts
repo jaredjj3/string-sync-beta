@@ -3,6 +3,7 @@ import { Artist } from 'services/vexflow';
 
 import { sortBy, forOwn } from 'lodash';
 import { interpolateFuncFor } from 'util/interpolate';
+import isBetween from 'util/isBetween';
 
 class Tickman {
   vexPlayer: any = null;
@@ -29,7 +30,13 @@ class Tickman {
   }
 
   scrollSpecFor(tickVal: number): any {
+    for (let spec of this.scrollSpecs) {
+      if (spec.lowTick.value <= tickVal && spec.highTick.value > tickVal) {
+        return spec;
+      }
+    }
 
+    return null;
   }
 
   private _updateTicks(): void {
@@ -96,12 +103,13 @@ class Tickman {
 
   private _addScrollSpec(tick1: any, tick2: any): void {
     const [lowTick, highTick] = sortBy([tick1, tick2], tick => tick.value);
-
-    this.scrollSpecs.push({lowTick, highTick });
+    const posFunc = this._posFuncFor(lowTick, highTick);
+    this.scrollSpecs.push({ lowTick, highTick, posFunc });
   }
 
-  private _posFuncFor(lowTick: any, highTick: any): any {
-
+  private _posFuncFor(lowTick: any, highTick: any): Function {
+    const [lowPos, highPos] = [lowTick, highTick].map(tick => tick.notes[0].getBoundingBox().x);
+    return interpolateFuncFor(lowTick.value, highTick.value, lowPos, highPos);
   }
 }
 
