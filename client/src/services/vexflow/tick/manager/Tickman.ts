@@ -3,7 +3,6 @@ import { Artist } from 'services/vexflow';
 
 import { sortBy, forOwn } from 'lodash';
 import { interpolateFuncFor } from 'util/interpolate';
-import isBetween from 'util/isBetween';
 
 class Tickman {
   vexPlayer: any = null;

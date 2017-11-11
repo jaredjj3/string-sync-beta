@@ -47,9 +47,6 @@ class Score extends React.Component<ScoreProps, ScoreState> {
       this.maybeSetMeasuresPerLine(tabFormatter.measuresPerLine);
       this.maybeSetNumMeasures(tabFormatter.numMeasures);
       setArtist(this.artist);
-      const tm = new Tickman(tabPlayer);
-      tm.artist = this.artist;
-      debugger
       tabPlayer.artist = this.artist;
       tabPlayer.tempo = tempo;
     }
