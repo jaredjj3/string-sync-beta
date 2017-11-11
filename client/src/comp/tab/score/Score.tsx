@@ -36,6 +36,16 @@ class Score extends React.Component<ScoreProps, ScoreState> {
     nextProps.tabFormatter.width = nextProps.viewportWidth;
   }
 
+  shouldComponentUpdate(nextProps: ScoreProps): boolean {
+    return (
+      this.props.measuresPerLine !== nextProps.measuresPerLine ||
+      this.props.numMeasures !== nextProps.numMeasures ||
+      this.props.viewportWidth !== nextProps.viewportWidth ||
+      this.props.vextab !== nextProps.vextab ||
+      this.props.tempo !== nextProps.tempo
+    );
+  }
+
   componentDidUpdate(): void {
     const { tabFormatter } = this.props;
 
@@ -105,21 +115,6 @@ class Score extends React.Component<ScoreProps, ScoreState> {
     } catch (error) {
       setTabParseError(error.message);
     }
-  }
-
-  renderTabText(artist: Artist): void {
-    this.ctx.save();
-    this.ctx.font = '24px sans-serif';
-
-    artist.staves.map(stave => {
-      let x = 25;
-      let y = stave.tab.y + 73;
-      this.ctx.fillText('T', x, y);
-      this.ctx.fillText('A', x, y + 20);
-      this.ctx.fillText('B', x, y + 40);
-    });
-
-    this.ctx.restore();
   }
 
   render(): JSX.Element {

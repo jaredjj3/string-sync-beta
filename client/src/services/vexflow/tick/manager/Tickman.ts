@@ -22,12 +22,12 @@ class Tickman {
   set artist(artist: Artist) {
     this._artist = artist;
     this.extractor = new VexTickExtractor(artist).extractTicks();
-    this._updateTicks();
+    this.updateTicks();
   }
 
   set viewport(viewport: any) {
     this._viewport = viewport;
-    this._updateTicks();
+    this.updateTicks();
   }
 
   scrollSpecFor(tickVal: number): any {
@@ -40,7 +40,7 @@ class Tickman {
     return null;
   }
 
-  private _updateTicks(): void {
+  private updateTicks(): void {
     if (this._setTicks()) {
       this._addOffset();
       this._addLit();
@@ -120,16 +120,28 @@ class Tickman {
   }
 
   private _posFuncFor(lowTick: any, highTick: any): Function {
-    const lowPos = lowTick.notes[0].getBoundingBox().x;
+    const lowPos = this._lowPosFor(lowTick);
     const highPos = this._highPosFor(lowTick, highTick);
     return interpolateFuncFor(lowTick.value, highTick.value, lowPos, highPos);
   }
 
-  private _highPosFor(lowTick: any, highTick: any): number {
-    if (lowTick.staveIndex === highTick.staveIndex) {
-      return highTick.notes[0].getBoundingBox().x;
+  private _lowPosFor(lowTick: any): number {
+    if (lowTick.type === 'bar') {
+      return lowTick.notes[0].getAbsoluteX();
     } else {
-      return this._viewport ? this._viewport.width - 10 : window.innerWidth;
+      return lowTick.notes[0].getAbsoluteX();
+    }
+  }
+
+  private _highPosFor(lowTick: any, highTick: any): number {
+    if (highTick.type === 'bar') {
+      if (lowTick.staveIndex === highTick.staveIndex) {
+        return highTick.notes[0].getAbsoluteX();
+      } else {
+        return this._viewport ? this._viewport.width - 20 : window.innerWidth;
+      }
+    } else {
+      return highTick.notes[0].getAbsoluteX();
     }
   }
 }

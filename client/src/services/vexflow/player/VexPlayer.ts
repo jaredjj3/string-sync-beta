@@ -13,15 +13,19 @@ class VexPlayer {
     strokeStyle: '#FF0000'
   };
 
-  bpm: number = 137;
-  deadTimeMs: number = 0;
+  bpm: number = 0;
   scrollSpec: any = null;
   tickman: any = null;
 
+  private _deadTimeMs: number = 0;
   private _currentTimeMs: number = 0;
 
   get tpm(): number {
     return this.bpm ? this.bpm * (Flow.RESOLUTION / 4) : 0;
+  }
+
+  get deadTimeMs(): number {
+    return this._deadTimeMs;
   }
 
   get deadTimeTickVal(): number {
@@ -41,6 +45,11 @@ class VexPlayer {
     this._updateScrollSpec();
   }
 
+  set deadTimeMs(deadTimeMs: number) {
+    this._deadTimeMs = deadTimeMs;
+    this.tickman.updateTicks();
+  }
+
   tickVal(timeMs: number): number {
     return this.tpm * ((timeMs / 1000) / 60);
   }
@@ -52,10 +61,12 @@ class VexPlayer {
   }
 
   private _isScrollSpecValid(): boolean {
+    const { currentTickVal } = this;
+
     if (this.scrollSpec) {
       return (
-        this.scrollSpec.highTick.value > this.currentTickVal &&
-        this.scrollSpec.lowTick.value >= this.currentTickVal
+        this.scrollSpec.highTick.value > currentTickVal &&
+        this.scrollSpec.lowTick.value >= currentTickVal
       );
     } else {
       return false;

@@ -10,6 +10,9 @@ interface TabServicesProps {
   vexPlayer: VexPlayer;
   tickman: Tickman;
   viewport: Viewport;
+  deadTime: number;
+  tempo: number;
+  RAFLoop: any;
   setVexPlayer(vexPlayer: VexPlayer): void;
   setTickman(tickman: Tickman): void;
   resetTab(): void;
@@ -41,6 +44,14 @@ class TabServices extends React.Component<TabServicesProps, TabServicesProps> {
     if (prevProps.viewport !== nextProps.viewport) {
       this.onViewportUpdate(nextProps.viewport);
     }
+
+    if (prevProps.deadTime !== nextProps.deadTime) {
+      this.onDeadTimeUpdate(nextProps.deadTime);
+    }
+
+    if (prevProps.tempo !== nextProps.tempo) {
+      this.onTempoUpdate(nextProps.tempo);
+    }
   }
 
   onArtistUpdate = (artist: Artist): void => {
@@ -53,6 +64,14 @@ class TabServices extends React.Component<TabServicesProps, TabServicesProps> {
     if (this.props.tickman) {
       this.props.tickman.viewport = viewport;
     }
+  }
+
+  onDeadTimeUpdate = (deadTime: number): void => {
+    this.props.vexPlayer.deadTimeMs = deadTime * 1000;
+  }
+
+  onTempoUpdate = (tempo: number): void => {
+    this.props.vexPlayer.bpm = tempo;
   }
 
   render(): any {

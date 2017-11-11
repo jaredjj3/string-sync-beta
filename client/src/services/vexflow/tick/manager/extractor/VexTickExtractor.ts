@@ -42,6 +42,7 @@ class VexTickExtractor {
           const pressed = tabNote.positions || (lastTick && lastTick.positions) || [];
           this._addTick({
             type: this._tickType(note),
+            posX: note.getBoundingBox().x,
             value: absTick.value(),
             notes: [note],
             tabNotes: [tabNote],
