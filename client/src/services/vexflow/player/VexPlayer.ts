@@ -1,3 +1,5 @@
+// The VexPlayer's sole responsibility is to orchestrate the output
+// from the VexParser and sync it with the currentTime member variable.
 class VexPlayer {
   static DEFAULT_NOTE_STYLE: any = {
     fillStyle: '#000000',
