@@ -12,6 +12,7 @@ class VexPlayer {
   };
 
   currentTime: number = 0;
+  tempo: number = 0;
 
   get isReady(): boolean {
 
@@ -22,18 +23,6 @@ class VexPlayer {
   }
 
   get caretPosX(): number {
-
-  }
-
-  set artist(artist: any) {
-
-  }
-
-  set tempo(tempo: any) {
-
-  }
-
-  set viewport(viewport: any) {
 
   }
 
