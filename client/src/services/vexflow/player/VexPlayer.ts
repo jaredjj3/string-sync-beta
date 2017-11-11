@@ -8,6 +8,36 @@ class VexPlayer {
     fillStyle: '#FF0000',
     strokeStyle: '#FF0000'
   };
+
+  currentTime: number = 0;
+
+  get isReady(): boolean {
+
+  }
+
+  get tpm(): number {
+
+  }
+
+  get caretPosX(): number {
+
+  }
+
+  set artist(artist: any) {
+
+  }
+
+  set tempo(tempo: any) {
+
+  }
+
+  set viewport(viewport: any) {
+
+  }
+
+  update = (currentTime: number): void => {
+    this.currentTime = currentTime;
+  }
 }
 
 export default VexPlayer;
