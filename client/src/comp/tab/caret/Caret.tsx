@@ -127,7 +127,7 @@ class Caret extends React.Component<CaretProps, CaretState> {
 import { focusMeasure } from 'data/tab/actions';
 
 const mapStateToProps = state => ({
-  shouldRAF: state.video.player && isVideoActive(state.video.state),
+  shouldRAF: isVideoActive(state.video.state),
   vexPlayer: state.tab.vexPlayer,
   videoPlayer: state.video.player,
   viewport: state.device.viewport

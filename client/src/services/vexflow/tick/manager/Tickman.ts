@@ -40,7 +40,7 @@ class Tickman {
     return null;
   }
 
-  private updateTicks(): void {
+  updateTicks(): void {
     if (this._setTicks()) {
       this._addOffset();
       this._addLit();
@@ -50,7 +50,7 @@ class Tickman {
 
   private _setTicks(): boolean {
     if (this.extractor) {
-      this.ticks = this.extractor.ticks;
+      this.ticks = this.extractor.ticks.map(tick => Object.assign({}, tick));
       return true;
     } else {
       return false;
@@ -59,7 +59,7 @@ class Tickman {
 
   private _addOffset(): void {
     const offset = this.vexPlayer.deadTimeTickVal || 0;
-    this.ticks = this.extractor.ticks.map(tick => {
+    this.ticks = this.ticks.map(tick => {
       const nextTick = Object.assign({}, tick);
       nextTick.value += offset;
       return nextTick;
@@ -106,6 +106,8 @@ class Tickman {
 
   private _updateScrollSpecs(): void {
     // skip the last tick
+    this.scrollSpecs = [];
+
     for (let ndx = 0; ndx < this.ticks.length - 1; ndx++) {
       const currTick = this.ticks[ndx];
       const nextTick = this.ticks[ndx + 1];
@@ -120,28 +122,16 @@ class Tickman {
   }
 
   private _posFuncFor(lowTick: any, highTick: any): Function {
-    const lowPos = this._lowPosFor(lowTick);
+    const lowPos = lowTick.posX;
     const highPos = this._highPosFor(lowTick, highTick);
     return interpolateFuncFor(lowTick.value, highTick.value, lowPos, highPos);
   }
 
-  private _lowPosFor(lowTick: any): number {
-    if (lowTick.type === 'bar') {
-      return lowTick.notes[0].getAbsoluteX();
-    } else {
-      return lowTick.notes[0].getAbsoluteX();
-    }
-  }
-
   private _highPosFor(lowTick: any, highTick: any): number {
-    if (highTick.type === 'bar') {
-      if (lowTick.staveIndex === highTick.staveIndex) {
-        return highTick.notes[0].getAbsoluteX();
-      } else {
-        return this._viewport ? this._viewport.width - 20 : window.innerWidth;
-      }
+    if (lowTick.staveIndex === highTick.staveIndex) {
+      return highTick.posX;
     } else {
-      return highTick.notes[0].getAbsoluteX();
+      return this._viewport ? this._viewport.width - 40 : window.innerWidth;
     }
   }
 }

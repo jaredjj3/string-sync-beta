@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Icon from 'antd/lib/icon';
+import ScoreScroller from './scroller';
 import { VexTab, Artist, Flow, Formatter, VexPlayer, Tickman } from 'services/vexflow';
 
 import { Viewport } from 'types/device';
@@ -120,6 +121,7 @@ class Score extends React.Component<ScoreProps, ScoreState> {
   render(): JSX.Element {
     return (
       <div>
+        <ScoreScroller />
         <canvas ref={this.setCanvas} />
       </div>
     );

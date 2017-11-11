@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose, lifecycle } from 'recompose';
 
+import { isEqual } from 'lodash';
 import { Viewport } from 'types';
 import { Artist, VexPlayer, Tickman } from 'services/vexflow';
 
@@ -41,7 +42,7 @@ class TabServices extends React.Component<TabServicesProps, TabServicesProps> {
       this.onArtistUpdate(nextProps.artist);
     }
 
-    if (prevProps.viewport !== nextProps.viewport) {
+    if (nextProps.viewport.width !== window.innerWidth) {
       this.onViewportUpdate(nextProps.viewport);
     }
 

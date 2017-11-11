@@ -40,9 +40,9 @@ class VexTickExtractor {
           const noteTicks = note.getTicks();
           const lastTick = last(this.ticks);
           const pressed = tabNote.positions || (lastTick && lastTick.positions) || [];
-          this._addTick({
+          const tick = this._addTick({
             type: this._tickType(note),
-            posX: note.getBoundingBox().x,
+            posX: note.getAbsoluteX(),
             value: absTick.value(),
             notes: [note],
             tabNotes: [tabNote],
@@ -51,7 +51,9 @@ class VexTickExtractor {
             pressed
           });
 
-          totalVoiceTicks.add(noteTicks.numerator, noteTicks.denominator);
+          if (tick.type === 'note') {
+            totalVoiceTicks.add(noteTicks.numerator, noteTicks.denominator);
+          }
         });
         if (totalVoiceTicks.value() > maxVoiceTick.value()) {
           maxVoiceTick.copy(totalVoiceTicks);
@@ -73,7 +75,7 @@ class VexTickExtractor {
     if (!note.shouldIgnoreTicks()) {
       return 'note';
     } else if (note.getDuration() === 'b') {
-      return 'bar';
+    return 'bar';
     } else {
       return 'skip';
     }
@@ -111,7 +113,6 @@ class VexTickExtractor {
   private _addBarTick(tickSpec: any): any {
     const measureIndex = this._barTicks.length;
     const tick = Object.assign({}, tickSpec, { measureIndex });
-    this.ticks.push(tick);
     this._barTicks.push(tick);
     return tick;
   }

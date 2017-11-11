@@ -66,7 +66,7 @@ class VexPlayer {
     if (this.scrollSpec) {
       return (
         this.scrollSpec.highTick.value > currentTickVal &&
-        this.scrollSpec.lowTick.value >= currentTickVal
+        this.scrollSpec.lowTick.value <= currentTickVal
       );
     } else {
       return false;
