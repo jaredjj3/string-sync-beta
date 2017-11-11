@@ -60,6 +60,10 @@ class RAFLoop {
     return this._isActive;
   }
 
+  get specs(): Array<string> {
+    return this._specs.map(spec => spec.name);
+  }
+
   register(spec: RAFSpec): void {
     this._validate(spec);
 

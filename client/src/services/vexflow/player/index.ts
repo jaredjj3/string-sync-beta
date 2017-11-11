@@ -1,7 +1,3 @@
-import Player from './Player';
+import VexPlayer from './VexPlayer';
 
-export default Player;
-
-// import VexPlayer from './VexPlayer';
-
-// export default VexPlayer;
+export default VexPlayer;

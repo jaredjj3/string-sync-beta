@@ -4,21 +4,16 @@ import { compose } from 'recompose';
 
 import { isVideoActive } from 'util/videoStateCategory';
 import { Point } from 'types/point';
-import { VideoPlayer } from 'types';
+import { VideoPlayer, Viewport } from 'types';
 import { VexPlayer } from 'services/vexflow';
 import { withRAFLoop } from 'enhancers';
 
 interface CaretProps {
   shouldRAF: boolean;
-  tabPlayer: VexPlayer;
-  viewport: any;
+  vexPlayer: VexPlayer;
   videoPlayer: VideoPlayer;
-  deadTime: number;
-  tempo: number;
-  focusedLine: number;
-  focusedMeasure: number;
+  viewport: Viewport;
   RAFLoop: any;
-  focusMeasure(measure: number): void;
 }
 
 interface CaretState {}
@@ -32,30 +27,13 @@ class Caret extends React.Component<CaretProps, CaretState> {
   ctx: CanvasRenderingContext2D;
 
   componentDidMount(): void {
-    const { tabPlayer, viewport } = this.props;
-    tabPlayer.viewport = viewport;
-    this.resize(viewport);
+    this.resize();
   }
 
   componentWillReceiveProps(nextProps: CaretProps): void {
-    const { tabPlayer, viewport, focusedMeasure, focusedLine, videoPlayer, shouldRAF, RAFLoop } = nextProps;
-    tabPlayer.viewport = viewport;
+    const { vexPlayer, shouldRAF, RAFLoop } = nextProps;
 
-    if (nextProps.tempo) {
-      tabPlayer.tempo = nextProps.tempo;
-    }
-
-    if (typeof nextProps.deadTime === 'number') {
-      tabPlayer.deadTime = nextProps.deadTime;
-    }
-
-    if (!tabPlayer.isReady) {
-      tabPlayer.prepare();
-    }
-
-    if (shouldRAF && tabPlayer.isReady) {
-      this.resize(viewport);
-
+    if (shouldRAF) {
       if (!RAFLoop.has('Caret.renderCaret')) {
         this.registerRAFLoop();
       }
@@ -89,7 +67,8 @@ class Caret extends React.Component<CaretProps, CaretState> {
     this.ctx = c.getContext('2d');
   }
 
-  resize (viewport: any): void {
+  resize (): void {
+    const { viewport } = this.props;
     const { canvas } = this;
 
     const ratio = window.devicePixelRatio || 1;
@@ -123,14 +102,16 @@ class Caret extends React.Component<CaretProps, CaretState> {
   }
 
   renderCaret = (): any => {
-    const { tabPlayer, focusMeasure, videoPlayer } = this.props;
-    const currentTime = videoPlayer.getCurrentTime();
+    const { vexPlayer, videoPlayer } = this.props;
 
-    try {
-      this.clearCanvas();
-      this.drawCaret(tabPlayer.caretPosX(currentTime), Caret.START_POS_Y);
-    } catch (e) {
-      console.error(e);
+    if (vexPlayer) {
+      try {
+        vexPlayer.currentTimeMs = videoPlayer.getCurrentTime() * 1000;
+        this.clearCanvas();
+        this.drawCaret(vexPlayer.caretPosX, Caret.START_POS_Y);
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 
@@ -147,13 +128,9 @@ import { focusMeasure } from 'data/tab/actions';
 
 const mapStateToProps = state => ({
   shouldRAF: state.video.player && isVideoActive(state.video.state),
-  tabPlayer: state.tab.player,
+  vexPlayer: state.tab.vexPlayer,
   videoPlayer: state.video.player,
-  viewport: state.device.viewport,
-  deadTime: state.notation.deadTime,
-  tempo: state.notation.tempo,
-  focusedLine: state.tab.focusedLine,
-  focusedMeasure: state.tab.focusedMeasure
+  viewport: state.device.viewport
 });
 
 const mapDispatchToProps = dispatch => ({

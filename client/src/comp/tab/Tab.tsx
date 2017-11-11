@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import Caret from './caret';
 import Overlap from 'comp/overlap';
 import Score from './score';
-import Icon from 'antd/lib/icon';
-import Row from 'antd/lib/row';
+import TabServices from './services';
+import { Icon, Row } from 'antd';
 
 import { Artist } from 'services/vexflow';
 
@@ -42,6 +42,7 @@ class Tab extends React.Component<TabProps, TabState> {
   render(): JSX.Element {
     return (
       <div className="TabContainer">
+        <TabServices />
         <Overlap height="300px" width="100vw">
           <Layer
             className="ScoreContainer"

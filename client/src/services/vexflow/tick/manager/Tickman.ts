@@ -14,7 +14,9 @@ class Tickman {
   private _viewport: any = null;
 
   constructor(vexPlayer: any) {
+    // TODO: Get this coupling out of here!
     this.vexPlayer = vexPlayer;
+    vexPlayer.tickman = this;
   }
 
   set artist(artist: Artist) {
@@ -39,9 +41,20 @@ class Tickman {
   }
 
   private _updateTicks(): void {
-    this._addOffset();
-    this._addLit();
-    this._updateScrollSpecs();
+    if (this._setTicks()) {
+      this._addOffset();
+      this._addLit();
+      this._updateScrollSpecs();
+    }
+  }
+
+  private _setTicks(): boolean {
+    if (this.extractor) {
+      this.ticks = this.extractor.ticks;
+      return true;
+    } else {
+      return false;
+    }
   }
 
   private _addOffset(): void {

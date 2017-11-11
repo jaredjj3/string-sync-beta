@@ -13,9 +13,8 @@ class VexPlayer {
     strokeStyle: '#FF0000'
   };
 
-  bpm: number = 0;
+  bpm: number = 137;
   deadTimeMs: number = 0;
-  focus: any = null;
   scrollSpec: any = null;
   tickman: any = null;
 
@@ -47,17 +46,20 @@ class VexPlayer {
   }
 
   private _updateScrollSpec(): void {
-    if (!this._isScrollSpecValid && this.tickman) {
+    if (!this._isScrollSpecValid() && this.tickman) {
       this.scrollSpec = this.tickman.scrollSpecFor(this.currentTickVal);
     }
   }
 
   private _isScrollSpecValid(): boolean {
-    return (
-      this.scrollSpec &&
-      this.scrollSpec.highTick.value > this.currentTickVal &&
-      this.scrollSpec.lowTick.value <= this.currentTickVal
-    );
+    if (this.scrollSpec) {
+      return (
+        this.scrollSpec.highTick.value > this.currentTickVal &&
+        this.scrollSpec.lowTick.value >= this.currentTickVal
+      );
+    } else {
+      return false;
+    }
   }
 }
 

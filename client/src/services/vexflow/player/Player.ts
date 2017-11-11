@@ -16,7 +16,7 @@ interface NoteStyle {
   strokeStyle?: string
 }
 
-class VexPlayer {
+class DeprecatedVexPlayer {
   static DEFAULT_NOTE_STYLE: any = {
     fillStyle: '#000000',
     strokeStyle: '#000000'
@@ -117,7 +117,7 @@ class VexPlayer {
       // Ensure that the currTick that is about to get replaced
       // is redrawn to be black.
       if (this.currTick) {
-        this._drawTickNotes(this.currTick, VexPlayer.DEFAULT_NOTE_STYLE);
+        this._drawTickNotes(this.currTick, DeprecatedVexPlayer.DEFAULT_NOTE_STYLE);
       }
 
       // Get a new currTick
@@ -126,7 +126,7 @@ class VexPlayer {
       // Draw the notes to be the pressed style if a currTick object
       // is successfully created.
       if (this.currTick) {
-        this._drawTickNotes(this.currTick, VexPlayer.PRESSED_NOTE_STYLE);
+        this._drawTickNotes(this.currTick, DeprecatedVexPlayer.PRESSED_NOTE_STYLE);
       }
     }
 
@@ -276,7 +276,7 @@ class VexPlayer {
     return this.loopSliderMarks;
   }
 
-  private _drawTickNotes(tick: any, style: NoteStyle = VexPlayer.DEFAULT_NOTE_STYLE): void {
+  private _drawTickNotes(tick: any, style: NoteStyle = DeprecatedVexPlayer.DEFAULT_NOTE_STYLE): void {
     // style and draw staveNotes
     tick.lowStaveNotes.forEach(note => {
       note.setStyle(style);
@@ -433,4 +433,4 @@ class VexPlayer {
   }
 }
 
-export default VexPlayer;
+export default DeprecatedVexPlayer;

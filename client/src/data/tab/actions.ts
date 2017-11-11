@@ -1,9 +1,11 @@
 import isBetween from 'util/isBetween';
-import { Artist, VexPlayer } from 'services/vexflow';
+import { Artist, VexPlayer, Tickman } from 'services/vexflow';
 
 export const SET_MEASURES_PER_LINE = 'SET_MEASURES_PER_LINE';
 export const SET_NUM_MEASURES = 'SET_NUM_MEASURES';
 export const SET_ARTIST = 'SET_ARTIST';
+export const SET_VEX_PLAYER = 'SET_VEX_PLAYER';
+export const SET_TICKMAN = 'SET_TICK_MAN';
 export const FOCUS_MEASURE = 'FOCUS_MEASURE';
 export const FOCUS_LINE = 'FOCUS_LINE';
 export const RESET_TAB = 'RESET_TAB';
@@ -34,6 +36,16 @@ export const setNumMeasures = (numMeasures: number) => ({
 export const setArtist = (artist: Artist) => ({
   type: SET_ARTIST,
   artist
+});
+
+export const setTickman = (tickman: Tickman) => ({
+  type: SET_TICKMAN,
+  tickman
+});
+
+export const setVexPlayer = (vexPlayer: VexPlayer) => ({
+  type: SET_VEX_PLAYER,
+  vexPlayer
 });
 
 export const setTabParseError = (parseError: string) => ({

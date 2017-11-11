@@ -42,13 +42,13 @@ class Score extends React.Component<ScoreProps, ScoreState> {
     this.renderScore();
 
     if (this.artist) {
-      const { tabPlayer, tempo, setArtist } = this.props;
+      const { tabPlayer, setArtist } = this.props;
 
       this.maybeSetMeasuresPerLine(tabFormatter.measuresPerLine);
       this.maybeSetNumMeasures(tabFormatter.numMeasures);
       setArtist(this.artist);
-      tabPlayer.artist = this.artist;
-      tabPlayer.tempo = tempo;
+      // tabPlayer.artist = this.artist;
+      // tabPlayer.tempo = tempo;
     }
   }
 
@@ -146,7 +146,7 @@ const mapStateToProps = state => ({
   numMeasures: state.tab.numMeasures,
   vextab: state.notation.vextab,
   tempo: state.notation.tempo,
-  tabPlayer: state.tab.player,
+  tabPlayer: state.tab.vexPlayer,
   tabFormatter: state.tab.formatter
 });
 

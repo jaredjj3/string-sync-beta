@@ -2,13 +2,15 @@ import {
   SET_MEASURES_PER_LINE,
   SET_NUM_MEASURES,
   SET_ARTIST,
+  SET_TICKMAN,
   FOCUS_MEASURE,
   FOCUS_LINE,
   RESET_TAB,
   UPDATE_TUNING,
   RESET_TUNING,
   SET_TAB_PARSE_ERROR,
-  CLEAR_TAB_PARSE_ERROR
+  CLEAR_TAB_PARSE_ERROR,
+  SET_VEX_PLAYER
 } from './actions';
 
 import {
@@ -16,6 +18,7 @@ import {
   VexPlayer,
   Formatter,
   Fretman,
+  Tickman,
   ScaleVisualizer
 } from 'services/vexflow';
 
@@ -25,8 +28,9 @@ interface StoreTab {
   measuresPerLine: number;
   numMeasures: number;
   artist: Artist;
-  player: VexPlayer;
+  vexPlayer: VexPlayer;
   formatter: Formatter;
+  tickman: Tickman;
   scaleVisualizer: ScaleVisualizer;
   fretman: Fretman;
   tuning: Array<string>;
@@ -34,6 +38,7 @@ interface StoreTab {
 }
 
 const fretman = new Fretman();
+const scaleVisualizer = new ScaleVisualizer(fretman);
 
 const defaultState: StoreTab = Object.freeze({
   focusedMeasure: 0,
@@ -41,10 +46,11 @@ const defaultState: StoreTab = Object.freeze({
   measuresPerLine: 1,
   numMeasures: 0,
   artist: null,
-  player: new VexPlayer(),
+  vexPlayer: null,
+  tickman: null,
   formatter: new Formatter(),
   fretman,
-  scaleVisualizer: new ScaleVisualizer(fretman),
+  scaleVisualizer,
   tuning: ['E', 'A', 'D', 'G', 'B', 'E'],
   parseError: null
 });
@@ -82,6 +88,14 @@ export default (state = defaultState, action): StoreTab => {
       nextState.artist = action.artist;
       return nextState;
 
+    case SET_VEX_PLAYER:
+      nextState.vexPlayer = action.vexPlayer;
+      return nextState;
+
+    case SET_TICKMAN:
+      nextState.tickman = action.tickman;
+      return nextState;
+
     case UPDATE_TUNING:
       nextState.tuning = action.tuning;
       return nextState;
@@ -99,7 +113,11 @@ export default (state = defaultState, action): StoreTab => {
       return nextState;
 
     case RESET_TAB:
-      return defaultState;
+      const dupDefaultState = dup(defaultState);
+      const fretman = new Fretman();
+      dupDefaultState.fretman = fretman;
+      dupDefaultState.scaleVisualizer = new ScaleVisualizer(fretman);
+      return dupDefaultState;
 
     default:
       return nextState;

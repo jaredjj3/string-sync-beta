@@ -15,7 +15,7 @@ import RAFLoop from 'util/raf/loop';
 interface FretboardProps {
   shouldRAF: boolean;
   RAFLoop: any;
-  tabPlayer: VexPlayer;
+  vexPlayer: VexPlayer;
   fretman: Fretman;
 }
 
@@ -37,10 +37,10 @@ class Fretboard extends React.Component<FretboardProps, FretboardState> {
   }
 
   updateFretman = (): void => {
-    const { fretman, tabPlayer } = this.props;
+    const { fretman, vexPlayer } = this.props;
 
     try {
-      fretman.updateWithPlayer(tabPlayer);
+      fretman.updateWithPlayer(vexPlayer);
     } catch (e) {
       // noop
     }
@@ -82,13 +82,8 @@ class Fretboard extends React.Component<FretboardProps, FretboardState> {
 }
 
 const mapStateToProps = state => ({
-  shouldRAF: (
-    state.video.player &&
-    state.tab.player.isReady &&
-    state.tab.fretman &&
-    isVideoActive(state.video.state)
-  ),
-  tabPlayer: state.tab.player,
+  shouldRAF: isVideoActive(state.video.state),
+  vexPlayer: state.tab.vexPlayer,
   fretman: state.tab.fretman,
   scaleVisualizer: state.tab.scaleVisualizer,
 });

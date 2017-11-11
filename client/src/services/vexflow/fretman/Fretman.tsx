@@ -1,4 +1,4 @@
-import Player from '../player';
+import { VexPlayer } from 'services/vexflow';
 import { flatMap, compact } from 'lodash';
 
 class Fretman {
@@ -19,21 +19,21 @@ class Fretman {
     this.strings[stringComponent.props.string] = stringComponent;
   }
 
-  updateWithPlayer(player: Player): void {
+  updateWithPlayer(player: VexPlayer): void {
     const shouldLightMarkers = compact(
-      player.currTick.lit.map(pos => (
+      player.scrollSpec.lowTick.lit.map(pos => (
         this.markerAt(parseInt(pos.str, 10), parseInt(pos.fret, 10))
       ))
     );
 
     const shouldPressMarkers = compact(
-      player.currTick.pressed.map(pos => (
+      player.scrollSpec.lowTick.pressed.map(pos => (
         this.markerAt(parseInt(pos.str, 10), parseInt(pos.fret, 10))
       ))
     );
 
     const shouldLightStrings = compact(
-      player.currTick.pressed.map(pos => (
+      player.scrollSpec.lowTick.pressed.map(pos => (
         this.strings[parseInt(pos.str, 10)]
       ))
     );
