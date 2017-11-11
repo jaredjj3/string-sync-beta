@@ -107,8 +107,17 @@ class Tickman {
   }
 
   private _posFuncFor(lowTick: any, highTick: any): Function {
-    const [lowPos, highPos] = [lowTick, highTick].map(tick => tick.notes[0].getBoundingBox().x);
+    const lowPos = lowTick.notes[0].getBoundingBox().x;
+    const highPos = this._highPosFor(lowTick, highTick);
     return interpolateFuncFor(lowTick.value, highTick.value, lowPos, highPos);
+  }
+
+  private _highPosFor(lowTick: any, highTick: any): number {
+    if (lowTick.staveIndex === highTick.staveIndex) {
+      return highTick.notes[0].getBoundingBox().x;
+    } else {
+      return this._viewport ? this._viewport.width - 10 : window.innerWidth;
+    }
   }
 }
 
