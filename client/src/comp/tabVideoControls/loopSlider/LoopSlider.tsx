@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Slider from 'antd/lib/slider';
-import { Player } from 'services/vexflow';
+import { VexPlayer } from 'services/vexflow';
 import interpolator from 'util/interpolator';
 import formatTime from 'util/formatTime';
 

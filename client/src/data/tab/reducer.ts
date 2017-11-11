@@ -11,7 +11,13 @@ import {
   CLEAR_TAB_PARSE_ERROR
 } from './actions';
 
-import { Artist, Player, Formatter, Fretman, ScaleVisualizer } from 'services/vexflow';
+import {
+  Artist,
+  VexPlayer,
+  Formatter,
+  Fretman,
+  ScaleVisualizer
+} from 'services/vexflow';
 
 interface StoreTab {
   focusedMeasure: number;
@@ -19,17 +25,15 @@ interface StoreTab {
   measuresPerLine: number;
   numMeasures: number;
   artist: Artist;
-  player: Player;
+  player: VexPlayer;
   formatter: Formatter;
+  scaleVisualizer: ScaleVisualizer;
   fretman: Fretman;
   tuning: Array<string>;
   parseError: string;
 }
 
 const fretman = new Fretman();
-const player = new Player();
-const formatter = new Formatter();
-const scaleVisualizer = new ScaleVisualizer(fretman);
 
 const defaultState: StoreTab = Object.freeze({
   focusedMeasure: 0,
@@ -37,10 +41,10 @@ const defaultState: StoreTab = Object.freeze({
   measuresPerLine: 1,
   numMeasures: 0,
   artist: null,
-  player,
-  formatter,
+  player: new VexPlayer(),
+  formatter: new Formatter(),
   fretman,
-  scaleVisualizer,
+  scaleVisualizer: new ScaleVisualizer(fretman),
   tuning: ['E', 'A', 'D', 'G', 'B', 'E'],
   parseError: null
 });

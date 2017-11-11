@@ -7,7 +7,7 @@ import Strings from './strings';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 
-import { Player, Fretman } from 'services/vexflow';
+import { VexPlayer, Fretman } from 'services/vexflow';
 import { isVideoActive } from 'util/videoStateCategory';
 import { withRAFLoop } from 'enhancers';
 import RAFLoop from 'util/raf/loop';
@@ -15,7 +15,7 @@ import RAFLoop from 'util/raf/loop';
 interface FretboardProps {
   shouldRAF: boolean;
   RAFLoop: any;
-  tabPlayer: Player;
+  tabPlayer: VexPlayer;
   fretman: Fretman;
 }
 

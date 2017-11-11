@@ -1,7 +1,7 @@
 import Flow from 'services/vexflow/flow';
 import Artist from 'services/vexflow/artist';
 
-import { has, sortBy, values } from 'lodash';
+import { has, sortBy, values, last } from 'lodash';
 
 const { Fraction } = Flow;
 
@@ -9,14 +9,14 @@ const sortTicks = (ticks: Array<any>): Array<any> => {
   return sortBy(values(ticks), tick => tick.value);
 };
 
-class VexTickParser {
+class VexTickExtractor {
   voices: Array<any> = [];
   tabVoices: Array<any> = [];
   ticks: Array<any> = [];
 
   private _barTicks: Array<any> = [];
 
-  constructor(artist: Artist, offsetMs: number) {
+  constructor(artist: Artist) {
     this.artist = artist;
   }
 
@@ -25,13 +25,8 @@ class VexTickParser {
     this.tabVoices = artist.staves.map(stave => stave.tab_voices);
   }
 
-  resetTicks(): void {
-    this.ticks = [];
-    this._barTicks = [];
-  }
-
-  extractTicks(): void {
-    this.resetTicks();
+  extractTicks(): VexTickExtractor {
+    this._resetTicks();
 
     let totalTicks = new Fraction(0, 1);
 
@@ -42,15 +37,20 @@ class VexTickParser {
         voice.getTickables().forEach((note, tickIndex) => {
           const absTick = this._absTick(totalTicks, totalVoiceTicks);
           const tabNote = this._tabNote(voiceGroupIndex, voiceIndex, tickIndex);
+          const noteTicks = note.getTicks();
+          const lastTick = last(this.ticks);
+          const pressed = tabNote.positions || (lastTick && lastTick.positions) || [];
           this._addTick({
             type: this._tickType(note),
-            tick: absTick,
             value: absTick.value(),
             notes: [note],
             tabNotes: [tabNote],
             staveIndex: voiceGroupIndex,
-            noteIndex: tickIndex
+            noteIndex: tickIndex,
+            pressed
           });
+
+          totalVoiceTicks.add(noteTicks.numerator, noteTicks.denominator);
         });
         if (totalVoiceTicks.value() > maxVoiceTick.value()) {
           maxVoiceTick.copy(totalVoiceTicks);
@@ -60,6 +60,12 @@ class VexTickParser {
     });
 
     this.ticks = sortTicks(this.ticks);
+    return this;
+  }
+
+  private _resetTicks(): void {
+    this.ticks = [];
+    this._barTicks = [];
   }
 
   private _tickType(note: any): string {
@@ -73,32 +79,40 @@ class VexTickParser {
   }
 
   // Note and bar ticks have different ways of calculating
-  // their measureNum property. We split up the logic using
+  // their measureIndex property. We split up the logic using
   // this method to delegate to _addNoteTick or _addBarTick.
-  private _addTick(tickSpec: any): void {
+  private _addTick(tickSpec: any): any {
     switch (tickSpec.type) {
       case 'note':
-        this._addNoteTick(tickSpec);
-        return;
+        return this._addNoteTick(tickSpec);
       case 'bar':
-        this._addBarTick(tickSpec);
-        return;
+        return this._addBarTick(tickSpec);
       default:
         return;
     }
   }
 
-  private _addNoteTick(tickSpec: any): void {
-    const measureNum = Math.max(this._barTicks.length - 1, 0);
-    const tick = Object.assign({}, tickSpec, { measureNum });
-    this.ticks.push(tick);
+  private _addNoteTick(tickSpec: any): any {
+    const measureIndex = Math.max(this._barTicks.length - 1, 0);
+    const tick = Object.assign({}, tickSpec, { measureIndex });
+
+    const lastTick = last(this.ticks);
+    if (lastTick && lastTick.value === tick.value) {
+      lastTick.notes.concat(tick.notes);
+      lastTick.tabNotes.concat(tick.tabNote);
+    } else {
+      this.ticks.push(tick);
+    }
+
+    return tick;
   }
 
-  private _addBarTick(tickSpec: any): void {
-    const measureNum = this._barTicks.length;
-    const tick = Object.assign({}, tickSpec, { measureNum });
+  private _addBarTick(tickSpec: any): any {
+    const measureIndex = this._barTicks.length;
+    const tick = Object.assign({}, tickSpec, { measureIndex });
     this.ticks.push(tick);
     this._barTicks.push(tick);
+    return tick;
   }
 
   private _absTick(totalTicks: any, totalVoiceTicks: any): any {
@@ -112,4 +126,4 @@ class VexTickParser {
   }
 }
 
-export default VexTickParser;
+export default VexTickExtractor;

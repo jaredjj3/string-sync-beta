@@ -5,12 +5,12 @@ import { compose } from 'recompose';
 import { isVideoActive } from 'util/videoStateCategory';
 import { Point } from 'types/point';
 import { VideoPlayer } from 'types';
-import { Player } from 'services/vexflow';
+import { VexPlayer } from 'services/vexflow';
 import { withRAFLoop } from 'enhancers';
 
 interface CaretProps {
   shouldRAF: boolean;
-  tabPlayer: Player;
+  tabPlayer: VexPlayer;
   viewport: any;
   videoPlayer: VideoPlayer;
   deadTime: number;

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Icon from 'antd/lib/icon';
-import { VexTab, Artist, Flow, Formatter, Player } from 'services/vexflow';
+import { VexTab, Artist, Flow, Formatter, VexPlayer, Tickman } from 'services/vexflow';
 
 import { Viewport } from 'types/device';
 
@@ -13,7 +13,7 @@ interface ScoreProps {
   measuresPerLine: number;
   numMeasures: number;
   vextab: string;
-  tabPlayer: Player;
+  tabPlayer: VexPlayer;
   tabFormatter: Formatter;
   tempo: number;
   setMeasuresPerLine(measuresPerLine: number): void;
@@ -36,16 +36,6 @@ class Score extends React.Component<ScoreProps, ScoreState> {
     nextProps.tabFormatter.width = nextProps.viewportWidth;
   }
 
-  shouldComponentUpdate(nextProps: ScoreProps): boolean {
-    return (
-      this.props.measuresPerLine !== nextProps.measuresPerLine ||
-      this.props.numMeasures !== nextProps.numMeasures ||
-      this.props.viewportWidth !== nextProps.viewportWidth ||
-      this.props.vextab !== nextProps.vextab ||
-      this.props.tempo !== nextProps.tempo
-    );
-  }
-
   componentDidUpdate(): void {
     const { tabFormatter } = this.props;
 
@@ -57,6 +47,9 @@ class Score extends React.Component<ScoreProps, ScoreState> {
       this.maybeSetMeasuresPerLine(tabFormatter.measuresPerLine);
       this.maybeSetNumMeasures(tabFormatter.numMeasures);
       setArtist(this.artist);
+      const tm = new Tickman(tabPlayer);
+      tm.artist = this.artist;
+      debugger
       tabPlayer.artist = this.artist;
       tabPlayer.tempo = tempo;
     }
