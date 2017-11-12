@@ -56,8 +56,47 @@ class VexPlayer {
 
   private _updateScrollSpec(): void {
     if (!this._isScrollSpecValid() && this.tickman) {
+      this._drawTickNotes(VexPlayer.DEFAULT_NOTE_STYLE);
       this.scrollSpec = this.tickman.scrollSpecFor(this.currentTickVal);
+      this._drawTickNotes(VexPlayer.PRESSED_NOTE_STYLE);
     }
+  }
+
+  private _drawTickNotes(style: any): void {
+    if (!this.scrollSpec) {
+      return;
+    }
+
+    const tick = this.scrollSpec.lowTick;
+
+    tick.notes.forEach(note => {
+      note.setStyle(style);
+      note.setLedgerLineStyle(style);
+    });
+
+    tick.notes[0].drawNoteHeads();
+    tick.notes[0].drawLedgerLines();
+
+    // style and draw tabNotes
+    const ctx = tick.tabNotes[0].context;
+    ctx.save();
+
+    const { fillStyle, strokeStyle } = style;
+
+    if (fillStyle) {
+      ctx.fillStyle = fillStyle;
+    }
+
+    if (strokeStyle) {
+      ctx.strokeStyle = strokeStyle;
+    }
+
+    tick.tabNotes.forEach(tabNote => {
+      try {
+        tabNote.drawPositions();
+      } catch (e) { }
+    });
+    ctx.restore();
   }
 
   private _isScrollSpecValid(): boolean {
