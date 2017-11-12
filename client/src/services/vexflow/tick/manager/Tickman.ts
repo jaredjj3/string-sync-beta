@@ -131,7 +131,7 @@ class Tickman {
     if (lowTick.staveIndex === highTick.staveIndex) {
       return highTick.posX;
     } else {
-      return this._viewport ? this._viewport.width - 40 : window.innerWidth;
+      return this._viewport ? this._viewport.width - 40 : window.innerWidth - 40;
     }
   }
 }
