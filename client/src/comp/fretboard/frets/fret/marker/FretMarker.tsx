@@ -1,13 +1,17 @@
 import React from 'react';
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
 
 import { Fretman, ScaleVisualizer } from 'services/vexflow';
 import { isEqual } from 'lodash';
+import { withDeviceType } from 'enhancers';
+import classNames from 'classnames';
 
 interface FretMarkerProps {
   string: number;
   fret: number;
   fretman: Fretman;
+  deviceType: string;
   scaleVisualizer: ScaleVisualizer;
   tuning: Array<string>;
   scaleVisualization: boolean;
@@ -28,7 +32,8 @@ class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
   shouldComponentUpdate(nextProps: FretMarkerProps, nextState: FretMarkerState): boolean {
     return (
       !isEqual(this.state, nextState) ||
-      this.props.scaleVisualization !== nextProps.scaleVisualization
+      this.props.scaleVisualization !== nextProps.scaleVisualization ||
+      this.props.deviceType !== nextProps.deviceType
     );
   }
 
@@ -103,21 +108,24 @@ class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
   }
 
   render(): JSX.Element {
-    const { string, fret, scaleVisualizer } = this.props;
+    const { string, fret, scaleVisualizer, deviceType } = this.props;
     const { lit, pressed } = this.state;
     const note = scaleVisualizer.noteAt({ string, fret });
 
-    const markerClassName = [
+    const markerClassNames = classNames(
       'Marker',
       `Marker--string${string}`,
-      !lit && !pressed ? 'Marker--hidden' : '',
-      lit  && !pressed ? 'Marker--lit' : '',
-      pressed          ? 'Marker--pressed' : ''
-    ].join(' ').trim();
+      {
+        'Marker--hidden': !lit && !pressed,
+        'Marker--lit': lit && !pressed,
+        'Marker--pressed': pressed,
+        'Marker--mobile': deviceType === 'MOBILE'
+      }
+    );
 
     return (
       <span
-        className={markerClassName}
+        className={markerClassNames}
         onMouseOver={this.handleMouseOver}
         onMouseLeave={this.handleMouseLeave}
         onClick={this.handleClick}
@@ -132,14 +140,14 @@ const mapStateToProps = state => ({
   fretman: state.tab.fretman,
   scaleVisualizer: state.tab.scaleVisualizer,
   tuning: state.tab.tuning,
-  scaleVisualization: state.feature.scaleVisualization
+  scaleVisualization: state.feature.scaleVisualization,
 });
 
 const mapDispatchToProps = dispatch => ({
 
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  withDeviceType,
+  connect(mapStateToProps, mapDispatchToProps)
 )(FretMarker);
