@@ -9,7 +9,6 @@ import Tab from 'comp/tab';
 import TabVideoControls from 'comp/tabVideoControls';
 import Video from 'comp/video';
 import Banner from './banner';
-import { TabNavNext, TabNavPrev } from 'comp/tab/nav';
 import { isVideoActive } from 'util/videoStateCategory';
 
 import { Notation } from 'types/notation';
@@ -71,10 +70,6 @@ class NotationShow extends React.Component<NotationShowProps, NotationShowState>
           </Panel>
         </Collapse>
         <Tab />
-        <div className="NotationShow__tabNavContainer">
-          <TabNavPrev />
-          <TabNavNext />
-        </div>
       </div>
     );
   }
