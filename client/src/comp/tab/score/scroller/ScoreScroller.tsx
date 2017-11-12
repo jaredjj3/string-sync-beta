@@ -36,7 +36,6 @@ class ScoreScroller extends React.Component<ScoreScrollerProps, ScoreScrollerSta
       const measure = this.props.vexPlayer.scrollSpec.lowTick.measureIndex;
       this.props.focusMeasure(measure);
     } catch (e) {
-      console.error(e);
       // noop
     }
   }

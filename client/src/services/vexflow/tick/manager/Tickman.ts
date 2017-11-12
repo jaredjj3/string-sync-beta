@@ -111,14 +111,14 @@ class Tickman {
     for (let ndx = 0; ndx < this.ticks.length - 1; ndx++) {
       const currTick = this.ticks[ndx];
       const nextTick = this.ticks[ndx + 1];
-      this._addScrollSpec(currTick, nextTick);
+      this._addScrollSpec(currTick, nextTick, ndx);
     }
   }
 
-  private _addScrollSpec(tick1: any, tick2: any): void {
+  private _addScrollSpec(tick1: any, tick2: any, index: number): void {
     const [lowTick, highTick] = sortBy([tick1, tick2], tick => tick.value);
     const posFunc = this._posFuncFor(lowTick, highTick);
-    this.scrollSpecs.push({ lowTick, highTick, posFunc });
+    this.scrollSpecs.push({ index, lowTick, highTick, posFunc });
   }
 
   private _posFuncFor(lowTick: any, highTick: any): Function {

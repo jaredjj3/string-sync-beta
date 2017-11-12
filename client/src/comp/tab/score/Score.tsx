@@ -58,8 +58,7 @@ class Score extends React.Component<ScoreProps, ScoreState> {
       this.maybeSetMeasuresPerLine(tabFormatter.measuresPerLine);
       this.maybeSetNumMeasures(tabFormatter.numMeasures);
       setArtist(this.artist);
-      // tabPlayer.artist = this.artist;
-      // tabPlayer.tempo = tempo;
+      this.renderTabText(this.artist);
     }
   }
 
@@ -87,6 +86,21 @@ class Score extends React.Component<ScoreProps, ScoreState> {
     if (numMeasures !== this.props.numMeasures) {
       this.props.setNumMeasures(numMeasures);
     }
+  }
+
+  renderTabText(artist: Artist): void {
+    this.ctx.save();
+    this.ctx.font = '24px sans-serif';
+
+    artist.staves.map(stave => {
+      let x = 25;
+      let y = stave.tab.y + 73;
+      this.ctx.fillText('T', x, y);
+      this.ctx.fillText('A', x, y + 20);
+      this.ctx.fillText('B', x, y + 40);
+    });
+
+    this.ctx.restore();
   }
 
   renderScore(): void {

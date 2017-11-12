@@ -20,7 +20,7 @@ const { Panel } = Collapse;
 
 interface NotationEditProps {
   device: Device;
-  params: any;
+  match: any;
   showFretboard: boolean;
   showFretboardControls: boolean;
   autoSave: boolean;
@@ -38,7 +38,7 @@ interface NotationEditState {}
 class NotationEdit extends React.Component<NotationEditProps, NotationEditState> {
   componentDidMount(): void {
     this.props.enableAutoSave();
-    this.props.fetchNotation(this.props.params.id);
+    this.props.fetchNotation(this.props.match.params.id);
   }
 
   componentWillUnmount(): void {
@@ -67,7 +67,6 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
           <Bpm />
         </Row>
         <VextabEditor />
-        <TabVideoControls />
       </div>
     );
   }

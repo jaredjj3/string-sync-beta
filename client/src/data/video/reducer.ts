@@ -26,7 +26,7 @@ export default (state = defaultState, action) => {
 
   switch (action.type) {
     case UPDATE_VIDEO_PLAYER:
-      nextState.player = action.videoPlayer;
+      nextState.player = withNegativeTimeDeltaGuard(action.videoPlayer);
       return nextState;
 
     case UPDATE_VIDEO_STATE:

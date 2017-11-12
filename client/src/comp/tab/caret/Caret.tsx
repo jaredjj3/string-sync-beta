@@ -101,7 +101,7 @@ class Caret extends React.Component<CaretProps, CaretState> {
     this.ctx.stroke();
   }
 
-  renderCaret = (): any => {
+  renderCaret = (dt: number): any => {
     const { vexPlayer, videoPlayer } = this.props;
 
     if (vexPlayer) {

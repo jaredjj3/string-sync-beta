@@ -40,6 +40,10 @@ class VexPlayer {
     return this.scrollSpec ? this.scrollSpec.posFunc(this.currentTickVal) : 0;
   }
 
+  get currentTimeMs(): number {
+    return this._currentTimeMs;
+  }
+
   set currentTimeMs(currentTimeMs: number) {
     this._currentTimeMs = currentTimeMs;
     this._updateScrollSpec();
