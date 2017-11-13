@@ -8,6 +8,7 @@ class Tickman {
   vexPlayer: any = null;
   extractor: VexTickExtractor = null;
   ticks: Array<any> = [];
+  barTicks: Array<any> = [];
   scrollSpecs: Array<any> = [];
 
   private _artist: Artist = null;
@@ -51,6 +52,7 @@ class Tickman {
   private _setTicks(): boolean {
     if (this.extractor) {
       this.ticks = this.extractor.ticks.map(tick => Object.assign({}, tick));
+      this.barTicks = this.extractor.barTicks.map(barTick => Object.assign({}, barTick));
       return true;
     } else {
       return false;

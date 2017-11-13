@@ -13,8 +13,7 @@ class VexTickExtractor {
   voices: Array<any> = [];
   tabVoices: Array<any> = [];
   ticks: Array<any> = [];
-
-  private _barTicks: Array<any> = [];
+  barTicks: Array<any> = [];
 
   constructor(artist: Artist) {
     this.artist = artist;
@@ -68,7 +67,7 @@ class VexTickExtractor {
 
   private _resetTicks(): void {
     this.ticks = [];
-    this._barTicks = [];
+    this.barTicks = [];
   }
 
   private _tickType(note: any): string {
@@ -96,7 +95,7 @@ class VexTickExtractor {
   }
 
   private _addNoteTick(tickSpec: any): any {
-    const measureIndex = Math.max(this._barTicks.length - 1, 0);
+    const measureIndex = Math.max(this.barTicks.length - 1, 0);
     const tick = Object.assign({}, tickSpec, { measureIndex });
 
     const lastTick = last(this.ticks);
@@ -111,9 +110,9 @@ class VexTickExtractor {
   }
 
   private _addBarTick(tickSpec: any): any {
-    const measureIndex = this._barTicks.length;
+    const measureIndex = this.barTicks.length;
     const tick = Object.assign({}, tickSpec, { measureIndex });
-    this._barTicks.push(tick);
+    this.barTicks.push(tick);
     return tick;
   }
 
