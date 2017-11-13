@@ -42,6 +42,7 @@ class VexTickExtractor {
           const tick = this._addTick({
             type: this._tickType(note),
             posX: note.getAbsoluteX(),
+            posY: note.stave.y,
             value: absTick.value(),
             notes: [note],
             tabNotes: [tabNote],
@@ -113,6 +114,7 @@ class VexTickExtractor {
     const measureIndex = this.barTicks.length;
     const tick = Object.assign({}, tickSpec, { measureIndex });
     this.barTicks.push(tick);
+
     return tick;
   }
 
