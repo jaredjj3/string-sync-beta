@@ -1,5 +1,7 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
 import MobileLibrary from './mobile';
 import DesktopLibrary from './desktop';
@@ -94,7 +96,7 @@ const mapDispatchToProps = dispatch => ({
   fetchNotations: () => dispatch(fetchNotations({ featured: true }))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
 )(Library);

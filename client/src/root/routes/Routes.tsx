@@ -11,6 +11,7 @@ import NotationShow from './notation/show';
 import Search from './search';
 import Signup from './signup';
 import Upload from './notation/new';
+import Sandbox from './sandbox';
 
 import { inContainer } from 'enhancers';
 
@@ -30,6 +31,7 @@ const Routes = () => (
     <Route path="/dashboard" component={Dashboard} />
     <Route path="/n/:id" component={NotationShow} />
     <Route path="/n/:id/edit" component={NotationEdit} />
+    <Route path="/sandbox" component={Sandbox} />
   </div>
 );
 
