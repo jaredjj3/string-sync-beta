@@ -6,8 +6,7 @@ import Dashboard from './dashboard';
 import Landing from './landing';
 import Library from './library';
 import Login from './login';
-import NotationEdit from './notation/edit';
-import NotationShow from './notation/show';
+import Notation from './notation';
 import Search from './search';
 import Signup from './signup';
 import Upload from './notation/new';
@@ -29,8 +28,7 @@ const Routes = () => (
     <Route path="/search" component={withMarginTop(Search, '2%')} />
     <Route path="/upload" component={withMarginTop(Upload, '10%')} />
     <Route path="/dashboard" component={Dashboard} />
-    <Route path="/n/:id" component={NotationShow} />
-    <Route path="/n/:id/edit" component={NotationEdit} />
+    <Route path="/n" component={Notation} />
     <Route path="/sandbox" component={Sandbox} />
   </div>
 );

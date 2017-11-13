@@ -22,7 +22,6 @@ class Frets extends React.PureComponent<FretsProps, FretsState> {
   static MOBILE_DOTS: Array<number> = Frets.DOTS.slice(0, 16);
 
   render(): JSX.Element {
-    // const fretsDots = this.props.deviceType === 'DESKTOP' ? Frets.DESKTOP_DOTS : Frets.MOBILE_DOTS;
     const fretsDots = Frets.DOTS;
 
     return (
@@ -47,4 +46,4 @@ class Frets extends React.PureComponent<FretsProps, FretsState> {
   }
 }
 
-export default withDeviceType(Frets);
+export default Frets;
