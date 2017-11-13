@@ -17,6 +17,7 @@ interface ScoreProps {
   tabPlayer: VexPlayer;
   tabFormatter: Formatter;
   tempo: number;
+  tickman: any;
   setMeasuresPerLine(measuresPerLine: number): void;
   setNumMeasures(numMeasures: number): void;
   setArtist(artist: Artist): void;
@@ -59,6 +60,7 @@ class Score extends React.Component<ScoreProps, ScoreState> {
       this.maybeSetNumMeasures(tabFormatter.numMeasures);
       setArtist(this.artist);
       this.renderTabText(this.artist);
+      this.renderMeasureNumbers();
     }
   }
 
@@ -98,6 +100,20 @@ class Score extends React.Component<ScoreProps, ScoreState> {
       this.ctx.fillText('T', x, y);
       this.ctx.fillText('A', x, y + 20);
       this.ctx.fillText('B', x, y + 40);
+    });
+
+    this.ctx.restore();
+  }
+
+  renderMeasureNumbers(): void {
+    this.ctx.save();
+    this.ctx.fillStyle = 'darkgray';
+    this.ctx.font = 'italic 10px arial';
+
+    this.props.tickman.barTicks.forEach((barTick, ndx) => {
+      let x = barTick.posX;
+      let y = barTick.posY;
+      this.ctx.fillText(ndx, x - 3, y + 33);
     });
 
     this.ctx.restore();
@@ -158,7 +174,8 @@ const mapStateToProps = state => ({
   vextab: state.notation.vextab,
   tempo: state.notation.tempo,
   tabPlayer: state.tab.vexPlayer,
-  tabFormatter: state.tab.formatter
+  tabFormatter: state.tab.formatter,
+  tickman: state.tab.tickman
 });
 
 const mapDispatchToProps = dispatch => ({
