@@ -11,7 +11,6 @@ import Row from 'antd/lib/row';
 
 import { ClickParam } from 'antd/lib/menu';
 import { Location } from 'types/location';
-import { invert } from 'lodash';
 
 const { Item } = Menu;
 const SubMenu = Menu.SubMenu;
@@ -27,38 +26,12 @@ interface DesktopNavProps {
 }
 
 interface DesktopNavState {
-  current: string;
-}
 
-enum NavKeys {
-  SEARCH  = 'SEARCH',
-  LIBRARY = 'LIBRARY',
-  LOGIN   = 'LOGIN',
 }
 
 class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
-  static NAV_KEYS_BY_LOCATION: object = {
-    '/library' : NavKeys.LIBRARY,
-    '/login'   : NavKeys.LOGIN,
-    '/search'  : NavKeys.SEARCH
-  };
-
-  state: DesktopNavState = { current: null };
-
-  componentWillMount(): void {
-    this.setState({ current: DesktopNav.NAV_KEYS_BY_LOCATION[this.props.location.pathname] });
-  }
-
-  componentWillReceiveProps(nextProps: DesktopNavProps, nextState: DesktopNavState): void {
-    this.setState({ current: DesktopNav.NAV_KEYS_BY_LOCATION[nextProps.location.pathname] || null });
-  }
-
   goTo = (params: ClickParam): void => {
-    const location = invert(DesktopNav.NAV_KEYS_BY_LOCATION)[params.key];
-
-    if (location) {
-      this.props.history.push(location);
-    }
+    this.props.history.push(params.key);
   }
 
   logout = (e: React.SyntheticEvent<HTMLDivElement>): void => {
@@ -69,7 +42,8 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
   }
 
   render(): JSX.Element {
-    const { isLoggedIn, isTeacher, isAdmin } = this.props;
+    const { isLoggedIn, isTeacher, isAdmin, location } = this.props;
+
     return (
       <nav className="Nav--desktop">
         <Row type="flex" justify="space-between" align="middle">
@@ -79,18 +53,18 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
           <Col xs={0} sm={0} md={12} lg={12}>
             <div className="Nav--desktop__right">
               <Menu
-                selectedKeys={[this.state.current]}
+                selectedKeys={[location.pathname]}
                 mode="horizontal"
                 style={{ fontSize: '14px', borderBottom: '0', background: 'none' }}
                 onClick={this.goTo}
               >
-                <Item key="ABOUT" className="Nav--desktop__menuItem">
+                <Item key="/about" className="Nav--desktop__menuItem">
                   about
                 </Item>
-                <Item key={NavKeys.SEARCH} className="Nav--desktop__menuItem">
+                <Item key="/search" className="Nav--desktop__menuItem">
                   search
                 </Item>
-                <Item key={NavKeys.LIBRARY} className="Nav--desktop__menuItem">
+                <Item key="/library" className="Nav--desktop__menuItem">
                   library
                 </Item>
                 {
@@ -99,7 +73,7 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
                     {
                       isTeacher || isAdmin ?
                         <Item>
-                          <Link to="upload">
+                          <Link to="/upload">
                             <Icon type="upload" />
                             <span>upload</span>
                           </Link>
@@ -108,7 +82,7 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
                     {
                       isAdmin ?
                         <Item>
-                          <Link to="dashboard">
+                          <Link to="/dashboard">
                             <Icon type="compass" />
                             <span>dashboard</span>
                           </Link>
@@ -121,7 +95,7 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
                       </div>
                     </Item>
                   </SubMenu> :
-                  <Item key={NavKeys.LOGIN} className="Nav--desktop__menuItem">
+                  <Item key="/login" className="Nav--desktop__menuItem">
                     login
                   </Item>
                 }
