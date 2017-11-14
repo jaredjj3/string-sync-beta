@@ -18,10 +18,6 @@ const doUpdateViewport = () => props => event => {
   }
 };
 
-const mapProps = ownerProps => ({
-  doUpdateViewport
-});
-
 const mapStateToProps = state => ({
   isTouch: state.device.isTouch,
   height: state.device.viewport.height,
