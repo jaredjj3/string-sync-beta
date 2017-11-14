@@ -33,7 +33,10 @@ class Banner extends React.Component<BannerProps, BannerState> {
             <Row className="NotationShowBanner__icons" type="flex" justify="end">
               <span>
                 <Link to="/library">
-                  <Icon type="close" style={{ fontSize: '24px' }} />
+                  <div className="NotationsShowBanner__back">
+                    <Icon type="close" style={{ fontSize: '24px' }} />
+                    <span>back</span>
+                  </div>
                 </Link>
               </span>
             </Row>
