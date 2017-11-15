@@ -13,7 +13,7 @@ const shouldUpdateViewport = ({ isTouch, height, width, deviceType }) => (
 );
 
 const doUpdateViewport = () => props => event => {
-  if (shouldUpdateViewport) {
+  if (shouldUpdateViewport(props)) {
     props.updateViewport();
   }
 };
