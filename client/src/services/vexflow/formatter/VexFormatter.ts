@@ -53,7 +53,9 @@ class VexFormatter {
       return _chunkedMeasures;
     }, []);
 
-    this.measureChunks = this._adjustMeasureChunks(chunkedMeasures);
+    // TODO: Make this feature work for multiline tabs
+    this.measureChunks = chunkedMeasures.length === 1 ?
+        this._adjustMeasureChunks(chunkedMeasures) : chunkedMeasures;
 
     this.formattedVextab = this.measureChunks.reduce((formattedVextab, measureGroup) => {
       formattedVextab += ('\n' + measureGroup[0].head + '\n');

@@ -12,6 +12,7 @@ interface PlayProps {
   isVideoActive: boolean;
   shouldRAF: boolean;
   videoPlayer: any;
+  RAFLoop: any;
 }
 
 interface PlayState {
@@ -23,15 +24,31 @@ class Play extends React.Component<PlayProps, PlayState> {
     currentTime: '0.0'
   };
 
-  RAFHandle: number = null;
+  componentWillReceiveProps(nextProps: PlayProps): void {
+    const { shouldRAF, RAFLoop } = nextProps;
 
-  componentDidUpdate(): void {
-    if (this.props.shouldRAF) {
-      this.RAFHandle = window.requestAnimationFrame(this.updateTime);
+    if (shouldRAF) {
+      if (!RAFLoop.has('Play.updateTime')) {
+        this.registerRAFLoop();
+      }
     } else {
-      window.cancelAnimationFrame(this.RAFHandle);
-      this.RAFHandle = null;
+      this.unregisterRAFLoop();
     }
+  }
+
+  componentWillUnmount(): void {
+    this.unregisterRAFLoop();
+  }
+
+  registerRAFLoop = (): void => {
+    this.props.RAFLoop.register({
+      name: 'Play.updateTime',
+      onAnimationLoop: this.updateTime
+    });
+  }
+
+  unregisterRAFLoop = (): void => {
+    this.props.RAFLoop.unregister('Play.updateTime');
   }
 
   updateTime = (): void => {
@@ -71,7 +88,7 @@ const mapStateToProps = state => ({
   isMobile: state.device.type === 'MOBILE' || state.device.isTouch,
   isVideoActive: isVideoActive(state.video.state),
   videoPlayer: state.video.player,
-  shouldRAF: state.video.player && isVideoActive(state.video.state)
+  shouldRAF: isVideoActive(state.video.state)
 });
 
 const mapDispatchToProps = dispatch => ({

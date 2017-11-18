@@ -5,6 +5,7 @@ import Caret from './caret';
 import Overlap from 'comp/overlap';
 import Score from './score';
 import TabServices from './services';
+import TabControls from './controls';
 import { Icon, Row } from 'antd';
 
 import { Artist } from 'services/vexflow';
@@ -54,6 +55,7 @@ class Tab extends React.Component<TabProps, TabState> {
             <Caret />
           </Layer>
         </Overlap>
+        <TabControls />
       </div>
     );
   }
