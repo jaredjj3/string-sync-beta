@@ -6,6 +6,7 @@ import ScaleVisualizer from './scaleVisualizer';
 import Tickman from './tick/manager';
 import VexPlayer from './player';
 import VexTab from './vextab';
+import VexProvider from './provider';
 
 export {
   Artist,
@@ -15,5 +16,6 @@ export {
   ScaleVisualizer,
   Tickman,
   VexPlayer,
-  VexTab
+  VexTab,
+  VexProvider
 };
