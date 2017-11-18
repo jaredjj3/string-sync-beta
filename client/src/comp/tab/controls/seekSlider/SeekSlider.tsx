@@ -15,6 +15,7 @@ interface SeekSliderProps {
   duration: number;
   loop: [number, number];
   shouldRAF: boolean;
+  RAFLoop: any;
 }
 
 interface SeekSliderState {
@@ -22,7 +23,6 @@ interface SeekSliderState {
 }
 
 class SeekSlider extends React.Component<SeekSliderProps, SeekSliderState> {
-  RAFHandle: number = null;
   isScrubbing: boolean = false;
   shouldPlayOnScrubEnd: boolean = false;
   maybeSeekVideo: any = null;
@@ -42,21 +42,31 @@ class SeekSlider extends React.Component<SeekSliderProps, SeekSliderState> {
   }
 
   componentWillReceiveProps(nextProps: SeekSliderProps): void {
-    if (!this.areConvertorFuncsSet && nextProps.duration > 0) {
-      this._toTime = interpolator({ x: 0, y: 0 }, { x: 100, y: nextProps.duration });
-      this._toSeekSliderValue = interpolator({ x: 0, y: 0 }, { x: nextProps.duration, y: 100 });
+    const { duration, shouldRAF, RAFLoop } = nextProps;
+
+    if (!this.areConvertorFuncsSet && duration > 0) {
+      this._toTime = interpolator({ x: 0, y: 0 }, { x: 100, y: duration });
+      this._toSeekSliderValue = interpolator({ x: 0, y: 0 }, { x: duration, y: 100 });
     }
 
-    this.updateSeekSliderValue();
+    if (shouldRAF) {
+      if (!RAFLoop.has('SeekSlider.updateSeekSliderValue')) {
+        this.registerRAFLoop();
+      }
+    } else {
+      this.unregisterRAFLoop();
+    }
   }
 
-  componentDidUpdate(): void {
-    if (this.props.shouldRAF && !this.isScrubbing) {
-      this.RAFHandle = window.requestAnimationFrame(this.updateSeekSliderValue);
-    } else {
-      window.cancelAnimationFrame(this.RAFHandle);
-      this.RAFHandle = null;
-    }
+  registerRAFLoop = (): void => {
+    this.props.RAFLoop.register({
+      name: 'SeekSlider.updateSeekSliderValue',
+      onAnimationLoop: this.updateSeekSliderValue
+    });
+  }
+
+  unregisterRAFLoop = (): void => {
+    this.props.RAFLoop.unregister('SeekSlider.updateSeekSliderValue');
   }
 
   get areConvertorFuncsSet(): boolean {
@@ -133,13 +143,13 @@ class SeekSlider extends React.Component<SeekSliderProps, SeekSliderState> {
   }
 
   private _maybeStartScrubbing = (): void => {
-    const { videoPlayer, isVideoActive } = this.props;
+    const { videoPlayer, shouldRAF } = this.props;
 
     if (this.isScrubbing) {
       return;
     }
 
-    this.shouldPlayOnScrubEnd = isVideoActive;
+    this.shouldPlayOnScrubEnd = shouldRAF;
     this.isScrubbing = true;
 
     videoPlayer.pauseVideo();
@@ -161,10 +171,11 @@ class SeekSlider extends React.Component<SeekSliderProps, SeekSliderState> {
 import { isVideoActive } from 'util/videoStateCategory';
 
 const mapStateToProps = state => ({
-  shouldRAF: state.video.player && isVideoActive(state.video.state),
+  shouldRAF: isVideoActive(state.video.state),
   videoPlayer: state.video.player,
   duration: state.notation.duration / 1000,
-  loop: state.video.loop
+  loop: state.video.loop,
+  RAFLoop: state.raf.loop
 });
 
 const mapDispatchToProps = dispatch => ({

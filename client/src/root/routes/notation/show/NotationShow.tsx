@@ -79,7 +79,7 @@ import { fetchNotation, resetNotation } from 'data/notation/actions';
 import { enableFeatures, disableFeatures } from 'data/feature/actions';
 
 const mapStateToProps = state => ({
-  shouldRAF: state.video.player && isVideoActive(state.video.state),
+  shouldRAF: isVideoActive(state.video.state),
   showFretboard: state.panels.fretboard,
   showFretboardControls: state.panels.fretboardControls
 });

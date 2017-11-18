@@ -88,7 +88,8 @@ const mapStateToProps = state => ({
   isMobile: state.device.type === 'MOBILE' || state.device.isTouch,
   isVideoActive: isVideoActive(state.video.state),
   videoPlayer: state.video.player,
-  shouldRAF: isVideoActive(state.video.state)
+  shouldRAF: isVideoActive(state.video.state),
+  RAFLoop: state.raf.loop
 });
 
 const mapDispatchToProps = dispatch => ({
