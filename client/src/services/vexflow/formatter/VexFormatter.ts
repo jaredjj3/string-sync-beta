@@ -5,10 +5,12 @@ import { last } from 'lodash';
 
 class VexFormatter {
   static PADDING: number = 20; // px
+  static MAX_MEASURE_LENGTH: number = 300; // px
 
   formattedVextab: string = '';
   numMeasures: number = 0;
   width: number = 0;
+  measureChunks: Array<Array<any>> = [];
 
   get measuresPerLine(): number {
     const { width } = this;
@@ -30,8 +32,7 @@ class VexFormatter {
   }
 
   process(elements: Array<any>): string {
-    const deconstructed = this._deconstruct(elements);
-    const measures = this._reconstruct(deconstructed);
+    const measures = this._reconstruct(this._deconstruct(elements));
 
     this.numMeasures = measures.length;
 
@@ -52,11 +53,15 @@ class VexFormatter {
       return _chunkedMeasures;
     }, []);
 
-    return this.formattedVextab = chunkedMeasures.reduce((formattedVextab, measureGroup) => {
+    this.measureChunks = this._adjustMeasureChunks(chunkedMeasures);
+
+    this.formattedVextab = this.measureChunks.reduce((formattedVextab, measureGroup) => {
       formattedVextab += ('\n' + measureGroup[0].head + '\n');
       formattedVextab += measureGroup.map(measure => measure.body).join('\n');
       return formattedVextab;
     }, '');
+
+    return this.formattedVextab;
   }
 
   private _deconstruct(elements: Array<any>): Array<any> {
@@ -105,6 +110,25 @@ class VexFormatter {
 
       return measures;
     }, []);
+  }
+
+  private _adjustMeasureChunks(measureChunks: Array<Array<any>>): any {
+    const lastMeasureChunk = last(measureChunks);
+
+    if (lastMeasureChunk.length < this.measuresPerLine) {
+      const pxPerMeasure = this.width / lastMeasureChunk.length;
+      if (pxPerMeasure > VexFormatter.MAX_MEASURE_LENGTH) {
+        const targetWidth = lastMeasureChunk.length * VexFormatter.MAX_MEASURE_LENGTH;
+        this._appendWidth(lastMeasureChunk[0], targetWidth);
+      }
+    }
+
+    return measureChunks;
+  }
+
+  private _appendWidth(measure: any, width: number): any {
+    const head = `options width=${width}\n` + measure.head;
+    return Object.assign(measure, { head });
   }
 }
 
