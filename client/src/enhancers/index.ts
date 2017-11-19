@@ -5,6 +5,7 @@ import withDeviceType from './withDeviceType';
 import withRAFLoop from './withRAFLoop';
 import withVideo from './withVideo';
 import withTab from './withTab';
+import withNotation from './withNotation';
 
 export {
   identity,
@@ -13,5 +14,6 @@ export {
   withDeviceType,
   withRAFLoop,
   withVideo,
-  withTab
+  withTab,
+  withNotation
 };

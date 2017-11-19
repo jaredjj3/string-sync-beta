@@ -1,7 +1,10 @@
 import {
   Formatter, Fretman, VexPlayer as Player,
-  ScaleVisualizer, Tickman, Artist, VexTab
+  ScaleVisualizer, Tickman, Artist, VexTab,
+  Flow
 } from '../';
+
+// const { Renderer } = Flow;
 
 // The VexProvider is to provide a simple interface for manipulating
 // the Vexflow services. If a notation property is updated, the internal
@@ -16,7 +19,7 @@ class VexProvider {
   private _deadTime: number;
   private _currentTimeMs: number;
   private _viewportWidth: number;
-  private _lines: Array<any>;
+  private _vextabs: Array<any>;
   private _fretman: Fretman;
   private _formatter: Formatter;
   private _player: Player;
@@ -31,23 +34,35 @@ class VexProvider {
   // Setting the vextab, deadTime, bpm, or viewportWidth are
   // the entrypoints for triggering an internal state reset.
   set vextab(vextab: string) {
+    if (this._vextab !== vextab) {
+      this.reset();
+    }
+
     this._vextab = vextab;
-    this.reset();
   }
 
   set bpm(bpm: number) {
+    if (this._bpm !== bpm) {
+      this.reset();
+    }
+
     this._bpm = bpm;
-    this.reset();
   }
 
   set deadTime(deadTime: number) {
+    if (this._deadTime !== deadTime) {
+      this.reset();
+    }
+
     this._deadTime = deadTime;
-    this.reset();
   }
 
   set viewportWidth(viewportWidth: number) {
+    if (this._viewportWidth !== viewportWidth) {
+      this.reset();
+    }
+
     this._viewportWidth = viewportWidth;
-    this.reset();
   }
 
   set currentTimeMs(currentTimeMs: number) {
@@ -57,7 +72,7 @@ class VexProvider {
 
   get lines(): Array<any> {
     this.setup();
-    return this._lines;
+    return this._vextabs;
   }
 
   get shouldTrySetup(): boolean {
@@ -72,7 +87,7 @@ class VexProvider {
   reset(): void {
     this.isReady    = false;
     this.parseError = null;
-    this._lines     = [];
+    this._vextabs   = [];
     this._fretman   = new Fretman();
     this._formatter = new Formatter();
     this._player    = new Player();
@@ -92,7 +107,7 @@ class VexProvider {
       this._setupTickman()
     );
 
-    if (this.isReady && typeof this.afterSetup === 'function') {
+    if (typeof this.afterSetup === 'function') {
       this.afterSetup();
     }
 
@@ -104,6 +119,7 @@ class VexProvider {
     const tab = new VexTab(artist);
 
     try {
+      tab.parse(this._vextab);
       this._formatter.process(tab.elements);
       this.parseError = null;
       return true;
@@ -117,7 +133,7 @@ class VexProvider {
     const { measureChunks } = this._formatter;
 
     try {
-      this._lines = measureChunks.map(measureChunk => {
+      this._vextabs = measureChunks.map(measureChunk => {
         let vextabStr = '';
         vextabStr += ('\n' + measureChunk[0].head + '\n');
         vextabStr += measureChunk.map(measure => measure.body).join('\n');
@@ -126,7 +142,7 @@ class VexProvider {
         const vextab = new VexTab(artist);
 
         vextab.parse(vextabStr);
-        return { artist, vextab };
+        return vextab;
       });
 
       this.parseError = null;

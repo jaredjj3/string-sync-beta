@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
   compose, branch, defaultProps, renderComponent,
-  lifecycle
+  lifecycle, onlyUpdateForKeys
 } from 'recompose';
 
-import { identity, withTab } from 'enhancers';
+import { identity, withTab, withNotation, withVideo } from 'enhancers';
 import { VexProvider } from 'services/vexflow';
 
 class Provider extends React.Component<any, any> {
@@ -13,6 +13,27 @@ class Provider extends React.Component<any, any> {
     const provider = new VexProvider();
     provider.afterSetup = this.props.emitUpdate;
     this.props.setProvider(provider);
+  }
+
+  componentWillReceiveProps(nextProps: any): void {
+    this.updateProviderInternals(nextProps);
+  }
+
+  componentWillUnmount(): void {
+    this.props.resetTab();
+  }
+
+  updateProviderInternals(props: any): void {
+    const { provider, vextab, tempo, deadTime, viewportWidth } = props;
+
+    provider.vextab        = vextab;
+    provider.bpm           = tempo;
+    provider.deadTime      = deadTime;
+    provider.viewportWidth = viewportWidth;
+
+    if (provider.shouldTrySetup) {
+      provider.setup();
+    }
   }
 
   get shouldRenderChildren(): boolean {
@@ -46,7 +67,7 @@ class Provider extends React.Component<any, any> {
 }
 
 const mapStateToProps = state => ({
-  provider: state.tab.provider
+  viewportWidth: state.device.viewport.width
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -55,5 +76,7 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
   withTab,
+  withNotation,
   connect(mapStateToProps, mapDispatchToProps),
+  onlyUpdateForKeys(['updatedAt', 'vextab', 'deadTime', 'tempo', 'viewportWidth'])
 )(Provider);
