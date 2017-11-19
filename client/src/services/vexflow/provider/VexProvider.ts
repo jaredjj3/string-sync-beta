@@ -70,6 +70,10 @@ class VexProvider {
     this.player.currentTimeMs = currentTimeMs;
   }
 
+  get currentTimeMs(): number {
+    return this._currentTimeMs;
+  }
+
   get lines(): Array<any> {
     this.setup();
     return this.vextabs;
@@ -93,14 +97,15 @@ class VexProvider {
   }
 
   reset(): void {
-    this.isReady    = false;
-    this.parseError = null;
-    this.vextabs    = [];
-    this.fretman    = new Fretman();
-    this.formatter  = new Formatter();
-    this.player     = new Player();
-    this.scaleman   = new ScaleVisualizer(this.fretman);
-    this.tickman    = new Tickman(this.player);
+    this.isReady       = false;
+    this.parseError    = null;
+    this.vextabs       = [];
+    this.fretman       = new Fretman();
+    this.formatter     = new Formatter();
+    this.player        = new Player();
+    this.scaleman      = new ScaleVisualizer(this.fretman);
+    this.tickman       = new Tickman(this.player);
+    this.currentTimeMs = 0;
   }
 
   setup(): boolean {

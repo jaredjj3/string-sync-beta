@@ -27,7 +27,7 @@ class VideoSync extends React.Component<any, any> {
     this.props.RAFLoop.unregister(RAF_LOOP_FUNC_NAME);
   }
 
-  updateTime = (): void => {
+  updateTime = (dt: number): void => {
     const { provider, videoPlayer } = this.props;
     if (provider && videoPlayer) {
       provider.currentTimeMs = videoPlayer.getCurrentTime() * 1000;
