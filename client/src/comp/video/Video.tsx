@@ -31,7 +31,7 @@ class Video extends React.Component<VideoProps, VideoState> {
       showinfo: 0,
       disablekb: 1,
       fs: 0,
-      autoplay: 1,
+      autoplay: 0,
       start: 0,
       loop: 1,
     }

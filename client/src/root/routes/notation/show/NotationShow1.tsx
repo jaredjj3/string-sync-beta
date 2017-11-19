@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { compose, lifecycle } from 'recompose';
 
 import Banner from './banner';
+import Provider from './provider';
 import { VexProvider } from 'services/vexflow';
 import { Video, Fretboard, Tab } from 'comp';
 import { withRAFLoop, withVideo } from 'enhancers';
@@ -44,7 +45,9 @@ export default enhance(() => (
   <div className="NotationShow">
     <Banner />
     <Video />
-    {/*<Fretboard />*/}
-    <Tab />
+    <Provider>
+      {/*<Fretboard />*/}
+      <Tab />
+    </Provider>
   </div>
 ));
