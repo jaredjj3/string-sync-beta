@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { compose, lifecycle } from 'recompose';
 
 import Banner from './banner';
-import { Video, Fretboard } from 'comp';
+import { Video, Fretboard, Tab } from 'comp';
 import { withRAFLoop, withVideo } from 'enhancers';
 import { fetchNotation, resetNotation } from 'data/notation/actions';
 import { enableFeatures, disableFeatures } from 'data/feature/actions';
@@ -43,5 +43,6 @@ export default enhance(() => (
     <Banner />
     <Video />
     <Fretboard />
+    <Tab />
   </div>
 ));
