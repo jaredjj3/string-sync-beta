@@ -14,17 +14,20 @@ class VexProvider {
   parseError: string;
   afterSetup: Function;
 
+  vextabs: Array<any>;
+  fretman: Fretman;
+  formatter: Formatter;
+  player: Player;
+  scaleman: ScaleVisualizer;
+  tickman: Tickman;
+  masterArtist: Artist;
+  masterVextab: VexTab;
+
   private _vextab: string;
   private _bpm: number;
   private _deadTime: number;
   private _currentTimeMs: number;
   private _viewportWidth: number;
-  private _vextabs: Array<any>;
-  private _fretman: Fretman;
-  private _formatter: Formatter;
-  private _player: Player;
-  private _scaleman: ScaleVisualizer;
-  private _tickman: Tickman;
 
   constructor() {
     this._vextab = '';
@@ -67,12 +70,12 @@ class VexProvider {
 
   set currentTimeMs(currentTimeMs: number) {
     this._currentTimeMs = currentTimeMs;
-    this._player.currentTimeMs = currentTimeMs;
+    this.player.currentTimeMs = currentTimeMs;
   }
 
   get lines(): Array<any> {
     this.setup();
-    return this._vextabs;
+    return this.vextabs;
   }
 
   get shouldTrySetup(): boolean {
@@ -84,15 +87,23 @@ class VexProvider {
     );
   }
 
+  updateFretmanWithPlayer(): void {
+    this.fretman.updateWithPlayer(this.player);
+  }
+
+  noteAt(pos: any): void {
+    this.scaleman.noteAt(pos);
+  }
+
   reset(): void {
     this.isReady    = false;
     this.parseError = null;
-    this._vextabs   = [];
-    this._fretman   = new Fretman();
-    this._formatter = new Formatter();
-    this._player    = new Player();
-    this._scaleman  = new ScaleVisualizer(this._fretman);
-    this._tickman   = new Tickman(this._player);
+    this.vextabs    = [];
+    this.fretman    = new Fretman();
+    this.formatter  = new Formatter();
+    this.player     = new Player();
+    this.scaleman   = new ScaleVisualizer(this.fretman);
+    this.tickman    = new Tickman(this.player);
   }
 
   setup(): boolean {
@@ -107,7 +118,8 @@ class VexProvider {
       this._setupTickman()
     );
 
-    if (typeof this.afterSetup === 'function') {
+    if (this.isReady && typeof this.afterSetup === 'function') {
+      this.parseError = null;
       this.afterSetup();
     }
 
@@ -115,13 +127,14 @@ class VexProvider {
   }
 
   private _setupFormatter(): boolean {
-    const artist = new Artist(0, 0, this._viewportWidth);
-    const tab = new VexTab(artist);
+    this.formatter.width = this._viewportWidth;
+    this.masterArtist = new Artist(0, 0, this._viewportWidth);
+    this.masterVextab = new VexTab(this.masterArtist);
 
     try {
-      tab.parse(this._vextab);
-      this._formatter.process(tab.elements);
-      this.parseError = null;
+      this.masterVextab.parse(this._vextab);
+      this.formatter.process(this.masterVextab.elements);
+
       return true;
     } catch (error) {
       this.parseError = error.message;
@@ -130,22 +143,21 @@ class VexProvider {
   }
 
   private _setupLines(): boolean {
-    const { measureChunks } = this._formatter;
+    const { measureChunks } = this.formatter;
 
     try {
-      this._vextabs = measureChunks.map(measureChunk => {
+      this.vextabs = measureChunks.map(measureChunk => {
         let vextabStr = '';
         vextabStr += ('\n' + measureChunk[0].head + '\n');
         vextabStr += measureChunk.map(measure => measure.body).join('\n');
 
-        const artist = new Artist(10, 20, this.viewportWidth - 50, { tab_stave_lower_spacing: 300 });
+        const artist = new Artist(10, 20, this._viewportWidth - 50);
         const vextab = new VexTab(artist);
 
         vextab.parse(vextabStr);
         return vextab;
       });
 
-      this.parseError = null;
       return true;
     } catch (error) {
       this.parseError = error.message;
@@ -155,9 +167,11 @@ class VexProvider {
 
   private _setupTickman(): boolean {
     try {
-      this._player.deadTimeMs = this._deadTime * 1000;
-      this._player.bpm = this._bpm;
-      this.parseError = null;
+      this.player.deadTimeMs = this._deadTime * 1000;
+      this.player.bpm = this._bpm;
+      this.tickman.viewportWidth = this.viewportWidth;
+      this.tickman.artist = this.masterArtist;
+
       return true;
     } catch (error) {
       this.parseError = error.message;

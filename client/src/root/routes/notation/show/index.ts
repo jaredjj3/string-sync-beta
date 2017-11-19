@@ -1,4 +1,4 @@
-import NotationShow from './NotationShow1';
+import NotationShow from './NotationShow';
 
 import './_notationShow.less';
 

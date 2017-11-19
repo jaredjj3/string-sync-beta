@@ -2,10 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { Fretman } from 'services/vexflow';
+import { withTab } from 'enhancers';
 
 interface GuitarStringProps {
   string: number;
-  fretman: Fretman;
+  provider: any;
 }
 
 interface GuitarStringState {
@@ -16,7 +17,7 @@ class GuitarString extends React.PureComponent<GuitarStringProps, GuitarStringSt
   state: GuitarStringState = { lit: false };
 
   componentDidMount(): void {
-    this.props.fretman.addString(this);
+    this.props.provider.fretman.addString(this);
   }
 
   light = (e?: React.SyntheticEvent<any>): void => {
@@ -44,15 +45,4 @@ class GuitarString extends React.PureComponent<GuitarStringProps, GuitarStringSt
   }
 }
 
-const mapStateToProps = state => ({
-  fretman: state.tab.fretman
-});
-
-const mapDispatchToProps = dispatch => ({
-
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(GuitarString);
+export default withTab(GuitarString);

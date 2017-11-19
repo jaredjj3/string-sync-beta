@@ -1,8 +1,12 @@
 import React from 'react';
 
+import Score from './score';
+import Caret from './caret';
+
 const Tab = () => (
   <div className="Tab">
-    Tab
+    <Score />
+    <Caret />
   </div>
 );
 

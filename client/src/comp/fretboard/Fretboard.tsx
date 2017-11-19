@@ -7,16 +7,16 @@ import Strings from './strings';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 
-import { VexPlayer, Fretman } from 'services/vexflow';
+import { VexPlayer, Fretman, VexProvider } from 'services/vexflow';
 import { isVideoActive } from 'util/videoStateCategory';
-import { withRAFLoop } from 'enhancers';
-import RAFLoop from 'util/raf/loop';
+import { withRAFLoop, withTab } from 'enhancers';
 
 interface FretboardProps {
   shouldRAF: boolean;
   RAFLoop: any;
   vexPlayer: VexPlayer;
   fretman: Fretman;
+  provider: VexProvider;
 }
 
 interface FretboardState {}
@@ -37,12 +37,10 @@ class Fretboard extends React.Component<FretboardProps, FretboardState> {
   }
 
   updateFretman = (): void => {
-    const { fretman, vexPlayer } = this.props;
-
     try {
-      fretman.updateWithPlayer(vexPlayer);
-    } catch (e) {
-      // noop
+      this.props.provider.updateFretmanWithPlayer();
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -83,8 +81,6 @@ class Fretboard extends React.Component<FretboardProps, FretboardState> {
 
 const mapStateToProps = state => ({
   shouldRAF: isVideoActive(state.video.state),
-  vexPlayer: state.tab.vexPlayer,
-  fretman: state.tab.fretman,
   scaleVisualizer: state.tab.scaleVisualizer,
 });
 
@@ -94,5 +90,6 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
   withRAFLoop,
+  withTab,
   connect(mapStateToProps, mapDispatchToProps)
 )(Fretboard);

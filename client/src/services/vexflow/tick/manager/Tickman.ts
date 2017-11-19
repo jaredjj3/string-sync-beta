@@ -1,7 +1,7 @@
 import VexTickExtractor from './extractor';
 import { Artist } from 'services/vexflow';
 
-import { sortBy, forOwn } from 'lodash';
+import { sortBy,  forOwn } from 'lodash';
 import { interpolateFuncFor } from 'util/interpolate';
 
 class Tickman {
@@ -10,9 +10,9 @@ class Tickman {
   ticks: Array<any> = [];
   barTicks: Array<any> = [];
   scrollSpecs: Array<any> = [];
+  viewportWidth: any = null;
 
   private _artist: Artist = null;
-  private _viewport: any = null;
 
   constructor(vexPlayer: any) {
     // TODO: Get this coupling out of here!
@@ -23,11 +23,6 @@ class Tickman {
   set artist(artist: Artist) {
     this._artist = artist;
     this.extractor = new VexTickExtractor(artist).extractTicks();
-    this.updateTicks();
-  }
-
-  set viewport(viewport: any) {
-    this._viewport = viewport;
     this.updateTicks();
   }
 
@@ -133,7 +128,7 @@ class Tickman {
     if (lowTick.staveIndex === highTick.staveIndex) {
       return highTick.posX;
     } else {
-      return this._viewport ? this._viewport.width - 40 : window.innerWidth - 40;
+      return -40 + this.viewportWidth ? this.viewportWidth : window.innerWidth;
     }
   }
 }

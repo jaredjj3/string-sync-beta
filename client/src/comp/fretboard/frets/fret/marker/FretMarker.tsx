@@ -2,17 +2,16 @@ import React from 'react';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 
-import { Fretman, ScaleVisualizer } from 'services/vexflow';
+import { Fretman, ScaleVisualizer, VexProvider } from 'services/vexflow';
 import { isEqual } from 'lodash';
-import { withDeviceType } from 'enhancers';
+import { withDeviceType, withTab } from 'enhancers';
 import classNames from 'classnames';
 
 interface FretMarkerProps {
   string: number;
   fret: number;
-  fretman: Fretman;
   deviceType: string;
-  scaleVisualizer: ScaleVisualizer;
+  provider: VexProvider;
   tuning: Array<string>;
   scaleVisualization: boolean;
 }
@@ -26,7 +25,7 @@ class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
   state: FretMarkerState = { lit: false, pressed: false };
 
   componentDidMount(): void {
-    this.props.fretman.addMarker(this);
+    this.props.provider.fretman.addMarker(this);
   }
 
   shouldComponentUpdate(nextProps: FretMarkerProps, nextState: FretMarkerState): boolean {
@@ -65,11 +64,11 @@ class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
     this.press();
 
     if (this.props.scaleVisualization) {
-      const { scaleVisualizer, string, fret } = this.props;
-      const note = scaleVisualizer.noteAt({ string, fret });
+      const { provider, string, fret } = this.props;
+      const note = provider.scaleman.noteAt({ string, fret });
 
       try {
-        scaleVisualizer.light(note);
+        provider.scaleman.light(note);
       } catch (e) {
         console.error(e);
       }
@@ -77,17 +76,17 @@ class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
   }
 
   handleMouseLeave = (e: React.SyntheticEvent<any>): void => {
-    const { scaleVisualizer, string, fret } = this.props;
-    const note = scaleVisualizer.noteAt({ string, fret });
+    const { provider, string, fret } = this.props;
+    const note = provider.scaleman.noteAt({ string, fret });
 
-    const shouldUnpress = !scaleVisualizer.pressedNotes.has(note);
+    const shouldUnpress = !provider.scaleman.pressedNotes.has(note);
     if (shouldUnpress) {
       this.unpress();
     }
 
     if (this.props.scaleVisualization) {
       try {
-        scaleVisualizer.unlight(note);
+        provider.scaleman.unlight(note);
       } catch (e) {
         console.error(e);
       }
@@ -95,12 +94,12 @@ class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
   }
 
   handleClick = (e: React.SyntheticEvent<any>): void => {
-    const { scaleVisualizer, string, fret } = this.props;
-    const note = scaleVisualizer.noteAt({ string, fret });
+    const { provider, string, fret } = this.props;
 
     if (this.props.scaleVisualization) {
       try {
-        scaleVisualizer.togglePress(note);
+        const note = provider.scaleman.noteAt({ string, fret });
+        provider.scaleman.togglePress(note);
       } catch (e) {
         console.error(e);
       }
@@ -108,9 +107,9 @@ class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
   }
 
   render(): JSX.Element {
-    const { string, fret, scaleVisualizer, deviceType } = this.props;
+    const { string, fret, provider, deviceType } = this.props;
     const { lit, pressed } = this.state;
-    const note = scaleVisualizer.noteAt({ string, fret });
+    const note = provider.scaleman.noteAt({ string, fret });
 
     const markerClassNames = classNames(
       'Marker',
@@ -137,8 +136,6 @@ class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
 }
 
 const mapStateToProps = state => ({
-  fretman: state.tab.fretman,
-  scaleVisualizer: state.tab.scaleVisualizer,
   tuning: state.tab.tuning,
   scaleVisualization: state.feature.scaleVisualization,
 });
@@ -149,5 +146,6 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
   withDeviceType,
+  withTab,
   connect(mapStateToProps, mapDispatchToProps)
 )(FretMarker);
