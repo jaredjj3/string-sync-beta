@@ -42,7 +42,7 @@ export default enhance(() => (
   <div className="NotationShow">
     <Banner />
     <Video />
-    <Fretboard />
+    {/*<Fretboard />*/}
     <Tab />
   </div>
 ));
