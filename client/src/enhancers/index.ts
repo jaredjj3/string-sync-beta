@@ -4,6 +4,7 @@ import permitDevice from './permitDevice';
 import withDeviceType from './withDeviceType';
 import withRAFLoop from './withRAFLoop';
 import withVideo from './withVideo';
+import withTab from './withTab';
 
 export {
   identity,
@@ -11,5 +12,6 @@ export {
   permitDevice,
   withDeviceType,
   withRAFLoop,
-  withVideo
+  withVideo,
+  withTab
 };

@@ -9,6 +9,7 @@ import {
 class VexProvider {
   isReady: boolean;
   parseError: string;
+  afterSetup: Function;
 
   private _vextab: string;
   private _bpm: number;
@@ -85,11 +86,15 @@ class VexProvider {
     }
 
     this.isReady = (
-      this.shouldTrySetup &&
+      this.shouldTrySetup    &&
       this._setupFormatter() &&
-      this._setupLines() &&
+      this._setupLines()     &&
       this._setupTickman()
     );
+
+    if (this.isReady && typeof this.afterSetup === 'function') {
+      this.afterSetup();
+    }
 
     return this.isReady;
   }
