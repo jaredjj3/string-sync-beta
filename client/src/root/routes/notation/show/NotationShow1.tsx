@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { compose, lifecycle } from 'recompose';
 
 import Banner from './banner';
+import { Video, Fretboard } from 'comp';
 import { withRAFLoop, withVideo } from 'enhancers';
 import { fetchNotation, resetNotation } from 'data/notation/actions';
 import { enableFeatures, disableFeatures } from 'data/feature/actions';
@@ -40,5 +41,7 @@ const enhance = compose(
 export default enhance(() => (
   <div className="NotationShow">
     <Banner />
+    <Video />
+    <Fretboard />
   </div>
 ));
