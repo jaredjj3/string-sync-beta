@@ -36,6 +36,10 @@ class Fretboard extends React.Component<FretboardProps, FretboardState> {
     }
   }
 
+  componentWillUnmount(): void {
+    this.props.provider.fretman.reset();
+  }
+
   updateFretman = (): void => {
     try {
       this.props.provider.updateFretmanWithPlayer();

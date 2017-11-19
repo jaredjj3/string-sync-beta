@@ -5,8 +5,8 @@ import Caret from './caret';
 
 const Tab = () => (
   <div className="Tab">
-    <Score />
     <Caret />
+    <Score />
   </div>
 );
 

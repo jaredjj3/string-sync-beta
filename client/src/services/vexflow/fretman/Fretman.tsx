@@ -7,7 +7,7 @@ class Fretman {
   markers: any = { strings: { } };
   strings: any = { };
 
-  addMarker (markerComponent: any): void {
+  addMarker(markerComponent: any): void {
     const { string, fret } = markerComponent.props;
 
     this.markers.strings[string] = this.markers.strings[string] || { frets: { } };
@@ -15,8 +15,17 @@ class Fretman {
     this.markers.strings[string].frets[fret] = markerComponent;
   }
 
-  addString (stringComponent: any): void {
+  addString(stringComponent: any): void {
     this.strings[stringComponent.props.string] = stringComponent;
+  }
+
+  reset(): void {
+    this.lit.forEach(component => component.unlight());
+    this.pressed.forEach(component => component.unpress());
+    this.lit = [];
+    this.pressed = [];
+    this.markers = { strings: { } };
+    this.strings = { };
   }
 
   updateWithPlayer(player: VexPlayer): void {
