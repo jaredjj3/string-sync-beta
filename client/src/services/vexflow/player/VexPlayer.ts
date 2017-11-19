@@ -13,15 +13,15 @@ class VexPlayer {
     strokeStyle: '#FF0000'
   };
 
-  bpm: number = 0;
   scrollSpec: any = null;
   tickman: any = null;
 
+  private _bpm: number = 0;
   private _deadTimeMs: number = 0;
   private _currentTimeMs: number = 0;
 
   get tpm(): number {
-    return this.bpm ? this.bpm * (Flow.RESOLUTION / 4) : 0;
+    return this._bpm ? this._bpm * (Flow.RESOLUTION / 4) : 0;
   }
 
   get deadTimeMs(): number {
@@ -51,6 +51,11 @@ class VexPlayer {
 
   set deadTimeMs(deadTimeMs: number) {
     this._deadTimeMs = deadTimeMs;
+    this.tickman.updateTicks();
+  }
+
+  set bpm(bpm: number) {
+    this._bpm = bpm;
     this.tickman.updateTicks();
   }
 
