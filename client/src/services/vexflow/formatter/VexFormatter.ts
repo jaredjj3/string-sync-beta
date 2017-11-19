@@ -31,7 +31,7 @@ class VexFormatter {
     }
   }
 
-  process(elements: Array<any>): string {
+  format(elements: Array<any>): string {
     const measures = this._reconstruct(this._deconstruct(elements));
 
     this.numMeasures = measures.length;
@@ -53,7 +53,6 @@ class VexFormatter {
       return _chunkedMeasures;
     }, []);
 
-    // TODO: Make this feature work for multiline tabs
     this.measureChunks = this._adjustMeasureChunks(chunkedMeasures);
 
     this.formattedVextab = this.measureChunks.reduce((formattedVextab, measureGroup) => {

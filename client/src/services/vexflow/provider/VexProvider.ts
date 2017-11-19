@@ -3,8 +3,7 @@ import {
   ScaleVisualizer, Tickman, Artist, VexTab,
   Flow
 } from '../';
-
-// const { Renderer } = Flow;
+import { flatMap } from 'lodash';
 
 // The VexProvider is to provide a simple interface for manipulating
 // the Vexflow services. If a notation property is updated, the internal
@@ -20,8 +19,6 @@ class VexProvider {
   player: Player;
   scaleman: ScaleVisualizer;
   tickman: Tickman;
-  masterArtist: Artist;
-  masterVextab: VexTab;
 
   private _vextab: string;
   private _bpm: number;
@@ -128,12 +125,12 @@ class VexProvider {
 
   private _setupFormatter(): boolean {
     this.formatter.width = this._viewportWidth;
-    this.masterArtist = new Artist(0, 0, this._viewportWidth);
-    this.masterVextab = new VexTab(this.masterArtist);
+    const rootArtist = new Artist(0, 0, this._viewportWidth);
+    const rootVextab = new VexTab(rootArtist);
 
     try {
-      this.masterVextab.parse(this._vextab);
-      this.formatter.process(this.masterVextab.elements);
+      rootVextab.parse(this._vextab);
+      this.formatter.format(rootVextab.elements);
 
       return true;
     } catch (error) {
@@ -151,7 +148,7 @@ class VexProvider {
         vextabStr += ('\n' + measureChunk[0].head + '\n');
         vextabStr += measureChunk.map(measure => measure.body).join('\n');
 
-        const artist = new Artist(10, 20, this._viewportWidth - 50);
+        const artist = new Artist(10, 20, this._viewportWidth - 20);
         const vextab = new VexTab(artist);
 
         vextab.parse(vextabStr);
@@ -170,11 +167,19 @@ class VexProvider {
       this.player.deadTimeMs = this._deadTime * 1000;
       this.player.bpm = this._bpm;
       this.tickman.viewportWidth = this.viewportWidth;
-      this.tickman.artist = this.masterArtist;
+
+      const artists = this.vextabs.map(vextab => vextab.artist);
+
+      const voices = flatMap(artists, artist => artist.getPlayerData().voices);
+      const tabVoices = flatMap(artists, artist => artist.staves.map(stave => stave.tab_voices));
+
+      if (voices.length > 0) {
+        this.tickman.update(voices, tabVoices);
+      }
 
       return true;
     } catch (error) {
-      this.parseError = error.message;
+      console.error(error);
       return false;
     }
   }

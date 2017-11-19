@@ -14,14 +14,11 @@ class VexTickExtractor {
   tabVoices: Array<any> = [];
   ticks: Array<any> = [];
   barTicks: Array<any> = [];
+  staves: Array<any> = [];
 
-  constructor(artist: Artist) {
-    this.artist = artist;
-  }
-
-  set artist(artist: Artist) {
-    this.voices = artist.getPlayerData().voices;
-    this.tabVoices = artist.staves.map(stave => stave.tab_voices);
+  constructor(voices: Array<any>, tabVoices: Array<any>) {
+    this.voices    = voices;
+    this.tabVoices = tabVoices;
   }
 
   extractTicks(): VexTickExtractor {

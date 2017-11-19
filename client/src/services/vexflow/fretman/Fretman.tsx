@@ -20,6 +20,12 @@ class Fretman {
   }
 
   updateWithPlayer(player: VexPlayer): void {
+    if (!player.scrollSpec) {
+      this.lit.forEach(component => component.unlight());
+      this.pressed.forEach(component => component.unpress());
+      return;
+    }
+
     const shouldLightMarkers = compact(
       player.scrollSpec.lowTick.lit.map(pos => (
         this.markerAt(parseInt(pos.str, 10), parseInt(pos.fret, 10))

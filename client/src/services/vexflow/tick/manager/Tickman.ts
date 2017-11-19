@@ -12,17 +12,14 @@ class Tickman {
   scrollSpecs: Array<any> = [];
   viewportWidth: any = null;
 
-  private _artist: Artist = null;
-
   constructor(vexPlayer: any) {
     // TODO: Get this coupling out of here!
     this.vexPlayer = vexPlayer;
     vexPlayer.tickman = this;
   }
 
-  set artist(artist: Artist) {
-    this._artist = artist;
-    this.extractor = new VexTickExtractor(artist).extractTicks();
+  update(voices: Array<any>, tabVoices: Array<any>): void {
+    this.extractor = new VexTickExtractor(voices, tabVoices).extractTicks();
     this.updateTicks();
   }
 
@@ -82,6 +79,9 @@ class Tickman {
 
       tickIndex++;
     }
+
+    const litPositions = this._extractLitPositions(litTicks);
+    litTicks.forEach(litTick => litTick.lit = litPositions);
   }
 
   private _extractLitPositions(litTicks: Array<any>): Array<any> {

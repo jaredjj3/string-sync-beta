@@ -1,11 +1,14 @@
 import React from 'react';
+import { compose, onlyUpdateForKeys } from 'recompose';
 
+import { withTab } from 'enhancers';
 import { Flow, VexTab } from 'services/vexflow';
 
 const { Renderer } = Flow;
 
 interface ScoreLineProps {
   vextab: VexTab;
+  provider: any;
 }
 
 class ScoreLine extends React.Component<ScoreLineProps, any> {
@@ -14,15 +17,29 @@ class ScoreLine extends React.Component<ScoreLineProps, any> {
   renderer: any = null;
 
   setCanvas = (c: HTMLCanvasElement): void => {
+    if (!c) {
+      return;
+    }
+
     this.canvas = c;
     this.renderer = new Renderer(c, Renderer.Backends.CANVAS);
     this.ctx = this.renderer.getContext();
     this.renderTab();
+    this.maybeSetupTickman();
   }
 
   renderTab = (): void => {
     if (this.renderer !== null) {
       this.props.vextab.artist.render(this.renderer);
+    }
+  }
+
+  maybeSetupTickman = (): void => {
+    const { provider } = this.props;
+    const shouldSetupTickman = provider.vextabs.every(vextab => vextab.artist.rendered);
+
+    if (shouldSetupTickman) {
+      provider._setupTickman();
     }
   }
 
@@ -37,4 +54,7 @@ class ScoreLine extends React.Component<ScoreLineProps, any> {
   }
 }
 
-export default ScoreLine;
+export default compose(
+  withTab,
+  onlyUpdateForKeys(['vextab'])
+)(ScoreLine);

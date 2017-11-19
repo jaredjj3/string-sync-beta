@@ -5,6 +5,7 @@ import {
   lifecycle, onlyUpdateForKeys
 } from 'recompose';
 
+import VideoSync from './videoSync';
 import { identity, withTab, withNotation, withVideo } from 'enhancers';
 import { VexProvider } from 'services/vexflow';
 
@@ -44,6 +45,7 @@ class Provider extends React.Component<any, any> {
   renderChildren(): JSX.Element {
     return (
       <div className="TabProvider">
+        <VideoSync />
         {this.props.children}
       </div>
     );
@@ -77,6 +79,7 @@ const mapDispatchToProps = dispatch => ({
 export default compose(
   withTab,
   withNotation,
+  withVideo,
   connect(mapStateToProps, mapDispatchToProps),
   onlyUpdateForKeys(['updatedAt', 'vextab', 'deadTime', 'tempo', 'viewportWidth'])
 )(Provider);

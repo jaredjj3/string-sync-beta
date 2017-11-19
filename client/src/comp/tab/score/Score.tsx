@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import ScoreLine from './line';
-import { compose, lifecycle, onlyUpdateForKeys } from 'recompose';
+import { compose, onlyUpdateForKeys } from 'recompose';
 import { withTab } from 'enhancers';
 
 const enhance = compose(
