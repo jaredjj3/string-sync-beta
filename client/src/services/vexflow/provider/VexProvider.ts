@@ -13,6 +13,7 @@ class VexProvider {
   private _vextab: string;
   private _bpm: number;
   private _deadTime: number;
+  private _currentTimeMs: number;
   private _viewportWidth: number;
   private _lines: Array<any>;
   private _fretman: Fretman;
@@ -46,6 +47,11 @@ class VexProvider {
   set viewportWidth(viewportWidth: number) {
     this._viewportWidth = viewportWidth;
     this.reset();
+  }
+
+  set currentTimeMs(currentTimeMs: number) {
+    this._currentTimeMs = currentTimeMs;
+    this._player.currentTimeMs = currentTimeMs;
   }
 
   get lines(): Array<any> {

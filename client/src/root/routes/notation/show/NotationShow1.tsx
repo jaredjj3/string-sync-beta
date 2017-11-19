@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { compose, lifecycle } from 'recompose';
 
 import Banner from './banner';
+import { VexProvider } from 'services/vexflow';
 import { Video, Fretboard, Tab } from 'comp';
 import { withRAFLoop, withVideo } from 'enhancers';
 import { fetchNotation, resetNotation } from 'data/notation/actions';
@@ -25,6 +26,7 @@ const enhance = compose(
       const notationId = this.props.match.params.id;
       this.props.fetchNotation(notationId);
       this.props.hideNav();
+      const provider = new VexProvider();
     },
     componentWillReceiveProps(nextProps: any): void {
       const { RAFLoop, isVideoActive } = nextProps;
