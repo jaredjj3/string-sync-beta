@@ -38,6 +38,7 @@ class Fretboard extends React.Component<FretboardProps, FretboardState> {
 
   componentWillUnmount(): void {
     this.props.provider.fretman.reset();
+    this.unregisterRAFLoop();
   }
 
   updateFretman = (): void => {
@@ -49,11 +50,13 @@ class Fretboard extends React.Component<FretboardProps, FretboardState> {
   }
 
   registerRAFLoop = (): void => {
-    this.props.RAFLoop.register({
-      name: 'Fretboard.updateFretman',
-      precedence: 0,
-      onAnimationLoop: this.updateFretman
-    });
+    if (!this.props.RAFLoop.has('Fretboard.updateFretman')) {
+      this.props.RAFLoop.register({
+        name: 'Fretboard.updateFretman',
+        precedence: 0,
+        onAnimationLoop: this.updateFretman
+      });
+    }
   }
 
   unregisterRAFLoop = (): void => {

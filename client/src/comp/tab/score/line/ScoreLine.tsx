@@ -47,7 +47,7 @@ class ScoreLine extends React.Component<ScoreLineProps, any> {
     this.renderTab();
 
     return (
-      <div>
+      <div className="ScoreLine">
         <canvas ref={this.setCanvas} />
       </div>
     );
