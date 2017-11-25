@@ -1,37 +1,21 @@
 import React from 'react';
+import { compose, branch, onlyUpdateForKeys, renderComponent } from 'recompose';
+
 import Icon from 'antd/lib/icon';
+import { withVideo } from 'enhancers';
 
-import Row from 'antd/lib/row';
+const playVideo = (videoPlayer) => () => videoPlayer.playVideo();
+const pauseVideo = (videoPlayer) => () => videoPlayer.pauseVideo();
 
-interface PlayProps {
-  isActive: boolean;
-  videoPlayer: any;
-}
+const Play = ({ videoPlayer }) => <Icon type="play-circle-o" onClick={playVideo(videoPlayer)} />;
+const Pause = ({ videoPlayer }) => <Icon type="pause-circle-o" onClick={pauseVideo(videoPlayer)} />;
 
-interface PlayState {}
-
-class Play extends React.Component<PlayProps, PlayState> {
-  pauseVideo = (): void => {
-    this.props.videoPlayer.pauseVideo();
-  }
-
-  playVideo = (): void => {
-    this.props.videoPlayer.playVideo();
-  }
-
-  render(): JSX.Element {
-    const { isActive } = this.props;
-
-    return (
-      <Row type="flex" align="middle" justify="start">
-        {
-          isActive ?
-            <Icon type="pause-circle-o" onClick={this.pauseVideo} /> :
-            <Icon type="play-circle-o" onClick={this.playVideo} />
-        }
-      </Row>
-    );
-  }
-}
-
-export default Play;
+export default compose(
+  withVideo,
+  branch(
+    ({ isVideoActive }) => isVideoActive,
+    renderComponent(Pause),
+    renderComponent(Play)
+  ),
+  onlyUpdateForKeys(['isVideoActive'])
+)(() => null);
