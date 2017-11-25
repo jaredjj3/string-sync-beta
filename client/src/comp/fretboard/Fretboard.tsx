@@ -28,12 +28,8 @@ const fretIndicators = Object.assign([], Frets.DOTS).map((dots, fret) => (
 class Fretboard extends React.Component<FretboardProps, FretboardState> {
   static FRET_INDICATORS: Array<string> = fretIndicators;
 
-  componentWillReceiveProps(nextProps: FretboardProps): void {
-    if (nextProps.shouldRAF) {
-      this.registerRAFLoop();
-    } else {
-      this.unregisterRAFLoop();
-    }
+  componentDidMount(): void {
+    this.registerRAFLoop();
   }
 
   componentWillUnmount(): void {
