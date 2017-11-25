@@ -28,16 +28,13 @@ const enhance = compose(
       const notationId = this.props.match.params.id;
       this.props.fetchNotation(notationId);
       this.props.hideNav();
-      const provider = new VexProvider();
-    },
-    componentWillReceiveProps(nextProps: any): void {
-      const { RAFLoop, isVideoActive } = nextProps;
-      isVideoActive ? RAFLoop.start() : RAFLoop.stop();
+      this.props.RAFLoop.start();
     },
     componentWillUnmount(): void {
       this.props.resetNotation();
       this.props.showNav();
       this.props.resetRAFLoop();
+      this.props.RAFLoop.stop();
     }
   })
 );

@@ -8,16 +8,14 @@ class ScoreScroller extends React.Component<any, any> {
   scoreContainer: any = null;
   scrollPositions: Array<number> = [];
 
+  componentDidMount(): void {
+    this.registerRAFLoop();
+  }
+
   componentWillReceiveProps(nextProps: any): void {
     const { RAFLoop, isVideoActive } = nextProps;
 
     this.updateRefs();
-
-    if (isVideoActive) {
-      this.registerRAFLoop();
-    } else {
-      this.unregisterRAFLoop();
-    }
   }
 
   componentWillUnmount(): void {

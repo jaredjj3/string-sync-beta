@@ -1,5 +1,6 @@
 interface VideoPlayer {
   getCurrentTime(): number;
+  getDuration(): number;
   setPlaybackRate(playbackRate: number): VideoPlayer;
   seekTo(time: number): VideoPlayer;
   playVideo(): VideoPlayer;

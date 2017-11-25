@@ -11,14 +11,8 @@ class Caret extends React.Component<any, any> {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
 
-  componentWillReceiveProps(nextProps: any): void {
-    const { RAFLoop, isVideoActive } = nextProps;
-
-    if (isVideoActive) {
-      this.registerRAFLoop();
-    } else {
-      this.unregisterRAFLoop();
-    }
+  componentDidMount(): void {
+    this.registerRAFLoop();
   }
 
   componentWillUnmount(): void {
