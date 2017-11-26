@@ -9,12 +9,17 @@ const { Renderer } = Flow;
 interface ScoreLineProps {
   vextab: VexTab;
   provider: any;
+  lineNum: number;
 }
 
 class ScoreLine extends React.Component<ScoreLineProps, any> {
   canvas: HTMLCanvasElement = null;
   ctx: CanvasRenderingContext2D = null;
   renderer: any = null;
+
+  componentDidMount(): void {
+    this.renderMeasureNumbers();
+  }
 
   setCanvas = (c: HTMLCanvasElement): void => {
     if (!c) {
@@ -26,6 +31,30 @@ class ScoreLine extends React.Component<ScoreLineProps, any> {
     this.ctx = this.renderer.getContext();
     this.renderTab();
     this.maybeSetupTickman();
+  }
+
+  renderMeasureNumbers(): void {
+    this.ctx.save();
+    this.ctx.fillStyle = 'darkgray';
+    this.ctx.font = 'italic 10px arial';
+
+    const { lineNum } = this.props;
+
+    const barNotePosX = this.
+        props.
+        vextab.
+        artist.
+        staves[0].
+        note_notes.
+        filter(note => note.attrs.type === 'BarNote').
+        map(barNote => barNote.getAbsoluteX()).
+        forEach((x, ndx) => {
+          const measuresPerLine = this.props.provider.formatter.measuresPerLine;
+          const measureNum = (measuresPerLine * lineNum) + ndx + 1;
+          this.ctx.fillText(measureNum, x - 3, 50);
+        });
+
+    this.ctx.restore();
   }
 
   renderTab = (): void => {

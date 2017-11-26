@@ -46,7 +46,6 @@ export default enhance(() => (
     <Provider>
       <Fretboard />
       <Tab />
-      <Controls />
     </Provider>
   </div>
 ));

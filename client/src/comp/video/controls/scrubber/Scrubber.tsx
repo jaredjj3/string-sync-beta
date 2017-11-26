@@ -24,7 +24,6 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
   };
 
   isScrubbing: boolean = false;
-  shouldPlayAfterChange: boolean = false;
 
   componentWillReceiveProps(nextProps: ScrubberProps): void {
     if (nextProps.videoState === 'PLAYING') {
@@ -96,22 +95,18 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
 
   handleChange = (value: number): void => {
     if (!this.isScrubbing) {
-      this.shouldPlayAfterChange = this.props.isVideoActive;
       this.props.videoPlayer.pauseVideo();
       this.isScrubbing = true;
     }
 
-    this.props.videoPlayer.seekTo(this.currentTimeMsFromScrubber / 1000);
+    this.props.videoPlayer.seekTo(this.currentTimeMsFromScrubber / 1000, true);
     this.setState(Object.assign({}, this.state, { value }));
   }
 
   handleAfterChange = (value: number): void => {
-    if (this.shouldPlayAfterChange) {
-      this.props.videoPlayer.playVideo();
-    }
-
-    this.shouldPlayAfterChange = false;
     this.isScrubbing = false;
+    this.setState(Object.assign({}, this.state, { value }));
+    this.props.videoPlayer.seekTo(this.currentTimeMsFromScrubber / 1000, true);
   }
 
   render(): JSX.Element {
@@ -137,5 +132,5 @@ export default compose(
   withVideo,
   withRAFLoop,
   withTab,
-  onlyUpdateForKeys(['isVideoActive'])
+  onlyUpdateForKeys(['isVideoActive', 'videoState'])
 )(Scrubber);

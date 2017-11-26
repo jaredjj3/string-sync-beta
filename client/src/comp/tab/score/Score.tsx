@@ -15,9 +15,9 @@ export default enhance(({ provider }) => (
   <ul>
     <ScoreScroller />
     {
-      provider.vextabs.map((vextab, index) => (
-        <li key={`score-line-${index}`} style={{ paddingTop: index === 0 ? '0px' : '50px' }}>
-          <ScoreLine vextab={vextab} />
+      provider.vextabs.map((vextab, ndx) => (
+        <li key={`score-line-${ndx}`} style={{ paddingTop: ndx === 0 ? '0px' : '50px' }}>
+          <ScoreLine vextab={vextab} lineNum={ndx} />
         </li>
       ))
     }
