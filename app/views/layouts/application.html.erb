@@ -12,6 +12,15 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 
     <meta name="viewport" content="user-scalable=no,initial-scale=1,maximum-scale=1" />
+
+    <script>
+      window.assets = {
+        logo: {
+          png: "<%= image_url("logo/logo.png") %>",
+          svg: "<%= image_url("logo/logo.svg") %>"
+        }
+      };
+    </script>
   </head>
 
   <body>
