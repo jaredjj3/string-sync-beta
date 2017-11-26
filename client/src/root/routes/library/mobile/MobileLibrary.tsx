@@ -3,7 +3,7 @@ import React from 'react';
 import Affix from 'antd/lib/affix';
 import Gradient from 'comp/gradient';
 import LibraryGrid from './grid';
-import Logo from 'comp/logo';
+import { LogoImage, LogoText } from 'comp/logo';
 import Icon from 'antd/lib/icon';
 
 import { TagNotationsMap } from '../Library';
@@ -23,11 +23,11 @@ class MobileLibrary extends React.PureComponent<MobileLibraryProps, MobileLibrar
     return (
       <div className="Library--mobile">
         <div className="Library--mobile__headerSpacer">
-          ♩
+          <LogoImage style={{ width: '48px' }}/>
         </div>
         <div className="Library--mobile__header">
           <div className="Library--mobile__header__logo">
-            <Logo showLogo={false} />
+            <LogoText style={{ fontSize: '24px' }}/>
           </div>
         </div>
         {

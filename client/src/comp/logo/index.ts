@@ -1,3 +1,7 @@
-import Logo from './Logo';
+import LogoText from './text';
+import LogoImage from './image';
 
-export default Logo;
+export {
+  LogoText,
+  LogoImage
+};

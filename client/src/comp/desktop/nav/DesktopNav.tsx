@@ -5,7 +5,7 @@ import { compose } from 'recompose';
 
 import Col from 'antd/lib/col';
 import Icon from 'antd/lib/icon';
-import Logo from 'comp/logo';
+import { LogoText, LogoImage } from 'comp/logo';
 import Menu from 'antd/lib/menu';
 import Row from 'antd/lib/row';
 
@@ -48,7 +48,12 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
       <nav className="Nav--desktop">
         <Row type="flex" justify="space-between" align="middle">
           <Col xs={0} sm={0} md={12} lg={12}>
-            <Logo showLogo={true} />
+              <Link to="/" style={{ color: 'black' }} >
+                <span className="Nav--desktop__logoLink">
+                  <LogoImage style={{ width: '24px' }} />
+                  <LogoText style={{ fontSize: '24px' }} />
+                </span>
+            </Link>
           </Col>
           <Col xs={0} sm={0} md={12} lg={12}>
             <div className="Nav--desktop__right">
