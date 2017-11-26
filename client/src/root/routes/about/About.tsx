@@ -6,7 +6,7 @@ import { Button } from 'antd';
 const About = () => (
   <div className="About">
     <div className="About__logo">
-      <img src={window.assets.logo.svg} />
+      <img src={window.assets.mascot.guitar.svg} />
     </div>
     <div className="About__content">
       <article>
