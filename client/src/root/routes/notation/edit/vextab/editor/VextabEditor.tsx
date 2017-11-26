@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
 import Input from 'antd/lib/input';
 import Alert from 'antd/lib/alert';
@@ -8,20 +9,26 @@ const { TextArea } = Input;
 
 interface VextabEditorProps {
   vextab: string;
-  parseError: string;
+  provider: any;
   updateVextab(vextab: string): void;
-  clearTabParseErrors(): void;
 }
 
 interface VextabEditorState {}
 
 class VextabEditor extends React.Component<VextabEditorProps, VextabEditorState> {
+  componentWillReceiveProps(nextProps: VextabEditorProps): void {
+    if (nextProps.provider && !nextProps.provider.editMode) {
+      nextProps.provider.editMode = true;
+    }
+  }
+
   handleChange = (e: React.SyntheticEvent<any>): void => {
     this.props.updateVextab((e.target as any).value);
   }
 
   render(): JSX.Element {
-    const { vextab, parseError } = this.props;
+    const { vextab, provider } = this.props;
+    const parseError = provider ? provider.parseError : null;
 
     return (
       <div className="VextabEditor">
@@ -53,16 +60,14 @@ class VextabEditor extends React.Component<VextabEditorProps, VextabEditorState>
 }
 
 import { updateVextab } from 'data/notation/actions';
-import { clearTabParseError } from 'data/tab/actions';
 
 const mapStateToProps = state => ({
   vextab: state.notation.vextab,
-  parseError: state.tab.parseError
+  provider: state.tab.provider
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateVextab: vextab => dispatch(updateVextab(vextab)),
-  clearTabParseError: () => dispatch(clearTabParseError())
+  updateVextab: vextab => dispatch(updateVextab(vextab))
 });
 
 export default connect(

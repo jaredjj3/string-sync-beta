@@ -12,6 +12,7 @@ class VexProvider {
   isReady: boolean;
   parseError: string;
   afterSetup: Function;
+  editMode: boolean = false;
 
   vextabs: Array<any>;
   fretman: Fretman;
@@ -125,7 +126,7 @@ class VexProvider {
       this.afterSetup();
     }
 
-    return this.isReady;
+    return this.isReady = this.editMode || this.isReady;
   }
 
   private _setupFormatter(): boolean {
