@@ -17,11 +17,6 @@ class ScoreLine extends React.Component<ScoreLineProps, any> {
   ctx: CanvasRenderingContext2D = null;
   renderer: any = null;
 
-  componentDidMount(): void {
-    this.renderMeasureNumbers();
-    this.renderTabText();
-  }
-
   setCanvas = (c: HTMLCanvasElement): void => {
     if (!c) {
       return;
@@ -76,6 +71,8 @@ class ScoreLine extends React.Component<ScoreLineProps, any> {
   renderTab = (): void => {
     if (this.renderer !== null) {
       this.props.vextab.artist.render(this.renderer);
+      this.renderMeasureNumbers();
+      this.renderTabText();
     }
   }
 
