@@ -72,20 +72,16 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
                   <SubMenu title="settings" className="Nav--desktop__menuItem">
                     {
                       isTeacher || isAdmin ?
-                        <Item>
-                          <Link to="/upload">
-                            <Icon type="upload" />
-                            <span>upload</span>
-                          </Link>
+                        <Item key="/upload">
+                          <Icon type="upload" />
+                          <span>upload</span>
                         </Item> : null
                     }
                     {
                       isAdmin ?
-                        <Item>
-                          <Link to="/dashboard">
-                            <Icon type="compass" />
-                            <span>dashboard</span>
-                          </Link>
+                        <Item key="/dashboard">
+                          <Icon type="compass" />
+                          <span>dashboard</span>
                         </Item> : null
                     }
                     <Item>
