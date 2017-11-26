@@ -49,6 +49,7 @@ class DeadTime extends React.Component<DeadTimeProps, DeadTimeState> {
         <h2>Dead Time</h2>
         <Slider
           step={1}
+          min={-10}
           max={duration}
           value={deadTimeValue}
           defaultValue={0}

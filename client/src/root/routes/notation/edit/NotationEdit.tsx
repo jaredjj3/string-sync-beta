@@ -1,10 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
+import { withRAFLoop } from 'enhancers';
 import Provider from '../provider';
 import { VexProvider } from 'services/vexflow';
 import { Video, Fretboard, Tab } from 'comp';
 import VextabEditor from './vextab/editor';
+import DeadTime from './deadTime';
+import Row from 'antd/lib/row';
+import Bpm from './bpm';
+import Save from './save';
 
 import { Notation } from 'types/notation';
 import { Device } from 'types/device';
@@ -16,6 +22,7 @@ interface NotationEditProps {
   showFretboardControls: boolean;
   autoSave: boolean;
   scaleVisualization: boolean;
+  RAFLoop: any;
   fetchNotation(id: number): void;
   enableAutoSave(): void;
   disableAutoSave(): void;
@@ -30,11 +37,13 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
   componentDidMount(): void {
     this.props.enableAutoSave();
     this.props.fetchNotation(this.props.match.params.id);
+    this.props.RAFLoop.start();
   }
 
   componentWillUnmount(): void {
     this.props.resetNotation();
     this.props.disableAutoSave();
+    this.props.RAFLoop.stop();
   }
 
   render(): JSX.Element {
@@ -47,6 +56,11 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
           <Fretboard />
           <Tab />
         </Provider>
+        <Row className="NotationEdit__syncControls" type="flex" align="middle">
+          <Save />
+          <DeadTime />
+          <Bpm />
+        </Row>
         <VextabEditor />
       </div>
     );
@@ -70,7 +84,7 @@ const mapDispatchToProps = dispatch => ({
   resetNotation: () => dispatch(resetNotation())
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  withRAFLoop,
+  connect(mapStateToProps, mapDispatchToProps)
 )(NotationEdit);

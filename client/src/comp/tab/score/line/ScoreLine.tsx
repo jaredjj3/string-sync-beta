@@ -19,6 +19,7 @@ class ScoreLine extends React.Component<ScoreLineProps, any> {
 
   componentDidMount(): void {
     this.renderMeasureNumbers();
+    this.renderTabText();
   }
 
   setCanvas = (c: HTMLCanvasElement): void => {
@@ -31,6 +32,21 @@ class ScoreLine extends React.Component<ScoreLineProps, any> {
     this.ctx = this.renderer.getContext();
     this.renderTab();
     this.maybeSetupTickman();
+  }
+
+  renderTabText(): void {
+    this.ctx.save();
+    this.ctx.font = '24px sans-serif';
+
+    this.props.vextab.artist.staves.map(stave => {
+      let x = 25;
+      let y = stave.tab.y + 73;
+      this.ctx.fillText('T', x, y);
+      this.ctx.fillText('A', x, y + 20);
+      this.ctx.fillText('B', x, y + 40);
+    });
+
+    this.ctx.restore();
   }
 
   renderMeasureNumbers(): void {
@@ -52,7 +68,7 @@ class ScoreLine extends React.Component<ScoreLineProps, any> {
           const measuresPerLine = this.props.provider.formatter.measuresPerLine;
           const measureNum = (measuresPerLine * lineNum) + ndx + 1;
           this.ctx.fillText(measureNum, x - 3, 50);
-        });
+      });
 
     this.ctx.restore();
   }
