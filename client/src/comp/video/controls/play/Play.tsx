@@ -1,14 +1,23 @@
 import React from 'react';
 import { compose, branch, onlyUpdateForKeys, renderComponent } from 'recompose';
 
-import Icon from 'antd/lib/icon';
+import { Icon } from 'antd';
 import { withVideo } from 'enhancers';
 
 const playVideo = (videoPlayer) => () => videoPlayer.playVideo();
 const pauseVideo = (videoPlayer) => () => videoPlayer.pauseVideo();
 
-const Play = ({ videoPlayer }) => <Icon type="play-circle-o" onClick={playVideo(videoPlayer)} />;
-const Pause = ({ videoPlayer }) => <Icon type="pause-circle-o" onClick={pauseVideo(videoPlayer)} />;
+const Play = ({ videoPlayer }) => (
+  <span>
+    <Icon type="play-circle-o" onClick={playVideo(videoPlayer)} />
+  </span>
+);
+
+const Pause = ({ videoPlayer }) => (
+  <span>
+    <Icon type="pause-circle-o" onClick={pauseVideo(videoPlayer)} />
+  </span>
+);
 
 export default compose(
   withVideo,

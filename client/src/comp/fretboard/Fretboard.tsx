@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'recompose';
+import { compose, branch, renderNothing } from 'recompose';
 
 import Frets from './frets';
 import Strings from './strings';
@@ -9,10 +9,10 @@ import Col from 'antd/lib/col';
 
 import { VexPlayer, Fretman, VexProvider } from 'services/vexflow';
 import { isVideoActive } from 'util/videoStateCategory';
-import { withRAFLoop, withTab } from 'enhancers';
+import { withRAFLoop, withTab, identity } from 'enhancers';
 
 interface FretboardProps {
-  shouldRAF: boolean;
+  isFretboardEnabled: boolean;
   RAFLoop: any;
   vexPlayer: VexPlayer;
   fretman: Fretman;
@@ -83,8 +83,8 @@ class Fretboard extends React.Component<FretboardProps, FretboardState> {
 }
 
 const mapStateToProps = state => ({
-  shouldRAF: isVideoActive(state.video.state),
   scaleVisualizer: state.tab.scaleVisualizer,
+  isFretboardEnabled: state.feature.fretboard
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -92,7 +92,12 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  branch(
+    ({ isFretboardEnabled }) => isFretboardEnabled,
+    identity,
+    renderNothing
+  ),
   withRAFLoop,
   withTab,
-  connect(mapStateToProps, mapDispatchToProps)
 )(Fretboard);

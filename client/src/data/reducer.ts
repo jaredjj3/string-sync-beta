@@ -12,7 +12,7 @@ import panels from './panels/reducer';
 import tags from './tags/reducer';
 import raf from './raf/reducer';
 
-export default combineReducers({
+const RootReducer = combineReducers({
   device,
   library,
   session,
@@ -25,3 +25,5 @@ export default combineReducers({
   tags,
   raf
 });
+
+export default RootReducer;
