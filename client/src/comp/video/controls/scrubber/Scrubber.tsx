@@ -94,9 +94,10 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
   }
 
   handleChange = (value: number): void => {
-    if (!this.isScrubbing) {
+    this.isScrubbing = true;
+
+    if (this.props.videoState === 'PLAYING') {
       this.props.videoPlayer.pauseVideo();
-      this.isScrubbing = true;
     }
 
     this.props.videoPlayer.seekTo(this.currentTimeMsFromScrubber / 1000, true);
@@ -132,5 +133,5 @@ export default compose(
   withVideo,
   withRAFLoop,
   withTab,
-  onlyUpdateForKeys(['isVideoActive', 'videoState'])
+  onlyUpdateForKeys(['videoState'])
 )(Scrubber);

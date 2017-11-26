@@ -5,6 +5,7 @@ import { compose, lifecycle } from 'recompose';
 
 import Banner from './banner';
 import Provider from '../provider';
+import Controls from '../controls';
 import { VexProvider } from 'services/vexflow';
 import { Video, Fretboard, Tab } from 'comp';
 import { withRAFLoop, withVideo } from 'enhancers';
@@ -46,5 +47,6 @@ export default enhance(() => (
       <Fretboard />
       <Tab />
     </Provider>
+    <Controls />
   </div>
 ));

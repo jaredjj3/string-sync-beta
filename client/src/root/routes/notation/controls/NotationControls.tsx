@@ -4,6 +4,7 @@ import { compose, renderComponent, branch } from 'recompose';
 import { Row, Col } from 'antd';
 import Play from 'comp/video/controls/play';
 import Scrubber from 'comp/video/controls/scrubber';
+import Loop from 'comp/video/controls/loop';
 import FretboardToggle from 'comp/fretboard/toggle';
 import DesktopOnly from 'comp/desktop/only';
 import { withDeviceType } from 'enhancers';
@@ -13,8 +14,17 @@ const enhance = compose(
 );
 
 const ControlRow1 = () => (
-  <Row className="NotationControls__row1">
-
+  <Row
+    className="NotationControls__row1"
+    type="flex" align="middle" justify="center"
+  >
+    <Col span={2}>
+    </Col>
+    <Col span={16}>
+      <Loop />
+    </Col>
+    <Col span={2}>
+    </Col>
   </Row>
 );
 
