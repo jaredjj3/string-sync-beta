@@ -12,6 +12,7 @@ declare global {
     currentUser: User;
     $: any;
     store: any;
+    assets: any;
   }
 }
 
