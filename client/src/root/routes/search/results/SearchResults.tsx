@@ -21,7 +21,9 @@ const SearchResults = ({ notations }): JSX.Element => (
           ] :
           <div className="SearchResults__content--none">
             <h1>No Results</h1>
-            <span></span>
+            <span>
+              <img className="Mascot--search" src={window.assets.mascot.search.svg} />
+            </span>
           </div>
       }
     </Row>
