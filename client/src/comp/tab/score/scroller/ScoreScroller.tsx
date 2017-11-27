@@ -47,8 +47,11 @@ class ScoreScroller extends React.Component<any, any> {
     }
 
     try {
-      const lineIndex = this.props.provider.player.scrollSpec.lowTick.staveIndex;
-      this.scoreContainer.scrollTop = this.scrollPositions[lineIndex];
+      const { scrollSpec } = this.props.provider.player;
+      if (scrollSpec) {
+        const lineIndex = scrollSpec.lowTick.staveIndex;
+        this.scoreContainer.scrollTop = this.scrollPositions[lineIndex];
+      }
     } catch (error) {
       console.error(error);
     }
