@@ -21,6 +21,8 @@
 #
 
 class Notation < ApplicationRecord
+  YOUTUBE_ID_REGEX = /^(?:https?:\/\/)?(?:www\.)?youtu(?:\.be|be\.com)\/(?:watch\?v=)?([\w-]{10,})/
+
   belongs_to(:transcriber, foreign_key: :user_id, class_name: "User")
   has_many(:taggings, dependent: :destroy)
   has_many(:tags, through: :taggings)
@@ -30,8 +32,8 @@ class Notation < ApplicationRecord
   has_attached_file(:thumbnail, default_url: "default.jpg")
   validates_attachment_content_type(:thumbnail, content_type: /\Aimage\/.*\z/)
 
-  validates(:user_id, :youtube_video_id, :name, :artist_name, presence: true)
-  validate(:has_valid_video_url)
+  validates(*%i(user_id youtube_video_id song_name artist_name dead_time_ms bpm featured), presence: true)
+  validate(:validate_video_url)
 
   before_create(:extract_youtube_id)
 
@@ -48,10 +50,10 @@ class Notation < ApplicationRecord
   private
 
     def youtube_video_id_match(url)
-      url.try(:match, /^(?:https?:\/\/)?(?:www\.)?youtu(?:\.be|be\.com)\/(?:watch\?v=)?([\w-]{10,})/)
+      url.try(:match, YOUTUBE_ID_REGEX)
     end
 
-    def has_valid_video_url
+    def validate_video_url
       return unless new_record?
 
       if youtube_video_id_match(self.youtube_video_id).blank?
