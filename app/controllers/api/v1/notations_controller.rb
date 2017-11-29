@@ -15,8 +15,7 @@ class Api::V1::NotationsController < ApplicationController
       @notation = Notation.create!(notation_params.merge(transcriber: current_user))
       render(:show, status: 200)
     else
-      errors = [{ type: :error, messages: ["not authorized to create"] }]
-      render(json: errors, status: 422)
+      render_errors("not authorized to create", status: 422)
     end
   end
 
@@ -27,12 +26,19 @@ class Api::V1::NotationsController < ApplicationController
       @notation.update!(notation_params)
       render(:show, status: 200)
     else
-      errors = [{ type: :error, messages: ["not authorized to update"] }]
-      render(json: errors, status: 422)
+      render_errors("not authorized to update", status: 422)
     end
   end
 
   def destroy
+    @notation = Notation.includes(:tags, :transcriber).find(params.require(:id))
+
+    if authorized_to_destroy?(@notation)
+      @notation.update!(notation_params)
+      render(:show, status: 200)
+    else
+      render_errors("not authorized to destroy", status: 422)
+    end
   end
 
   private
@@ -45,38 +51,28 @@ class Api::V1::NotationsController < ApplicationController
       logged_in? && (current_user == notation.transcriber || current_user.try(:has_role?, :admin))
     end
 
+    def authorized_to_destroy?(notation)
+      current_user.try(:has_role?, :admin)
+    end
+
     def notation_params
-      current_user.try(:has_role?, :admin) ? admin_notation_params : non_admin_notation_params
-    end
-
-    def admin_notation_params
-      params.
+      params_base = params.
           require(:notation).
-          permit(
-            :youtube_video_id,
-            :thumbnail,
-            :song_name,
-            :artist_name,
-            :vextab_string,
-            :bpm,
-            :dead_time_ms,
-            :duration_ms,
-            :featured # admins only
-          )
-    end
+          permit(*%i(
+            youtube_video_id
+            thumbnail
+            song_name
+            artist_name
+            vextab_string
+            bpm
+            dead_time_ms
+            duration_ms
+          ))
 
-    def non_admin_notation_params
-      params.
-          require(:notation).
-          permit(
-            :youtube_video_id,
-            :thumbnail,
-            :song_name,
-            :artist_name,
-            :vextab_string,
-            :bpm,
-            :dead_time_ms,
-            :duration_ms
-          )
+      if current_user.try(:has_role?, :admin)
+        params_base.merge(params.require(:notation).permit(:featured))
+      else
+        params_base
+      end
     end
 end

@@ -6,6 +6,11 @@ class ApplicationController < ActionController::Base
 
   private
 
+    def render_errors(messages, status = 500)
+      json_response = { type: :error, messages: Array.wrap(messages) }
+      render(json: json_response, status: status)
+    end
+
     def current_user
       session_token = session[:session_token]
       return nil unless session_token
@@ -25,14 +30,5 @@ class ApplicationController < ActionController::Base
       current_user.reset_session_token!
       @current_user = nil
       session[:session_token] = nil
-    end
-
-    def logged_in_as?(role)
-      if !role.is_a?(Symbol) && !role.is_a?(Role)
-        raise ArgumentError.new("must be a symbol or a role")
-      end
-
-      role = Role.where(name: role).first! if role.is_a?(Symbol)
-      logged_in? && current_user.roles.include?(role)
     end
 end
