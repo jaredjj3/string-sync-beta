@@ -1,4 +1,4 @@
-BUILD_STRUCTS = <<-BUILD.split("\n").map { |line| line.strip }.join("\n")
+VEXTAB_STRING = <<-VEXTAB.split("\n").map { |line| line.strip }.join("\n")
 tabstave
 clef=none
 notation=true
@@ -15,7 +15,7 @@ notes | :8 (5/6.7/5.5/4.6/3.5/2) :16 6-5/2 7-6/3 7/4 ##
 notes | :8 (5/4.4/3.5/2) 3/5 5/4 5/2 :16 3-4-3/2 ^3^ :8 1/2
 notes | :8 (5/4.4/3.5/2) 3/5 5/4 5/2 :16 3-4-3/2 :8 1/2
 notes | :8 s(7/5.6/4.7/3.5/2) 7-9/2 (9/4.7/3.9/2)s10/2 7/1
-BUILD
+VEXTAB
 
 def init
   Rails.application.eager_load!
@@ -31,11 +31,12 @@ def create_roles
 end
 
 def create_users
-  roles = Role.all
-
-  [
-    { username: "jaredjj3", email: "jaredjj3@gmail.com", password: "password", roles: roles },
-  ].each { |user| User.create!(user) }
+  User.create!(
+    username: "jaredjj3",
+    email: "jaredjj3@gmail.com",
+    password: "testing",
+    roles: Role.all
+  )
 end
 
 def create_tags
@@ -51,15 +52,16 @@ def create_notations(num)
   num.times do
     Notation.create!(
       user_id: teachers.sample.id,
-      taggings_attributes: tags.shuffle[0..2].map { |tag| { tag_id: tag.id } },
-      name: Faker::Book.title,
       youtube_video_id: "https://youtu.be/w8uNZWDEYzQ",
-      duration: 14.841 * 1000,
+      song_name: Faker::Book.title,
+      duration_ms: 14.841 * 1000,
+      dead_time_ms: rand * 10_000,
       artist_name: Faker::Name.name,
       thumbnail: File.open(Dir["app/assets/images/thumbnails/*.jpg"].sample),
-      vextab: BUILD_STRUCTS,
-      tempo: 120,
-      featured: rand < 0.5
+      vextab_string: VEXTAB_STRING,
+      bpm: 120,
+      featured: true,
+      taggings_attributes: tags.shuffle[0..2].map { |tag| { tag_id: tag.id } }
     )
   end
 end
@@ -70,11 +72,12 @@ def create_saved_notations
 end
 
 ActiveRecord::Base.transaction do
+  raise ActiveRecord::Rollback unless Rails.env.development?
   init
   delete_all
   create_roles
   create_users
   create_tags
-  create_notations(100)
+  create_notations(20)
   create_saved_notations
 end
