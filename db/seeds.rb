@@ -47,7 +47,6 @@ end
 
 def create_notations(num)
   teachers = User.joins(user_roles: :role).where(roles: { name: "teacher" })
-  tags = Tag.all
 
   num.times do
     Notation.create!(
@@ -60,10 +59,14 @@ def create_notations(num)
       thumbnail: File.open(Dir["app/assets/images/thumbnails/*.jpg"].sample),
       vextab_string: VEXTAB_STRING,
       bpm: 120,
-      featured: true,
-      taggings_attributes: tags.shuffle[0..2].map { |tag| { tag_id: tag.id } }
+      featured: rand < 0.75
     )
   end
+end
+
+def create_taggings(up_to)
+  tags = Tag.all
+  Notation.all.each { |notation| tags.sample(rand(up_to)).each { |tag| notation.tags << tag } }
 end
 
 def create_saved_notations
@@ -79,5 +82,7 @@ ActiveRecord::Base.transaction do
   create_users
   create_tags
   create_notations(20)
+  create_taggings(3)  
   create_saved_notations
+
 end

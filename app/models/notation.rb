@@ -37,14 +37,8 @@ class Notation < ApplicationRecord
 
   before_create(:extract_youtube_id)
 
-  accepts_nested_attributes_for(:taggings)
-
   def extract_youtube_id
     self.youtube_video_id = youtube_video_id_match(self.youtube_video_id)[1]
-  end
-
-  def taggings_attributes=(*)
-    super.tap { taggings.each { |tagging| tagging.notation = self } }
   end
 
   private
