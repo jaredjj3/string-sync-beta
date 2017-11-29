@@ -1,6 +1,7 @@
 class Api::V1::NotationsController < ApplicationController
   def index
-    @notations = Notation.includes(:tags, :transcriber).all
+    # TODO: Implement checking fetched_at and only return notations fetched after fetched_at
+    @notations = Notation.includes(:tags, :transcriber).where(featured: true)
     render(:index, status: 200)
   end
 

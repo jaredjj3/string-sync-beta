@@ -50,7 +50,7 @@ def create_notations(num)
 
   num.times do
     Notation.create!(
-      transcriber:      teachers.sample.id,
+      transcriber:      teachers.sample,
       youtube_video_id: "https://youtu.be/w8uNZWDEYzQ",
       song_name:        Faker::Book.title,
       artist_name:      Faker::Name.name,
