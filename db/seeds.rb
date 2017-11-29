@@ -50,16 +50,16 @@ def create_notations(num)
 
   num.times do
     Notation.create!(
-      user_id: teachers.sample.id,
+      transcriber:      teachers.sample.id,
       youtube_video_id: "https://youtu.be/w8uNZWDEYzQ",
-      song_name: Faker::Book.title,
-      duration_ms: 14.841 * 1000,
-      dead_time_ms: rand * 10_000,
-      artist_name: Faker::Name.name,
-      thumbnail: File.open(Dir["app/assets/images/thumbnails/*.jpg"].sample),
-      vextab_string: VEXTAB_STRING,
-      bpm: 120,
-      featured: rand < 0.75
+      song_name:        Faker::Book.title,
+      artist_name:      Faker::Name.name,
+      duration_ms:      14.841 * 1000,
+      dead_time_ms:     rand * 10_000,
+      bpm:              120,
+      vextab_string:    VEXTAB_STRING,
+      thumbnail:        File.open(Dir["app/assets/images/thumbnails/*.jpg"].sample),
+      featured:         rand < 0.75
     )
   end
 end
@@ -82,7 +82,7 @@ ActiveRecord::Base.transaction do
   create_users
   create_tags
   create_notations(20)
-  create_taggings(3)  
+  create_taggings(3)
   create_saved_notations
 
 end
