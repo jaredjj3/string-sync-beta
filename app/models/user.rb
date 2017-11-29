@@ -50,14 +50,6 @@ class User < ApplicationRecord
     SecureRandom.urlsafe_base64
   end
 
-  def has_roles?(role_names)
-    role_names = [role_names] unless role_names.is_a?(Array)
-    user_roles = roles.map(&:name).map(&:to_sym)
-    role_names.length != (role_names - user_roles).length
-  end
-
-  alias :has_role? :has_roles?
-
   def reset_session_token!
     self.session_token = User.generate_session_token
     self.save!
@@ -71,6 +63,10 @@ class User < ApplicationRecord
 
   def is_password?(password)
     BCrypt::Password.new(self.password_digest).is_password?(password)
+  end
+
+  def has_role?(role_name)
+    roles.any? { |role| role.name.to_sym == role_name.to_sym }
   end
 
   private

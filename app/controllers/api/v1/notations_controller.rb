@@ -37,35 +37,46 @@ class Api::V1::NotationsController < ApplicationController
 
   private
 
+    def authorized_to_create?
+      logged_in? && (current_user.has_role?(:teacher) || current_user.has_role?(:admin))
+    end
+
+    def authorized_to_update?(notation)
+      logged_in? && (current_user == notation.transcriber || current_user.try(:has_role?, :admin))
+    end
+
     def notation_params
+      current_user.try(:has_role?, :admin) ? admin_notation_params : non_admin_notation_params
+    end
+
+    def admin_notation_params
       params.
           require(:notation).
           permit(
             :youtube_video_id,
             :thumbnail,
-            :name,
+            :song_name,
             :artist_name,
-            :vextab,
-            :tempo,
-            :dead_time,
-            :duration,
-            :featured,
-            taggings_attributes: [:tag_id]
+            :vextab_string,
+            :bpm,
+            :dead_time_ms,
+            :duration_ms,
+            :featured # admins only
           )
     end
 
-    def filters_params
+    def non_admin_notation_params
       params.
-          fetch(:filters, {}).
-          permit(:featured)
-    end
-
-    def authorized_to_create?
-      current_user.present? && current_user.has_role?(%i(admin teacher))
-    end
-
-    def authorized_to_update?(notation)
-      current_user.present? &&
-          (notation.transcriber == current_user || current_user.has_role?(:admin))
+          require(:notation).
+          permit(
+            :youtube_video_id,
+            :thumbnail,
+            :song_name,
+            :artist_name,
+            :vextab_string,
+            :bpm,
+            :dead_time_ms,
+            :duration_ms
+          )
     end
 end
