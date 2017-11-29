@@ -3,7 +3,7 @@
 # Table name: notations
 #
 #  id                     :integer          not null, primary key
-#  teacher_id             :integer          not null
+#  transcriber_id         :integer          not null
 #  youtube_video_id       :text             not null
 #  song_name              :string           not null
 #  artist_name            :string           not null
@@ -23,7 +23,7 @@
 class Notation < ApplicationRecord
   YOUTUBE_ID_REGEX = /^(?:https?:\/\/)?(?:www\.)?youtu(?:\.be|be\.com)\/(?:watch\?v=)?([\w-]{10,})/
 
-  belongs_to(:transcriber, foreign_key: :user_id, class_name: "User")
+  belongs_to(:transcriber, foreign_key: :transcriber_id, class_name: "User")
   has_many(:taggings, dependent: :destroy)
   has_many(:tags, through: :taggings)
   has_many(:user_notations)
