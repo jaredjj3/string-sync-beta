@@ -22,6 +22,7 @@ def init
 end
 
 def delete_all
+  return unless Rails.env.development?
   ApplicationRecord.descendants.each(&:delete_all)
 end
 

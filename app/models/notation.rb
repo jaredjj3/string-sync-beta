@@ -3,20 +3,20 @@
 # Table name: notations
 #
 #  id                     :integer          not null, primary key
-#  user_id                :integer          not null
+#  teacher_id             :integer          not null
 #  youtube_video_id       :text             not null
-#  name                   :string           not null
+#  song_name              :string           not null
 #  artist_name            :string           not null
-#  vextab                 :text
+#  vextab_string          :text
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  thumbnail_file_name    :string
 #  thumbnail_content_type :string
 #  thumbnail_file_size    :integer
 #  thumbnail_updated_at   :datetime
-#  duration               :integer
-#  dead_time              :integer          default("0")
-#  tempo                  :integer          not null
+#  duration_ms            :integer
+#  dead_time_ms           :integer          default("0"), not null
+#  bpm                    :integer          default("0"), not null
 #  featured               :boolean          default("false"), not null
 #
 
