@@ -33,9 +33,9 @@ end
 def create_users
   User.create!(
     username: "jaredjj3",
-    email: "jaredjj3@gmail.com",
+    email:    "jaredjj3@gmail.com",
     password: "testing",
-    roles: Role.all
+    roles:    Role.all
   )
 end
 
@@ -84,5 +84,4 @@ ActiveRecord::Base.transaction do
   create_notations(20)
   create_taggings(3)
   create_saved_notations
-
 end
