@@ -32,7 +32,7 @@ class Notation < ApplicationRecord
   has_attached_file(:thumbnail, default_url: "default.jpg")
   validates_attachment_content_type(:thumbnail, content_type: /\Aimage\/.*\z/)
 
-  validates(*%i(user_id youtube_video_id song_name artist_name dead_time_ms bpm featured), presence: true)
+  validates(*%i(user_id youtube_video_id song_name artist_name dead_time_ms bpm), presence: true)
   validate(:validate_video_url)
 
   before_create(:extract_youtube_id)
