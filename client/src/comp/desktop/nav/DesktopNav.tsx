@@ -48,11 +48,11 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
       <nav className="Nav--desktop">
         <Row type="flex" justify="space-between" align="middle">
           <Col xs={0} sm={0} md={12} lg={12}>
-              <Link to="/" style={{ color: 'black' }} >
-                <span className="Nav--desktop__logoLink">
-                  <LogoImage style={{ width: '24px' }} />
-                  <LogoText style={{ fontSize: '24px' }} />
-                </span>
+            <Link to="/" style={{ color: 'black' }} >
+              <span className="Nav--desktop__logoLink">
+                <LogoImage style={{ width: '24px' }} />
+                <LogoText style={{ fontSize: '24px' }} />
+              </span>
             </Link>
           </Col>
           <Col xs={0} sm={0} md={12} lg={12}>
