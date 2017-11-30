@@ -1,12 +1,10 @@
 import React from 'react';
-
 import Hidden from 'comp/hidden';
-
 import UserProcessor from './userProcessor';
 import ViewportManager from './viewportManager';
 import NotificationSys from './notificationSys';
 
-const AppFunctionality = () => (
+const AppHead = () => (
   <Hidden>
     <UserProcessor />
     <ViewportManager />
@@ -14,4 +12,4 @@ const AppFunctionality = () => (
   </Hidden>
 );
 
-export default AppFunctionality;
+export default AppHead;

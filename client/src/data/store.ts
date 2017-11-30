@@ -1,7 +1,7 @@
 import { createStore } from 'redux';
 
-import reducer from './reducer';
-import middleware from './middleware';
+import rootReducer from './rootReducer';
+import rootMiddleware from './rootMiddleware';
 
 import { utils as viewportUtils } from 'data/viewport';
 
@@ -11,9 +11,9 @@ const preLoadedState = {
 };
 
 const store = createStore(
-  reducer,
+  rootReducer,
   preLoadedState,
-  middleware,
+  rootMiddleware,
 );
 
 window.store = store;

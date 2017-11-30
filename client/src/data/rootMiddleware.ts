@@ -2,6 +2,8 @@ import { applyMiddleware } from 'redux';
 
 import thunk from 'redux-thunk';
 
-export default applyMiddleware(
+const rootMiddleware = applyMiddleware(
   thunk
 );
+
+export default rootMiddleware;

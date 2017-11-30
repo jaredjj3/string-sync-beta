@@ -1,15 +1,9 @@
 import React from 'react';
-import { withRouter } from 'react-router';
-
+import Head from './head';
+import Body from './body';
 import enUS from 'antd/lib/locale-provider/en_US.js';
 import { LocaleProvider, Layout } from 'antd';
-
-import AppFunctionality from './functionality';
-import Header from './header';
-import Content from './content';
-import Footer from './footer';
-import Gradient from 'comp/gradient';
-import MobileNav from 'comp/mobile/nav';
+import { withRouter } from 'react-router';
 
 const scrollToTop = (): void => {
   window.scrollTo(null, 0);
@@ -22,14 +16,8 @@ const App = ({ history }) => {
     <div className="App">
       <LocaleProvider locale={enUS}>
         <div className="App__layout">
-          <AppFunctionality />
-          <Layout>
-            <Gradient />
-            <Header />
-            <Content />
-            <Footer />
-            <MobileNav />
-          </Layout>
+          <Head />
+          <Body />
         </div>
       </LocaleProvider>
     </div>
