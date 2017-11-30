@@ -6,37 +6,49 @@ class Api::V1::UsersController < ApplicationController
       login(@user)
       render(:show, status: 200)
     else
-      render(json: @user.errors_as_json, status: 422)
+      render(json: @user.errors.full_messages, status: 422)
     end
   end
 
   def show
     @user = User.find(params.require(:id))
+    authorized = @user && current_user.try(:has_role?, :admin)
 
-    if @user && logged_in_as?(:admin)
+    if authorized
       render(:show, status: 200)
     else
-      errors = [{ type: :error, messages: ["unauthorized to show user"] }]
-      render(json: errors, status: 401)
+      render_errors("unauthorized to show user", 401)
     end
   end
 
   def update
     @user = User.find(params[:id])
+    authorized = @user == current_user || logged_in_as?(:admin)
 
-    if @user == current_user || logged_in_as?(:admin)
+    if authorized
       if @user.update(user_params)
         render(:show, status: 200)
       else
-        render(json: @user.errors_as_json, status: 301)
+        render_errors(user.errors.full_messages, 422)
       end
     else
-      errors = [{ type: :error, messages: ["unauthorized to update user"] }]
-      render(json: errors, status: 401)
+      render_errors("unauthorized to update user", 401)
     end
   end
 
   def destroy
+    @user = User.find(params[:id])
+    authorized = logged_in_as?(:admin)
+
+    if authorized
+      if @user.destroy
+        render(:show, status: 200)
+      else
+        render_errors(user.errors.full_messages, 422)
+      end
+    else
+      render_errors("unauthorized to destroy user", 401)
+    end
   end
 
   private
