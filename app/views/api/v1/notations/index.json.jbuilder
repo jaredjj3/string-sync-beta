@@ -11,4 +11,8 @@ json.array! @notations do |notation|
     json.username transcriber.username
     json.email    transcriber.email
   end
+
+  if logged_in? && current_user.has_role?(:admin)
+    json.featured notation.featured
+  end
 end
