@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import device from './device/reducer';
+import { reducer as viewport } from './viewport';
 import library from './library/reducer';
 import session from './session/reducer';
 import notation from './notation/reducer';
@@ -13,7 +13,7 @@ import tags from './tags/reducer';
 import raf from './raf/reducer';
 
 const RootReducer = combineReducers({
-  device,
+  viewport,
   library,
   session,
   notation,
