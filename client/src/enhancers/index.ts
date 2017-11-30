@@ -6,6 +6,7 @@ import withRAFLoop from './withRAFLoop';
 import withVideo from './withVideo';
 import withTab from './withTab';
 import withNotation from './withNotation';
+import withViewport from './withViewport';
 
 export {
   identity,
@@ -15,5 +16,6 @@ export {
   withRAFLoop,
   withVideo,
   withTab,
-  withNotation
+  withNotation,
+  withViewport
 };

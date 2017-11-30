@@ -1,9 +1,9 @@
-import actions from './viewportActions';
+import * as actions from './viewportActions';
+import * as utils from './viewportUtils';
 import reducer from './viewportReducer';
-import utils from './viewportUtils';
 
 export {
-  actions,
   reducer,
+  actions,
   utils
 };

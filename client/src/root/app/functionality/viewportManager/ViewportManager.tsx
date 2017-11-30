@@ -1,45 +1,30 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { compose, createSink, lifecycle, withState, withHandlers } from 'recompose';
+import { compose, lifecycle } from 'recompose';
 import { add, remove } from 'eventlistener';
-import { debounce } from 'lodash';
+import { withViewport } from 'enhancers';
+import { utils as viewportUtils } from 'data/viewport';
 
-import { queryDevice, updateViewport } from 'data/device/actions';
-
-const shouldUpdateViewport = ({ isTouch, height, width, deviceType }) => (
-  !isTouch ||
-  window.innerHeight !== height ||
-  window.innerWidth !== width
+const shouldUpdateViewport = (viewport) => (
+  window.innerHeight !== viewport.height ||
+  window.innerWidth !== viewport.width
 );
 
-const doUpdateViewport = () => props => event => {
-  if (shouldUpdateViewport(props)) {
-    props.updateViewport();
+const maybeSetViewport = ({ viewport, setViewport }) => {
+  if (shouldUpdateViewport(viewport)) {
+    setViewport(viewportUtils.getViewportProps());
   }
 };
 
-const mapStateToProps = state => ({
-  isTouch: state.device.isTouch,
-  height: state.device.viewport.height,
-  width: state.device.viewport.width,
-  deviceType: state.device.type
-});
-
-const mapDispatchToProps = dispatch => ({
-  updateViewport: () => dispatch(updateViewport())
-});
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withHandlers({
-    doUpdateViewport
-  }),
+const enhance = compose(
+  withViewport,
   lifecycle({
     componentDidMount(): void {
-      add(window, 'resize', this.props.doUpdateViewport(this.props));
+      add(window, 'resize', maybeSetViewport(this.props));
     },
     componentWillUnmount(): void {
-      remove(window, 'resize', this.props.doUpdateViewport(this.props));
+      remove(window, 'resize', maybeSetViewport(this.props));
     }
   }),
-)(createSink(() => null));
+);
+
+export default enhance(() => null);
