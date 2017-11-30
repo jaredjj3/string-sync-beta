@@ -12,8 +12,11 @@ class Api::V1::NotationsController < ApplicationController
 
   def create
     if authorized_to_create?
-      @notation = Notation.create!(notation_params.merge(transcriber: current_user))
-      render(:show, status: 200)
+      if @notation = Notation.create(notation_params.merge(transcriber: current_user))
+        render(:show, status: 200)
+      else
+        render_errors(@notation.errors.full_messages, status: 400)
+      end
     else
       render_errors("not authorized to create", status: 422)
     end
@@ -23,8 +26,11 @@ class Api::V1::NotationsController < ApplicationController
     @notation = Notation.includes(:tags, :transcriber).find(params.require(:id))
 
     if authorized_to_update?(@notation)
-      @notation.update!(notation_params)
-      render(:show, status: 200)
+      if @notation.update(notation_params)
+        render(:show, status: 200)
+      else
+        render_errors(@notation.errors.full_messages, status: 400)
+      end
     else
       render_errors("not authorized to update", status: 422)
     end
