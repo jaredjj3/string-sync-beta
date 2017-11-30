@@ -35,14 +35,10 @@ class User < ApplicationRecord
   after_initialize(:ensure_session_token)
   after_initialize(:ensure_role)
 
-  def self.find_by_credentials(username_or_email, password)
-    username_or_email = username_or_email.downcase.gsub("@", "")
-    user = User.includes(:user_notations).find_by(
-      "lower(email) = ? or lower(username) = ?",
-      username_or_email,
-      username_or_email
-    )
-
+  # identifier is either an email or username
+  def self.find_by_credentials(identifier, password)
+    u = User.arel_table
+    user = User.where(u[:username].matches(identifier).or(u[:email].matches(identifier))).first
     user && user.is_password?(password) ? user : nil
   end
 
