@@ -2,7 +2,7 @@ import React from 'react';
 import Head from './head';
 import Body from './body';
 import enUS from 'antd/lib/locale-provider/en_US.js';
-import { LocaleProvider, Layout } from 'antd';
+import { LocaleProvider } from 'antd';
 import { withRouter } from 'react-router';
 
 const scrollToTop = (): void => {
