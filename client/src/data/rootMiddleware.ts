@@ -1,5 +1,4 @@
 import { applyMiddleware } from 'redux';
-
 import thunk from 'redux-thunk';
 
 const rootMiddleware = applyMiddleware(
