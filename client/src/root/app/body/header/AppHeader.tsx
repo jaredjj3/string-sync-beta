@@ -21,8 +21,8 @@ const enhance = compose(
 );
 
 const AppHeader = () => (
-  <div className="App__header">
-    <Header>
+  <div>
+    <Header className="App__header">
       <DesktopNav />
     </Header>
   </div>

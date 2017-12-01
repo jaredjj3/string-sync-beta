@@ -3,11 +3,11 @@ import { createStore } from 'redux';
 import rootReducer from './rootReducer';
 import rootMiddleware from './rootMiddleware';
 
-import { utils as viewportUtils } from 'data/viewport';
+import viewportUtil from 'data/ui/viewport/util';
 
 const preLoadedState = {
   session: { currentUser: window.currentUser },
-  viewport: viewportUtils.getViewportProps()
+  viewport: viewportUtil.getViewportProps()
 };
 
 const store = createStore(

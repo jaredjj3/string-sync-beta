@@ -1,29 +1,32 @@
 import { combineReducers } from 'redux';
 
-import { reducer as viewport } from './viewport';
-import library from './library/reducer';
-import session from './session/reducer';
-import notation from './notation/reducer';
-import video from './video/reducer';
-import feature from './feature/reducer';
-import behavior from './behavior/reducer';
-import tab from './tab/reducer';
-import panels from './panels/reducer';
-import tags from './tags/reducer';
-import raf from './raf/reducer';
+import { notationReducer as notation } from './api/notation';
+import { notationsReducer as notations } from './api/notations';
+import { sessionReducer as session } from './api/session';
+import { tagsReducer as tags } from './api/tags';
+import { userNotationReducer as userNotation } from './api/userNotation';
+import { userReducer as user } from './api/user';
+
+import { behaviorsReducer as behaviors } from './ui/behaviors';
+import { featuresReducer as features } from './ui/features';
+import { rafReducer as raf } from './ui/raf';
+import { tabReducer as tab } from './ui/tab';
+import { videoReducer as video } from './ui/video';
+import { viewportReducer as viewport } from './ui/viewport';
 
 const rootReducer = combineReducers({
-  viewport,
-  library,
-  session,
   notation,
-  video,
-  feature,
-  behavior,
-  tab,
-  panels,
+  notations,
+  session,
   tags,
-  raf
+  userNotation,
+  user,
+  behaviors,
+  features,
+  raf,
+  tab,
+  video,
+  viewport
 });
 
 export default rootReducer;
