@@ -18,18 +18,24 @@ const withMarginTop = (Wrapped: React.Component, marginTop: string): any => (
   inContainer(Wrapped, { style: { marginTop } })
 );
 
+// const Routes = () => (
+//   <div className="App__routes">
+//     <Route exact path="/" component={Landing} />
+//     <Route path="/about" component={About} />
+//     <Route path="/library" component={withMarginTop(Library, '5%')} />
+//     <Route path="/login" component={withMarginTop(Login, '10%')} />
+//     <Route path="/signup" component={withMarginTop(Signup, '10%')} />
+//     <Route path="/search" component={withMarginTop(Search, '2%')} />
+//     <Route path="/upload" component={withMarginTop(Upload, '10%')} />
+//     <Route path="/dashboard" component={Dashboard} />
+//     <Route path="/n" component={Notation} />
+//     <Route path="/sandbox" component={Sandbox} />
+//   </div>
+// );
+
 const Routes = () => (
-  <div className="App__routes">
-    <Route exact path="/" component={Landing} />
-    <Route path="/about" component={About} />
-    <Route path="/library" component={withMarginTop(Library, '5%')} />
-    <Route path="/login" component={withMarginTop(Login, '10%')} />
-    <Route path="/signup" component={withMarginTop(Signup, '10%')} />
-    <Route path="/search" component={withMarginTop(Search, '2%')} />
-    <Route path="/upload" component={withMarginTop(Upload, '10%')} />
-    <Route path="/dashboard" component={Dashboard} />
-    <Route path="/n" component={Notation} />
-    <Route path="/sandbox" component={Sandbox} />
+  <div>
+    Routes
   </div>
 );
 
