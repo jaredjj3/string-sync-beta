@@ -28,3 +28,10 @@ export const updateNotation = notation => (
     contentType: false
   })
 );
+
+export const destroyNotation = notationId => (
+  $.ajax({
+    method: 'DELETE',
+    url: `/api/v1/notations/${notationId}`
+  })
+);

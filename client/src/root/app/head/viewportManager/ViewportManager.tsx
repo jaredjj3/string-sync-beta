@@ -6,8 +6,11 @@ import { utils as viewportUtils } from 'data/viewport';
 import { throttle } from 'lodash';
 
 const shouldUpdateViewport = (viewport) => (
-  window.innerHeight !== viewport.height ||
-  window.innerWidth !== viewport.width
+  viewport.type !== 'MOBILE' &&
+  (
+    window.innerHeight !== viewport.height ||
+    window.innerWidth !== viewport.width
+  )
 );
 
 const maybeSetViewport = throttle(({ viewport, setViewport }) => event => {
