@@ -2,20 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-
-import Button from 'antd/lib/button';
-import Checkbox from 'antd/lib/checkbox';
-import Form from 'antd/lib/form';
-import Icon from 'antd/lib/icon';
-import Input from 'antd/lib/input';
-
-import { User } from 'types/user';
+import { Button, Checkbox, Form, Icon, Input } from 'antd';
+import { User, Session } from 'types';
+import { withSession } from 'enhancers';
 
 const FormItem = Form.Item;
 
 interface LoginProps {
   form: any;
-  isLoggedIn: boolean;
+  session: Session;
   history: any;
   login(user: { user: User }): void;
 }
@@ -28,7 +23,7 @@ class Login extends React.Component<LoginProps, LoginState> {
   state: LoginState = { loading: false };
 
   maybeGoToLibrary(): void {
-    if (this.props.isLoggedIn) {
+    if (this.props.session.isLoggedIn) {
       this.props.history.push('/library');
     }
   }
@@ -93,18 +88,10 @@ class Login extends React.Component<LoginProps, LoginState> {
   }
 }
 
-import { login } from 'data/session/actions';
-
-const mapStateToProps = state => ({
-  isLoggedIn: Boolean(state.session.currentUser.id)
-});
-
-const mapDispatchToProps = dispatch => ({
-  login: user => dispatch(login(user))
-});
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+const enhance = compose(
   withRouter,
-  Form.create(),
-)(Login);
+  withSession,
+  Form.create()
+);
+
+export default enhance(Login);
