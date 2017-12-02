@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-
 import Col from 'antd/lib/col';
 import Icon from 'antd/lib/icon';
 import Menu from 'antd/lib/menu';
@@ -11,9 +10,9 @@ import Row from 'antd/lib/row';
 import Drawer from 'antd-mobile/lib/drawer';
 import List from 'antd-mobile/lib/list';
 import LogoutModal from './logout';
-
 import { Location } from 'types/location';
 import { isEqual, invert } from 'lodash';
+import { withSession } from 'enhancers';
 
 const { Item } = Menu;
 
@@ -89,18 +88,17 @@ class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
   }
 }
 
-import { logout } from 'data/session/actions';
-
 const mapStateToProps = state => ({
   isLoggedIn: Boolean(state.session.currentUser.id),
   isVisible: state.feature.navbar && state.viewport.type === 'MOBILE'
 });
 
 const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch(logout())
+
 });
 
 export default compose(
   withRouter,
+  withSession,
   connect(mapStateToProps, mapDispatchToProps)
 )(MobileNav);

@@ -2,7 +2,7 @@ import React from 'react';
 
 import Score from './score';
 import Caret from './caret';
-import Overlap from 'comp/overlap';
+import Overlap from 'components';
 import classNames from 'classnames';
 
 const { Layer } = Overlap;

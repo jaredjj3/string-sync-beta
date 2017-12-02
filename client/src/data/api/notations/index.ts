@@ -1,9 +1,7 @@
-import notationsActions from './notationsActions';
-import notationsReducer from './notationsReducer';
-import notationsUtil from './notationsUtil';
+import notationsActions from './actions';
+import notationsReducer from './reducer';
 
 export {
   notationsReducer,
-  notationsActions,
-  notationsUtil
+  notationsActions
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import { compose, lifecycle } from 'recompose';
 import { add, remove } from 'eventlistener';
 import { withViewport } from 'enhancers';
-import { utils as viewportUtils } from 'data/viewport';
+import { getViewport } from 'stringSyncUtil';
 import { throttle } from 'lodash';
 
 const shouldUpdateViewport = (viewport) => (
@@ -15,7 +15,7 @@ const shouldUpdateViewport = (viewport) => (
 
 const maybeSetViewport = throttle(({ viewport, setViewport }) => event => {
   if (shouldUpdateViewport(viewport)) {
-    setViewport(viewportUtils.getViewportProps());
+    setViewport(getViewport());
   }
 }, 30);
 

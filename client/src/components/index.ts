@@ -6,6 +6,7 @@ import Logo from './logo';
 import Desktop from './desktop';
 import Gradient from './gradient';
 import Mobile from './mobile';
+import Hidden from './hidden';
 
 export {
   Video,
@@ -15,5 +16,6 @@ export {
   Logo,
   Desktop,
   Gradient,
-  Mobile
+  Mobile,
+  Hidden
 };

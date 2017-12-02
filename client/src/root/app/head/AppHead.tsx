@@ -1,5 +1,5 @@
 import React from 'react';
-import Hidden from 'comp/hidden';
+import Hidden from 'components';
 import UserProcessor from './userProcessor';
 import ViewportManager from './viewportManager';
 import NotificationSys from './notificationSys';
