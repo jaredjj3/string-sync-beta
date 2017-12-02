@@ -1,7 +1,8 @@
 class Api::V1::NotationsController < ApplicationController
   def index
     # TODO: Implement checking fetched_at and only return notations fetched after fetched_at
-    @notations = Notation.includes(:tags, :transcriber).where(featured: true)
+    featured = !current_user.try(:has_role?, :admin) # admin always gets the whole library
+    @notations = Notation.includes(:tags, :transcriber).where(featured: featured)
     render(:index, status: 200)
   end
 

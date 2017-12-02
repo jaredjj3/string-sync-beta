@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
 import AdminDashboard from './admin';
-
 import { isEqual } from 'lodash';
 
 interface DashboardProps {
@@ -11,7 +9,7 @@ interface DashboardProps {
 
 interface DashboardState {}
 
-class Dashboard extends React.PureComponent<DashboardProps, DashboardState> {
+class Dashboard extends React.Component<DashboardProps, DashboardState> {
   shouldComponentUpdate(nextProps: DashboardProps): boolean {
     return !isEqual(this.props.currentUserRoles, nextProps.currentUserRoles);
   }

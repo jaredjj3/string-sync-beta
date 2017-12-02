@@ -1,25 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
-import Switch from 'antd/lib/switch';
-
-import sortBy from 'util/sortBy';
-
-import { Notation } from 'types/notation';
+import { compose } from 'recompose';
+import { Switch } from 'antd';
+import { sortBy } from 'lodash';
+import { Notation } from 'types';
+import { withNotation, withNotations } from 'enhancers';
 
 interface AdminDashboardProps {
   notations: Array<Notation>;
   fetchNotations(): void;
-  updateNotation({ id: number, featured: boolean }): void;
+  updateNotation(notation: any): void;
 }
 
 interface AdminDashboardState {}
 
 class AdminDashboard extends React.Component<AdminDashboardProps, AdminDashboardState> {
   componentDidMount(): void {
-    if (this.props.notations.length === 0) {
-      this.props.fetchNotations();
-    }
+    // always refetch to get the featured attribute
+    this.props.fetchNotations();
   }
 
   handleChange = (id: number): any => {
@@ -43,9 +41,9 @@ class AdminDashboard extends React.Component<AdminDashboardProps, AdminDashboard
                   onChange={this.handleChange(notation.id)}
                 />
                 <span>{notation.id} - </span>
-                <span>{notation.name} by </span>
-                <span>{notation.artist} - </span>
-                <span>{notation.transcriber} - </span>
+                <span>{notation.songName} by </span>
+                <span>{notation.songArtist} - </span>
+                <span>{notation.transcriber.username} - </span>
                 <span>{notation.tags.join(', ')}</span>
               </li>
             ))
@@ -56,19 +54,9 @@ class AdminDashboard extends React.Component<AdminDashboardProps, AdminDashboard
   }
 }
 
-import { fetchNotations } from 'data/library/actions';
-import { updateNotation } from 'data/notation/actions';
+const enhance = compose(
+  withNotations,
+  withNotation
+);
 
-const mapStateToProps = state => ({
-  notations: state.library.notations
-});
-
-const mapDispatchToProps = dispatch => ({
-  fetchNotations: () => dispatch(fetchNotations()),
-  updateNotation: (payload) => dispatch(updateNotation(payload))
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AdminDashboard);
+export default enhance(AdminDashboard);
