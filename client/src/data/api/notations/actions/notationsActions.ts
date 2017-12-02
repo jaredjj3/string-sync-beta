@@ -1,11 +1,11 @@
 import API from '../api';
 import { ignoreIfExecuting, camelCaseObjKeys } from 'stringSyncUtil';
 
-export const RECEIVE_NOTATIONS = 'RECEIVE_NOTATIONS';
+export const SET_NOTATIONS = 'SET_NOTATIONS';
 export const RESET_NOTATIONS = 'RESET_NOTATIONS';
 
-export const receiveNotations = notations => ({
-  type: RECEIVE_NOTATIONS,
+export const setNotations = notations => ({
+  type: SET_NOTATIONS,
   notations,
 });
 
@@ -17,7 +17,7 @@ export const resetNotations = () => ({
 export const fetchNotations = ignoreIfExecuting(() => async dispatch => {
   try {
     const notations = await API.fetchNotations();
-    dispatch(receiveNotations(camelCaseObjKeys(notations, true)));
+    dispatch(setNotations(camelCaseObjKeys(notations, true)));
   } catch (error) {
     window.notification.error({
       message: 'Notations',
