@@ -5,7 +5,7 @@ import { compose } from 'recompose';
 
 import Col from 'antd/lib/col';
 import Icon from 'antd/lib/icon';
-import { LogoText, LogoImage } from 'comp/logo';
+import { LogoText, LogoImage } from 'components';
 import Menu from 'antd/lib/menu';
 import Row from 'antd/lib/row';
 
