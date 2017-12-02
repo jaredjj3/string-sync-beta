@@ -1,5 +1,7 @@
-import { RESET_RAF_LOOP } from './actions';
-import RAFLoop from 'util/raf/loop';
+import rafActions from '../actions';
+import { RAFLoop } from 'stringSyncUtil';
+
+const { RESET_RAF_LOOP } = rafActions;
 
 interface StoreRAF {
   loop: RAFLoop;
@@ -9,7 +11,7 @@ const defaultState: StoreRAF = {
   loop: new RAFLoop()
 };
 
-const RAFReducer = (state = defaultState, action): StoreRAF => {
+const rafReducer = (state = defaultState, action): StoreRAF => {
   const nextState = Object.assign({}, state);
 
   switch (action.type) {
@@ -22,4 +24,4 @@ const RAFReducer = (state = defaultState, action): StoreRAF => {
   }
 };
 
-export default RAFReducer;
+export default rafReducer;
