@@ -1,7 +1,7 @@
 import sessionActions from '../actions';
 import { getNullUser } from 'stringSyncUtil';
 
-const { RECEIVE_USER, RESET_USER } = sessionActions;
+const { SET_USER, RESET_USER } = sessionActions;
 
 // Since the user can't be altered via the sessionReducer, the defaultState
 // can be static. This is unlike the relationship between the notation and
@@ -13,7 +13,7 @@ const sessionReducer = (state = defaultState, action) => {
   const nextState = Object.assign({}, state);
 
   switch (action.type) {
-    case RECEIVE_USER:
+    case SET_USER:
       return Object.assign({}, action.user);
 
     case RESET_USER:

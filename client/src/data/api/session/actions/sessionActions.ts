@@ -2,11 +2,11 @@ import API from '../api';
 import { getNullUser } from 'stringSyncUtil';
 import { ignoreIfExecuting, camelCaseObjKeys } from 'stringSyncUtil';
 
-export const RECEIVE_USER = 'RECEIVE_USER';
+export const SET_USER = 'SET_USER';
 export const RESET_USER = 'RESET_USER';
 
-export const receiveUser = user => ({
-  type: RECEIVE_USER,
+export const setUser = user => ({
+  type: SET_USER,
   user
 });
 
@@ -17,7 +17,7 @@ export const resetUser = () => ({
 export const login = ignoreIfExecuting(user => async dispatch => {
   try {
     const currentUser = await API.login(user);
-    dispatch(receiveUser(camelCaseObjKeys(currentUser, false)));
+    dispatch(setUser(camelCaseObjKeys(currentUser, false)));
     window.notification.success({
       message: 'Login',
       description: `logged in as @${currentUser.username}`
@@ -34,7 +34,7 @@ export const login = ignoreIfExecuting(user => async dispatch => {
 export const logout = ignoreIfExecuting(user => async dispatch => {
   try {
     const currentUser = await API.logout();
-    dispatch(receiveUser(getNullUser()));
+    dispatch(setUser(getNullUser()));
     window.notification.success({
       message: 'Logout',
       description: 'successful'
