@@ -3,10 +3,15 @@ import { ignoreIfExecuting } from 'stringSyncUtil';
 import { Notation } from 'types';
 
 export const RECEIVE_NOTATION = 'RECEIVE_NOTATION';
+export const RESET_NOTATION = 'RESET_NOTATION';
 
 export const receiveNotation = notation => ({
   type: RECEIVE_NOTATION,
   notation
+});
+
+export const resetNotation = () => ({
+  type: RESET_NOTATION
 });
 
 // NotationsController#show

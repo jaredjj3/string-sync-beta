@@ -1,17 +1,13 @@
-
-import { ScrollStructs } from 'types/scrollStructs';
-
 export interface Notation {
   id: number;
-  name: string;
+  songName: string;
   duration: number;
-  deadTime: number;
+  deadTimeMs: number;
+  bpm: number;
   transcriber: string;
-  artist: string;
+  artistName: string;
   thumbnailUrl: string;
+  vextabString: string;
+  youtubeVideoId?: string;
   tags: Array<string>;
-  vextab: string;
-  youtubeVideoId?: string | number;
-  tempo: number;
-  featured: boolean;
 }
