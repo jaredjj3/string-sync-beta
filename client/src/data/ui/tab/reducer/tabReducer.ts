@@ -1,4 +1,6 @@
-import { SET_PROVIDER, EMIT_UPDATE, RESET_TAB } from './actions';
+import tabActions from '../actions';
+
+const { SET_PROVIDER, EMIT_UPDATE, RESET_TAB } = tabActions;
 
 const defaultState = Object.freeze({
   provider: null,
