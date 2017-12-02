@@ -1,17 +1,14 @@
 import rafActions from '../actions';
 import { RAFLoop } from 'stringSyncUtil';
+import { RAF } from 'types';
 
 const { RESET_RAF_LOOP } = rafActions;
 
-interface StoreRAF {
-  loop: RAFLoop;
-}
-
-const defaultState: StoreRAF = {
+const defaultState: RAF = {
   loop: new RAFLoop()
 };
 
-const rafReducer = (state = defaultState, action): StoreRAF => {
+const rafReducer = (state = defaultState, action): RAF => {
   const nextState = Object.assign({}, state);
 
   switch (action.type) {

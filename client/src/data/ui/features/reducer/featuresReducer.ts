@@ -1,22 +1,16 @@
 import featuresActions from '../actions';
+import { Features } from 'types';
 
 const { ENABLE_FEATURES, DISABLE_FEATURES, RESET_FEATURES } = featuresActions;
 
-interface StoreFeatures {
-  fretboard: boolean;
-  autoSave: boolean;
-  scaleVisualization: boolean;
-  navbar: boolean;
-}
-
-const defaultState: StoreFeatures = Object.freeze({
+const defaultState: Features = Object.freeze({
   fretboard: true,
   autoSave: false,
   scaleVisualization: false,
   navbar: true
 });
 
-export default (state = defaultState, action): StoreFeatures => {
+export default (state = defaultState, action): Features => {
   Object.freeze(state);
   const nextState = Object.assign({}, state);
 

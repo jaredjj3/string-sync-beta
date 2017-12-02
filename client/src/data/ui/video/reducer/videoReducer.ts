@@ -1,15 +1,8 @@
 import videoActions from '../actions';
-import { VideoPlayer } from 'types';
+import { Video } from 'types';
 import { isVideoActive } from 'stringSyncUtil';
 
 const { SET_PLAYER, SET_PLAYER_STATE, SET_LOOP, RESET_VIDEO } = videoActions;
-
-interface Video {
-  player: VideoPlayer;
-  playerState: string;
-  isActive: boolean;
-  loop: Array<number>;
-}
 
 const defaultState: Video = Object.freeze({
   player: null,

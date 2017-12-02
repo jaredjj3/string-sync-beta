@@ -1,13 +1,14 @@
 import tabActions from '../actions';
+import { Tab } from 'types/tab';
 
 const { SET_PROVIDER, EMIT_UPDATE, RESET_TAB } = tabActions;
 
-const defaultState = Object.freeze({
+const defaultState: Tab = Object.freeze({
   provider: null,
   updatedAt: null
 });
 
-const dup = (state: any): any => Object.assign({}, state);
+const dup = (state: Tab): Tab => Object.assign({}, state);
 
 const TabReducer = (state = defaultState, action) => {
   Object.freeze(state);

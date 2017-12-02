@@ -6,6 +6,10 @@ import { Notation } from './notation';
 import { Tag } from './tag';
 import { Notations } from './notations';
 import { Session } from './session';
+import { Features } from './features';
+import { RAF } from './raf';
+import { Tab } from './tab';
+import { Video } from './video';
 
 export {
   Tag,
@@ -15,5 +19,9 @@ export {
   Viewport,
   Notation,
   Notations,
-  Session
+  Session,
+  Features,
+  RAF,
+  Tab,
+  Video,
 }

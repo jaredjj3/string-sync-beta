@@ -1,4 +1,6 @@
-const getViewport = () => {
+import { Viewport } from 'types';
+
+const getViewport = (): Viewport => {
   const width = window.innerWidth;
   const height = window.innerHeight;
   const orientation = width > height ? 'LANDSCAPE' : 'PORTRAIT';
