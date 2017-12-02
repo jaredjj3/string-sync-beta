@@ -1,20 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
+import { compose } from 'recompose';
 import MobileSearch from './mobile';
 import DesktopSearch from './desktop';
-
 import { debounce } from 'lodash';
-import fuzzySearch from 'util/fuzzySearch';
 import { forceCheck } from 'react-lazyload';
-
-import { Library } from 'data/library/reducer';
-import { Device } from 'types/device';
 import { Notation } from 'types/notation';
+import { Notations, Viewport } from 'types';
+import { withViewport, withNotations } from 'enhancers';
 
 interface SearchProps {
-  library: Library;
-  device: Device;
+  notations: Notations;
+  viewport: Viewport;
   fetchNotations(): void;
 }
 
@@ -37,7 +34,7 @@ class Search extends React.Component<SearchProps, SearchState> {
   }
 
   componentDidMount(): void {
-    if (this.props.library.notations.length === 0) {
+    if (this.props.notations.length === 0) {
       this.props.fetchNotations();
     }
 
@@ -53,7 +50,7 @@ class Search extends React.Component<SearchProps, SearchState> {
   }
 
   maybeSetTags(withProps: SearchProps): void {
-    const { notations } = withProps.library;
+    const { notations } = withProps;
     if (notations.length > 0 && this.state.tags.length === 0) {
       const tagSet = notations.reduce((_tagSet, notation) => (
         notation.tags.reduce((__tagSet, tag) => __tagSet.add(tag), _tagSet)
@@ -64,18 +61,18 @@ class Search extends React.Component<SearchProps, SearchState> {
   }
 
   onSearch = (query: string): void => {
-    this.filterNotations(this.props.library.notations, query, this.state.checkedTags);
+    this.filterNotations(this.props.notations, query, this.state.checkedTags);
     this.setState(Object.assign({}, this.state, { query, loading: true }));
   }
 
   onCheck = (checkedTags: Array<string>): void => {
-    this.filterNotations(this.props.library.notations, this.state.query, checkedTags);
+    this.filterNotations(this.props.notations, this.state.query, checkedTags);
     this.setState(Object.assign({}, this.state, { checkedTags, loading: true }));
   }
 
   render(): JSX.Element {
     const { results, loading, tags } = this.state;
-    const { isTouch, type } = this.props.device;
+    const { isTouch, type } = this.props.viewport;
     const isMobile = type === 'MOBILE';
 
     return(
@@ -138,8 +135,8 @@ class Search extends React.Component<SearchProps, SearchState> {
 
     // strict search
     return (
-      notation.name.toLowerCase().includes(lowerCaseQuery)        ||
-      notation.artist.toLowerCase().includes(lowerCaseQuery)      ||
+      notation.songName.toLowerCase().includes(lowerCaseQuery)        ||
+      notation.artistName.toLowerCase().includes(lowerCaseQuery)      ||
       notation.transcriber.toLowerCase().includes(lowerCaseQuery)
     );
   }
@@ -149,18 +146,9 @@ class Search extends React.Component<SearchProps, SearchState> {
   }
 }
 
-import { fetchNotations } from 'data/library/actions';
+const enhance = compose(
+  withViewport,
+  withNotations
+);
 
-const mapStateToProps = state => ({
-  library: state.library,
-  device: state.device
-});
-
-const mapDispatchToProps = dispatch => ({
-  fetchNotations: () => dispatch(fetchNotations())
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Search);
+export default enhance(Search);

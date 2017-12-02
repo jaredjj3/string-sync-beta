@@ -18,10 +18,10 @@ const NotationDetail = ({ notation }): JSX.Element => (
         <Card {...style}>
           <div>
             <div className="NotationDetail__img">
-              <img alt={notation.name} width="100%" src={notation.thumbnailUrl} />
+              <img alt={notation.songName} width="100%" src={notation.thumbnailUrl} />
             </div>
             <div className="NotationDetail__info">
-              <h3>{`${notation.name} by ${notation.artist}`}</h3>
+              <h3>{`${notation.songName} by ${notation.artistName}`}</h3>
               <p>{notation.transcriber.username}</p>
               <div className="NotationDetail__info__tag">
                 {

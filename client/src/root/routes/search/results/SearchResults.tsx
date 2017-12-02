@@ -1,8 +1,7 @@
 import React from 'react';
-
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
-import NotationDetail from 'comp/notation/detail';
+import { NotationDetail } from 'components';
 
 const SearchResults = ({ notations }): JSX.Element => (
   <div className="SearchResults">
