@@ -13,7 +13,7 @@ export const resetNotations = () => ({
   type: RESET_NOTATIONS
 });
 
-//
+// NotationsController#index
 export const fetchNotations = ignoreIfExecuting(() => async dispatch => {
   try {
     const notations = await API.fetchNotations();
