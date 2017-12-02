@@ -1,5 +1,5 @@
 import Fretman from 'services/vexflow/fretman';
-import Frets from 'comp/fretboard/frets';
+import Frets from 'components/fretboard/frets';
 
 const NULL_STRING_NOTES = Array(Frets.DOTS.length).fill(null);
 
