@@ -1,3 +1,3 @@
-import viewportActions from './viewportActions';
+import * as viewportActions from './viewportActions';
 
 export default viewportActions;

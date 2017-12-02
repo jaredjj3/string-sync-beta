@@ -1,5 +1,4 @@
 import React from 'react';
-
 import Layer from './layer';
 
 interface OverlapProps {
@@ -12,7 +11,7 @@ interface OverlapProps {
 
 interface OverlapState {}
 
-class Overlap extends React.PureComponent<OverlapProps, OverlapState> {
+class Overlap extends React.Component<OverlapProps, OverlapState> {
   static Layer: any = Layer;
 
   render(): JSX.Element {

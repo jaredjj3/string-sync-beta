@@ -1,11 +1,11 @@
 import { createStore } from 'redux';
 import rootReducer from './rootReducer';
 import rootMiddleware from './rootMiddleware';
-import viewportUtil from 'data/ui/viewport/util';
+import { getViewport } from 'stringSyncUtil';
 
 const preLoadedState = {
   session: { currentUser: window.currentUser },
-  viewport: viewportUtil.getViewportProps()
+  viewport: getViewport()
 };
 
 const store = createStore(

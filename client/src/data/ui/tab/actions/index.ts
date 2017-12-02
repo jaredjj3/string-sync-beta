@@ -1,3 +1,3 @@
-import tabActions from './tabActions';
+import * as tabActions from './tabActions';
 
 export default tabActions;

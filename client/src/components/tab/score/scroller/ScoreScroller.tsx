@@ -1,7 +1,7 @@
+
 import React from 'react';
 import { compose, onlyUpdateForKeys } from 'recompose';
-
-import { withTab, withVideo, withRAFLoop } from 'enhancers';
+import { withTab, withVideo, withRaf } from 'enhancers';
 
 class ScoreScroller extends React.Component<any, any> {
   currLine: number = 0;
@@ -65,6 +65,6 @@ class ScoreScroller extends React.Component<any, any> {
 export default compose(
   withTab,
   withVideo,
-  withRAFLoop,
+  withRaf,
   onlyUpdateForKeys(['updatedAt', 'provider', 'isVideoActive'])
 )(ScoreScroller);

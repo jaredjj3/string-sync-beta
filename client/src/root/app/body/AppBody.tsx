@@ -3,9 +3,7 @@ import Content from './content';
 import Footer from './footer';
 import Header from './header';
 import { Layout } from 'antd';
-import { Mobile, Gradient } from 'components';
-
-const { MobileNav } = Mobile;
+import { MobileNav, Gradient } from 'components';
 
 const AppBody = () => (
   <Layout>

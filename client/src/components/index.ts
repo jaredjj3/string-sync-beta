@@ -2,10 +2,10 @@ import Video from './video';
 import Fretboard from './fretboard';
 import Tab from './tab';
 import Overlap from './overlap';
-import Logo from './logo';
-import Desktop from './desktop';
+import { LogoText, LogoImage } from './logo';
+import { DesktopOnly, DesktopNav } from './desktop';
 import Gradient from './gradient';
-import Mobile from './mobile';
+import { MobileOnly, MobileNav } from './mobile';
 import Hidden from './hidden';
 
 export {
@@ -13,9 +13,12 @@ export {
   Fretboard,
   Tab,
   Overlap,
-  Logo,
-  Desktop,
+  LogoText,
+  LogoImage,
+  DesktopOnly,
+  DesktopNav,
   Gradient,
-  Mobile,
+  MobileOnly,
+  MobileNav,
   Hidden
 };

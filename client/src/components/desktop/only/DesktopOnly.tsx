@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose } from 'recompose';
 
-import { permitDevice } from 'enhancers';
+import { permitViewportType } from 'enhancers';
 
 const DesktopOnly = ({ children }) => (
   <div className="DesktopOnly">
@@ -10,5 +10,5 @@ const DesktopOnly = ({ children }) => (
 );
 
 export default compose(
-  permitDevice('DESKTOP')
+  permitViewportType('DESKTOP')
 )(DesktopOnly);

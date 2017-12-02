@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import { withSession } from 'enhancers';
-import { Logo } from 'components';
+import { LogoText, LogoImage } from 'components';
 import { Col, Icon, Menu, Row } from 'antd';
 import { ClickParam } from 'antd/lib/menu';
 import { Location } from 'types/location';
@@ -11,7 +11,6 @@ import { Location } from 'types/location';
 const { Item } = Menu;
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
-const { LogoText, LogoImage } = Logo;
 
 interface DesktopNavProps {
   location: Location;

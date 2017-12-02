@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { Fretman, ScaleVisualizer, VexProvider } from 'services/vexflow';
 import { isEqual } from 'lodash';
-import { withDeviceType, withTab } from 'enhancers';
+import { withTab, withViewport } from 'enhancers';
 import classNames from 'classnames';
 
 interface FretMarkerProps {
@@ -144,8 +144,10 @@ const mapDispatchToProps = dispatch => ({
 
 });
 
-export default compose(
-  withDeviceType,
+const enhance = compose(
+  withViewport,
   withTab,
   connect(mapStateToProps, mapDispatchToProps)
-)(FretMarker);
+);
+
+export default enhance(FretMarker);

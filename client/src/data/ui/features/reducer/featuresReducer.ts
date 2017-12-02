@@ -1,4 +1,4 @@
-import { featuresActions } from '../actions';
+import featuresActions from '../actions';
 
 const { ENABLE_FEATURES, DISABLE_FEATURES, RESET_FEATURES } = featuresActions;
 

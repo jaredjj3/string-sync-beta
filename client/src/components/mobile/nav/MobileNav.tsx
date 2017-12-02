@@ -90,7 +90,7 @@ class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
 
 const mapStateToProps = state => ({
   isLoggedIn: Boolean(state.session.currentUser.id),
-  isVisible: state.feature.navbar && state.viewport.type === 'MOBILE'
+  isVisible: state.features.navbar && state.viewport.type === 'MOBILE'
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -1,9 +1,7 @@
 import React from 'react';
 import { compose, onlyUpdateForKeys } from 'recompose';
-
 import Slider from 'antd/lib/slider';
-import { withVideo, withRAFLoop, withTab } from 'enhancers';
-
+import { withVideo, withRaf, withTab } from 'enhancers';
 import { VideoPlayer } from 'types';
 
 interface ScrubberProps {
@@ -129,9 +127,10 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
   }
 }
 
-export default compose(
+const enhance = compose(
   withVideo,
-  withRAFLoop,
-  withTab,
-  onlyUpdateForKeys(['videoState'])
-)(Scrubber);
+  withRaf,
+  withTab
+);
+
+export default enhance(Scrubber);

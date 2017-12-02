@@ -1,3 +1,3 @@
-import videoActions from './videoActions';
+import * as videoActions from './videoActions';
 
 export default videoActions;

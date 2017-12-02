@@ -1,3 +1,3 @@
-import featuresActions from './featuresActions';
+import * as featuresActions from './featuresActions';
 
 export default featuresActions;

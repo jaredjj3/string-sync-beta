@@ -10,6 +10,7 @@ import withRaf from './withRaf';
 import withTab from './withTab';
 import withVideo from './withVideo';
 import inContainer from './inContainer';
+import permitViewportType from './permitViewportType';
 
 export {
   identity,
@@ -23,5 +24,6 @@ export {
   withRaf,
   withTab,
   withVideo,
-  inContainer
+  inContainer,
+  permitViewportType
 }

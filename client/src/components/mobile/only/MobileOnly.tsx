@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose } from 'recompose';
 
-import { permitDevice } from 'enhancers';
+import { permitViewportType } from 'enhancers';
 
 const MobileOnly = ({ children }) => (
   <div className="MobileOnly">
@@ -10,5 +10,5 @@ const MobileOnly = ({ children }) => (
 );
 
 export default compose(
-  permitDevice('MOBILE')
+  permitViewportType('MOBILE')
 )(MobileOnly);

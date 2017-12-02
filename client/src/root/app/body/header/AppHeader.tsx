@@ -2,10 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose, branch, renderNothing } from 'recompose';
 import { Layout } from 'antd';
-import { Desktop } from 'components';
+import { DesktopNav } from 'components';
 import { withViewport, identity, withFeatures } from 'enhancers';
 
-const { DesktopNav } = Desktop;
 const { Header } = Layout;
 
 const shouldShowHeader = ({ features, viewport }) => {

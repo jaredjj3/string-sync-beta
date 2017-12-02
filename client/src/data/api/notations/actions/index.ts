@@ -1,3 +1,3 @@
-import notationsActions from './notationsActions';
+import * as notationsActions from './notationsActions';
 
 export default notationsActions;

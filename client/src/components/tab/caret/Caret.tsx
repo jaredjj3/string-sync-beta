@@ -2,7 +2,7 @@ import React from 'react';
 import { compose, onlyUpdateForKeys } from 'recompose';
 import { connect } from 'react-redux';
 
-import { withRAFLoop, withTab, withVideo } from 'enhancers';
+import { withRaf, withTab, withVideo } from 'enhancers';
 
 class Caret extends React.Component<any, any> {
   static HEIGHT: number = 300; // px
@@ -99,10 +99,12 @@ const mapDispatchToProps = dispatch => ({
 
 });
 
-export default compose(
+const enhance = compose(
   withTab,
-  withRAFLoop,
+  withRaf,
   withVideo,
   connect(mapStateToProps, mapDispatchToProps),
   onlyUpdateForKeys(['updatedAt', 'provider', 'RAFLoop', 'isVideoActive'])
-)(Caret);
+)
+
+export default enhance(Caret);

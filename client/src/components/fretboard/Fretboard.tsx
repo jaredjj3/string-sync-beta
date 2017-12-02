@@ -1,15 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose, branch, renderNothing } from 'recompose';
-
 import Frets from './frets';
 import Strings from './strings';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
-
 import { VexPlayer, Fretman, VexProvider } from 'services/vexflow';
-import { isVideoActive } from 'util/videoStateCategory';
-import { withRAFLoop, withTab, identity } from 'enhancers';
+import { withRaf, withTab, identity } from 'enhancers';
 
 interface FretboardProps {
   isFretboardEnabled: boolean;
@@ -91,13 +88,15 @@ const mapDispatchToProps = dispatch => ({
 
 });
 
-export default compose(
+const enhance = compose(
   connect(mapStateToProps, mapDispatchToProps),
   branch(
     ({ isFretboardEnabled }) => isFretboardEnabled,
     identity,
     renderNothing
   ),
-  withRAFLoop,
+  withRaf,
   withTab,
-)(Fretboard);
+)
+
+export default enhance(Fretboard);
