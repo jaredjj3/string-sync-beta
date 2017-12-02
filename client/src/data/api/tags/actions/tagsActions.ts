@@ -1,11 +1,11 @@
 import API from '../api';
 import { ignoreIfExecuting } from 'stringSyncUtil';
 
-export const RECEIVE_TAGS = 'RECEIVE_TAGS';
+export const SET_TAGS = 'SET_TAGS';
 export const RESET_TAGS = 'RESET_TAGS';
 
-export const receiveTags = (tags: Array<string>) => ({
-  type: RECEIVE_TAGS,
+export const setTags = (tags: Array<string>) => ({
+  type: SET_TAGS,
   tags
 });
 
@@ -16,7 +16,7 @@ export const resetTags = () => ({
 export const fetchTags = ignoreIfExecuting(user => async dispatch => {
   try {
     const tags = await API.fetchTags();
-    dispatch(receiveTags(tags));
+    dispatch(setTags(tags));
   } catch (error) {
     window.notification.error({
       message: 'Tags',
