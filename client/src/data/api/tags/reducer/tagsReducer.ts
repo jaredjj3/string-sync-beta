@@ -1,9 +1,10 @@
 import tagsActions from '../actions';
 import dup from './dup';
+import { Tag } from 'types';
 
 const { SET_TAGS, RESET_TAGS } = tagsActions;
 
-const tagsReducer = (state = [], action) => {
+const tagsReducer = (state: Array<Tag> = [], action) => {
   Object.freeze(state);
   const nextState = dup(state);
 

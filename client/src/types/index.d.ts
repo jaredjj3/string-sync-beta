@@ -1,14 +1,19 @@
-import { Device, Viewport } from './device';
+import { Viewport } from './viewport';
 import { VexElement } from './vexElement';
 import { VideoPlayer } from './videoPlayer';
 import { User } from './user';
 import { Notation } from './notation';
+import { Tag } from './tag';
+import { Notations } from './notations';
+import { Session } from './session';
 
 export {
-  Device,
+  Tag,
   User,
   VexElement,
   VideoPlayer,
   Viewport,
-  Notation
+  Notation,
+  Notations,
+  Session
 }

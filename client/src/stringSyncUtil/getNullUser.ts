@@ -1,4 +1,6 @@
-const getNullUser = () => ({
+import { User } from 'types';
+
+const getNullUser = (): User => ({
   id: null,
   email: null,
   username: null,

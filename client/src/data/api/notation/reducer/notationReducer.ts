@@ -6,7 +6,7 @@ const { SET_NOTATION, RESET_NOTATION } = notationActions;
 
 const defaultState: Notation = Object.freeze(getDefaultState());
 
-const notationReducer = (state = defaultState, action) => {
+const notationReducer = (state: Notation = defaultState, action): Notation => {
   Object.freeze(state);
   const nextState = Object.assign({}, state);
 

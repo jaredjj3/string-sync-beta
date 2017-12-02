@@ -1,15 +1,16 @@
 import sessionActions from '../actions';
 import { getNullUser } from 'stringSyncUtil';
 import dup from './dup';
+import { Session } from 'types';
 
 const { SET_USER, RESET_USER } = sessionActions;
 
 // Since the user can't be altered via the sessionReducer, the defaultState
 // can be static. This is unlike the relationship between the notation and
 // notationReducer.
-const defaultState = Object.freeze({ currentUser: getNullUser() });
+const defaultState: Session = Object.freeze({ currentUser: getNullUser() });
 
-const sessionReducer = (state = defaultState, action) => {
+const sessionReducer = (state: Session = defaultState, action) => {
   Object.freeze(state);
   const nextState = dup(state);
 

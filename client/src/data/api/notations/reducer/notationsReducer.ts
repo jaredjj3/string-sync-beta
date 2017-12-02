@@ -1,9 +1,10 @@
 import notationActions from '../actions';
 import dup from './dup';
+import { Notations } from 'types';
 
 const { SET_NOTATIONS, RESET_NOTATIONS } = notationActions;
 
-const notationsReducer = (state = [], action) => {
+const notationsReducer = (state: Notations = [], action) => {
   Object.freeze(state);
   const nextState = dup(state);
 
