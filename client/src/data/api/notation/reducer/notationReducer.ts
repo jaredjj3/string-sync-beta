@@ -1,7 +1,6 @@
 import notationActions from '../actions';
 import { Notation } from 'types';
 import getDefaultState from './getDefaultState';
-import { camelCaseObjKeys } from 'stringSyncUtil';
 
 const { RECEIVE_NOTATION, RESET_NOTATION } = notationActions;
 
@@ -13,7 +12,7 @@ const notationReducer = (state = defaultState, action) => {
 
   switch (action.type) {
     case RECEIVE_NOTATION:
-      return camelCaseObjKeys(action.notation);
+      return Object.assign({}, action.notation);
 
     case RESET_NOTATION:
       return getDefaultState();

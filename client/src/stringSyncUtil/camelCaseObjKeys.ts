@@ -1,7 +1,14 @@
-import { camelCase } from 'lodash';
+import { camelCase, mapKeys } from 'lodash';
+import { mapKeysDeep } from './';
 
-const camelCaseObjKeys = (obj) => (
-  Object.keys(obj).reduce((camelCaseObj, key) => (camelCaseObj[camelCase(key)] = obj[key]), {})
-);
+const toCamelCase = str => camelCase(str);
+
+const camelCaseObjKeys = (obj: object, deep: boolean): any => {
+  if (deep) {
+    return mapKeysDeep(obj, toCamelCase);
+  } else {
+    return mapKeys(obj, toCamelCase);
+  }
+};
 
 export default camelCaseObjKeys;

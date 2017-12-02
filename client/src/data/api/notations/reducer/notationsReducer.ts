@@ -1,39 +1,22 @@
-import { RECEIVE_NOTATION, RESET_NOTATION, UPDATE_VEXTAB } from './actions';
-import { Notation } from 'types/notation';
+import notationActions from '../actions';
+import dup from './dup';
 
-import dup from 'util/dup/notation';
+const { RECEIVE_NOTATIONS, RESET_NOTATIONS } = notationActions;
 
-const defaultState: Notation = Object.freeze({
-  id: -1,
-  name: '',
-  transcriber: '',
-  artist: '',
-  thumbnailUrl: '',
-  tags: [],
-  vextab: '',
-  youtubeVideoId: '',
-  duration: 0,
-  deadTime: 0,
-  featured: false,
-  tempo: 60
-});
-
-export default (state = defaultState, action): Notation => {
+const notationsReducer = (state = [], action) => {
   Object.freeze(state);
   const nextState = dup(state);
 
   switch (action.type) {
-    case RECEIVE_NOTATION:
-      return dup(action.notation);
+    case RECEIVE_NOTATIONS:
+      return dup(action.notations);
 
-    case UPDATE_VEXTAB:
-      nextState.vextab = action.vextab;
-      return nextState;
-
-    case RESET_NOTATION:
-      return dup(defaultState);
+    case RESET_NOTATIONS:
+      return [];
 
     default:
       return nextState;
   }
 };
+
+export default notationsReducer;

@@ -1,9 +1,8 @@
 const { $ } = window;
 
-export const fetchNotations = (filters: any) => (
+export const fetchNotations = () => (
   $.ajax({
     method: 'GET',
-    url: '/api/v1/notations',
-    data: { filters }
+    url: '/api/v1/notations'
   })
 );

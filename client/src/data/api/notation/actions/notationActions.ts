@@ -1,11 +1,11 @@
 import API from '../api';
-import { ignoreIfExecuting } from 'stringSyncUtil';
 import { Notation } from 'types';
+import { ignoreIfExecuting, camelCaseObjKeys } from 'stringSyncUtil';
 
 export const RECEIVE_NOTATION = 'RECEIVE_NOTATION';
 export const RESET_NOTATION = 'RESET_NOTATION';
 
-export const receiveNotation = notation => ({
+export const receiveNotation = (notation: Notation) => ({
   type: RECEIVE_NOTATION,
   notation
 });
@@ -18,7 +18,7 @@ export const resetNotation = () => ({
 export const fetchNotation = ignoreIfExecuting((notationId: number) => async dispatch => {
   try {
     const notation = await API.fetchNotation(notationId);
-    dispatch(receiveNotation(notation));
+    dispatch(receiveNotation(camelCaseObjKeys(notation, false)));
   } catch (error) {
     window.notification.error({
       message: 'Notation',
@@ -31,7 +31,13 @@ export const fetchNotation = ignoreIfExecuting((notationId: number) => async dis
 export const createNotation = ignoreIfExecuting((payload: Notation) => async dispatch => {
   try {
     const notation = await API.createNotation(payload);
-    dispatch(receiveNotation(notation));
+    dispatch(receiveNotation(camelCaseObjKeys(notation, false)));
+
+    window.notification.success({
+      message: 'Notation',
+      description: 'create successful',
+      duration: 2
+    });
   } catch (error) {
     window.notification.error({
       message: 'Notation',
@@ -44,7 +50,13 @@ export const createNotation = ignoreIfExecuting((payload: Notation) => async dis
 export const updateNotation = ignoreIfExecuting((payload: Notation) => async dispatch => {
   try {
     const notation = await API.updateNotation(payload);
-    dispatch(receiveNotation(notation));
+    dispatch(receiveNotation(camelCaseObjKeys(notation, false)));
+
+    window.notification.success({
+      message: 'Notation',
+      description: 'update successful',
+      duration: 2
+    });
   } catch (error) {
     window.notification.error({
       message: 'Notation',
@@ -57,7 +69,13 @@ export const updateNotation = ignoreIfExecuting((payload: Notation) => async dis
 export const destroyNotation = ignoreIfExecuting((notationId: number) => async dispatch => {
   try {
     const notation = await API.destroyNotation(notationId);
-    dispatch(receiveNotation(notation));
+    dispatch(receiveNotation(camelCaseObjKeys(notation, false)));
+
+    window.notification.success({
+      message: 'Notation',
+      description: 'destroy successful',
+      duration: 2
+    });
   } catch (error) {
     window.notification.error({
       message: 'Notation',

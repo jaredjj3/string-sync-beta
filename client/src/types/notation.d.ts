@@ -1,4 +1,4 @@
-export interface Notation {
+export interface Notation extends Object {
   id: number;
   songName: string;
   duration: number;
