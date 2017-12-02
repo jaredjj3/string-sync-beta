@@ -1,21 +1,17 @@
-import {
-  UPDATE_VIDEO_PLAYER,
-  UPDATE_VIDEO_STATE,
-  UPDATE_VIDEO_LOOP,
-  RESET_VIDEO
-} from './actions';
+import videoActions from '../actions';
+import { VideoPlayer } from 'types';
 
-import { withNegativeTimeDeltaGuard } from 'util/withNegativeTimeDeltaGuard';
+const { SET_PLAYER, SET_PLAYER_STATE, SET_LOOP, RESET_VIDEO } = videoActions;
 
 interface Video {
-  player: any;
-  state: string;
+  player: VideoPlayer;
+  playerState: string;
   loop: Array<number>;
 }
 
 const defaultState: Video = Object.freeze({
   player: null,
-  state: '',
+  playerState: '',
   loop: [0, Number.MAX_SAFE_INTEGER]
 });
 
@@ -25,20 +21,20 @@ export default (state = defaultState, action) => {
   const nextState = Object.assign({}, state, { loop });
 
   switch (action.type) {
-    case UPDATE_VIDEO_PLAYER:
-      nextState.player = action.videoPlayer;
+    case SET_PLAYER:
+      nextState.player = action.player;
       return nextState;
 
-    case UPDATE_VIDEO_STATE:
-      nextState.state = action.videoState;
+    case SET_PLAYER_STATE:
+      nextState.playerState = action.playerState;
       return nextState;
 
-    case UPDATE_VIDEO_LOOP:
+    case SET_LOOP:
       nextState.loop = action.loop;
       return nextState;
 
     case RESET_VIDEO:
-      return defaultState;
+      return Object.assign({}, defaultState);
 
     default:
       return nextState;
