@@ -7,7 +7,6 @@ import { notationReducer as notation } from './api/notation';
 import { notationsReducer as notations } from './api/notations';
 import { sessionReducer as session } from './api/session';
 import { tagsReducer as tags } from './api/tags';
-import { userNotationReducer as userNotation } from './api/userNotation';
 
 // The UI reducers manage data that is purely concerned with the client side.
 // However, data managed here may originate from an API, but these reducers
@@ -24,7 +23,6 @@ const rootReducer = combineReducers({
   notations,
   session,
   tags,
-  userNotation,
   behaviors,
   features,
   raf,
