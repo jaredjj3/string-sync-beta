@@ -1,65 +1,49 @@
-import * as API from './api';
-import getNullUser from 'util/getNullUser';
+import API from '../api';
+import { getNullUser } from 'stringSyncUtil';
+import { ignoreIfExecuting, camelCaseObjKeys } from 'stringSyncUtil';
 
-export const RECEIVE_USER = 'session/RECEIVE_USER';
+export const RECEIVE_USER = 'RECEIVE_USER';
+export const RESET_USER = 'RESET_USER';
 
 export const receiveUser = user => ({
   type: RECEIVE_USER,
   user
 });
 
-export const login = user => async dispatch => {
+export const resetUser = () => ({
+  type: RESET_USER
+});
+
+export const login = ignoreIfExecuting(user => async dispatch => {
   try {
     const currentUser = await API.login(user);
-    dispatch(receiveUser(currentUser));
-
+    dispatch(receiveUser(camelCaseObjKeys(currentUser, false)));
     window.notification.success({
       message: 'Login',
-      description: `logged in as @${currentUser.username}`,
+      description: `logged in as @${currentUser.username}`
+    });
+  } catch (error) {
+    window.notification.error({
+      message: 'Login',
+      description: 'something went wrong',
       duration: 2
     });
-  } catch ({ responseJSON }) {
-    const { messages }  = responseJSON;
-    if (messages) {
-      messages.forEach(description => window.notification.error({
-        message: 'Notation',
-        description,
-        duration: 10
-      }));
-    } else {
-      window.notification.error({
-        message: 'Notation',
-        description: 'something went wrong',
-        duration: 2
-      });
-    }
   }
-};
+});
 
-export const logout = () => async dispatch => {
+export const logout = ignoreIfExecuting(user => async dispatch => {
   try {
-    await API.logout();
+    const currentUser = await API.logout();
     dispatch(receiveUser(getNullUser()));
-
     window.notification.success({
       message: 'Logout',
-      description: 'sucessful',
+      description: 'successful'
+    });
+  } catch (error) {
+    window.notification.error({
+      message: 'Logout',
+      description: 'something went wrong',
       duration: 2
     });
-  } catch ({ responseJSON }) {
-    const { messages }  = responseJSON;
-    if (messages) {
-      messages.forEach(description => window.notification.error({
-        message: 'Notation',
-        description,
-        duration: 10
-      }));
-    } else {
-      window.notification.error({
-        message: 'Notation',
-        description: 'something went wrong',
-        duration: 2
-      });
-    }
   }
-};
+});

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose, createSink } from 'recompose';
 
-import getNullUser from 'util/getNullUser';
+import getNullUser from 'stringSyncUtil';
 import { receiveUser } from 'data/session/actions';
 
 import { User } from 'types';
