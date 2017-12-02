@@ -4,6 +4,8 @@ import Tab from './tab';
 import Overlap from './overlap';
 import Logo from './logo';
 import Desktop from './desktop';
+import Gradient from './gradient';
+import Mobile from './mobile';
 
 export {
   Video,
@@ -11,5 +13,7 @@ export {
   Tab,
   Overlap,
   Logo,
-  Desktop
+  Desktop,
+  Gradient,
+  Mobile
 };

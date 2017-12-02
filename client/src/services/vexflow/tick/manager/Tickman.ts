@@ -2,7 +2,7 @@ import VexTickExtractor from './extractor';
 import { Artist } from 'services/vexflow';
 
 import { sortBy,  forOwn } from 'lodash';
-import { interpolateFuncFor } from 'util/interpolate';
+import { interpolateFuncFor } from 'stringSyncUtil';
 
 class Tickman {
   vexPlayer: any = null;

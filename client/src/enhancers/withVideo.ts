@@ -1,4 +1,4 @@
-import { reduxConnect } from 'stringSyncUtil';
+import { reduxConnect, videoStateCategory } from 'stringSyncUtil';
 import { videoActions as actions } from 'data/ui/video';
 
 const withVideo = reduxConnect(
@@ -9,7 +9,7 @@ const withVideo = reduxConnect(
     setPlayer: player => dispatch(actions.setPlayer(player)),
     setPlayerState: playerState => dispatch(actions.setPlayerState(playerState)),
     setLoop: loop => dispatch(actions.setLoop(loop)),
-    resetVideo: () => dispatch(actions.resetVideo())
+    resetVideo: () => dispatch(actions.resetVideo()),
   })
 );
 

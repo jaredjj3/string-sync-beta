@@ -1,10 +1,11 @@
 import React from 'react';
 import Content from './content';
 import Footer from './footer';
-import Gradient from 'comp/gradient';
 import Header from './header';
-import MobileNav from 'comp/mobile/nav';
 import { Layout } from 'antd';
+import { Mobile, Gradient } from 'components';
+
+const { MobileNav } = Mobile;
 
 const AppBody = () => (
   <Layout>

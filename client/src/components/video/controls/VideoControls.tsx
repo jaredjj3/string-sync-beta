@@ -8,24 +8,16 @@ import Scrubber from './scrubber';
 import Play from './play';
 import Playback from './playback';
 import Volume from './volume';
-
-import formatTime from 'util/formatTime';
-import videoStateCategory from 'util/videoStateCategory';
-import { isVideoActive } from 'util/videoStateCategory';
+import { formatTime, interpolator } from 'stringSyncUtil';
 import { throttle, isEqual } from 'lodash';
-
-import interpolator from 'util/interpolator';
-import { Interpolator } from 'util/interpolator';
-import { Device } from 'types/device';
 
 export type SeekSliderValues = [number, number, number];
 
 type UpdateSliderFunc = (value: number | SeekSliderValues) => void;
 
 interface VideoControlsProps {
-  videoPlayer: any;
-  videoState: string;
-  device: Device;
+  video: Video;
+  viewport: Viewport;
   toggleFretboardControls(): void;
 }
 
@@ -305,8 +297,6 @@ class VideoControls extends React.Component<VideoControlsProps, VideoControlsSta
     return nextValues;
   }
 }
-
-import { togglePanel } from 'data/panels/actions';
 
 const mapStateToProps = state => ({
   videoPlayer: state.video.player,

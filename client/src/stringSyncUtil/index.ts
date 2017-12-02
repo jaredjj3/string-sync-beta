@@ -5,6 +5,11 @@ import getNullUser from './getNullUser';
 import RAFLoop from './RAFLoop';
 import reduxConnect from './reduxConnect';
 import getViewport from './getViewport';
+import formatTime from './formatTime';
+import isVideoActive from './isVideoActive';
+import interpolator from './interpolator';
+import { interpolateFuncFor } from './interpolate';
+import isBetween from './isBetween';
 
 export {
   ignoreIfExecuting,
@@ -13,5 +18,10 @@ export {
   getNullUser,
   RAFLoop,
   reduxConnect,
-  getViewport
+  getViewport,
+  formatTime,
+  isVideoActive,
+  interpolator,
+  interpolateFuncFor,
+  isBetween
 };

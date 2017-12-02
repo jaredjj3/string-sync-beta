@@ -17,6 +17,7 @@ export {
   withNotations,
   withViewport,
   withTags,
+  withSession,
   withUser,
   withFeatures,
   withRaf,

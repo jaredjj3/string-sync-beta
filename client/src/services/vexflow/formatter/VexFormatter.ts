@@ -1,6 +1,6 @@
 import Deconstructor from './deconstructor';
 
-import isBetween from 'util/isBetween';
+import { isBetween } from 'stringSyncUtil';
 import { last } from 'lodash';
 
 class VexFormatter {

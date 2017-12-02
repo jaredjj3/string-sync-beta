@@ -1,14 +1,15 @@
 import tagsActions from '../actions';
+import dup from './dup';
 
 const { SET_TAGS, RESET_TAGS } = tagsActions;
 
 const tagsReducer = (state = [], action) => {
   Object.freeze(state);
-  const nextState = Object.assign([], state);
+  const nextState = dup(state);
 
   switch (action.type) {
     case SET_TAGS:
-      return Object.assign([], action.tags);
+      return dup(action.tags);
 
     case RESET_TAGS:
       return [];

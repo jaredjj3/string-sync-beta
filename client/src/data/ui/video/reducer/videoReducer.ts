@@ -1,17 +1,20 @@
 import videoActions from '../actions';
 import { VideoPlayer } from 'types';
+import { isVideoActive } from 'stringSyncUtil';
 
 const { SET_PLAYER, SET_PLAYER_STATE, SET_LOOP, RESET_VIDEO } = videoActions;
 
 interface Video {
   player: VideoPlayer;
   playerState: string;
+  isActive: boolean;
   loop: Array<number>;
 }
 
 const defaultState: Video = Object.freeze({
   player: null,
   playerState: '',
+  isActive: false,
   loop: [0, Number.MAX_SAFE_INTEGER]
 });
 
@@ -27,6 +30,7 @@ export default (state = defaultState, action) => {
 
     case SET_PLAYER_STATE:
       nextState.playerState = action.playerState;
+      nextState.isActive = isVideoActive(action.playerState);
       return nextState;
 
     case SET_LOOP:

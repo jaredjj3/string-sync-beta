@@ -2,19 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-
-import Col from 'antd/lib/col';
-import Icon from 'antd/lib/icon';
-import { LogoText, LogoImage } from 'components';
-import Menu from 'antd/lib/menu';
-import Row from 'antd/lib/row';
-
+import { withSession } from 'enhancers';
+import { Logo } from 'components';
+import { Col, Icon, Menu, Row } from 'antd';
 import { ClickParam } from 'antd/lib/menu';
 import { Location } from 'types/location';
 
 const { Item } = Menu;
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
+const { LogoText, LogoImage } = Logo;
 
 interface DesktopNavProps {
   location: Location;
@@ -109,19 +106,14 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
   }
 }
 
-import { logout } from 'data/session/actions';
-
 const mapStateToProps = state => ({
   isLoggedIn: Boolean(state.session.currentUser.id),
   isTeacher: state.session.currentUser.roles.includes('teacher'),
   isAdmin: state.session.currentUser.roles.includes('admin')
 });
 
-const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch(logout())
-});
-
 export default compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
+  withSession,
+  connect(mapStateToProps, null),
 )(DesktopNav);

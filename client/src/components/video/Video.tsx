@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
+import { compose } from 'recompose';
+import { withVideo } from 'enhancers';
 import Youtube from 'react-youtube';
 import VideoControls from './controls';
-
-import PLAYER_STATES from 'util/const/PLAYER_STATES';
+import PLAYER_STATES from 'constants';
 
 interface VideoProps {
   youtubeVideoId: string;
@@ -68,19 +68,8 @@ class Video extends React.Component<VideoProps, VideoState> {
   }
 }
 
-import { updateVideoPlayer, updateVideoState, resetVideo } from 'data/video/actions';
+const enhance = compose(
+  withVideo
+);
 
-const mapStateToProps = state => ({
-  youtubeVideoId: state.notation.youtubeVideoId,
-});
-
-const mapDispatchToProps = dispatch => ({
-  updateVideoPlayer: videoPlayer => dispatch(updateVideoPlayer(videoPlayer)),
-  updateVideoState: videoState => dispatch(updateVideoState(videoState)),
-  resetVideo: () => dispatch(resetVideo())
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Video);
+export default enhance(Video);
