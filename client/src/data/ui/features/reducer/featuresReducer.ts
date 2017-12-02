@@ -1,4 +1,6 @@
-import { ENABLE_FEATURES, DISABLE_FEATURES } from './actions';
+import { featuresActions } from '../actions';
+
+const { ENABLE_FEATURES, DISABLE_FEATURES, RESET_FEATURES } = featuresActions;
 
 interface StoreFeatures {
   fretboard: boolean;
@@ -26,6 +28,9 @@ export default (state = defaultState, action): StoreFeatures => {
     case DISABLE_FEATURES:
       action.features.map(feature => nextState[feature] = false);
       return nextState;
+
+    case RESET_FEATURES:
+      return Object.assign({}, defaultState);
 
     default:
       return nextState;
