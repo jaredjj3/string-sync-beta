@@ -1,19 +1,13 @@
-import { connect } from 'react-redux';
+import { reduxConnect } from 'stringSyncUtil';
+import { viewportActions as actions } from 'data/ui/viewport';
 
-import { actions } from 'data/viewport';
-const { setViewport } = actions;
-
-const mapStateToProps = ({ viewport }) => ({
-  viewport
-});
-
-const mapDispatchToProps = dispatch => ({
-  setViewport: viewport => dispatch(setViewport(viewport))
-});
-
-const withViewport = (Component: any) => connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Component);
+const withViewport = reduxConnect(
+  state => ({
+    viewport: state.viewport
+  }),
+  dispatch => ({
+    setViewport: viewport => dispatch(actions.setViewport(viewport))
+  })
+);
 
 export default withViewport;

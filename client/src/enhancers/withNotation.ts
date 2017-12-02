@@ -1,22 +1,18 @@
-import { connect } from 'react-redux';
+import { reduxConnect } from 'stringSyncUtil';
+import { notationActions as actions } from 'data/api/notation';
 
-import {
-  receiveNotation, updateVextab, resetNotation,
-  fetchNotation
-} from 'data/notation/actions';
+const withNotation = reduxConnect(
+  state => ({
+    notation: state.notation
+  }),
+  dispatch => ({
+    setNotation: notation => dispatch(actions.setNotation(notation)),
+    resetNotation: () => dispatch(actions.resetNotation),
+    fetchNotation: notationId => dispatch(actions.fetchNotation(notationId)),
+    createNotation: notation => dispatch(actions.createNotation(notation)),
+    updateNotation: notation => dispatch(actions.updateNotation(notation)),
+    destroyNotation: notationId => dispatch(actions.destroyNotation(notationId))
+  })
+);
 
-const mapStateToProps = state => state.notation;
-
-const mapDispatchToProps = dispatch => ({
-  receiveNotation: notation => dispatch(receiveNotation(notation)),
-  updateVextab: vextab => dispatch(updateVextab(vextab)),
-  resetNotation: () => dispatch(resetNotation()),
-  fetchNotation: notationId => dispatch(fetchNotation(notationId))
-});
-
-const withVideo = (Component: any) => connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Component);
-
-export default withVideo;
+export default withNotation;

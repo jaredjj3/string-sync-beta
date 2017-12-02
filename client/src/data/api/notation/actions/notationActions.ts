@@ -2,11 +2,11 @@ import API from '../api';
 import { Notation } from 'types';
 import { ignoreIfExecuting, camelCaseObjKeys } from 'stringSyncUtil';
 
-export const RECEIVE_NOTATION = 'RECEIVE_NOTATION';
+export const SET_NOTATION = 'SET_NOTATION';
 export const RESET_NOTATION = 'RESET_NOTATION';
 
-export const receiveNotation = (notation: Notation) => ({
-  type: RECEIVE_NOTATION,
+export const setNotation = (notation: Notation) => ({
+  type: SET_NOTATION,
   notation
 });
 
@@ -18,7 +18,7 @@ export const resetNotation = () => ({
 export const fetchNotation = ignoreIfExecuting((notationId: number) => async dispatch => {
   try {
     const notation = await API.fetchNotation(notationId);
-    dispatch(receiveNotation(camelCaseObjKeys(notation, false)));
+    dispatch(setNotation(camelCaseObjKeys(notation, false)));
   } catch (error) {
     window.notification.error({
       message: 'Notation',
@@ -31,7 +31,7 @@ export const fetchNotation = ignoreIfExecuting((notationId: number) => async dis
 export const createNotation = ignoreIfExecuting((payload: Notation) => async dispatch => {
   try {
     const notation = await API.createNotation(payload);
-    dispatch(receiveNotation(camelCaseObjKeys(notation, false)));
+    dispatch(setNotation(camelCaseObjKeys(notation, false)));
 
     window.notification.success({
       message: 'Notation',
@@ -50,7 +50,7 @@ export const createNotation = ignoreIfExecuting((payload: Notation) => async dis
 export const updateNotation = ignoreIfExecuting((payload: Notation) => async dispatch => {
   try {
     const notation = await API.updateNotation(payload);
-    dispatch(receiveNotation(camelCaseObjKeys(notation, false)));
+    dispatch(setNotation(camelCaseObjKeys(notation, false)));
 
     window.notification.success({
       message: 'Notation',
@@ -69,7 +69,7 @@ export const updateNotation = ignoreIfExecuting((payload: Notation) => async dis
 export const destroyNotation = ignoreIfExecuting((notationId: number) => async dispatch => {
   try {
     const notation = await API.destroyNotation(notationId);
-    dispatch(receiveNotation(camelCaseObjKeys(notation, false)));
+    dispatch(setNotation(camelCaseObjKeys(notation, false)));
 
     window.notification.success({
       message: 'Notation',
