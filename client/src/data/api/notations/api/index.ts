@@ -1,3 +1,3 @@
-import notationsApi from './notationsApi';
+import * as notationsApi from './notationsApi';
 
 export default notationsApi;

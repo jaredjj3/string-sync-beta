@@ -1,9 +1,9 @@
-import { mapKeys, mapValues, isObject } from 'lodash';
+import { mapKeys, mapValues, isPlainObject } from 'lodash';
 
 const mapKeysDeep = (obj, callback) => (
   mapValues(
     mapKeys(obj, callback),
-    val => (isObject(val) ? mapKeysDeep(val, callback) : val)
+    val => (isPlainObject(val) ? mapKeysDeep(val, callback) : val)
   )
 );
 

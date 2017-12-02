@@ -6,6 +6,8 @@ import Library from 'root/routes/library';
 
 const MobileLanding = () => <Library />;
 
-export default compose(
+const enhance = compose(
   withRouter
-)(MobileLanding);
+);
+
+export default enhance(MobileLanding);

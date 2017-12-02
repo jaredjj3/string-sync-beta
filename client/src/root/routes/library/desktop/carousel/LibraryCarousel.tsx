@@ -1,14 +1,8 @@
 import React from 'react';
-
-import Carousel from 'antd/lib/carousel';
-import NotationDetail from 'comp/notation/detail';
-import Row from 'antd/lib/row';
-import Col from 'antd/lib/col';
-import Icon from 'antd/lib/icon';
-
+import { NotationDetail } from 'components';
+import { Carousel, Row, Col, Icon } from 'antd';
 import { TagNotations } from '../../Library';
-
-import inChunksOf from 'util/inChunksOf';
+import { inChunksOf } from 'stringSyncUtil';
 
 interface LibraryCarouselProps {
   tagNotations: TagNotations;

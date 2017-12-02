@@ -1,5 +1,4 @@
 import API from '../api';
-import { ignoreIfExecuting } from 'stringSyncUtil';
 
 export const SET_TAGS = 'SET_TAGS';
 export const RESET_TAGS = 'RESET_TAGS';
@@ -13,7 +12,7 @@ export const resetTags = () => ({
   type: RESET_TAGS
 });
 
-export const fetchTags = ignoreIfExecuting(user => async dispatch => {
+export const fetchTags = user => async dispatch => {
   try {
     const tags = await API.fetchTags();
     dispatch(setTags(tags));
@@ -24,4 +23,4 @@ export const fetchTags = ignoreIfExecuting(user => async dispatch => {
       duration: 2
     });
   }
-});
+};

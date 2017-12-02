@@ -1,6 +1,6 @@
 import API from '../api';
 import { getNullUser } from 'stringSyncUtil';
-import { ignoreIfExecuting, camelCaseObjKeys } from 'stringSyncUtil';
+import { camelCaseObjKeys } from 'stringSyncUtil';
 
 export const SET_USER = 'SET_USER';
 export const RESET_USER = 'RESET_USER';
@@ -14,7 +14,7 @@ export const resetUser = () => ({
   type: RESET_USER
 });
 
-export const login = ignoreIfExecuting(user => async dispatch => {
+export const login = user => async dispatch => {
   try {
     const currentUser = await API.login(user);
     dispatch(setUser(camelCaseObjKeys(currentUser, false)));
@@ -29,9 +29,9 @@ export const login = ignoreIfExecuting(user => async dispatch => {
       duration: 2
     });
   }
-});
+};
 
-export const logout = ignoreIfExecuting(user => async dispatch => {
+export const logout = user => async dispatch => {
   try {
     const currentUser = await API.logout();
     dispatch(setUser(getNullUser()));
@@ -46,4 +46,4 @@ export const logout = ignoreIfExecuting(user => async dispatch => {
       duration: 2
     });
   }
-});
+};

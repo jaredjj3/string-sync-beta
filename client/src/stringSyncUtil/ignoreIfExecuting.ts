@@ -1,18 +1,21 @@
-const ignoreIfExecuting = (callback) => {
+const ignoreIfExecuting = callback => {
   let isExecuting = false;
 
-  return (...args) => {
+  return async (...args) => {
     if (isExecuting) {
       return;
     }
 
     isExecuting = true;
 
+    let returnValue = null;
     try {
-      callback(...args);
+      returnValue = await callback(args);
     } finally {
       isExecuting = false;
     }
+
+    return returnValue;
   };
 };
 

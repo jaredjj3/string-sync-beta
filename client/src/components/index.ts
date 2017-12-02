@@ -7,6 +7,7 @@ import { DesktopOnly, DesktopNav } from './desktop';
 import Gradient from './gradient';
 import { MobileOnly, MobileNav } from './mobile';
 import Hidden from './hidden';
+import NotationDetail from './notation/detail';
 
 export {
   Video,
@@ -20,5 +21,6 @@ export {
   Gradient,
   MobileOnly,
   MobileNav,
-  Hidden
+  Hidden,
+  NotationDetail
 };

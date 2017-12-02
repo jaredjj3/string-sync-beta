@@ -1,10 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-import Tag from 'antd/lib/tag';
-
-import Card from 'antd/lib/card';
 import LazyLoad from 'react-lazyload';
+import { Tag, Card } from 'antd';
 
 import './_notationDetail.less';
 

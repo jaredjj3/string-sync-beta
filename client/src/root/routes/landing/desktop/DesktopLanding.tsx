@@ -1,13 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { compose, lifecycle, branch, renderNothing } from 'recompose';
-
 import Youtube from 'react-youtube';
-import Logo from 'comp/logo';
 import { Row, Col, Button } from 'antd';
-import { enableFeatures, disableFeatures } from 'data/feature/actions';
-import { identity } from 'enhancers';
+import { identity, withFeatures, withSession } from 'enhancers';
 
 const youtubeOptions = {
   playerVars: {
@@ -23,14 +19,11 @@ const youtubeOptions = {
   }
 };
 
-const mapIsLoggedInToProps = state => ({
-  isLoggedIn: Boolean(state.session.currentUser.id)
-});
-
-const showIfLoggedOut = (Component: any) => (
-  compose(
-    connect(mapIsLoggedInToProps, null),
-    branch(({ isLoggedIn }) => !isLoggedIn, identity, renderNothing),
+const showIfLoggedOut = (Component: any) => compose(
+  branch(
+    ({ isLoggedIn }) => isLoggedIn,
+    identity,
+    renderNothing
   )(Component)
 );
 
@@ -52,7 +45,7 @@ const SignupButton = showIfLoggedOut(() => (
   </span>
 ));
 
-const DesktopLanding = ({ isLoggedIn }) => (
+const DesktopLanding = ({ session }) => (
   <div className="Landing--desktop">
     <div className="Landing--desktop__altActionBar">
       <ul className="AltActionBar__links">
@@ -71,7 +64,7 @@ const DesktopLanding = ({ isLoggedIn }) => (
             library
           </Link>
         </li>
-        <LoginLink />
+        <LoginLink session={session} />
       </ul>
     </div>
     <section>
@@ -86,7 +79,7 @@ const DesktopLanding = ({ isLoggedIn }) => (
             </Link>
           </Button>
         </span>
-        <SignupButton />
+        <SignupButton session={session} />
       </div>
     </section>
     <section>
@@ -116,19 +109,17 @@ const DesktopLanding = ({ isLoggedIn }) => (
   </div>
 );
 
-const mapDispatchToProps = dispatch => ({
-  showNavbar: () => dispatch(enableFeatures(['navbar'])),
-  hideNavbar: () => dispatch(disableFeatures(['navbar']))
-});
-
-export default compose(
-  connect(null, mapDispatchToProps),
+const enhance = compose(
+  withFeatures,
+  withSession,
   lifecycle({
     componentDidMount(): void {
-      this.props.hideNavbar();
+      this.props.disableFeatures(['navbar']);
     },
     componentWillUnmount(): void {
-      this.props.showNavbar();
+      this.props.enableFeatures(['navbar']);
     }
   })
-)(DesktopLanding);
+);
+
+export default enhance(DesktopLanding);

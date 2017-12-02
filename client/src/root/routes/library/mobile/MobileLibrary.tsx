@@ -1,11 +1,7 @@
 import React from 'react';
-
-import Affix from 'antd/lib/affix';
-import Gradient from 'comp/gradient';
+import { Affix, Icon } from 'antd';
+import { Gradient, LogoImage, LogoText } from 'components';
 import LibraryGrid from './grid';
-import { LogoImage, LogoText } from 'comp/logo';
-import Icon from 'antd/lib/icon';
-
 import { TagNotationsMap } from '../Library';
 
 interface MobileLibraryProps {

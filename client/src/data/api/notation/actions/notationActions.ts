@@ -1,6 +1,6 @@
 import API from '../api';
 import { Notation } from 'types';
-import { ignoreIfExecuting, camelCaseObjKeys } from 'stringSyncUtil';
+import { camelCaseObjKeys } from 'stringSyncUtil';
 
 export const SET_NOTATION = 'SET_NOTATION';
 export const RESET_NOTATION = 'RESET_NOTATION';
@@ -15,7 +15,7 @@ export const resetNotation = () => ({
 });
 
 // NotationsController#show
-export const fetchNotation = ignoreIfExecuting((notationId: number) => async dispatch => {
+export const fetchNotation = (notationId: number) => async dispatch => {
   try {
     const notation = await API.fetchNotation(notationId);
     dispatch(setNotation(camelCaseObjKeys(notation, false)));
@@ -25,10 +25,10 @@ export const fetchNotation = ignoreIfExecuting((notationId: number) => async dis
       description: error.responseJSON || 'something went wrong'
     });
   }
-});
+};
 
 // NotationsController#create
-export const createNotation = ignoreIfExecuting((payload: Notation) => async dispatch => {
+export const createNotation = (payload: Notation) => async dispatch => {
   try {
     const notation = await API.createNotation(payload);
     dispatch(setNotation(camelCaseObjKeys(notation, false)));
@@ -44,10 +44,10 @@ export const createNotation = ignoreIfExecuting((payload: Notation) => async dis
       description: error.responseJSON || 'something went wrong'
     });
   }
-});
+};
 
 // NotationsController#update
-export const updateNotation = ignoreIfExecuting((payload: Notation) => async dispatch => {
+export const updateNotation = (payload: Notation) => async dispatch => {
   try {
     const notation = await API.updateNotation(payload);
     dispatch(setNotation(camelCaseObjKeys(notation, false)));
@@ -63,10 +63,10 @@ export const updateNotation = ignoreIfExecuting((payload: Notation) => async dis
       description: error.responseJSON || 'something went wrong'
     });
   }
-});
+};
 
 // NotationsController#destroy
-export const destroyNotation = ignoreIfExecuting((notationId: number) => async dispatch => {
+export const destroyNotation = (notationId: number) => async dispatch => {
   try {
     const notation = await API.destroyNotation(notationId);
     dispatch(setNotation(camelCaseObjKeys(notation, false)));
@@ -82,4 +82,4 @@ export const destroyNotation = ignoreIfExecuting((notationId: number) => async d
       description: error.responseJSON || 'something went wrong'
     });
   }
-});
+};

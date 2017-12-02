@@ -10,6 +10,8 @@ import isVideoActive from './isVideoActive';
 import interpolator from './interpolator';
 import { interpolateFuncFor } from './interpolate';
 import isBetween from './isBetween';
+import isLoggedIn from './isLoggedIn';
+import inChunksOf from './inChunksOf';
 
 export {
   ignoreIfExecuting,
@@ -23,5 +25,7 @@ export {
   isVideoActive,
   interpolator,
   interpolateFuncFor,
-  isBetween
+  isBetween,
+  isLoggedIn,
+  inChunksOf
 };

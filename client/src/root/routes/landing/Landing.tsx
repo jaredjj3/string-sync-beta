@@ -1,17 +1,15 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose, branch, renderComponent } from 'recompose';
-
 import DesktopLanding from './desktop';
 import MobileLanding from './mobile';
-
-import { withDeviceType } from 'enhancers';
+import { withViewport } from 'enhancers';
 
 export default compose(
   withRouter,
-  withDeviceType,
+  withViewport,
   branch(
-    ({ deviceType }) => deviceType === 'MOBILE',
+    ({ viewport }) => viewport.type === 'MOBILE',
     renderComponent(MobileLanding),
     renderComponent(DesktopLanding)
   )

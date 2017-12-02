@@ -14,14 +14,15 @@ export const resetNotations = () => ({
 });
 
 // NotationsController#index
-export const fetchNotations = ignoreIfExecuting(() => async dispatch => {
+export const fetchNotations = () => async dispatch => {
   try {
     const notations = await API.fetchNotations();
-    dispatch(setNotations(camelCaseObjKeys(notations, true)));
+    const action = setNotations(notations.map(notation => camelCaseObjKeys(notation, true)));
+    dispatch(action);
   } catch (error) {
     window.notification.error({
       message: 'Notations',
       description: error.responseJSON || 'something went wrong'
     });
   }
-});
+};

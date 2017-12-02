@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 
 // import About from './about';
 // import Dashboard from './dashboard';
-// import Landing from './landing';
+import Landing from './landing';
 // import Library from './library';
 // import Login from './login';
 // import Notation from './notation';
@@ -34,8 +34,8 @@ const withMarginTop = (Wrapped: React.Component, marginTop: string): any => (
 // );
 
 const Routes = () => (
-  <div>
-    Routes
+  <div className="App__routes">
+    <Route exact path="/" component={Landing} />
   </div>
 );
 
