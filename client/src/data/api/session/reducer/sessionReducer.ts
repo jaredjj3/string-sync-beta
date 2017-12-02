@@ -1,30 +1,23 @@
-import { RECEIVE_USER } from './actions';
-import { User } from 'types/user';
+import sessionActions from '../actions';
+import { getNullUser } from 'stringSyncUtil';
 
-import getNullUser from 'util/getNullUser';
-import dupUser from 'util/dup/user';
+const { RECEIVE_USER, RESET_USER } = sessionActions;
 
-export interface Session {
-  currentUser: User;
-}
+// Since the user can't be altered via the sessionReducer, the defaultState
+// can be static. This is unlike the relationship between the notation and
+// notationReducer.
+const defaultState = Object.freeze(getNullUser());
 
-const defaultState: Session = Object.freeze({
-  currentUser: getNullUser(),
-});
-
-const dup = (state: Session): Session => {
-  const currentUser = dupUser(state.currentUser);
-  return Object.assign({}, state, { currentUser });
-};
-
-export default (state = defaultState, action): Session => {
-
-  const nextState = dup(state);
+export default (state = defaultState, action) => {
+  Object.freeze(state);
+  const nextState = Object.assign({}, state);
 
   switch (action.type) {
     case RECEIVE_USER:
-      nextState.currentUser = action.user;
-      return nextState;
+      return Object.assign({}, action.user);
+
+    case RESET_USER:
+      return defaultState;
 
     default:
       return nextState;
