@@ -1,18 +1,21 @@
-import { RECEIVE_TAGS } from './actions';
+import tagsActions from '../actions';
 
-import { Tag } from 'types/tag';
+const { RECEIVE_TAGS, RESET_TAGS } = tagsActions;
 
-declare type StoreTags = Array<Tag>;
-
-export default (state = [], action): StoreTags => {
+const tagsReducer = (state = [], action) => {
   Object.freeze(state);
-  const nextState = state.map(tag => Object.assign(tag));
+  const nextState = Object.assign([], state);
 
   switch (action.type) {
     case RECEIVE_TAGS:
-      return action.tags;
+      return Object.assign([], action.tags);
+
+    case RESET_TAGS:
+      return [];
 
     default:
       return nextState;
   }
 };
+
+export default tagsReducer;

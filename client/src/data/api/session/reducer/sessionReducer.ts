@@ -8,7 +8,7 @@ const { RECEIVE_USER, RESET_USER } = sessionActions;
 // notationReducer.
 const defaultState = Object.freeze(getNullUser());
 
-export default (state = defaultState, action) => {
+const sessionReducer = (state = defaultState, action) => {
   Object.freeze(state);
   const nextState = Object.assign({}, state);
 
@@ -23,3 +23,5 @@ export default (state = defaultState, action) => {
       return nextState;
   }
 };
+
+export default sessionReducer;
