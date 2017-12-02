@@ -1,22 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose, branch, renderNothing } from 'recompose';
-
 import { Layout } from 'antd';
-import DesktopNav from 'comp/desktop/nav';
-import { withDeviceType, identity } from 'enhancers';
+import { Desktop } from 'components';
+import { withViewport, identity, withFeatures } from 'enhancers';
 
+const { DesktopNav } = Desktop;
 const { Header } = Layout;
 
-const shouldShowHeader = ({ isVisible, deviceType }) => isVisible && deviceType === 'DESKTOP';
-
-const mapStateToProps = state => ({
-  isVisible: state.feature.navbar
-});
+const shouldShowHeader = ({ features, viewport }) => {
+  return features.navbar && viewport.type === 'DESKTOP';
+};
 
 const enhance = compose(
-  connect(mapStateToProps),
-  withDeviceType,
+  withFeatures,
+  withViewport,
   branch(shouldShowHeader, identity, renderNothing)
 );
 

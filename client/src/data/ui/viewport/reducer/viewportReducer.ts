@@ -1,7 +1,9 @@
-import { SET_VIEWPORT } from './viewportActions';
-import { getViewportProps } from './viewportUtils';
+import viewportActions from '../actions';
+import { getViewport } from 'stringSyncUtil';
 
-const defaultState: any = Object.freeze(getViewportProps());
+const { SET_VIEWPORT } = viewportActions;
+
+const defaultState: any = Object.freeze(getViewport());
 
 const viewportReducer = (state = defaultState, action): any => {
   Object.freeze(state);
@@ -9,7 +11,7 @@ const viewportReducer = (state = defaultState, action): any => {
 
   switch (action.type) {
     case SET_VIEWPORT:
-      return action.viewport;
+      return Object.assign({}, action.viewport);
 
     default:
       return nextState;

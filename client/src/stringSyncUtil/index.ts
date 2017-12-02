@@ -4,6 +4,7 @@ import mapKeysDeep from './mapKeysDeep';
 import getNullUser from './getNullUser';
 import RAFLoop from './RAFLoop';
 import reduxConnect from './reduxConnect';
+import getViewport from './getViewport';
 
 export {
   ignoreIfExecuting,
@@ -11,5 +12,6 @@ export {
   mapKeysDeep,
   getNullUser,
   RAFLoop,
-  reduxConnect
+  reduxConnect,
+  getViewport
 };

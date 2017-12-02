@@ -9,6 +9,7 @@ import withFeatures from './withFeatures';
 import withRaf from './withRaf';
 import withTab from './withTab';
 import withVideo from './withVideo';
+import inContainer from './inContainer';
 
 export {
   identity,
@@ -20,5 +21,6 @@ export {
   withFeatures,
   withRaf,
   withTab,
-  withVideo
+  withVideo,
+  inContainer
 }

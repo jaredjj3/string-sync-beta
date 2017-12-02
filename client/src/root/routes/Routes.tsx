@@ -1,16 +1,16 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 
-import About from './about';
-import Dashboard from './dashboard';
-import Landing from './landing';
-import Library from './library';
-import Login from './login';
-import Notation from './notation';
-import Search from './search';
-import Signup from './signup';
-import Upload from './notation/new';
-import Sandbox from './sandbox';
+// import About from './about';
+// import Dashboard from './dashboard';
+// import Landing from './landing';
+// import Library from './library';
+// import Login from './login';
+// import Notation from './notation';
+// import Search from './search';
+// import Signup from './signup';
+// import Upload from './notation/new';
+// import Sandbox from './sandbox';
 
 import { inContainer } from 'enhancers';
 

@@ -1,4 +1,4 @@
-export const getViewportProps = () => {
+const getViewport = () => {
   const width = window.innerWidth;
   const height = window.innerHeight;
   const orientation = width > height ? 'LANDSCAPE' : 'PORTRAIT';
@@ -7,3 +7,5 @@ export const getViewportProps = () => {
 
   return { width, height, orientation, type, isTouch };
 };
+
+export default getViewport;
