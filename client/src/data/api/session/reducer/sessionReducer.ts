@@ -17,7 +17,7 @@ const sessionReducer = (state = defaultState, action) => {
       return Object.assign({}, action.user);
 
     case RESET_USER:
-      return defaultState;
+      return getNullUser();
 
     default:
       return nextState;
