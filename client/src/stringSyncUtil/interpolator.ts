@@ -1,4 +1,7 @@
-import { Point } from 'types/point';
+declare interface Point {
+  x: number;
+  y: number;
+}
 
 export type Interpolator = (target: number, offset?: number) => number;
 
