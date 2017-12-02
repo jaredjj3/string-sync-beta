@@ -1,20 +1,20 @@
-export const SET_VIDEO_PLAYER = 'SET_VIDEO_PLAYER';
-export const SET_VIDEO_STATE = 'SET_VIDEO_STATE';
-export const SET_VIDEO_LOOP = 'SET_VIDEO_LOOP';
+export const SET_PLAYER = 'SET_VIDEO_PLAYER';
+export const SET_PLAYER_STATE = 'SET_PLAYER_STATE';
+export const SET_LOOP = 'SET_LOOP';
 export const RESET_VIDEO = 'RESET_VIDEO';
 
-export const setVideoPlayer = videoPlayer => ({
-  type: SET_VIDEO_PLAYER,
-  videoPlayer
+export const setPlayer = player => ({
+  type: SET_PLAYER,
+  player
 });
 
-export const setVideoState = videoState => ({
-  type: SET_VIDEO_STATE,
-  videoState
+export const setPlayerState = playerState => ({
+  type: SET_PLAYER_STATE,
+  playerState
 });
 
-export const setVideoLoop = (loop: [number, number]) => ({
-  type: SET_VIDEO_LOOP,
+export const setLoop = (loop: [number, number]) => ({
+  type: SET_LOOP,
   loop
 });
 
