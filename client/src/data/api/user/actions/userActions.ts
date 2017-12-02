@@ -1,10 +1,9 @@
 import API from '../api';
 import { sessionActions } from 'data/api/session';
-import { ignoreIfExecuting } from 'stringSyncUtil';
 
 const { setUser } = sessionActions;
 
-export const signup = ignoreIfExecuting(user => async dispatch => {
+export const signup = user => async dispatch => {
   try {
     const newUser = await API.createUser(user);
     dispatch(setUser(newUser));
@@ -19,4 +18,4 @@ export const signup = ignoreIfExecuting(user => async dispatch => {
       duration: 2
     });
   }
-});
+};

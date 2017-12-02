@@ -2,10 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-
 import { Button, Checkbox, Form, Icon, Input } from 'antd';
-
-import { User } from 'types/user';
+import { User, Session } from 'types';
+import { withUser, withSession } from 'enhancers';
 
 const FormItem = Form.Item;
 
@@ -13,6 +12,7 @@ interface SignupProps {
   form: any;
   isLoggedIn: boolean;
   history: any;
+  session: Session;
   signup(user: { user: User }): void;
 }
 
@@ -32,7 +32,7 @@ class Signup extends React.Component<SignupProps, SignupState> {
   }
 
   maybeGoToLibrary(): void {
-    if (this.props.isLoggedIn) {
+    if (this.props.session.isLoggedIn) {
       this.props.history.push('/library');
     }
   }
@@ -168,18 +168,11 @@ class Signup extends React.Component<SignupProps, SignupState> {
   }
 }
 
-import { signup } from 'data/user/actions';
-
-const mapStateToProps = state => ({
-  isLoggedIn: Boolean(state.session.currentUser.id)
-});
-
-const mapDispatchToProps = dispatch => ({
-  signup: user => dispatch(signup(user))
-});
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+const enhance = compose(
   withRouter,
+  withUser,
+  withSession,
   Form.create()
-)(Signup);
+);
+
+export default enhance(Signup);

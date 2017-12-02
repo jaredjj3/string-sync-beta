@@ -1,3 +1,3 @@
-import userApi from './userApi';
+import * as userApi from './userApi';
 
 export default userApi;
