@@ -11,7 +11,6 @@ import { tagsReducer as tags } from './api/tags';
 // The UI reducers manage data that is purely concerned with the client side.
 // However, data managed here may originate from an API, but these reducers
 // must not be the "first pass" managers of such data.
-import { behaviorsReducer as behaviors } from './ui/behaviors';
 import { featuresReducer as features } from './ui/features';
 import { rafReducer as raf } from './ui/raf';
 import { tabReducer as tab } from './ui/tab';
@@ -23,7 +22,6 @@ const rootReducer = combineReducers({
   notations,
   session,
   tags,
-  behaviors,
   features,
   raf,
   tab,
