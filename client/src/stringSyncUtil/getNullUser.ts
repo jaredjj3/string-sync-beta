@@ -1,5 +1,3 @@
-import { User } from 'types/user';
-
 const getNullUser = () => ({
   id: null,
   email: null,
