@@ -64,7 +64,7 @@ class Library extends React.Component<LibraryProps, LibraryState> {
   }
 
   private notationsByTag(notations: Array<Notation>): { [key: string]: Array<Notation> } {
-    return notations.filter(notation => notation.featured).reduce((notationsByTag, notation) => {
+    return notations.reduce((notationsByTag, notation) => {
       notation.tags.map(tag => {
         notationsByTag[tag] = notationsByTag[tag] || [];
         notationsByTag[tag].push(merge({}, notation));

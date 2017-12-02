@@ -7,7 +7,9 @@ const DesktopLibrary = ({ tagNotationsMap }): JSX.Element => (
     {
       tagNotationsMap.map((tagNotations) => (
         <div id={tagNotations.tag} key={tagNotations.tag} style={{ marginTop: '20px' }}>
-          <h1 className="Library--desktop__content__title">{tagNotations.tag.toUpperCase()}</h1>
+          <h1 className="Library--desktop__content__title">
+            {`${tagNotations.tag.toUpperCase()} (${tagNotations.notations.length})`}
+          </h1>
           <LibraryCarousel tagNotations={tagNotations} />
         </div>
       ))

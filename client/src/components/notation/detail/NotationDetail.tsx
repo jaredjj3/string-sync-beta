@@ -22,7 +22,7 @@ const NotationDetail = ({ notation }): JSX.Element => (
             </div>
             <div className="NotationDetail__info">
               <h3>{`${notation.name} by ${notation.artist}`}</h3>
-              <p>{notation.transcriber}</p>
+              <p>{notation.transcriber.username}</p>
               <div className="NotationDetail__info__tag">
                 {
                   notation.tags.map(tag => <Tag key={`tag-${tag}-${notation.id}`}>{tag}</Tag>)

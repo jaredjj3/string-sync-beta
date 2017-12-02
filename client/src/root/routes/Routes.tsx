@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom';
 import About from './about';
 // import Dashboard from './dashboard';
 import Landing from './landing';
-// import Library from './library';
+import Library from './library';
 // import Login from './login';
 // import Notation from './notation';
 // import Search from './search';
@@ -20,7 +20,6 @@ const withMarginTop = (Wrapped: React.Component, marginTop: string): any => (
 
 // const Routes = () => (
 //   <div className="App__routes">
-//     <Route path="/library" component={withMarginTop(Library, '5%')} />
 //     <Route path="/login" component={withMarginTop(Login, '10%')} />
 //     <Route path="/signup" component={withMarginTop(Signup, '10%')} />
 //     <Route path="/search" component={withMarginTop(Search, '2%')} />
@@ -35,6 +34,7 @@ const Routes = () => (
   <div className="App__routes">
     <Route exact path="/" component={Landing} />
     <Route path="/about" component={About} />
+    <Route path="/library" component={withMarginTop(Library, '5%')} />
   </div>
 );
 
