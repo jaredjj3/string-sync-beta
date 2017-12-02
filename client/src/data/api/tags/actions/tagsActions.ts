@@ -1,33 +1,27 @@
-import * as API from './api';
+import API from '../api';
+import { ignoreIfExecuting } from 'stringSyncUtil';
 
 export const RECEIVE_TAGS = 'RECEIVE_TAGS';
+export const RESET_TAGS = 'RESET_TAGS';
 
 export const receiveTags = (tags: Array<string>) => ({
   type: RECEIVE_TAGS,
   tags
 });
 
-export const fetchTags = (() => {
-  let isFetching = false;
+export const resetTags = () => ({
+  type: RESET_TAGS
+});
 
-  return () => async dispatch => {
-
-    if (isFetching) {
-      return;
-    }
-
-    isFetching = true;
-
-    try {
-      const tags = await API.fetchTags();
-      dispatch(receiveTags(tags));
-    } catch (e) {
-      window.notification.error({
-        message: 'Tags',
-        description: 'something went wrong'
-      });
-    } finally {
-      isFetching = false;
-    }
-  };
-})();
+export const fetchTags = ignoreIfExecuting(user => async dispatch => {
+  try {
+    const tags = await API.fetchTags();
+    dispatch(receiveTags(tags));
+  } catch (error) {
+    window.notification.error({
+      message: 'Tags',
+      description: 'something went wrong',
+      duration: 2
+    });
+  }
+});
