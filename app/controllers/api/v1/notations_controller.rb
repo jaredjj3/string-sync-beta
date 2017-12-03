@@ -20,10 +20,10 @@ class Api::V1::NotationsController < ApplicationController
       if @notation.save
         render(:show, status: 200)
       else
-        render_errors(@notation.errors.full_messages, status: 422)
+        render_errors(@notation.errors.full_messages, 422)
       end
     else
-      render_errors("unauthorized to create", status: 401)
+      render_errors("unauthorized to create", 401)
     end
   end
 
@@ -36,10 +36,10 @@ class Api::V1::NotationsController < ApplicationController
       if @notation.update(notation_params)
         render(:show, status: 200)
       else
-        render_errors(@notation.errors.full_messages, status: 422)
+        render_errors(@notation.errors.full_messages, 422)
       end
     else
-      render_errors("unauthorized to update", status: 422)
+      render_errors("unauthorized to update", 422)
     end
   end
 
@@ -51,7 +51,7 @@ class Api::V1::NotationsController < ApplicationController
       @notation.update!(notation_params)
       render(:show, status: 200)
     else
-      render_errors("unauthorized to destroy", status: 422)
+      render_errors("unauthorized to destroy", 422)
     end
   end
 
@@ -62,13 +62,13 @@ class Api::V1::NotationsController < ApplicationController
           require(:notation).
           permit(*%i(
             youtube_video_id
-            thumbnail
             song_name
             artist_name
             vextab_string
             bpm
             dead_time_ms
             duration_ms
+            thumbnail
           ))
 
       if current_user.try(:has_role?, :admin)

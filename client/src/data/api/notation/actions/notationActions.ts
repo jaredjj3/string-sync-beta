@@ -41,7 +41,7 @@ export const createNotation = (payload: Notation) => async dispatch => {
   } catch (error) {
     window.notification.error({
       message: 'Notation',
-      description: error.responseJSON || 'something went wrong'
+      description: error.responseJSON || error.message || 'something went wrong'
     });
   }
 };

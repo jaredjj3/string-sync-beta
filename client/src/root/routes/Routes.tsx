@@ -6,24 +6,16 @@ import Dashboard from './dashboard';
 import Landing from './landing';
 import Library from './library';
 import Login from './login';
-// import Notation from './notation';
+import Notation from './notation';
 import Search from './search';
 import Signup from './signup';
-// import Upload from './notation/new';
+import Upload from './notation/new';
 
 import { inContainer } from 'enhancers';
 
 const withMarginTop = (Wrapped: React.Component, marginTop: string): any => (
   inContainer(Wrapped, { style: { marginTop } })
 );
-
-// const Routes = () => (
-//   <div className="App__routes">
-//     <Route path="/upload" component={withMarginTop(Upload, '10%')} />
-//     <Route path="/n" component={Notation} />
-//     <Route path="/sandbox" component={Sandbox} />
-//   </div>
-// );
 
 const Routes = () => (
   <div className="App__routes">
@@ -34,6 +26,8 @@ const Routes = () => (
     <Route path="/login" component={withMarginTop(Login, '10%')} />
     <Route path="/signup" component={withMarginTop(Signup, '10%')} />
     <Route path="/dashboard" component={Dashboard} />
+    <Route path="/upload" component={withMarginTop(Upload, '10%')} />
+    <Route path="/n" component={Notation} />
   </div>
 );
 

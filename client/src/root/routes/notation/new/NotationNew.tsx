@@ -1,18 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-
-import Button from 'antd/lib/button';
-import Checkbox from 'antd/lib/checkbox';
-import Form from 'antd/lib/form';
-import Icon from 'antd/lib/icon';
-import Input from 'antd/lib/input';
-import Select from 'antd/lib/select';
-import Upload from 'antd/lib/upload';
-
-import { Tag } from 'types/tag';
+import { Button, Checkbox, Form, Icon, Input, Select, Upload } from 'antd';
+import { Tag } from 'types';
 import { Notation } from 'types/notation';
+import { withTags, withNotation } from 'enhancers';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -21,7 +13,7 @@ interface NotationNewProps {
   form: any;
   tags: Array<Tag>;
   history: any;
-  notationId: number;
+  notation: Notation;
   fetchTags(): void;
   createNotation(notation: any): void;
 }
@@ -60,6 +52,12 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
     }
   }
 
+  componentWillReceiveProps(nextProps: NotationNewProps): void {
+    if (this.props.notation.id !== nextProps.notation.id) {
+      nextProps.history.push(`/n/${nextProps.notation.id}/edit`);
+    }
+  }
+
   updateFile = (e: React.SyntheticEvent<HTMLInputElement>): void => {
     const file = e.currentTarget.files[0];
     const fileReader = new FileReader();
@@ -85,7 +83,6 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
 
         try {
           await this.props.createNotation(Object.assign({}, notation, this.state.notation));
-          this.props.history.push(`/n/${this.props.notationId}/edit`);
         } catch (error) {
           console.error('error ', error);
         } finally {
@@ -115,7 +112,7 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
             )}
           </FormItem>
           <FormItem label="Title" hasFeedback {...FORM_ITEM_LAYOUT}>
-            {getFieldDecorator('name', {
+            {getFieldDecorator('songName', {
               rules: [{ required: true, message: 'title is required' }]
             })(
               <Input />
@@ -160,21 +157,11 @@ class NotationNew extends React.Component<NotationNewProps, NotationNewState> {
   }
 }
 
-import { fetchTags } from 'data/tags/actions';
-import { createNotation } from 'data/notation/actions';
-
-const mapStateToProps = state => ({
-  tags: state.tags,
-  notationId: state.notation.id
-});
-
-const mapDispatchToProps = dispatch => ({
-  fetchTags: () => dispatch(fetchTags()),
-  createNotation: (notation) => dispatch(createNotation(notation))
-});
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+const enhance = compose(
   withRouter,
+  withTags,
+  withNotation,
   Form.create()
-)(NotationNew);
+);
+
+export default enhance(NotationNew);

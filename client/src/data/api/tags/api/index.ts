@@ -1,3 +1,3 @@
-import tagsApi from './tagsApi';
+import * as tagsApi from './tagsApi';
 
 export default tagsApi;

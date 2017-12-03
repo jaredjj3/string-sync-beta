@@ -1,22 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-
-import { withRAFLoop } from 'enhancers';
+import { withFeatures, withRaf, withNotation } from 'enhancers';
 import Provider from '../provider';
 import { VexProvider } from 'services/vexflow';
-import { Video, Fretboard, Tab } from 'comp';
+import { Video, Fretboard, Tab } from 'components';
 import VextabEditor from './vextab/editor';
 import DeadTime from './deadTime';
 import Row from 'antd/lib/row';
 import Bpm from './bpm';
 import Save from './save';
-
-import { Notation } from 'types/notation';
-import { Device } from 'types/device';
+import { Notation, RAF, Features } from 'types';
 
 interface NotationEditProps {
-  device: Device;
+  notation: Notation;
+  raf: RAF;
+  features: Features;
   match: any;
   showFretboard: boolean;
   showFretboardControls: boolean;
@@ -24,8 +23,8 @@ interface NotationEditProps {
   scaleVisualization: boolean;
   RAFLoop: any;
   fetchNotation(id: number): void;
-  enableAutoSave(): void;
-  disableAutoSave(): void;
+  enableFeatures(features: Array<string>): void;
+  disableFeatures(features: Array<string>): void;
   enableScaleVisualization(): void;
   disableScaleVisualization(): void;
   resetNotation(): void;
@@ -35,15 +34,15 @@ interface NotationEditState {}
 
 class NotationEdit extends React.Component<NotationEditProps, NotationEditState> {
   componentDidMount(): void {
-    this.props.enableAutoSave();
+    this.props.enableFeatures(['autoSave']);
     this.props.fetchNotation(this.props.match.params.id);
-    this.props.RAFLoop.start();
+    this.props.raf.loop.start();
   }
 
   componentWillUnmount(): void {
     this.props.resetNotation();
-    this.props.disableAutoSave();
-    this.props.RAFLoop.stop();
+    this.props.disableFeatures(['autoSave']);
+    this.props.raf.loop.stop();
   }
 
   render(): JSX.Element {
@@ -67,24 +66,10 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
   }
 }
 
-import { fetchNotation, resetNotation } from 'data/notation/actions';
-import { enableFeatures, disableFeatures } from 'data/feature/actions';
+const enhance = compose(
+  withRaf,
+  withFeatures,
+  withNotation
+);
 
-const mapStateToProps = state => ({
-  showFretboard: state.panels.fretboard,
-  showFretboardControls: state.panels.fretboardControls,
-  autoSave: state.feature.autoSave,
-  scaleVisualization: state.feature.scaleVisualization
-});
-
-const mapDispatchToProps = dispatch => ({
-  fetchNotation: id => dispatch(fetchNotation(id)),
-  enableAutoSave: () => dispatch(enableFeatures(['autoSave'])),
-  disableAutoSave: () => dispatch(disableFeatures(['autoSave'])),
-  resetNotation: () => dispatch(resetNotation())
-});
-
-export default compose(
-  withRAFLoop,
-  connect(mapStateToProps, mapDispatchToProps)
-)(NotationEdit);
+export default enhance(NotationEdit);
