@@ -1,12 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import {
-  compose, branch, defaultProps, renderComponent,
-  lifecycle, onlyUpdateForKeys
-} from 'recompose';
-
+import { compose, renderComponent, lifecycle } from 'recompose';
 import VideoSync from './videoSync';
-import { identity, withTab, withNotation, withVideo } from 'enhancers';
+import { withTab, withNotation, withVideo, withViewport } from 'enhancers';
 import { VexProvider } from 'services/vexflow';
 
 class Provider extends React.Component<any, any> {
@@ -20,16 +15,22 @@ class Provider extends React.Component<any, any> {
     this.updateProviderInternals(nextProps);
   }
 
+  shouldComponentUpdate(nextProps: any): boolean {
+    return this.props.tab.updatedAt !== nextProps.tab.updatedAt;
+  }
+
   componentWillUnmount(): void {
     this.props.resetTab();
   }
 
   updateProviderInternals(props: any): void {
-    const { provider, vextab, tempo, deadTime, viewportWidth } = props;
+    const { provider } = props.tab;
+    const { vextabString, bpm, deadTimeMs } = props.notation;
+    const viewportWidth = props.viewport.width;
 
-    provider.vextab        = vextab;
-    provider.bpm           = tempo;
-    provider.deadTime      = deadTime;
+    provider.vextab        = vextabString;
+    provider.bpm           = bpm;
+    provider.deadTime      = deadTimeMs;
     provider.viewportWidth = viewportWidth;
 
     if (provider.shouldTrySetup) {
@@ -38,7 +39,7 @@ class Provider extends React.Component<any, any> {
   }
 
   get shouldRenderChildren(): boolean {
-    const { provider } = this.props;
+    const { provider } = this.props.tab;
     return provider && provider.isReady;
   }
 
@@ -68,18 +69,11 @@ class Provider extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = state => ({
-  viewportWidth: state.device.viewport.width
-});
-
-const mapDispatchToProps = dispatch => ({
-
-});
-
-export default compose(
+const enhance = compose(
   withTab,
   withNotation,
   withVideo,
-  connect(mapStateToProps, mapDispatchToProps),
-  onlyUpdateForKeys(['updatedAt', 'vextab', 'deadTime', 'tempo', 'viewportWidth'])
-)(Provider);
+  withViewport
+);
+
+export default enhance(Provider);

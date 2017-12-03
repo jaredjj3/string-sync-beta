@@ -1,7 +1,7 @@
 import React from 'react';
 import Score from './score';
 import Caret from './caret';
-import Overlap from 'components';
+import { Overlap } from 'components';
 import Layer from 'components/overlap/layer';
 import classNames from 'classnames';
 

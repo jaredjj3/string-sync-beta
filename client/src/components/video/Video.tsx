@@ -1,17 +1,18 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { withVideo } from 'enhancers';
+import { withVideo, withNotation } from 'enhancers';
 import Youtube from 'react-youtube';
 import VideoControls from './controls';
-import PLAYER_STATES from 'constants';
+import PLAYER_STATES from 'constants/PLAYER_STATES';
+import { VideoPlayer, Notation } from 'types';
 
 interface VideoProps {
   youtubeVideoId: string;
   showControls?: boolean;
-  updateVideoPlayer(videoPlayer: any): void;
-  updateVideoState(videoState: string): void;
-  togglePanel(key: string): Function;
+  video: Video;
+  notation: Notation;
+  setPlayer(videoPlayer: VideoPlayer): void;
+  setPlayerState(playerState: string): void;
   resetVideo(): void;
 }
 
@@ -37,21 +38,25 @@ class Video extends React.Component<VideoProps, VideoState> {
     }
   };
 
+  shouldComponentUpdate(nextProps: VideoProps): boolean {
+    return this.props.notation.youtubeVideoId !== nextProps.notation.youtubeVideoId;
+  }
+
   componentWillUnmount(): void {
     this.props.resetVideo();
   }
 
   updateVideoPlayer = (e: React.SyntheticEvent<any>): void => {
     const videoPlayer = (e.target as any);
-    this.props.updateVideoPlayer(videoPlayer);
+    this.props.setPlayer(videoPlayer);
   }
 
   updateVideoState = (e: any): void => {
-    this.props.updateVideoState(PLAYER_STATES[e.data]);
+    this.props.setPlayerState(PLAYER_STATES[e.data]);
   }
 
   render(): JSX.Element {
-    const { youtubeVideoId, showControls } = this.props;
+    const { youtubeVideoId } = this.props.notation;
 
     return (
       <div className="Video">
@@ -62,14 +67,14 @@ class Video extends React.Component<VideoProps, VideoState> {
           onReady={this.updateVideoPlayer}
           onStateChange={this.updateVideoState}
         />
-        {showControls ? <VideoControls /> : null}
       </div>
     );
   }
 }
 
 const enhance = compose(
-  withVideo
+  withVideo,
+  withNotation
 );
 
 export default enhance(Video);

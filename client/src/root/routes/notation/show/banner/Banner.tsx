@@ -1,26 +1,23 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { compose } from 'recompose';
 import { Link } from 'react-router-dom';
-
-import Icon from 'antd/lib/icon';
-import Row from 'antd/lib/row';
-import Col from 'antd/lib/col';
+import { Icon, Row, Col } from 'antd';
+import { withNotation, withSession } from 'enhancers';
+import { Notation, Session } from 'types';
 
 interface BannerProps {
-  isLoggedIn: boolean;
-  name: string;
-  artist: string;
-  transcriber: string;
-  notationId: number;
+  session: Session;
+  notation: Notation;
 }
 
 interface BannerState {}
 
 class Banner extends React.Component<BannerProps, BannerState> {
   render(): JSX.Element {
-    const { isLoggedIn, name, artist, transcriber, notationId } = this.props;
+    const { songName, artistName, transcriber, id } = this.props.notation;
+    const { isLoggedIn } = this.props.session;
 
-    const bannerText = notationId < 0 ? 'Loading...' : `${name} by ${artist} (${transcriber})`;
+    const bannerText = id < 0 ? 'Loading...' : `${songName} by ${artistName} (${transcriber.username})`;
 
     return (
       <div className="NotationShowBanner" >
@@ -47,18 +44,9 @@ class Banner extends React.Component<BannerProps, BannerState> {
   }
 }
 
-const mapStateToProps = state => ({
-  name: state.notation.name,
-  artist: state.notation.artist,
-  transcriber: state.notation.transcriber,
-  notationId: state.notation.id
-});
+const enhance = compose(
+  withNotation,
+  withSession
+);
 
-const mapDispatchToProps = dispatch => ({
-
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Banner);
+export default enhance(Banner);

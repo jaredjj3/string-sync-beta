@@ -1,19 +1,19 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-
 import { Fretman, ScaleVisualizer, VexProvider } from 'services/vexflow';
 import { isEqual } from 'lodash';
 import { withTab, withViewport } from 'enhancers';
 import classNames from 'classnames';
+import { Tab, Viewport } from 'types';
 
 interface FretMarkerProps {
   string: number;
   fret: number;
-  deviceType: string;
-  provider: VexProvider;
   tuning: Array<string>;
   scaleVisualization: boolean;
+  tab: Tab;
+  viewport: Viewport;
 }
 
 interface FretMarkerState {
@@ -25,14 +25,14 @@ class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
   state: FretMarkerState = { lit: false, pressed: false };
 
   componentDidMount(): void {
-    this.props.provider.fretman.addMarker(this);
+    this.props.tab.provider.fretman.addMarker(this);
   }
 
   shouldComponentUpdate(nextProps: FretMarkerProps, nextState: FretMarkerState): boolean {
     return (
       !isEqual(this.state, nextState) ||
       this.props.scaleVisualization !== nextProps.scaleVisualization ||
-      this.props.deviceType !== nextProps.deviceType
+      this.props.viewport.type !== nextProps.viewport.type
     );
   }
 
@@ -64,11 +64,11 @@ class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
     this.press();
 
     if (this.props.scaleVisualization) {
-      const { provider, string, fret } = this.props;
-      const note = provider.scaleman.noteAt({ string, fret });
+      const { tab, string, fret } = this.props;
+      const note = tab.provider.scaleman.noteAt({ string, fret });
 
       try {
-        provider.scaleman.light(note);
+        tab.provider.scaleman.light(note);
       } catch (e) {
         console.error(e);
       }
@@ -76,17 +76,17 @@ class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
   }
 
   handleMouseLeave = (e: React.SyntheticEvent<any>): void => {
-    const { provider, string, fret } = this.props;
-    const note = provider.scaleman.noteAt({ string, fret });
+    const { tab, string, fret } = this.props;
+    const note = tab.provider.scaleman.noteAt({ string, fret });
 
-    const shouldUnpress = !provider.scaleman.pressedNotes.has(note);
+    const shouldUnpress = !tab.provider.scaleman.pressedNotes.has(note);
     if (shouldUnpress) {
       this.unpress();
     }
 
     if (this.props.scaleVisualization) {
       try {
-        provider.scaleman.unlight(note);
+        tab.provider.scaleman.unlight(note);
       } catch (e) {
         console.error(e);
       }
@@ -94,12 +94,12 @@ class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
   }
 
   handleClick = (e: React.SyntheticEvent<any>): void => {
-    const { provider, string, fret } = this.props;
+    const { tab, string, fret } = this.props;
 
     if (this.props.scaleVisualization) {
       try {
-        const note = provider.scaleman.noteAt({ string, fret });
-        provider.scaleman.togglePress(note);
+        const note = tab.provider.scaleman.noteAt({ string, fret });
+        tab.provider.scaleman.togglePress(note);
       } catch (e) {
         console.error(e);
       }
@@ -107,7 +107,9 @@ class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
   }
 
   render(): JSX.Element {
-    const { string, fret, provider, deviceType } = this.props;
+    const { string, fret } = this.props;
+    const viewportType = this.props.viewport.type;
+    const { provider } = this.props.tab;
     const { lit, pressed } = this.state;
     const note = provider.scaleman.noteAt({ string, fret });
 
@@ -118,7 +120,7 @@ class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
         'Marker--hidden': !lit && !pressed,
         'Marker--lit': lit && !pressed,
         'Marker--pressed': pressed,
-        'Marker--mobile': deviceType === 'MOBILE'
+        'Marker--mobile': viewportType === 'MOBILE'
       }
     );
 
@@ -137,7 +139,7 @@ class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
 
 const mapStateToProps = state => ({
   tuning: state.tab.tuning,
-  scaleVisualization: state.feature.scaleVisualization,
+  scaleVisualization: state.features.scaleVisualization,
 });
 
 const mapDispatchToProps = dispatch => ({

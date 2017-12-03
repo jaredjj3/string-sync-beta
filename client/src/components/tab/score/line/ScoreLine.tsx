@@ -1,8 +1,8 @@
 import React from 'react';
 import { compose, onlyUpdateForKeys } from 'recompose';
-
 import { withTab } from 'enhancers';
 import { Flow, VexTab } from 'services/vexflow';
+import { Tab } from 'types';
 
 const { Renderer } = Flow;
 
@@ -10,6 +10,7 @@ interface ScoreLineProps {
   vextab: VexTab;
   provider: any;
   lineNum: number;
+  tab: Tab;
 }
 
 class ScoreLine extends React.Component<ScoreLineProps, any> {
@@ -27,6 +28,10 @@ class ScoreLine extends React.Component<ScoreLineProps, any> {
     this.ctx = this.renderer.getContext();
     this.renderTab();
     this.maybeSetupTickman();
+  }
+
+  shouldComponentUpdate(nextProps: ScoreLineProps): boolean {
+    return this.props.vextab !== nextProps.vextab;
   }
 
   renderTabText(): void {
@@ -60,7 +65,7 @@ class ScoreLine extends React.Component<ScoreLineProps, any> {
         filter(note => note.attrs.type === 'BarNote').
         map(barNote => barNote.getAbsoluteX()).
         forEach((x, ndx) => {
-          const measuresPerLine = this.props.provider.formatter.measuresPerLine;
+          const measuresPerLine = this.props.tab.provider.formatter.measuresPerLine;
           const measureNum = (measuresPerLine * lineNum) + ndx + 1;
           this.ctx.fillText(measureNum, x - 3, 50);
       });
@@ -77,7 +82,7 @@ class ScoreLine extends React.Component<ScoreLineProps, any> {
   }
 
   maybeSetupTickman = (): void => {
-    const { provider } = this.props;
+    const { provider } = this.props.tab;
     const shouldSetupTickman = provider.vextabs.every(vextab => vextab.artist.rendered);
 
     if (shouldSetupTickman) {
@@ -97,6 +102,5 @@ class ScoreLine extends React.Component<ScoreLineProps, any> {
 }
 
 export default compose(
-  withTab,
-  onlyUpdateForKeys(['vextab'])
+  withTab
 )(ScoreLine);

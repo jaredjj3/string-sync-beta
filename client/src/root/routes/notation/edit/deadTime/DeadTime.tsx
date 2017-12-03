@@ -1,11 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
-
-import formatTime from 'util/formatTime';
+import { compose } from 'recompose';
+import { formatTime } from 'stringSyncUtil';
 import Slider from 'antd/lib/slider';
-import dupNotation from 'util/dup/notation';
-
-import { Notation } from 'types/notation';
+import dupNotation from 'stringSyncUtil/dup/notation';
+import { Notation } from 'types';
+import { withNotation } from 'enhancers';
 
 interface DeadTimeProps {
   notation: Notation;
@@ -22,7 +21,7 @@ class DeadTime extends React.Component<DeadTimeProps, DeadTimeState> {
   };
 
   componentWillReceiveProps(nextProps: DeadTimeProps): void {
-    const deadTimeValue = nextProps.notation.deadTime;
+    const deadTimeValue = nextProps.notation.deadTimeMs;
     this.setState(Object.assign({}, this.state, { deadTimeValue }));
   }
 
@@ -32,7 +31,7 @@ class DeadTime extends React.Component<DeadTimeProps, DeadTimeState> {
 
   handleAfterChange = (value: number): void => {
     const nextNotation = dupNotation(this.props.notation);
-    nextNotation.deadTime = value;
+    nextNotation.deadTimeMs = value;
     this.props.updateNotation(nextNotation);
   }
 
@@ -41,7 +40,7 @@ class DeadTime extends React.Component<DeadTimeProps, DeadTimeState> {
   }
 
   render(): JSX.Element {
-    const { duration } = this.props.notation;
+    const { durationMs } = this.props.notation;
     const { deadTimeValue } = this.state;
 
     return (
@@ -50,7 +49,7 @@ class DeadTime extends React.Component<DeadTimeProps, DeadTimeState> {
         <Slider
           step={1}
           min={0}
-          max={duration}
+          max={durationMs}
           value={deadTimeValue}
           defaultValue={0}
           onChange={this.handleChange}
@@ -62,17 +61,8 @@ class DeadTime extends React.Component<DeadTimeProps, DeadTimeState> {
   }
 }
 
-import { updateNotation } from 'data/notation/actions';
+const enhance = compose(
+  withNotation
+);
 
-const mapStateToProps = state => ({
-  notation: state.notation
-});
-
-const mapDispatchToProps = dispatch => ({
-  updateNotation: notation => dispatch(updateNotation(notation))
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DeadTime);
+export default enhance(DeadTime);

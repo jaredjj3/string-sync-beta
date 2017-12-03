@@ -9,7 +9,7 @@ interface RAFSpec {
   onAnimationStart?: RAFFunc;
   onAnimationLoop?: RAFFunc;
   onAnimationEnd?: RAFFunc;
-  _n: number; // fallback to perserve order when two specs have the same precedence
+  _n?: number; // fallback to perserve order when two specs have the same precedence
 }
 
 type EventName = 'onAnimationStart' | 'onAnimationLoop' | 'onAnimationEnd';

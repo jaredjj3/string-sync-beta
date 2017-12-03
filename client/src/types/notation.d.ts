@@ -1,10 +1,12 @@
+import { User } from './';
+
 export interface Notation extends Object {
   id: number;
   songName: string;
-  duration: number;
+  durationMs: number;
   deadTimeMs: number;
   bpm: number;
-  transcriber: string;
+  transcriber: User;
   artistName: string;
   thumbnailUrl: string;
   vextabString: string;

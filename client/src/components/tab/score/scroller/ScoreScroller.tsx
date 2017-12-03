@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { compose, onlyUpdateForKeys } from 'recompose';
+import { compose } from 'recompose';
 import { withTab, withVideo, withRaf } from 'enhancers';
 
 class ScoreScroller extends React.Component<any, any> {
@@ -13,9 +13,11 @@ class ScoreScroller extends React.Component<any, any> {
   }
 
   componentWillReceiveProps(nextProps: any): void {
-    const { RAFLoop, isVideoActive } = nextProps;
-
     this.updateRefs();
+  }
+
+  shouldComponentUpdate(nextProps: any): boolean {
+    return nextProps.video.isActive;
   }
 
   componentWillUnmount(): void {
@@ -23,8 +25,10 @@ class ScoreScroller extends React.Component<any, any> {
   }
 
   registerRAFLoop(): void {
-    if (!this.props.RAFLoop.has()) {
-      this.props.RAFLoop.register({
+    const RAFLoop = this.props.raf.loop;
+
+    if (!RAFLoop.has()) {
+      RAFLoop.register({
         name: 'ScoreScroller.updateScroll',
         precedence: 6,
         onAnimationLoop: this.updateScroll
@@ -33,7 +37,7 @@ class ScoreScroller extends React.Component<any, any> {
   }
 
   unregisterRAFLoop(): void {
-    this.props.RAFLoop.unregister('ScoreScroller.updateScroll');
+    this.props.raf.loop.unregister('ScoreScroller.updateScroll');
   }
 
   updateRefs = (): void => {
@@ -47,7 +51,7 @@ class ScoreScroller extends React.Component<any, any> {
     }
 
     try {
-      const { scrollSpec } = this.props.provider.player;
+      const { scrollSpec } = this.props.tab.provider.player;
       if (scrollSpec) {
         const lineIndex = scrollSpec.lowTick.staveIndex;
         this.scoreContainer.scrollTop = this.scrollPositions[lineIndex];
@@ -62,9 +66,10 @@ class ScoreScroller extends React.Component<any, any> {
   }
 }
 
-export default compose(
+const enhance = compose(
   withTab,
   withVideo,
-  withRaf,
-  onlyUpdateForKeys(['updatedAt', 'provider', 'isVideoActive'])
-)(ScoreScroller);
+  withRaf
+);
+
+export default enhance(ScoreScroller);

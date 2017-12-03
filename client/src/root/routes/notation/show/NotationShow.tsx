@@ -2,44 +2,35 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose, lifecycle } from 'recompose';
-
 import Banner from './banner';
 import Provider from '../provider';
 import Controls from '../controls';
 import { VexProvider } from 'services/vexflow';
-import { Video, Fretboard, Tab } from 'comp';
-import { withRAFLoop, withVideo } from 'enhancers';
-import { fetchNotation, resetNotation } from 'data/notation/actions';
-import { enableFeatures, disableFeatures } from 'data/feature/actions';
-
-const mapDispatchToProps = dispatch => ({
-  fetchNotation: (notationId: number) => dispatch(fetchNotation(notationId)),
-  resetNotation: () => dispatch(resetNotation()),
-  showNav: () => dispatch(enableFeatures(['navbar'])),
-  hideNav: () => dispatch(disableFeatures(['navbar']))
-});
+import { Video, Fretboard, Tab } from 'components';
+import { withRaf, withVideo, withNotation, withFeatures } from 'enhancers';
 
 const enhance = compose(
-  withRAFLoop,
+  withRaf,
   withVideo,
-  connect(null, mapDispatchToProps),
+  withNotation,
+  withFeatures,
   lifecycle({
     componentDidMount(): void {
       const notationId = this.props.match.params.id;
       this.props.fetchNotation(notationId);
-      this.props.hideNav();
-      this.props.RAFLoop.start();
+      this.props.disableFeatures(['navbar']);
+      this.props.raf.loop.start();
     },
     componentWillUnmount(): void {
       this.props.resetNotation();
-      this.props.showNav();
-      this.props.resetRAFLoop();
-      this.props.RAFLoop.stop();
+      this.props.enableFeatures(['navbar']);
+      this.props.resetRafLoop();
+      this.props.raf.loop.stop();
     }
   })
 );
 
-export default enhance(() => (
+const NotationShow = () => (
   <div className="NotationShow">
     <Banner />
     <Video />
@@ -49,4 +40,6 @@ export default enhance(() => (
     </Provider>
     <Controls />
   </div>
-));
+);
+
+export default enhance(NotationShow);

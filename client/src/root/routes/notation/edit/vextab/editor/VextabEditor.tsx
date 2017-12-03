@@ -1,15 +1,14 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { compose } from 'recompose';
-
-import Input from 'antd/lib/input';
-import Alert from 'antd/lib/alert';
+import { Input, Alert } from 'antd';
+import { withTab, withNotation } from 'enhancers';
+import { Tab, Notation } from 'types';
 
 const { TextArea } = Input;
 
 interface VextabEditorProps {
-  vextab: string;
-  provider: any;
+  tab: Tab;
+  notation: Notation;
   updateVextab(vextab: string): void;
 }
 
@@ -17,8 +16,8 @@ interface VextabEditorState {}
 
 class VextabEditor extends React.Component<VextabEditorProps, VextabEditorState> {
   componentWillReceiveProps(nextProps: VextabEditorProps): void {
-    if (nextProps.provider && !nextProps.provider.editMode) {
-      nextProps.provider.editMode = true;
+    if (nextProps.tab.provider && !nextProps.tab.provider.editMode) {
+      nextProps.tab.provider.editMode = true;
     }
   }
 
@@ -27,7 +26,8 @@ class VextabEditor extends React.Component<VextabEditorProps, VextabEditorState>
   }
 
   render(): JSX.Element {
-    const { vextab, provider } = this.props;
+    const { provider } = this.props.tab;
+    const { vextabString } = this.props.notation;
     const parseError = provider ? provider.parseError : null;
 
     return (
@@ -50,7 +50,7 @@ class VextabEditor extends React.Component<VextabEditorProps, VextabEditorState>
         <TextArea
           className="VextabEditor__textarea"
           placeholder="Write Vextab here..."
-          value={vextab}
+          value={vextabString}
           autosize={{ minRows: 10, maxRows: 20 }}
           onChange={this.handleChange}
         />
@@ -59,18 +59,9 @@ class VextabEditor extends React.Component<VextabEditorProps, VextabEditorState>
   }
 }
 
-import { updateVextab } from 'data/notation/actions';
+const enhance = compose(
+  withTab,
+  withNotation
+);
 
-const mapStateToProps = state => ({
-  vextab: state.notation.vextab,
-  provider: state.tab.provider
-});
-
-const mapDispatchToProps = dispatch => ({
-  updateVextab: vextab => dispatch(updateVextab(vextab))
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(VextabEditor);
+export default enhance(VextabEditor);

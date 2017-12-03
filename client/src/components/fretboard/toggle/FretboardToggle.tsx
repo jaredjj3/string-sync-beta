@@ -1,37 +1,28 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { compose, branch, onlyUpdateForKeys, renderComponent } from 'recompose';
-
+import { compose, branch, renderComponent } from 'recompose';
+import { withFeatures } from 'enhancers';
 import { Icon } from 'antd';
 
-const ShowFretboard = ({ showFretboard }) => (
-  <span onClick={showFretboard} >
+const ShowFretboard = ({ enableFeatures }) => (
+  <span onClick={() => enableFeatures(['fretboard'])} >
     <Icon type="database" />
   </span>
 );
 
-const HideFretboard = ({ hideFretboard }) => (
-  <span onClick={hideFretboard} >
+const HideFretboard = ({ disableFeatures }) => (
+  <span onClick={() => disableFeatures(['fretboard'])} >
     <Icon type="database" />
   </span>
 );
 
-import { enableFeatures, disableFeatures } from 'data/feature/actions';
-
-const mapStateToProps = state => ({
-  fretboardEnabled: state.feature.fretboard
-});
-
-const mapDispatchToProps = dispatch => ({
-  showFretboard: () => dispatch(enableFeatures(['fretboard'])),
-  hideFretboard: () => dispatch(disableFeatures(['fretboard']))
-});
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+const enhance = compose(
+  withFeatures,
   branch(
     ({ fretboardEnabled }) => fretboardEnabled,
     renderComponent(HideFretboard),
     renderComponent(ShowFretboard)
   )
-)(() => null);
+);
+
+export default enhance(() => null);

@@ -24,7 +24,7 @@ const formData = (notation) => {
 
   data.append('notation[bpm]', (bpm && bpm.toString()) || '120');
 
-  if (deadTimeMs) {
+  if (typeof deadTimeMs === 'number') {
     data.append('notation[dead_time_ms]', (deadTimeMs && deadTimeMs.toString()) || '0');
   }
 

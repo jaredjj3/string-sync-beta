@@ -1,4 +1,4 @@
-import { reduxConnect, videoStateCategory } from 'stringSyncUtil';
+import { reduxConnect } from 'stringSyncUtil';
 import { videoActions as actions } from 'data/ui/video';
 
 const withVideo = reduxConnect(

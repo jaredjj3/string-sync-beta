@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { compose, branch, renderNothing } from 'recompose';
 import Frets from './frets';
 import Strings from './strings';
-import Row from 'antd/lib/row';
-import Col from 'antd/lib/col';
+import { Row, Col } from 'antd';
 import { VexPlayer, Fretman, VexProvider } from 'services/vexflow';
-import { withRaf, withTab, identity } from 'enhancers';
+import { withRaf, withTab, identity, withFeatures } from 'enhancers';
+import { Tab } from 'types';
 
 interface FretboardProps {
   isFretboardEnabled: boolean;
@@ -14,6 +14,7 @@ interface FretboardProps {
   vexPlayer: VexPlayer;
   fretman: Fretman;
   provider: VexProvider;
+  tab: Tab;
 }
 
 interface FretboardState {}
@@ -30,21 +31,23 @@ class Fretboard extends React.Component<FretboardProps, FretboardState> {
   }
 
   componentWillUnmount(): void {
-    this.props.provider.fretman.reset();
+    this.props.tab.provider.fretman.reset();
     this.unregisterRAFLoop();
   }
 
   updateFretman = (): void => {
     try {
-      this.props.provider.updateFretmanWithPlayer();
+      this.props.tab.provider.updateFretmanWithPlayer();
     } catch (error) {
       console.error(error);
     }
   }
 
   registerRAFLoop = (): void => {
-    if (!this.props.RAFLoop.has('Fretboard.updateFretman')) {
-      this.props.RAFLoop.register({
+    const RAFLoop = this.props.raf.loop;
+
+    if (!RAFLoop.has('Fretboard.updateFretman')) {
+      RAFLoop.register({
         name: 'Fretboard.updateFretman',
         precedence: 0,
         onAnimationLoop: this.updateFretman
@@ -53,7 +56,7 @@ class Fretboard extends React.Component<FretboardProps, FretboardState> {
   }
 
   unregisterRAFLoop = (): void => {
-    this.props.RAFLoop.unregister('Fretboard.updateFretman');
+    this.props.raf.loop.unregister('Fretboard.updateFretman');
   }
 
   render(): JSX.Element {
@@ -79,24 +82,15 @@ class Fretboard extends React.Component<FretboardProps, FretboardState> {
   }
 }
 
-const mapStateToProps = state => ({
-  scaleVisualizer: state.tab.scaleVisualizer,
-  isFretboardEnabled: state.feature.fretboard
-});
-
-const mapDispatchToProps = dispatch => ({
-
-});
-
 const enhance = compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  branch(
-    ({ isFretboardEnabled }) => isFretboardEnabled,
-    identity,
-    renderNothing
-  ),
+  withFeatures,
   withRaf,
   withTab,
-)
+  branch(
+    ({ features }) => features.fretboard,
+    identity,
+    renderNothing
+  )
+);
 
 export default enhance(Fretboard);

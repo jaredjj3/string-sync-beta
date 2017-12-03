@@ -1,16 +1,13 @@
 import React from 'react';
 import { compose, onlyUpdateForKeys } from 'recompose';
-
 import { Slider } from 'antd';
-import { withVideo, withRAFLoop, withTab } from 'enhancers';
-import { VideoPlayer } from 'types';
+import { withVideo, withRaf, withTab } from 'enhancers';
+import { Video, RAF, Tab } from 'types';
 
 interface LoopProps {
-  videoPlayer: VideoPlayer;
-  videoState: string;
-  RAFLoop: any;
-  provider: any;
-  isVideoActive: boolean;
+  video: Video;
+  raf: RAF;
+  tab: Tab;
 }
 interface LoopState {
   values: [number, number];
@@ -22,7 +19,7 @@ class Loop extends React.Component<LoopProps, LoopState> {
   isAutoSeeking: boolean = false;
 
   componentWillReceiveProps(nextProps: LoopProps): void {
-    if (nextProps.isVideoActive) {
+    if (nextProps.video.isActive) {
       this.registerUpdateLoop();
     } else {
       this.unregisterUpdateLoop();
@@ -30,7 +27,7 @@ class Loop extends React.Component<LoopProps, LoopState> {
   }
 
   registerUpdateLoop(): void {
-    const { RAFLoop } = this.props;
+    const RAFLoop = this.props.raf.loop;
 
     if (!RAFLoop.has('Loop.updateLoop')) {
       RAFLoop.register({
@@ -42,7 +39,7 @@ class Loop extends React.Component<LoopProps, LoopState> {
   }
 
   unregisterUpdateLoop(): void {
-    this.props.RAFLoop.unregister('Loop.updateLoop');
+    this.props.raf.loop.unregister('Loop.updateLoop');
   }
 
   updateLoop = (): void => {
@@ -54,7 +51,7 @@ class Loop extends React.Component<LoopProps, LoopState> {
   }
 
   goToLoopStart(): void {
-    const { videoPlayer } = this.props;
+    const videoPlayer = this.props.video.player;
 
     if (!videoPlayer) {
       return;
@@ -73,7 +70,7 @@ class Loop extends React.Component<LoopProps, LoopState> {
   }
 
   get valueFromVideoPlayer (): number {
-    const { videoPlayer } = this.props;
+    const videoPlayer = this.props.video.player;
 
     if (!videoPlayer) {
       return 0;
@@ -87,14 +84,14 @@ class Loop extends React.Component<LoopProps, LoopState> {
   }
 
   toTimeMs(value: number): number {
-    return (value * this.props.videoPlayer.getDuration() / 100) * 1000;
+    return (value * this.props.video.player.getDuration() / 100) * 1000;
   }
 
   handleChange = (values: [number, number]): void => {
     this.isScrubbing = true;
 
-    if (this.props.videoState === 'PLAYING') {
-      this.props.videoPlayer.pauseVideo();
+    if (this.props.video.playerState === 'PLAYING') {
+      this.props.video.player.pauseVideo();
     }
 
     this.setState(Object.assign({}, this.state, { values }));
@@ -110,7 +107,7 @@ class Loop extends React.Component<LoopProps, LoopState> {
       <div className="VideoControlsLoop">
         <Slider
           range
-          disabled={this.props.videoPlayer === null}
+          disabled={this.props.video.player === null}
           min={0}
           max={100}
           step={0.01}
@@ -125,9 +122,10 @@ class Loop extends React.Component<LoopProps, LoopState> {
   }
 }
 
-export default compose(
+const enhance = compose(
   withVideo,
-  withRAFLoop,
+  withRaf,
   withTab,
-  onlyUpdateForKeys(['videoState'])
-)(Loop);
+);
+
+export default enhance(Loop);

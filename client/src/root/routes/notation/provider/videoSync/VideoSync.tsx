@@ -1,22 +1,36 @@
 import React from 'react';
-import { withVideo, withRAFLoop, withTab } from 'enhancers';
+import { withVideo, withRaf, withTab } from 'enhancers';
+import { Video, RAF, Tab } from 'types';
 import {
   compose, withHandlers, createSink, lifecycle,
   onlyUpdateForKeys
 } from 'recompose';
 
-const RAF_LOOP_FUNC_NAME = 'VideoSync.updateTime';
+interface VideoSyncProps {
+  video: Video;
+  raf: RAF;
+  tab: Tab;
+}
 
-class VideoSync extends React.Component<any, any> {
+interface VideoSyncState {
+
+}
+
+class VideoSync extends React.Component<VideoSyncProps, VideoSyncState> {
   componentWillReceiveProps(nextProps: any): void {
-    nextProps.isVideoActive ? this.registerRAFLoop() : this.unregisterRAFLoop();
+    nextProps.video.isActive ? this.registerRAFLoop() : this.unregisterRAFLoop();
+  }
+
+  shouldComponentUpdate(nextProps: any): boolean {
+    return this.props.video.isActive !== nextProps.video.isActive;
   }
 
   registerRAFLoop = (): void => {
-    const { RAFLoop } = this.props;
-    if (!RAFLoop.has(RAF_LOOP_FUNC_NAME)) {
+    const RAFLoop = this.props.raf.loop;
+
+    if (!RAFLoop.has('VideoSync.updateTime')) {
       RAFLoop.register({
-        name: RAF_LOOP_FUNC_NAME,
+        name: 'VideoSync.updateTime',
         precedence: 0,
         onAnimationLoop: this.updateTime
       });
@@ -24,11 +38,13 @@ class VideoSync extends React.Component<any, any> {
   }
 
   unregisterRAFLoop = (): void => {
-    this.props.RAFLoop.unregister(RAF_LOOP_FUNC_NAME);
+    this.props.raf.loop.unregister('VideoSync.updateTime');
   }
 
   updateTime = (dt: number): void => {
-    const { provider, videoPlayer } = this.props;
+    const videoPlayer = this.props.video.player;
+    const provider = this.props.tab.provider;
+
     if (provider && videoPlayer) {
       provider.currentTimeMs = videoPlayer.getCurrentTime() * 1000;
     }
@@ -41,9 +57,8 @@ class VideoSync extends React.Component<any, any> {
 
 const enhance = compose(
   withVideo,
-  withRAFLoop,
-  withTab,
-  onlyUpdateForKeys(['isVideoActive']),
+  withRaf,
+  withTab
 );
 
 export default enhance(VideoSync);

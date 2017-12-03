@@ -56,7 +56,7 @@ def create_notations(num)
       artist_name:      Faker::Name.name,
       duration_ms:      14.841 * 1000,
       dead_time_ms:     rand * 10_000,
-      bpm:              120,
+      bpm:              99,
       vextab_string:    VEXTAB_STRING,
       thumbnail:        File.open(Dir["app/assets/images/thumbnails/*.jpg"].sample),
       featured:         rand < 0.75
@@ -81,7 +81,7 @@ ActiveRecord::Base.transaction do
   create_roles
   create_users
   create_tags
-  create_notations(20)
+  create_notations(75)
   create_taggings(3)
   create_saved_notations
 end

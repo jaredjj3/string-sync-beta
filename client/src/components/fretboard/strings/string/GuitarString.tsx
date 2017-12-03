@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
 import { Fretman } from 'services/vexflow';
 import { withTab } from 'enhancers';
+import { Tab } from 'types';
 
 interface GuitarStringProps {
   string: number;
-  provider: any;
+  tab: Tab
 }
 
 interface GuitarStringState {
@@ -17,7 +17,7 @@ class GuitarString extends React.PureComponent<GuitarStringProps, GuitarStringSt
   state: GuitarStringState = { lit: false };
 
   componentDidMount(): void {
-    this.props.provider.fretman.addString(this);
+    this.props.tab.provider.fretman.addString(this);
   }
 
   light = (e?: React.SyntheticEvent<any>): void => {

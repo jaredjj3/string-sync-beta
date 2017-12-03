@@ -23,7 +23,7 @@ class VexProvider {
 
   private _vextab: string;
   private _bpm: number;
-  private _deadTime: number;
+  private _deadTimeMs: number;
   private _currentTimeMs: number;
   private _viewportWidth: number;
 
@@ -51,11 +51,11 @@ class VexProvider {
   }
 
   set deadTime(deadTime: number) {
-    if (this._deadTime !== deadTime) {
+    if (this._deadTimeMs !== deadTime) {
       this.reset();
     }
 
-    this._deadTime = deadTime;
+    this._deadTimeMs = deadTime;
   }
 
   set viewportWidth(viewportWidth: number) {
@@ -84,7 +84,7 @@ class VexProvider {
     return (
       this._vextab.length > 0 &&
       this._bpm > 0 &&
-      typeof this._deadTime === 'number' &&
+      typeof this._deadTimeMs === 'number' &&
       this._viewportWidth > 0
     );
   }
@@ -170,7 +170,7 @@ class VexProvider {
 
   private _setupTickman(): boolean {
     try {
-      this.player.deadTimeMs = this._deadTime * 1000;
+      this.player.deadTimeMs = this._deadTimeMs;
       this.player.bpm = this._bpm;
       this.tickman.viewportWidth = this.viewportWidth;
 

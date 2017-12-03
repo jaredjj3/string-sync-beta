@@ -1,10 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
-
-import Slider from 'antd/lib/slider';
-import dupNotation from 'util/dup/notation';
-
-import { Notation } from 'types/notation';
+import { compose } from 'recompose';
+import { Slider } from 'antd';
+import dupNotation from 'stringSyncUtil/dup/notation';
+import { Notation } from 'types';
+import { withNotation } from 'enhancers';
 
 interface BpmProps {
   notation: Notation;
@@ -21,7 +20,7 @@ class Bpm extends React.Component<BpmProps, BpmState> {
   };
 
   componentWillReceiveProps(nextProps: BpmProps): void {
-    const bpmValue = nextProps.notation.tempo;
+    const bpmValue = nextProps.notation.bpm;
     this.setState(Object.assign({}, this.state, { bpmValue }));
   }
 
@@ -31,7 +30,7 @@ class Bpm extends React.Component<BpmProps, BpmState> {
 
   handleAfterChange = (value: number): void => {
     const nextNotation = dupNotation(this.props.notation);
-    nextNotation.tempo = value;
+    nextNotation.bpm = value;
     this.props.updateNotation(nextNotation);
   }
 
@@ -55,17 +54,8 @@ class Bpm extends React.Component<BpmProps, BpmState> {
   }
 }
 
-import { updateNotation } from 'data/notation/actions';
+const enhance = compose(
+  withNotation
+);
 
-const mapStateToProps = state => ({
-  notation: state.notation
-});
-
-const mapDispatchToProps = dispatch => ({
-  updateNotation: notation => dispatch(updateNotation(notation))
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Bpm);
+export default enhance(Bpm);

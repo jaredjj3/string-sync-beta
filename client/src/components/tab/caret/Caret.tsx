@@ -1,8 +1,8 @@
 import React from 'react';
-import { compose, onlyUpdateForKeys } from 'recompose';
+import { compose } from 'recompose';
 import { connect } from 'react-redux';
 
-import { withRaf, withTab, withVideo } from 'enhancers';
+import { withRaf, withTab, withVideo, withViewport } from 'enhancers';
 
 class Caret extends React.Component<any, any> {
   static HEIGHT: number = 300; // px
@@ -13,6 +13,15 @@ class Caret extends React.Component<any, any> {
 
   componentDidMount(): void {
     this.registerRAFLoop();
+  }
+
+  componentWillReceiveProps(nextProps: any): void {
+    if (nextProps.tab.provider.editMode && !nextProps.video.isActive) {
+      this.unregisterRAFLoop();
+      this.clearCaret();
+    } else {
+      this.registerRAFLoop();
+    }
   }
 
   componentWillUnmount(): void {
@@ -30,7 +39,7 @@ class Caret extends React.Component<any, any> {
   }
 
   resize (): void {
-    const { viewportWidth } = this.props;
+    const viewportWidth = this.props.viewport.width;
     const { canvas } = this;
 
     const ratio = window.devicePixelRatio || 1;
@@ -49,8 +58,10 @@ class Caret extends React.Component<any, any> {
   }
 
   registerRAFLoop = (): void => {
-    if (!this.props.RAFLoop.has('Caret.renderCaret')) {
-      this.props.RAFLoop.register({
+    const RAFLoop = this.props.raf.loop;
+
+    if (!RAFLoop.has('Caret.renderCaret')) {
+      RAFLoop.register({
         name: 'Caret.renderCaret',
         precedence: 5,
         onAnimationLoop: this.renderCaret
@@ -59,7 +70,7 @@ class Caret extends React.Component<any, any> {
   }
 
   unregisterRAFLoop = (): void => {
-    this.props.RAFLoop.unregister('Caret.renderCaret');
+    this.props.raf.loop.unregister('Caret.renderCaret');
   }
 
   clearCaret(): void {
@@ -67,7 +78,7 @@ class Caret extends React.Component<any, any> {
   }
 
   renderCaret = (): void => {
-    const { player } = this.props.provider;
+    const { player } = this.props.tab.provider;
     this.clearCaret();
 
     if (player) {
@@ -91,20 +102,11 @@ class Caret extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = state => ({
-  viewportWidth: state.device.viewport.width
-});
-
-const mapDispatchToProps = dispatch => ({
-
-});
-
 const enhance = compose(
   withTab,
   withRaf,
   withVideo,
-  connect(mapStateToProps, mapDispatchToProps),
-  onlyUpdateForKeys(['updatedAt', 'provider', 'RAFLoop', 'isVideoActive'])
-)
+  withViewport,
+);
 
 export default enhance(Caret);

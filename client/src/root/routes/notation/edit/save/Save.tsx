@@ -1,17 +1,23 @@
 import React from 'react';
-import { connect } from 'react-redux';
-
-import Button from 'antd/lib/button';
+import { compose } from 'recompose';
+import { Button } from 'antd';
+import { withNotation } from 'enhancers';
+import { Notation } from 'types';
 
 interface SaveProps {
-  updateNotation(): void;
+  notation: Notation;
+  updateNotation(notation: Notation): void;
 }
 
 interface SaveState {}
 
 class Save extends React.Component<SaveProps, SaveState> {
   handleSaveButtonClick = (): void => {
-    this.props.updateNotation();
+    this.props.updateNotation(this.props.notation);
+  }
+
+  shouldComponentUpdate(nextProps: SaveProps): boolean {
+    return false;
   }
 
   render(): JSX.Element {
@@ -28,17 +34,8 @@ class Save extends React.Component<SaveProps, SaveState> {
   }
 }
 
-import { updateNotation } from 'data/notation/actions';
+const enhance = compose(
+  withNotation
+);
 
-const mapStateToProps = state => ({
-
-});
-
-const mapDispatchToProps = dispatch => ({
-  updateNotation: () => dispatch(updateNotation())
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Save);
+export default enhance(Save);

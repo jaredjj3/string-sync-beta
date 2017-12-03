@@ -2,14 +2,12 @@ import React from 'react';
 import { compose, onlyUpdateForKeys } from 'recompose';
 import Slider from 'antd/lib/slider';
 import { withVideo, withRaf, withTab } from 'enhancers';
-import { VideoPlayer } from 'types';
+import { VideoPlayer, Video, RAF, Tab } from 'types';
 
 interface ScrubberProps {
-  videoPlayer: VideoPlayer;
-  videoState: string;
-  isVideoActive: boolean;
-  RAFLoop: any;
-  provider: any;
+  video: Video;
+  raf: RAF;
+  tab: Tab;
 }
 
 interface ScrubberState {
@@ -24,7 +22,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
   isScrubbing: boolean = false;
 
   componentWillReceiveProps(nextProps: ScrubberProps): void {
-    if (nextProps.videoState === 'PLAYING') {
+    if (nextProps.video.playerState === 'PLAYING') {
       this.registerUpdateScrubber();
       this.unregisterUpdateCurrentTime();
      } else {
@@ -39,7 +37,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
   }
 
   registerUpdateScrubber = (): void => {
-    const { RAFLoop } = this.props;
+    const RAFLoop = this.props.raf.loop;
 
     if (!RAFLoop.has('Scrubber.updateScrubber')) {
       RAFLoop.register({
@@ -51,7 +49,7 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
   }
 
   registerUpdateCurrentTime = (): void => {
-    const { RAFLoop } = this.props;
+    const RAFLoop = this.props.raf.loop;
 
     if (!RAFLoop.has('Scrubber.updateCurrentTime')) {
       RAFLoop.register({
@@ -63,27 +61,28 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
   }
 
   unregisterUpdateScrubber = (): void => {
-    this.props.RAFLoop.unregister('Scrubber.updateScrubber');
+    this.props.raf.loop.unregister('Scrubber.updateScrubber');
   }
 
   unregisterUpdateCurrentTime = (): void => {
-    this.props.RAFLoop.unregister('Scrubber.updateCurrentTime');
+    this.props.raf.loop.unregister('Scrubber.updateCurrentTime');
   }
 
   get valueFromVideoPlayer(): number {
-    const currentTime = this.props.videoPlayer.getCurrentTime();
-    const duration = this.props.videoPlayer.getDuration();
+    const currentTime = this.props.video.player.getCurrentTime();
+    const duration = this.props.video.player.getDuration();
 
     // avoid dividing by 0
     return duration > 0 ? (currentTime / duration) * 100 : 0;
   }
 
   get currentTimeMsFromScrubber(): number {
-    return (this.state.value * this.props.videoPlayer.getDuration() / 100) * 1000;
+    const { player } = this.props.video;
+    return player ? (this.state.value * player.getDuration() / 100) * 1000 : 0;
   }
 
   updateCurrentTime = (): void => {
-    this.props.provider.currentTimeMs = this.currentTimeMsFromScrubber;
+    this.props.tab.provider.currentTimeMs = this.currentTimeMsFromScrubber;
   }
 
   updateScrubber = (): void => {
@@ -94,25 +93,25 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
   handleChange = (value: number): void => {
     this.isScrubbing = true;
 
-    if (this.props.videoState === 'PLAYING') {
-      this.props.videoPlayer.pauseVideo();
+    if (this.props.video.playerState === 'PLAYING') {
+      this.props.video.player.pauseVideo();
     }
 
-    this.props.videoPlayer.seekTo(this.currentTimeMsFromScrubber / 1000, true);
+    this.props.video.player.seekTo(this.currentTimeMsFromScrubber / 1000, true);
     this.setState(Object.assign({}, this.state, { value }));
   }
 
   handleAfterChange = (value: number): void => {
     this.isScrubbing = false;
     this.setState(Object.assign({}, this.state, { value }));
-    this.props.videoPlayer.seekTo(this.currentTimeMsFromScrubber / 1000, true);
+    this.props.video.player.seekTo(this.currentTimeMsFromScrubber / 1000, true);
   }
 
   render(): JSX.Element {
     return (
       <div className="VideoScrubber">
         <Slider
-          disabled={this.props.videoPlayer === null}
+          disabled={this.props.video.player === null}
           min={0}
           max={100}
           step={0.01}
