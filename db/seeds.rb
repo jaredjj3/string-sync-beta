@@ -75,7 +75,7 @@ def create_saved_notations
 end
 
 ActiveRecord::Base.transaction do
-  raise ActiveRecord::Rollback unless Rails.env.development?
+  raise ActiveRecord::Rollback if !ENV["DANGEROUSLY_RUN_SEEDS"] && !Rails.env.development?
   init
   delete_all
   create_roles
