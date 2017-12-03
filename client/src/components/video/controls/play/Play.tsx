@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, branch, onlyUpdateForKeys, renderComponent } from 'recompose';
+import { compose, branch, renderComponent } from 'recompose';
 
 import { Icon } from 'antd';
 import { withVideo } from 'enhancers';
@@ -25,6 +25,5 @@ export default compose(
     ({ video }) => video.isVideoActive,
     renderComponent(Pause),
     renderComponent(Play)
-  ),
-  onlyUpdateForKeys(['isVideoActive'])
+  )
 )(() => null);
