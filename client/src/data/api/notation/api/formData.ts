@@ -14,9 +14,7 @@ const formData = (notation) => {
     data.append('notation[artist_name]', artistName);
   }
 
-  if (vextabString) {
-    data.append('notation[vextab_string]', vextabString || '');
-  }
+  data.append('notation[vextab_string]', vextabString || '');
 
   if (youtubeVideoId) {
     data.append('notation[youtube_video_id]', youtubeVideoId);

@@ -21,25 +21,25 @@ class VexProvider {
   scaleman: ScaleVisualizer;
   tickman: Tickman;
 
-  private _vextab: string;
+  private _vextabString: string;
   private _bpm: number;
   private _deadTimeMs: number;
   private _currentTimeMs: number;
   private _viewportWidth: number;
 
   constructor() {
-    this._vextab = '';
+    this._vextabString = '';
     this.reset();
   }
 
   // Setting the vextab, deadTime, bpm, or viewportWidth are
   // the entrypoints for triggering an internal state reset.
   set vextab(vextab: string) {
-    if (this._vextab !== vextab) {
+    if (this._vextabString !== vextab) {
       this.reset();
     }
 
-    this._vextab = vextab;
+    this._vextabString = vextab;
   }
 
   set bpm(bpm: number) {
@@ -82,7 +82,6 @@ class VexProvider {
 
   get shouldTrySetup(): boolean {
     return (
-      this._vextab.length > 0 &&
       this._bpm > 0 &&
       typeof this._deadTimeMs === 'number' &&
       this._viewportWidth > 0
@@ -135,7 +134,7 @@ class VexProvider {
     const rootVextab = new VexTab(rootArtist);
 
     try {
-      rootVextab.parse(this._vextab);
+      rootVextab.parse(this._vextabString);
       this.formatter.format(rootVextab.elements);
 
       return true;

@@ -3,13 +3,14 @@ import { compose } from 'recompose';
 import { Input, Alert } from 'antd';
 import { withTab, withNotation } from 'enhancers';
 import { Tab, Notation } from 'types';
+import dupNotation from 'stringSyncUtil/dup/notation';
 
 const { TextArea } = Input;
 
 interface VextabEditorProps {
   tab: Tab;
   notation: Notation;
-  updateVextab(vextab: string): void;
+  setNotation(nextNotation): void;
 }
 
 interface VextabEditorState {}
@@ -22,7 +23,10 @@ class VextabEditor extends React.Component<VextabEditorProps, VextabEditorState>
   }
 
   handleChange = (e: React.SyntheticEvent<any>): void => {
-    this.props.updateVextab((e.target as any).value);
+    const vextabString = (e.target as any).value;
+    const nextNotation = dupNotation(this.props.notation);
+    nextNotation.vextabString = vextabString;
+    this.props.setNotation(nextNotation);
   }
 
   render(): JSX.Element {

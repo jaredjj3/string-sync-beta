@@ -7,6 +7,7 @@ import { LogoText, LogoImage } from 'components';
 import { Col, Icon, Menu, Row } from 'antd';
 import { ClickParam } from 'antd/lib/menu';
 import { Location } from 'types/location';
+import { Session } from 'types';
 
 const { Item } = Menu;
 const SubMenu = Menu.SubMenu;
@@ -14,10 +15,10 @@ const MenuItemGroup = Menu.ItemGroup;
 
 interface DesktopNavProps {
   location: Location;
-  isLoggedIn: boolean;
   isTeacher: boolean;
   isAdmin: boolean;
   history: any;
+  session: Session;
   logout(): void;
 }
 
@@ -26,6 +27,10 @@ interface DesktopNavState {
 }
 
 class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
+  shouldComponentUpdate(nextProps: DesktopNavProps): boolean {
+    return this.props.session.isLoggedIn !== nextProps.session.isLoggedIn;
+  }
+
   goTo = (params: ClickParam): void => {
     this.props.history.push(params.key);
   }
@@ -38,7 +43,7 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
   }
 
   render(): JSX.Element {
-    const { isLoggedIn, isTeacher, isAdmin, location } = this.props;
+    const { session, isTeacher, isAdmin, location } = this.props;
 
     return (
       <nav className="Nav--desktop">
@@ -69,7 +74,7 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
                   library
                 </Item>
                 {
-                  isLoggedIn ?
+                  session.isLoggedIn ?
                   <SubMenu title="settings" className="Nav--desktop__menuItem">
                     {
                       isTeacher || isAdmin ?
@@ -106,7 +111,6 @@ class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
 }
 
 const mapStateToProps = state => ({
-  isLoggedIn: Boolean(state.session.currentUser.id),
   isTeacher: state.session.currentUser.roles.includes('teacher'),
   isAdmin: state.session.currentUser.roles.includes('admin')
 });
