@@ -2,13 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-import Col from 'antd/lib/col';
-import Icon from 'antd/lib/icon';
-import Menu from 'antd/lib/menu';
-import NavBar from 'antd-mobile/lib/nav-bar';
-import Row from 'antd/lib/row';
-import Drawer from 'antd-mobile/lib/drawer';
-import List from 'antd-mobile/lib/list';
+import { Col, Icon, Menu, Row } from 'antd';
+import { NavBar, Drawer, List } from 'antd-mobile';
 import LogoutModal from './logout';
 import { Location } from 'types/location';
 import { isEqual, invert } from 'lodash';
@@ -51,7 +46,6 @@ class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
         <nav className="Nav--mobileContainer">
           <NavBar
             mode="light"
-            iconName="up"
             className="Nav--mobile"
             leftContent={
               <Link to="/search">
