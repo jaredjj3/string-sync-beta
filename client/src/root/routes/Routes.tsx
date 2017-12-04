@@ -21,7 +21,7 @@ const Routes = () => (
   <div className="App__routes">
     <Route exact path="/" component={Landing} />
     <Route path="/about" component={About} />
-    <Route path="/library" component={withMarginTop(Library, '10%')} />
+    <Route path="/library" component={withMarginTop(Library, '5%')} />
     <Route path="/login" component={withMarginTop(Login, '10%')} />
     <Route path="/signup" component={withMarginTop(Signup, '10%')} />
     <Route path="/search" component={withMarginTop(Search, '2%')} />
