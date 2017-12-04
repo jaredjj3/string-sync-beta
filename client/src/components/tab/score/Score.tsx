@@ -10,7 +10,7 @@ const enhance = compose(
 );
 
 export default enhance(({ tab }) => (
-  <ul>
+  <ul className="Score">
     <ScoreScroller />
     {
       tab.provider.vextabs.map((vextab, ndx) => (
