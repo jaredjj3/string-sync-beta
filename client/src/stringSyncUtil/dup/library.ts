@@ -1,16 +1,13 @@
-import { Library } from 'data/library/reducer';
-import { Notation } from 'types/notation';
-
-export const dupNotation = (notation: Notation): Notation => {
+export const dupNotation = (notation: any): any => {
   const nextNotation = Object.assign({}, notation);
   nextNotation.tags = Object.assign([], notation.tags);
   return nextNotation;
 };
 
-const dupLibrary = (library: Library): Library => {
+const dupLibrary = (library: any): any => {
   const nextLibrary = { notations: [] };
 
-  nextLibrary.notations = library.notations.map( notation => (
+  nextLibrary.notations = library.map(notation => (
     dupNotation(notation)
   ));
 
