@@ -22,7 +22,7 @@ const Pause = ({ video }) => (
 export default compose(
   withVideo,
   branch(
-    ({ video }) => video.isVideoActive,
+    ({ video }) => video.isActive,
     renderComponent(Pause),
     renderComponent(Play)
   )
