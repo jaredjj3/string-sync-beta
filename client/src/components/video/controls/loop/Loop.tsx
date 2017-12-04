@@ -59,7 +59,7 @@ class Loop extends React.Component<LoopProps, LoopState> {
 
     if (!this.isAutoSeeking) {
       this.isAutoSeeking = true;
-      const time = this.toTimeMs(this.state.values[0]) / 1000;
+      const time = (this.toTimeMs(this.state.values[0]) / 1000) + 100;
       videoPlayer.pauseVideo();
       videoPlayer.seekTo(time, true);
       window.setTimeout(() => {
