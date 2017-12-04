@@ -17,11 +17,11 @@ class LibraryCarousel extends React.Component<LibraryCarouselProps, LibraryCarou
   carousel: any;
 
   prevPage = (): void => {
-    this.carousel.slickPrev();
+    this.carousel.prev();
   }
 
   nextPage = (): void => {
-    this.carousel.slickNext();
+    this.carousel.next();
   }
 
   render(): JSX.Element {
@@ -38,7 +38,7 @@ class LibraryCarousel extends React.Component<LibraryCarouselProps, LibraryCarou
           autoplay={tagNotations.notations.length > 3}
           speed={700}
           autoplaySpeed={this.state.autoplaySpeed}
-          ref={c => this.carousel = c && c.refs.slick}
+          ref={c => this.carousel = c}
         >
           {
             inChunksOf(3, tagNotations.notations, (notations, i) => (
