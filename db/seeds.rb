@@ -55,7 +55,7 @@ def create_notations(num)
       song_name:        Faker::Book.title,
       artist_name:      Faker::Name.name,
       duration_ms:      14.841 * 1000,
-      dead_time_ms:     rand * 10_000,
+      dead_time_ms:     0,
       bpm:              99,
       vextab_string:    VEXTAB_STRING,
       thumbnail:        File.open(Dir["app/assets/images/thumbnails/*.jpg"].sample),
