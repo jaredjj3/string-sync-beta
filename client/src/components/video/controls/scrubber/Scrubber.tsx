@@ -20,6 +20,11 @@ class Scrubber extends React.Component<ScrubberProps, ScrubberState> {
   };
 
   isScrubbing: boolean = false;
+  sliderThumb: JQuery = null;
+
+  componentDidMount(): void {
+    this.sliderThumb = $('.VideoScrubber').find('[role="slider"]');
+  }
 
   componentWillReceiveProps(nextProps: ScrubberProps): void {
     if (nextProps.video.playerState === 'PLAYING') {

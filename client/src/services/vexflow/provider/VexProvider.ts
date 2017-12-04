@@ -153,7 +153,7 @@ class VexProvider {
         vextabStr += ('\n' + measureChunk[0].head + '\n');
         vextabStr += measureChunk.map(measure => measure.body).join('\n');
 
-        const artist = new Artist(20, 20, this._viewportWidth - 20);
+        const artist = new Artist(10, 20, this._viewportWidth - 20);
         const vextab = new VexTab(artist);
 
         vextab.parse(vextabStr);
