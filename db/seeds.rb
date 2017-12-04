@@ -22,7 +22,7 @@ def init
 end
 
 def delete_all
-  return unless !ENV["DANGEROUSLY_RUN_SEEDS"] && !Rails.env.development?
+  return if !ENV["DANGEROUSLY_RUN_SEEDS"] && !Rails.env.development?
   ApplicationRecord.descendants.each(&:delete_all)
 end
 
