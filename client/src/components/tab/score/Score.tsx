@@ -6,8 +6,7 @@ import { compose, onlyUpdateForKeys } from 'recompose';
 import { withTab } from 'enhancers';
 
 const enhance = compose(
-  withTab,
-  onlyUpdateForKeys(['updatedAt'])
+  withTab
 );
 
 export default enhance(({ tab }) => (
