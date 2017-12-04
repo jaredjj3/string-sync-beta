@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, onlyUpdateForKeys } from 'recompose';
+import { compose } from 'recompose';
 import Slider from 'antd/lib/slider';
 import { withVideo, withRaf, withTab } from 'enhancers';
 import { VideoPlayer, Video, RAF, Tab } from 'types';

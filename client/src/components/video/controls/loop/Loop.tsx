@@ -1,13 +1,14 @@
 import React from 'react';
-import { compose, onlyUpdateForKeys } from 'recompose';
+import { compose } from 'recompose';
 import { Slider } from 'antd';
-import { withVideo, withRaf, withTab } from 'enhancers';
-import { Video, RAF, Tab } from 'types';
+import { withVideo, withRaf, withTab, withNotation } from 'enhancers';
+import { Video, RAF, Tab, Notation } from 'types';
 
 interface LoopProps {
   video: Video;
   raf: RAF;
   tab: Tab;
+  notation: Notation;
 }
 interface LoopState {
   values: [number, number];
@@ -24,6 +25,15 @@ class Loop extends React.Component<LoopProps, LoopState> {
     } else {
       this.unregisterUpdateLoop();
     }
+  }
+
+  shouldComponentUpdate(nextProps: LoopProps, nextState: LoopState): boolean {
+    return (
+      this.props.video.isActive ||
+      this.state.values[0] !== nextState.values[0] ||
+      this.state.values[1] !== nextState.values[1] ||
+      this.props.video.player !== nextProps.video.player
+    );
   }
 
   registerUpdateLoop(): void {
@@ -59,9 +69,9 @@ class Loop extends React.Component<LoopProps, LoopState> {
 
     if (!this.isAutoSeeking) {
       this.isAutoSeeking = true;
-      const time = (this.toTimeMs(this.state.values[0]) / 1000) + 100;
+      const timeS = this.toTimeMs(this.state.values[0]) / 1000;
       videoPlayer.pauseVideo();
-      videoPlayer.seekTo(time, true);
+      videoPlayer.seekTo(timeS, true);
       window.setTimeout(() => {
         videoPlayer.playVideo();
         this.isAutoSeeking = false;
@@ -77,14 +87,14 @@ class Loop extends React.Component<LoopProps, LoopState> {
     }
 
     const currentTime = videoPlayer.getCurrentTime();
-    const duration = videoPlayer.getDuration();
+    const duration = this.props.notation.durationMs / 1000;
 
     // avoid dividing by 0
     return duration > 0 ? (currentTime / duration) * 100 : 0;
   }
 
   toTimeMs(value: number): number {
-    return (value * this.props.video.player.getDuration() / 100) * 1000;
+    return (value / 100) * this.props.notation.durationMs;
   }
 
   handleChange = (values: [number, number]): void => {
@@ -126,6 +136,7 @@ const enhance = compose(
   withVideo,
   withRaf,
   withTab,
+  withNotation
 );
 
 export default enhance(Loop);

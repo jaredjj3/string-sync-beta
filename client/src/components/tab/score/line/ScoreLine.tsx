@@ -1,5 +1,5 @@
 import React from 'react';
-import { compose, onlyUpdateForKeys } from 'recompose';
+import { compose } from 'recompose';
 import { withTab } from 'enhancers';
 import { Flow, VexTab } from 'services/vexflow';
 import { Tab } from 'types';

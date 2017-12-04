@@ -1,10 +1,7 @@
 import React from 'react';
 import { withVideo, withRaf, withTab } from 'enhancers';
 import { Video, RAF, Tab } from 'types';
-import {
-  compose, withHandlers, createSink, lifecycle,
-  onlyUpdateForKeys
-} from 'recompose';
+import { compose, withHandlers, createSink, lifecycle } from 'recompose';
 
 interface VideoSyncProps {
   video: Video;
