@@ -27,7 +27,7 @@ class LibraryGrid extends React.PureComponent<LibraryGridProps, LibraryGridState
     const { tagNotations } = this.props;
     const data: Array<GridData> = tagNotations.notations.map(notation => ({
         thumbnail: notation.thumbnailUrl,
-        text: notation.name,
+        text: notation.songName,
         url: `/n/${notation.id}`
       })
     );
@@ -39,6 +39,7 @@ class LibraryGrid extends React.PureComponent<LibraryGridProps, LibraryGridState
     return (
       <div>
         <Grid
+          square
           hasLine={false}
           className="LibraryGrid"
           data={upTo18Data}
