@@ -1,7 +1,7 @@
 const formData = (notation) => {
   const {
     songName, artistName, thumbnailFile, youtubeVideoId,
-    durationMs, deadTimeMs, bpm, vextabString
+    durationMs, deadTimeMs, bpm, vextabString, featured
   } = notation;
 
   const data = new FormData();
@@ -32,6 +32,10 @@ const formData = (notation) => {
 
   if (thumbnailFile) {
     data.append('notation[thumbnail]', thumbnailFile);
+  }
+
+  if (typeof featured !== 'undefined') {
+    data.append('notation[featured]', featured);
   }
 
   return data;

@@ -33,7 +33,7 @@ class Api::V1::NotationsController < ApplicationController
         (current_user == @notation.transcriber || current_user.try(:has_role?, :admin))
 
     if authorized
-      if @notation.update(notation_params)
+      if @notation.update(notation_params.compact)
         render(:show, status: 200)
       else
         render_errors(@notation.errors.full_messages, 422)
