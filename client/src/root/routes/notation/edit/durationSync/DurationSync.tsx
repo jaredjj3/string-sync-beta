@@ -22,13 +22,11 @@ const enhance = compose(
         trying = true;
         const durationMs = nextProps.video.player.getDuration() * 1000;
 
-        if (durationMs === 0) {
-          trying = false;
-          return;
+        if (durationMs > 0) {
+          const nextNotation = Object.assign({}, nextProps.notation, { durationMs });
+          nextProps.updateNotation(nextNotation);
         }
 
-        const nextNotation = Object.assign({}, nextProps.notation, { durationMs });
-        nextProps.updateNotation(nextNotation);
         trying = false;
       }
     }
