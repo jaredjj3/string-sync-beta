@@ -16,6 +16,7 @@ class Api::V1::NotationsController < ApplicationController
 
     if authorized
       @notation = Notation.new(notation_params.merge(transcriber: current_user))
+      @notation.tags = Tag.where(id: params[:notation][:tag_ids])
 
       if @notation.save
         render(:show, status: 200)
