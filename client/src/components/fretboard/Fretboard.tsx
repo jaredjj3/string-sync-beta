@@ -6,11 +6,11 @@ import Strings from './strings';
 import { Row, Col } from 'antd';
 import { VexPlayer, Fretman, VexProvider } from 'services/vexflow';
 import { withRaf, withTab, identity, withFeatures } from 'enhancers';
-import { Tab } from 'types';
+import { Tab, RAF } from 'types';
 
 interface FretboardProps {
   isFretboardEnabled: boolean;
-  RAFLoop: any;
+  raf: RAF;
   vexPlayer: VexPlayer;
   fretman: Fretman;
   provider: VexProvider;

@@ -26,4 +26,4 @@ export {
   withVideo,
   inContainer,
   permitViewportType
-}
+};
