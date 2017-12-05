@@ -1,19 +1,23 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { compose, lifecycle } from 'recompose';
+import { compose, shouldUpdate, lifecycle } from 'recompose';
 import Banner from './banner';
 import Provider from '../provider';
 import Controls from '../controls';
 import { VexProvider } from 'services/vexflow';
 import { Video, Fretboard, Tab } from 'components';
-import { withRaf, withVideo, withNotation, withFeatures } from 'enhancers';
+import { withRaf, withVideo, withNotation, withFeatures, withViewport } from 'enhancers';
 
 const enhance = compose(
   withRaf,
   withVideo,
   withNotation,
   withFeatures,
+  withViewport,
+  shouldUpdate((props, nextProps) => {
+    return props.viewport.type !== nextProps.viewport.type;
+  }),
   lifecycle({
     componentDidMount(): void {
       const notationId = this.props.match.params.id;
