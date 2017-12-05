@@ -11,6 +11,7 @@ import Row from 'antd/lib/row';
 import Bpm from './bpm';
 import Save from './save';
 import { Notation, RAF, Features } from 'types';
+import DurationSync from './durationSync';
 
 interface NotationEditProps {
   notation: Notation;
@@ -59,6 +60,7 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
           <Save />
           <DeadTime />
           <Bpm />
+          <DurationSync />
         </Row>
         <VextabEditor />
       </div>
