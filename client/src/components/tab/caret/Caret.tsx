@@ -85,11 +85,13 @@ class Caret extends React.Component<any, any> {
       const x = player.caretPosX;
       const y = 0;
 
-      this.ctx.beginPath();
-      this.ctx.moveTo(x, y);
-      this.ctx.lineTo(x, y + Caret.HEIGHT);
-      this.ctx.stroke();
-      this.ctx.closePath();
+      if (x > 0) {
+        this.ctx.beginPath();
+        this.ctx.moveTo(x, y);
+        this.ctx.lineTo(x, y + Caret.HEIGHT);
+        this.ctx.stroke();
+        this.ctx.closePath();
+      }
     }
   }
 
