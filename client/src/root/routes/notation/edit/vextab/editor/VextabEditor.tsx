@@ -1,6 +1,6 @@
 import React from 'react';
 import { compose } from 'recompose';
-import { Input, Alert } from 'antd';
+import { Input, Alert, Affix } from 'antd';
 import { withTab, withNotation } from 'enhancers';
 import { Tab, Notation } from 'types';
 import dupNotation from 'stringSyncUtil/dup/notation';
@@ -10,7 +10,7 @@ const { TextArea } = Input;
 interface VextabEditorProps {
   tab: Tab;
   notation: Notation;
-  setNotation(nextNotation): void;
+  setNotation(nextNotation: any): void;
 }
 
 interface VextabEditorState {}
@@ -35,30 +35,35 @@ class VextabEditor extends React.Component<VextabEditorProps, VextabEditorState>
     const parseError = provider ? provider.parseError : null;
 
     return (
-      <div className="VextabEditor">
-        <div style={{ marginBottom: '20px' }}>
-          {
-            parseError ?
-              <Alert
-                message="Parse Error"
-                description={parseError}
-                type="error"
-              /> :
-              <Alert
-                message="Parse Success"
-                description="No errors :)"
-                type="success"
-              />
-          }
+      <Affix
+        target={() => window}
+        offsetTop={10}
+      >
+        <div className="VextabEditor">
+          <div style={{ marginBottom: '20px' }}>
+            {
+              parseError ?
+                <Alert
+                  message="Parse Error"
+                  description={parseError}
+                  type="error"
+                /> :
+                <Alert
+                  message="Parse Success"
+                  description="No errors :)"
+                  type="success"
+                />
+            }
+          </div>
+          <TextArea
+            className="VextabEditor__textarea"
+            placeholder="Write Vextab here..."
+            value={vextabString}
+            autosize={{ minRows: 5, maxRows: 10 }}
+            onChange={this.handleChange}
+          />
         </div>
-        <TextArea
-          className="VextabEditor__textarea"
-          placeholder="Write Vextab here..."
-          value={vextabString}
-          autosize={{ minRows: 10, maxRows: 20 }}
-          onChange={this.handleChange}
-        />
-      </div>
+      </Affix>
     );
   }
 }

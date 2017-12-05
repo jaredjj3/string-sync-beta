@@ -24,7 +24,7 @@ const Tab = (props) => {
           id="ScoreContainer"
           className={scoreContainerClassNames}
         >
-          <Score />
+          <Score withScoreScroller />
         </Layer>
       </Overlap>
     </div>

@@ -8,6 +8,7 @@ import Gradient from './gradient';
 import { MobileOnly, MobileNav } from './mobile';
 import Hidden from './hidden';
 import NotationDetail from './notation/detail';
+import Score from './tab/score';
 
 export {
   Video,
@@ -22,5 +23,6 @@ export {
   MobileOnly,
   MobileNav,
   Hidden,
-  NotationDetail
+  NotationDetail,
+  Score
 };

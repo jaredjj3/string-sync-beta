@@ -4,7 +4,7 @@ import { compose } from 'recompose';
 import { withFeatures, withRaf, withNotation } from 'enhancers';
 import Provider from '../provider';
 import { VexProvider } from 'services/vexflow';
-import { Video, Fretboard, Tab } from 'components';
+import { Video, Fretboard, Score } from 'components';
 import VextabEditor from './vextab/editor';
 import DeadTime from './deadTime';
 import Row from 'antd/lib/row';
@@ -54,15 +54,15 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
         <Video />
         <Provider>
           <Fretboard />
-          <Tab allowScroll />
+          <Row className="NotationEdit__syncControls" type="flex" align="middle">
+            <Save />
+            <DeadTime />
+            <Bpm />
+            <DurationSync />
+          </Row>
+          <VextabEditor />
+          <Score />
         </Provider>
-        <Row className="NotationEdit__syncControls" type="flex" align="middle">
-          <Save />
-          <DeadTime />
-          <Bpm />
-          <DurationSync />
-        </Row>
-        <VextabEditor />
       </div>
     );
   }
