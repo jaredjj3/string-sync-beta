@@ -1,8 +1,8 @@
 import { Viewport } from 'types';
 
 const getViewport = (): Viewport => {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+  const width = $(window).width();
+  const height = $(window).height();
   const orientation = width > height ? 'LANDSCAPE' : 'PORTRAIT';
   const type = width < 992 ? 'MOBILE' : 'DESKTOP';
   const isTouch = /iPhone|iPad|iPod|Android|Vita/i.test(navigator.userAgent);

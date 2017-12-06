@@ -16,7 +16,10 @@ class Provider extends React.Component<any, any> {
   }
 
   shouldComponentUpdate(nextProps: any): boolean {
-    return this.props.tab.updatedAt !== nextProps.tab.updatedAt;
+    return (
+      this.props.tab.updatedAt !== nextProps.tab.updatedAt ||
+      this.props.viewport.type !== nextProps.viewport.type
+    );
   }
 
   componentWillUnmount(): void {

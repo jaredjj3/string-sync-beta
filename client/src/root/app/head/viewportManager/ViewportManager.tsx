@@ -6,11 +6,8 @@ import { getViewport } from 'stringSyncUtil';
 import { throttle } from 'lodash';
 
 const shouldUpdateViewport = (viewport) => (
-  viewport.type !== 'MOBILE' &&
-  (
-    window.innerHeight !== viewport.height ||
-    window.innerWidth !== viewport.width
-  )
+  $(window).height() !== viewport.height ||
+  $(window).width() !== viewport.width
 );
 
 const maybeSetViewport = throttle(({ viewport, setViewport }) => event => {
