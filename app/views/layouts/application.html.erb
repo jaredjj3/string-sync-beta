@@ -2,6 +2,15 @@
 <html>
   <head>
     <title>StringSync</title>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-110850092-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-110850092-1');
+    </script>
     <script id="bootstrap-current-user" type="text/javascript">
       window.currentUser = <%= render("api/v1/users/show.json.jbuilder", user: (logged_in? ? current_user : User.new)).html_safe %>
     </script>
