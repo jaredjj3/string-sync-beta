@@ -4,14 +4,14 @@ import { compose, branch, renderComponent } from 'recompose';
 import { withFeatures } from 'enhancers';
 import { Icon } from 'antd';
 
-const ShowFretboard = ({ features }) => (
-  <span onClick={() => features.enableFeatures(['fretboard'])} >
+const ShowFretboard = ({ enableFeatures }) => (
+  <span onClick={() => enableFeatures(['fretboard'])} >
     <Icon type="database" />
   </span>
 );
 
-const HideFretboard = ({ features }) => (
-  <span onClick={() => features.disableFeatures(['fretboard'])} >
+const HideFretboard = ({ disableFeatures }) => (
+  <span onClick={() => disableFeatures(['fretboard'])} >
     <Icon type="database" />
   </span>
 );
@@ -19,7 +19,7 @@ const HideFretboard = ({ features }) => (
 const enhance = compose(
   withFeatures,
   branch(
-    ({ fretboardEnabled }) => fretboardEnabled,
+    ({ features }) => features.fretboard,
     renderComponent(HideFretboard),
     renderComponent(ShowFretboard)
   )
