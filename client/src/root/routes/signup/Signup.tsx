@@ -19,7 +19,7 @@ interface SignupProps {
 interface SignupState {
   confirmDirty: boolean;
   loading: boolean;
-  errors: [];
+  errors: Array<string>;
 }
 
 interface SignupStateUpdates {
