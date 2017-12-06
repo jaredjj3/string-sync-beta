@@ -1,19 +1,16 @@
 import React from 'react';
 import { compose } from 'recompose';
-import { connect } from 'react-redux';
-import { Fretman, ScaleVisualizer, VexProvider } from 'services/vexflow';
 import { isEqual } from 'lodash';
-import { withTab, withViewport } from 'enhancers';
+import { withTab, withViewport, withFeatures } from 'enhancers';
 import classNames from 'classnames';
-import { Tab, Viewport } from 'types';
+import { Tab, Viewport, Features } from 'types';
 
 interface FretMarkerProps {
   string: number;
   fret: number;
-  tuning: Array<string>;
-  scaleVisualization: boolean;
   tab: Tab;
   viewport: Viewport;
+  features: Features;
 }
 
 interface FretMarkerState {
@@ -31,7 +28,7 @@ class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
   shouldComponentUpdate(nextProps: FretMarkerProps, nextState: FretMarkerState): boolean {
     return (
       !isEqual(this.state, nextState) ||
-      this.props.scaleVisualization !== nextProps.scaleVisualization ||
+      this.props.features.scaleVisualization !== nextProps.features.scaleVisualization ||
       this.props.viewport.type !== nextProps.viewport.type
     );
   }
@@ -63,7 +60,7 @@ class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
   handleMouseOver = (e: React.SyntheticEvent<any>): void => {
     this.press();
 
-    if (this.props.scaleVisualization) {
+    if (this.props.features.scaleVisualization) {
       const { tab, string, fret } = this.props;
       const note = tab.provider.scaleman.noteAt({ string, fret });
 
@@ -84,7 +81,7 @@ class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
       this.unpress();
     }
 
-    if (this.props.scaleVisualization) {
+    if (this.props.features.scaleVisualization) {
       try {
         tab.provider.scaleman.unlight(note);
       } catch (e) {
@@ -96,7 +93,7 @@ class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
   handleClick = (e: React.SyntheticEvent<any>): void => {
     const { tab, string, fret } = this.props;
 
-    if (this.props.scaleVisualization) {
+    if (this.props.features.scaleVisualization) {
       try {
         const note = tab.provider.scaleman.noteAt({ string, fret });
         tab.provider.scaleman.togglePress(note);
@@ -137,19 +134,10 @@ class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
   }
 }
 
-const mapStateToProps = state => ({
-  tuning: state.tab.tuning,
-  scaleVisualization: state.features.scaleVisualization,
-});
-
-const mapDispatchToProps = dispatch => ({
-
-});
-
 const enhance = compose(
   withViewport,
   withTab,
-  connect(mapStateToProps, mapDispatchToProps)
+  withFeatures
 );
 
 export default enhance(FretMarker);

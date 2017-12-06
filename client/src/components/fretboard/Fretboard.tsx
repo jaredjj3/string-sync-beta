@@ -5,16 +5,14 @@ import Frets from './frets';
 import Strings from './strings';
 import { Row, Col } from 'antd';
 import { VexPlayer, Fretman, VexProvider } from 'services/vexflow';
-import { withRaf, withTab, identity, withFeatures } from 'enhancers';
-import { Tab, RAF } from 'types';
+import { withRaf, withTab, identity, withFeatures, withViewport } from 'enhancers';
+import { Tab, RAF, Viewport, Features } from 'types';
 
 interface FretboardProps {
-  isFretboardEnabled: boolean;
   raf: RAF;
-  vexPlayer: VexPlayer;
-  fretman: Fretman;
-  provider: VexProvider;
   tab: Tab;
+  features: Features;
+  viewport: Viewport;
 }
 
 interface FretboardState {}
@@ -28,6 +26,19 @@ class Fretboard extends React.Component<FretboardProps, FretboardState> {
 
   componentDidMount(): void {
     this.registerRAFLoop();
+  }
+
+  componentWillReceiveProps(nextProps: FretboardProps): void {
+    if (this.props.viewport.type !== nextProps.viewport.type) {
+      nextProps.tab.provider.fretman.reset();
+    }
+  }
+
+  shouldComponentUpdate(nextProps: FretboardProps): boolean {
+    return (
+      this.props.viewport.type !== nextProps.viewport.type ||
+      this.props.features.fretboard !== nextProps.features.fretboard
+    );
   }
 
   componentWillUnmount(): void {
@@ -86,6 +97,7 @@ const enhance = compose(
   withFeatures,
   withRaf,
   withTab,
+  withViewport,
   branch(
     ({ features }) => features.fretboard,
     identity,
