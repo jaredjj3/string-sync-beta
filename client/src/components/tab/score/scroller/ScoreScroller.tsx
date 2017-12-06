@@ -16,10 +16,6 @@ class ScoreScroller extends React.Component<any, any> {
     this.updateRefs();
   }
 
-  shouldComponentUpdate(nextProps: any): boolean {
-    return nextProps.video.isActive;
-  }
-
   componentWillUnmount(): void {
     this.unregisterRAFLoop();
   }
@@ -27,7 +23,7 @@ class ScoreScroller extends React.Component<any, any> {
   registerRAFLoop(): void {
     const RAFLoop = this.props.raf.loop;
 
-    if (!RAFLoop.has()) {
+    if (!RAFLoop.has('ScoreScroller.updateScroll')) {
       RAFLoop.register({
         name: 'ScoreScroller.updateScroll',
         precedence: 6,
