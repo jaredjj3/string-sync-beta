@@ -5,10 +5,13 @@ import { withViewport } from 'enhancers';
 import { getViewport } from 'stringSyncUtil';
 import { throttle } from 'lodash';
 
-const shouldUpdateViewport = (viewport) => (
-  $(window).height() !== viewport.height ||
-  $(window).width() !== viewport.width
-);
+const shouldUpdateViewport = (viewport) => {
+  const nextViewport = getViewport();
+  return (
+    viewport.width !== nextViewport.width ||
+    viewport.height !== nextViewport.height
+  );
+};
 
 const maybeSetViewport = throttle(({ viewport, setViewport }) => event => {
   if (shouldUpdateViewport(viewport)) {
