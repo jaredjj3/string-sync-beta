@@ -15,35 +15,15 @@ export const resetUser = () => ({
 });
 
 export const login = user => async dispatch => {
-  try {
-    const currentUser = await API.login(user);
-    dispatch(setUser(camelCaseObjKeys(currentUser, false)));
-    window.notification.success({
-      message: 'Login',
-      description: `logged in as @${currentUser.username}`
-    });
-  } catch (error) {
-    window.notification.error({
-      message: 'Login',
-      description: 'something went wrong',
-      duration: 2
-    });
-  }
+  const currentUser = await API.login(user);
+  dispatch(setUser(camelCaseObjKeys(currentUser, false)));
 };
 
 export const logout = () => async dispatch => {
-  try {
-    const currentUser = await API.logout();
-    dispatch(setUser(getNullUser()));
-    window.notification.success({
-      message: 'Logout',
-      description: 'successful'
-    });
-  } catch (error) {
-    window.notification.error({
-      message: 'Logout',
-      description: 'something went wrong',
-      duration: 2
-    });
-  }
+  const currentUser = await API.logout();
+  dispatch(setUser(getNullUser()));
+  window.notification.success({
+    message: 'Logout',
+    description: 'successful'
+  });
 };

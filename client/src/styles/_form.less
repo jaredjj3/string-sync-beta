@@ -1,6 +1,9 @@
+@form-width: 300px;
+
 .Form {
-  max-width: 300px;
+  width: @form-width;
   margin: 0 auto;
+  margin-top: 20px;
   position: relative;
   background: white;
   padding: 20px;
@@ -27,4 +30,14 @@
   text-align: center;
   margin-top: 40px;
   line-height: 16px;
+}
+
+.FormErrors {
+  width: @form-width;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.FormErrors__messages {
+  display: flex;
 }

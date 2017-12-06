@@ -22,10 +22,10 @@ const Routes = () => (
     <Route exact path="/" component={Landing} />
     <Route path="/about" component={About} />
     <Route path="/library" component={withMarginTop(Library, '7%')} />
-    <Route path="/login" component={withMarginTop(Login, '10%')} />
-    <Route path="/signup" component={withMarginTop(Signup, '10%')} />
+    <Route path="/login" component={withMarginTop(Login, '5%')} />
+    <Route path="/signup" component={withMarginTop(Signup, '5%')} />
     <Route path="/search" component={withMarginTop(Search, '2%')} />
-    <Route path="/upload" component={withMarginTop(Upload, '10%')} />
+    <Route path="/upload" component={withMarginTop(Upload, '5%')} />
     <Route path="/dashboard" component={Dashboard} />
     <Route path="/n" component={Notation} />
   </div>
