@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { compose } from 'recompose';
-import { withTab, withVideo, withRaf } from 'enhancers';
+import { withTab, withVideo, withRaf, withNotation, withViewport } from 'enhancers';
 
 class ScoreScroller extends React.Component<any, any> {
   currLine: number = 0;
@@ -14,7 +14,7 @@ class ScoreScroller extends React.Component<any, any> {
   }
 
   componentWillReceiveProps(nextProps: any): void {
-    this.updateRefs();
+    this.updateRefs(this.props, nextProps);
   }
 
   componentWillUnmount(): void {
@@ -37,9 +37,23 @@ class ScoreScroller extends React.Component<any, any> {
     this.props.raf.loop.unregister('ScoreScroller.updateScroll');
   }
 
-  updateRefs = (): void => {
-    this.scoreContainer = $('#ScoreContainer');
-    this.scrollPositions = Array.from($('.ScoreLine')).map(el => $(el).position().top);
+  updateRefs = (currProps: any, nextProps: any): void => {
+    const shouldRefreshRefs = (
+      this.scoreContainer === null ||
+      this.scrollPositions.length === 0 ||
+      currProps.notation.vextabString !== nextProps.notation.vextabString ||
+      currProps.viewport.width !== nextProps.viewport.width
+    );
+
+    if (shouldRefreshRefs) {
+      this.scoreContainer = $('#ScoreContainer');
+      const scrollPositions = Array.from($('.ScoreLine')).
+          map(el => $(el).position().top).
+          sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
+
+      // Ensure that the scrollPositions start at 0
+      this.scrollPositions = scrollPositions.map(pos => pos + scrollPositions[0]);
+    }
   }
 
   updateScroll = (dt: number): void => {
@@ -69,7 +83,9 @@ class ScoreScroller extends React.Component<any, any> {
 const enhance = compose(
   withTab,
   withVideo,
-  withRaf
+  withRaf,
+  withNotation,
+  withViewport
 );
 
 export default enhance(ScoreScroller);

@@ -32,14 +32,18 @@ class VexProvider {
     this.reset();
   }
 
+  get vextabString(): string {
+    return this._vextabString;
+  }
+
   // Setting the vextab, deadTime, bpm, or viewportWidth are
   // the entrypoints for triggering an internal state reset.
-  set vextab(vextab: string) {
-    if (this._vextabString !== vextab) {
+  set vextabString(vextabString: string) {
+    if (this._vextabString !== vextabString) {
       this.reset();
     }
 
-    this._vextabString = vextab;
+    this._vextabString = vextabString;
   }
 
   set bpm(bpm: number) {

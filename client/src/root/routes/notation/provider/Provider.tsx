@@ -31,7 +31,7 @@ class Provider extends React.Component<any, any> {
     const { vextabString, bpm, deadTimeMs } = props.notation;
     const viewportWidth = props.viewport.width;
 
-    provider.vextab        = vextabString;
+    provider.vextabString  = vextabString;
     provider.bpm           = bpm;
     provider.deadTime      = deadTimeMs;
     provider.viewportWidth = viewportWidth;

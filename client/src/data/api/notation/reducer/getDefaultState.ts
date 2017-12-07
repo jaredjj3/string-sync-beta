@@ -1,10 +1,12 @@
+import { getNullUser } from 'stringSyncUtil';
+
 const getDefaultState = () => ({
   id: -1,
   songName: '',
-  duration: 0,
+  durationMs: 0,
   deadTimeMs: 0,
   bpm: 0,
-  transcriber: '',
+  transcriber: getNullUser(),
   artistName: '',
   thumbnailUrl: '',
   vextabString: '',
