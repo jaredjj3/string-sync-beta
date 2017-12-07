@@ -1,9 +1,6 @@
 import React from 'react';
-
 import Fret from './fret';
 import { Row, Col } from 'antd';
-
-import { withDeviceType } from 'enhancers';
 
 interface FretsProps {
   deviceType?: string;

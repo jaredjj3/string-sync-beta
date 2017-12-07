@@ -28,12 +28,6 @@ class Fretboard extends React.Component<FretboardProps, FretboardState> {
     this.registerRAFLoop();
   }
 
-  componentWillReceiveProps(nextProps: FretboardProps): void {
-    if (this.props.viewport.type !== nextProps.viewport.type) {
-      nextProps.tab.provider.fretman.reset();
-    }
-  }
-
   shouldComponentUpdate(nextProps: FretboardProps): boolean {
     return (
       this.props.viewport.type !== nextProps.viewport.type ||
