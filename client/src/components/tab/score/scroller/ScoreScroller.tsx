@@ -38,7 +38,7 @@ class ScoreScroller extends React.Component<any, any> {
   }
 
   updateRefs = (): void => {
-    this.scoreContainer = $('#ScoreContainer')[0];
+    this.scoreContainer = $('#ScoreContainer');
     this.scrollPositions = Array.from($('.ScoreLine')).map(el => $(el).position().top);
   }
 
@@ -53,7 +53,7 @@ class ScoreScroller extends React.Component<any, any> {
         const lineIndex = scrollSpec.lowTick.staveIndex;
         if (this.currLineIndex !== lineIndex) {
           this.currLineIndex = lineIndex;
-          this.scoreContainer.scrollTop = this.scrollPositions[this.currLineIndex];
+          this.scoreContainer.scrollTop(this.scrollPositions[this.currLineIndex]);
         }
       }
     } catch (error) {
