@@ -14,7 +14,11 @@ export default enhance(({ tab, withScoreScroller }) => (
     {withScoreScroller ? <ScoreScroller /> : null}
     {
       tab.provider.vextabs.map((vextab, ndx) => (
-        <li key={`score-line-${ndx}`} style={{ paddingTop: ndx === 0 ? '0px' : '50px' }}>
+        <li
+          className="Score__lineContainer"
+          key={`score-line-${ndx}`}
+          style={{ paddingTop: ndx === 0 ? '0px' : '50px' }}
+        >
           <ScoreLine vextab={vextab} lineNum={ndx} />
         </li>
       ))
