@@ -7,7 +7,7 @@ class ScoreScroller extends React.Component<any, any> {
   currLine: number = 0;
   scoreContainer: any = null;
   scrollPositions: Array<number> = [];
-  scrollDir: string = 'DOWN';
+  currLineIndex: number = 0;
 
   componentDidMount(): void {
     this.registerRAFLoop();
@@ -48,25 +48,13 @@ class ScoreScroller extends React.Component<any, any> {
     }
 
     try {
-      // const { scrollSpec } = this.props.tab.provider.player;
-      // if (scrollSpec) {
-      //   const lineIndex = scrollSpec.lowTick.staveIndex;
-      //   this.scoreContainer.scrollTop = this.scrollPositions[lineIndex];
-      // }
-      switch (this.scrollDir) {
-        case 'UP':
-          this.scoreContainer.scrollTop--;
-          break;
-        case 'DOWN':
-          this.scoreContainer.scrollTop++;
-          break;
-        default:
-          break;
-      }
-      if (this.scoreContainer.scrollTop === 0) {
-        this.scrollDir = 'DOWN';
-      } else if (this.scoreContainer.scrollTop > 300) {
-        this.scrollDir = 'UP';
+      const { scrollSpec } = this.props.tab.provider.player;
+      if (scrollSpec) {
+        const lineIndex = scrollSpec.lowTick.staveIndex;
+        if (this.currLineIndex !== lineIndex) {
+          this.currLineIndex = lineIndex;
+          this.scoreContainer.scrollTop = this.scrollPositions[this.currLineIndex];
+        }
       }
     } catch (error) {
       console.error(error);
