@@ -10,18 +10,18 @@ const enhance = compose(
 );
 
 export default enhance(({ tab, withScoreScroller }) => (
-  <ul className="Score">
+  <div className="Score">
     {withScoreScroller ? <ScoreScroller /> : null}
     {
       tab.provider.vextabs.map((vextab, ndx) => (
-        <li
+        <div
           className="Score__lineContainer"
           key={`score-line-${ndx}`}
           style={{ paddingTop: ndx === 0 ? '0px' : '50px' }}
         >
           <ScoreLine vextab={vextab} lineNum={ndx} />
-        </li>
+        </div>
       ))
     }
-  </ul>
+  </div>
 ));

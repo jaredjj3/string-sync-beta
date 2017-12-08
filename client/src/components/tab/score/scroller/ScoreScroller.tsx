@@ -52,7 +52,7 @@ class ScoreScroller extends React.Component<any, any> {
           sort((a, b) => a < b ? -1 : a > b ? 1 : 0);
 
       // Ensure that the scrollPositions start at 0
-      this.scrollPositions = scrollPositions.map(pos => pos + scrollPositions[0]);
+      this.scrollPositions = scrollPositions.map(pos => pos - scrollPositions[0]);
     }
   }
 
