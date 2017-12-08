@@ -69,6 +69,14 @@ class ScoreScroller extends React.Component<any, any> {
           this.currLineIndex = lineIndex;
           const pos = this.scrollPositions[this.currLineIndex];
 
+          // FIXME: Go ahead, try removing the next two lines.
+          // Test it on mobile. Explain it. I dare you.
+          //
+          // For some reason, when scrolling more than 200 - 300px on mobile, the canvas
+          // disappears until the first note (indexed from 0) is selected.
+          // I couldn't find out why this happens, but this is a hack around it.
+          //
+          // I am not proud of it. :(
           this.scoreContainer.scrollTop(pos);
           this.scoreContainer.scrollTop(pos + 1);
           this.scoreContainer.scrollTop(pos);
