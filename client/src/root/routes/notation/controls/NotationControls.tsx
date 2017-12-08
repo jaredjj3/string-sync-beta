@@ -11,12 +11,8 @@ const ControlRow1 = () => (
     className="NotationControls__row1"
     type="flex" align="middle" justify="center"
   >
-    <Col span={2}>
-    </Col>
-    <Col span={16}>
+    <Col span={22}>
       <Loop />
-    </Col>
-    <Col span={2}>
     </Col>
   </Row>
 );
@@ -26,32 +22,36 @@ const ControlRow2 = () => (
     className="NotationControls__row2"
     type="flex" align="middle" justify="center"
   >
-    <Col span={2}>
-      <Row
-        className="NotationControls--desktop__row2__controls"
-        type="flex" align="middle" justify="end"
-      >
-        <Play />
-      </Row>
-    </Col>
-    <Col span={16}>
+    <Col span={22}>
       <Scrubber />
-    </Col>
-    <Col span={2}>
-      <Row
-        className="NotationControls--desktop__row2__controls"
-        type="flex" align="middle" justify="start"
-      >
-        <FretboardToggle />
-      </Row>
     </Col>
   </Row>
 );
 
 const NotationControls = () => (
   <div className="NotationControls">
-    <ControlRow1 />
-    <ControlRow2 />
+    <Row type="flex" align="middle" justify="center">
+      <Col span={2}>
+      <Row
+        className="NotationControls--desktop__row2__controls"
+        type="flex" align="middle" justify="end"
+      >
+          <Play />
+        </Row>
+      </Col>
+      <Col span={16}>
+        <ControlRow1 />
+        <ControlRow2 />
+      </Col>
+      <Col span={2}>
+        <Row
+          className="NotationControls--desktop__row2__controls"
+          type="flex" align="middle" justify="start"
+          >
+          <FretboardToggle />
+        </Row>
+      </Col>
+    </Row>
   </div>
 );
 
