@@ -14,9 +14,29 @@ interface ScoreLineProps {
 }
 
 class ScoreLine extends React.Component<ScoreLineProps, any> {
+  static HEIGHT_PX: number = 300;
+
   canvas: HTMLCanvasElement = null;
   ctx: CanvasRenderingContext2D = null;
   renderer: any = null;
+
+  componentDidMount(): void {
+    window.scoreLines = window.scoreLines || [];
+    window.scoreLines.push(this);
+  }
+
+  resize (): void {
+    const { canvas } = this;
+
+    const ratio = window.devicePixelRatio || 1;
+    const width = this.props.vextab.artist.width;
+    const height = ScoreLine.HEIGHT_PX;
+
+    canvas.width = width * ratio;
+    canvas.height = height * ratio;
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+  }
 
   setCanvas = (c: HTMLCanvasElement): void => {
     if (!c) {
@@ -26,6 +46,7 @@ class ScoreLine extends React.Component<ScoreLineProps, any> {
     this.canvas = c;
     this.renderer = new Renderer(c, Renderer.Backends.CANVAS);
     this.ctx = this.renderer.getContext();
+    this.resize();
     this.renderTab();
     this.maybeSetupTickman();
   }
