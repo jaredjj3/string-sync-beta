@@ -1,14 +1,77 @@
-.NotationControls {
-  background: black;
-  color: white;
+.NotationControlsContainer {
   position: fixed;
   bottom: 0;
+  z-index: 12;
   width: 100%;
-  z-index: 11;
+}
+
+.NotationControls {
+  .ant-collapse-item,
+  .ant-collapse-header {
+    background: black;
+  }
+
+  &.ant-collapse > .ant-collapse-item > .ant-collapse-header {
+    border: 0;
+    border-radius: 0;
+    padding: 20px 0;
+  }
+
+  &.ant-collapse > .ant-collapse-item > .ant-collapse-header:active {
+    background: #666666;
+  }
+
+  .ant-collapse-content > .ant-collapse-content-box {
+    padding: 0;
+  }
+
+  &.ant-collapse > .ant-collapse-item:last-child, .ant-collapse > .ant-collapse-item:last-child > .ant-collapse-header {
+    border: 0;
+    border-radius: 0;
+  }
+
+  &.ant-collapse > .ant-collapse-item > .ant-collapse-header i.arrow {
+    color: white;
+    top: -5px;
+    left: calc(~'50% - 12px');
+    font-size: 24px;
+  }
+
+  &.ant-collapse > .ant-collapse-item > .ant-collapse-header[aria-expanded="true"] .arrow {
+    transform: rotate(90deg);
+  }
+
+  &.ant-collapse > .ant-collapse-item > .ant-collapse-header .arrow {
+    transform: rotate(270deg);
+  }
+
+  .ant-collapse-content {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .ant-collapse-content-box {
+    background: black;
+  }
+
+  .ant-collapse > .ant-collapse-item  {
+    border: 0;
+    border-radius: 0;
+  }
+
+  .ant-collapse-item:last-child > .ant-collapse-content {
+    border-radius: 0;
+  }
+}
+
+.NotationControls__content {
+  background: black;
+  color: white;
   padding: 18px;
 }
 
-.NotationControls--desktop__row2__controls {
+.NotationControls--desktop__row2 {
  & > * {
    margin-left: 1.5em;
    margin-right: 1.5em;

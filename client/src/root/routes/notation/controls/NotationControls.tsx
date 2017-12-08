@@ -1,10 +1,11 @@
 import React from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col, Collapse } from 'antd';
 import Play from 'components/video/controls/play';
 import Scrubber from 'components/video/controls/scrubber';
 import Loop from 'components/video/controls/loop';
 import FretboardToggle from 'components/fretboard/toggle';
-import DesktopOnly from 'components/desktop/only';
+
+const { Panel } = Collapse;
 
 const ControlRow1 = () => (
   <Row
@@ -28,12 +29,12 @@ const ControlRow2 = () => (
   </Row>
 );
 
-const NotationControls = () => (
-  <div className="NotationControls">
+const NotationControlsContent = () => (
+  <div className="NotationControls__content">
     <Row type="flex" align="middle" justify="center">
       <Col span={2}>
       <Row
-        className="NotationControls--desktop__row2__controls"
+        className="NotationControls--desktop__row2"
         type="flex" align="middle" justify="end"
       >
           <Play />
@@ -45,13 +46,26 @@ const NotationControls = () => (
       </Col>
       <Col span={2}>
         <Row
-          className="NotationControls--desktop__row2__controls"
+          className="NotationControls--desktop__row2"
           type="flex" align="middle" justify="start"
           >
           <FretboardToggle />
         </Row>
       </Col>
     </Row>
+  </div>
+);
+
+const NotationControls = () => (
+  <div className="NotationControlsContainer">
+    <Collapse
+      className="NotationControls"
+      defaultActiveKey={['1']}
+    >
+      <Panel header={null} key="1">
+        <NotationControlsContent />
+      </Panel>
+    </Collapse>
   </div>
 );
 
