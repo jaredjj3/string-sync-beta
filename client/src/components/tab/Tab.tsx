@@ -16,7 +16,7 @@ const Tab = (props) => {
 
   return (
     <div className="Tab">
-      <Overlap height="300px" width="100vw">
+      <Overlap height="275px" width="100vw">
         <Layer className="CaretContainer">
           <Caret />
         </Layer>

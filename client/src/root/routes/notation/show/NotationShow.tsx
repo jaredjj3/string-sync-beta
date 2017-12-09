@@ -6,7 +6,7 @@ import Banner from './banner';
 import Provider from '../provider';
 import Controls from '../controls';
 import { VexProvider } from 'services/vexflow';
-import { Video, Fretboard, Tab } from 'components';
+import { Video, Fretboard, Tab, LogoImage } from 'components';
 import { withRaf, withVideo, withNotation, withFeatures, withViewport } from 'enhancers';
 
 const enhance = compose(
@@ -42,6 +42,9 @@ const NotationShow = () => (
       <Fretboard />
       <Tab />
     </Provider>
+    <div className="NotationShow__logo">
+      <LogoImage style={{ width: '75px', height: '75px' }} />
+    </div>
     <Controls />
   </div>
 );
