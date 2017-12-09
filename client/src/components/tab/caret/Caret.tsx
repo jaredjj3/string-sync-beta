@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { withRaf, withTab, withVideo, withViewport } from 'enhancers';
 
 class Caret extends React.Component<any, any> {
-  static HEIGHT: number = 300; // px
+  static HEIGHT: number = 228; // px
   static LINE_WIDTH: number = 2; // px
 
   canvas: HTMLCanvasElement;
