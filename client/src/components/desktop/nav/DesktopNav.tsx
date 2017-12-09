@@ -27,10 +27,6 @@ interface DesktopNavState {
 }
 
 class DesktopNav extends React.Component<DesktopNavProps, DesktopNavState> {
-  shouldComponentUpdate(nextProps: DesktopNavProps): boolean {
-    return this.props.session.isLoggedIn !== nextProps.session.isLoggedIn;
-  }
-
   goTo = (params: ClickParam): void => {
     this.props.history.push(params.key);
   }
