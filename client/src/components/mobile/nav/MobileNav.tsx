@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import { Col, Icon, Menu, Row } from 'antd';
-import { NavBar, Drawer, List } from 'antd-mobile';
+import NavBar from 'antd-mobile/lib/nav-bar';
 import LogoutModal from './logout';
 import { Location } from 'types/location';
 import { isEqual, invert } from 'lodash';

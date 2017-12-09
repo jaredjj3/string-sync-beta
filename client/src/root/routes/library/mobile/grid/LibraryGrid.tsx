@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { Grid } from 'antd-mobile';
+import Grid from 'antd-mobile/lib/grid';
 import LibraryGridItem from './item';
 
 import { TagNotations } from '../../Library';
