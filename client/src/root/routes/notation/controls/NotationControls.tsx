@@ -34,7 +34,7 @@ const NotationControlsContent = () => (
     <Row type="flex" align="middle" justify="center">
       <Col span={2}>
       <Row
-        className="NotationControls--desktop__row2"
+        className="NotationControls__content--aside"
         type="flex" align="middle" justify="end"
       >
           <Play />
@@ -46,7 +46,7 @@ const NotationControlsContent = () => (
       </Col>
       <Col span={2}>
         <Row
-          className="NotationControls--desktop__row2"
+          className="NotationControls__content--aside"
           type="flex" align="middle" justify="start"
           >
           <FretboardToggle />
