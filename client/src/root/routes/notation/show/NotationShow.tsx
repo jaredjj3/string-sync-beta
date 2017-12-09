@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose, shouldUpdate, lifecycle } from 'recompose';
 import Banner from './banner';
@@ -43,7 +43,14 @@ const NotationShow = () => (
       <Tab />
     </Provider>
     <div className="NotationShow__logo">
-      <LogoImage style={{ width: '75px', height: '75px' }} />
+      <span>
+        <Link to="/library">
+          <LogoImage style={{ width: '75px', height: '75px' }} />
+          <div className="NotationShow__logo__backText">
+            back
+          </div>
+        </Link>
+      </span>
     </div>
     <Controls />
   </div>
