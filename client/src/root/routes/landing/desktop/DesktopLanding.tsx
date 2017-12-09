@@ -86,12 +86,12 @@ const DesktopLanding = ({ session }) => (
       <div className="Landing--desktop__concept">
         <Youtube
           opts={youtubeOptions}
-          videoId="8Rz287ddt2E"
+          videoId="aJS7OIFPUQc"
           onPlay={() => window.scrollTo(null, 92)}
         />
         <div className="Landing--desktop__concept__link">
           <Link to="/n/1">
-            Learn <em>The Cool Side of the Pillow</em>
+            Learn <em>Serenading a glass of water in the dark</em>
           </Link>
         </div>
         <div style={{ marginTop: '10px', marginBottom: '10px' }}>
