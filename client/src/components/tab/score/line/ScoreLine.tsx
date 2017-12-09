@@ -20,11 +20,6 @@ class ScoreLine extends React.Component<ScoreLineProps, any> {
   ctx: CanvasRenderingContext2D = null;
   renderer: any = null;
 
-  componentDidMount(): void {
-    window.scoreLines = window.scoreLines || [];
-    window.scoreLines.push(this);
-  }
-
   resize (): void {
     const { canvas } = this;
 
@@ -94,11 +89,30 @@ class ScoreLine extends React.Component<ScoreLineProps, any> {
     this.ctx.restore();
   }
 
+  renderBranding(): void {
+    this.ctx.save();
+    this.ctx.fillStyle = 'darkgray';
+    this.ctx.font = 'italic 12px arial';
+
+    const websiteName = 'stringsync.com';
+    const instagramName = '@stringsynced';
+
+    this.ctx.fillText(websiteName, 10, 17);
+    this.ctx.fillText(
+      instagramName,
+      parseInt(this.canvas.style.width, 10) - 83,
+      17
+    );
+
+    this.ctx.restore();
+  }
+
   renderTab = (): void => {
     if (this.renderer !== null) {
       this.props.vextab.artist.render(this.renderer);
       this.renderMeasureNumbers();
       this.renderTabText();
+      this.renderBranding();
     }
   }
 
