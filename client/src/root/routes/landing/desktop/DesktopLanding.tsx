@@ -90,7 +90,7 @@ const DesktopLanding = ({ session }) => (
           onPlay={() => window.scrollTo(null, 92)}
         />
         <div className="Landing--desktop__concept__link">
-          <Link to="/n/1">
+          <Link to="/n/976">
             Learn <em>Serenading a glass of water in the dark</em>
           </Link>
         </div>
