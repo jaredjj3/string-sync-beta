@@ -6,6 +6,7 @@ import { Col, Icon, Menu, Row } from 'antd';
 import NavBar from 'antd-mobile/lib/nav-bar';
 import LogoutModal from './logout';
 import { Location } from 'types/location';
+import { Session } from 'types';
 import { isEqual, invert } from 'lodash';
 import { withSession } from 'enhancers';
 
@@ -16,17 +17,25 @@ interface MobileNavProps {
   isLoggedIn: boolean;
   isVisible: boolean;
   history: any;
+  session: Session;
   logout(): void;
 }
 
 interface MobileNavState {}
 
 class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
-  logout = (e: React.SyntheticEvent<HTMLAllCollection>): void => {
+  isLoggingOut: boolean = false;
+
+  logout = async (e: React.SyntheticEvent<HTMLAllCollection>): Promise<void> => {
     e.preventDefault();
     e.stopPropagation();
-    this.props.logout();
-    this.props.history.push('/library');
+
+    if (!this.isLoggingOut && this.props.session.isLoggedIn) {
+      this.isLoggingOut = true;
+      await this.props.logout();
+      this.isLoggingOut = false;
+      this.props.history.push('/library');
+    }
   }
 
   iconStyle = (keys: Array<string>) => {
