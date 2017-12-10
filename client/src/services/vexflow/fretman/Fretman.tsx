@@ -96,8 +96,8 @@ class Fretman {
   }
 
   private markerAt (string: number, fret: number): any {
-    const { frets } = this.markers.strings[string];
-    return frets ? frets[fret] : null;
+    const guitarString = this.markers.strings[string];
+    return guitarString ? guitarString.frets[fret] : null;
   }
 }
 

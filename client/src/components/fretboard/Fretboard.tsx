@@ -36,7 +36,6 @@ class Fretboard extends React.Component<FretboardProps, FretboardState> {
   }
 
   componentWillUnmount(): void {
-    this.props.tab.provider.fretman.reset();
     this.unregisterRAFLoop();
   }
 

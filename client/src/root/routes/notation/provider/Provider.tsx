@@ -42,8 +42,9 @@ class Provider extends React.Component<any, any> {
   }
 
   get shouldRenderChildren(): boolean {
-    const { provider } = this.props.tab;
-    return provider && provider.isReady;
+    const { tab, notation } = this.props;
+    const { provider } = tab;
+    return notation.vextabString === '' || (provider && provider.isReady);
   }
 
   renderChildren(): JSX.Element {
