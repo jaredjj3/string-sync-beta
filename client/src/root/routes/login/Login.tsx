@@ -58,7 +58,9 @@ class Login extends React.Component<LoginProps, LoginState> {
             this.updateState({ errors });
           }
         } finally {
-          this.updateState({ loading: false });
+          if (!this.props.session.isLoggedIn) { // did not redirect to the library
+            this.updateState({ loading: false });
+          }
         }
       }
     });
