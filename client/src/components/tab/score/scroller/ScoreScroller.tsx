@@ -77,8 +77,9 @@ class ScoreScroller extends React.Component<any, any> {
           // I couldn't find out why this happens, but this is a hack around it.
           //
           // I am not proud of it. :(
+          const offset = this.scrollPositions.length === (this.currLineIndex - 1) ? -1 : 1;
           this.scoreContainer.scrollTop(pos);
-          this.scoreContainer.scrollTop(pos + 1);
+          this.scoreContainer.scrollTop(pos + offset);
           this.scoreContainer.scrollTop(pos);
         }
       }
