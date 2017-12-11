@@ -10,6 +10,7 @@ import { Session } from 'types';
 import { isEqual, invert } from 'lodash';
 import { withSession } from 'enhancers';
 import { ColorBlock } from 'components';
+import { ignoreIfExecuting } from 'stringSyncUtil';
 
 const { Item } = Menu;
 
@@ -25,19 +26,16 @@ interface MobileNavProps {
 interface MobileNavState {}
 
 class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
-  isLoggingOut: boolean = false;
 
-  logout = async (e: React.SyntheticEvent<HTMLAllCollection>): Promise<void> => {
+  logout: any = ignoreIfExecuting((e: React.SyntheticEvent<HTMLAllCollection>): void => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (!this.isLoggingOut && this.props.session.isLoggedIn) {
-      this.isLoggingOut = true;
-      await this.props.logout();
-      this.isLoggingOut = false;
+    if (this.props.session.isLoggedIn) {
+      this.props.logout();
       this.props.history.push('/library');
     }
-  }
+  });
 
   iconStyle = (keys: Array<string>) => {
     return ({

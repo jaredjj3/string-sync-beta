@@ -8,9 +8,9 @@ const ignoreIfExecuting = callback => {
 
     isExecuting = true;
 
-    let returnValue = null;
+    let returnValue = void 0;
     try {
-      returnValue = await callback(args);
+      returnValue = await callback(...args);
     } finally {
       isExecuting = false;
     }
