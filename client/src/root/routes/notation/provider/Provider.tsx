@@ -44,7 +44,11 @@ class Provider extends React.Component<any, any> {
   get shouldRenderChildren(): boolean {
     const { tab, notation } = this.props;
     const { provider } = tab;
-    return notation.vextabString === '' || (provider && provider.isReady);
+    return (
+      (provider && provider.isReady) ||
+      // for new notations and notations with a broken vextab string
+      (provider && !provider.shouldTrySetup && (provider.vextabString === '' || provider.parseError))
+    );
   }
 
   renderChildren(): JSX.Element {

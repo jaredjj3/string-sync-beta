@@ -88,7 +88,8 @@ class VexProvider {
     return (
       this._bpm > 0 &&
       typeof this._deadTimeMs === 'number' &&
-      this._viewportWidth > 0
+      this._viewportWidth > 0 &&
+      this._vextabString.length > 0
     );
   }
 
@@ -124,9 +125,12 @@ class VexProvider {
       this._setupTickman()
     );
 
-    if (this.isReady && typeof this.afterSetup === 'function') {
+    if (this.isReady) {
       this.parseError = null;
-      this.afterSetup();
+
+      if (typeof this.afterSetup === 'function') {
+        this.afterSetup();
+      }
     }
 
     return this.isReady = this.editMode || this.isReady;

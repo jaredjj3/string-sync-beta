@@ -9,6 +9,7 @@ import { Location } from 'types/location';
 import { Session } from 'types';
 import { isEqual, invert } from 'lodash';
 import { withSession } from 'enhancers';
+import { ColorBlock } from 'components';
 
 const { Item } = Menu;
 
@@ -85,6 +86,7 @@ class MobileNav extends React.Component<MobileNavProps, MobileNavState> {
               />
             </Link>
           </NavBar>
+          <ColorBlock color="white" />
         </nav>
       );
     }
