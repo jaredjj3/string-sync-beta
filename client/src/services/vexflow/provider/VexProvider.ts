@@ -15,6 +15,7 @@ class VexProvider {
   editMode: boolean = false;
 
   vextabs: Array<any>;
+  scoreLinePosY: Array<number>;
   fretman: Fretman;
   formatter: Formatter;
   player: Player;
@@ -105,6 +106,7 @@ class VexProvider {
     this.isReady       = false;
     this.parseError    = null;
     this.vextabs       = [];
+    this.scoreLinePosY = [];
     this.fretman       = new Fretman();
     this.formatter     = new Formatter();
     this.player        = new Player();

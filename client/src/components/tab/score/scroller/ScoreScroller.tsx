@@ -53,6 +53,9 @@ class ScoreScroller extends React.Component<any, any> {
 
       // Ensure that the scrollPositions start at 0
       this.scrollPositions = scrollPositions.map(pos => pos - scrollPositions[0]);
+
+      // Add the scrollPositions to the provider so that other components can use it
+      nextProps.tab.provider.scoreLinePosY = this.scrollPositions;
     }
   }
 
