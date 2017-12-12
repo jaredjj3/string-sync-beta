@@ -20,7 +20,7 @@ class ScoreLine extends React.Component<ScoreLineProps, any> {
   ctx: CanvasRenderingContext2D = null;
   renderer: any = null;
 
-  resize (): void {
+  resize(): void {
     const { canvas } = this;
 
     const ratio = window.devicePixelRatio || 1;
