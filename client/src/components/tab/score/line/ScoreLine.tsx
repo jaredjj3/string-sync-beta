@@ -136,6 +136,8 @@ class ScoreLine extends React.Component<ScoreLineProps, any> {
   }
 }
 
-export default compose(
+const enhance = compose(
   withTab
-)(ScoreLine);
+);
+
+export default enhance(ScoreLine);
