@@ -40,6 +40,18 @@ class VexPlayer {
     return this.scrollSpec ? this.scrollSpec.posFunc(this.currentTickVal) : 0;
   }
 
+  get noteIndex(): number {
+    return this.scrollSpec ? this.scrollSpec.lowTick.noteIndex : -1;
+  }
+
+  get measureIndex(): number {
+    return this.scrollSpec ? this.scrollSpec.lowTick.measureIndex : -1;
+  }
+
+  get staveIndex(): number {
+    return this.scrollSpec ? this.scrollSpec.lowTick.staveIndex : -1;
+  }
+
   get currentTimeMs(): number {
     return this._currentTimeMs;
   }
