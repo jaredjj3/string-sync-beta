@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { withFeatures, withRaf, withNotation } from 'enhancers';
-import Provider from '../provider';
+import NotationProvider from '../provider';
 import { VexProvider } from 'services/vexflow';
 import { Video, Fretboard, Score } from 'components';
 import VextabEditor from './vextab/editor';
@@ -52,7 +52,7 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
     return (
       <div className="NotationEdit">
         <Video />
-        <Provider>
+        <NotationProvider>
           <Fretboard />
           <Row className="NotationEdit__syncControls" type="flex" align="middle">
             <Save />
@@ -62,7 +62,7 @@ class NotationEdit extends React.Component<NotationEditProps, NotationEditState>
           </Row>
           <VextabEditor />
           <Score />
-        </Provider>
+        </NotationProvider>
       </div>
     );
   }

@@ -3,7 +3,7 @@ import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose, shouldUpdate, lifecycle } from 'recompose';
 import Banner from './banner';
-import Provider from '../provider';
+import NotationProvider from '../provider';
 import Controls from '../controls';
 import { VexProvider } from 'services/vexflow';
 import { Video, Fretboard, Tab, LogoImage, ColorBlock } from 'components';
@@ -38,10 +38,10 @@ const NotationShow = () => (
   <div className="NotationShow">
     <Banner />
     <Video />
-    <Provider>
+    <NotationProvider>
       <Fretboard />
       <Tab />
-    </Provider>
+    </NotationProvider>
     <div className="NotationShow__logo">
       <span>
         <Link to="/library">

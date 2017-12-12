@@ -1,5 +1,5 @@
-import Provider from './Provider';
+import NotationProvider from './NotationProvider';
 
-import './_provider.less';
+import './_notationProvider.less';
 
-export default Provider;
+export default NotationProvider;

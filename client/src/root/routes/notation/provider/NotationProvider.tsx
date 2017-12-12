@@ -4,7 +4,11 @@ import VideoSync from './videoSync';
 import { withTab, withNotation, withVideo, withViewport } from 'enhancers';
 import { VexProvider } from 'services/vexflow';
 
-class Provider extends React.Component<any, any> {
+// The purpose of the notation provider is to defer the rendering of
+// its children until the store tab.provider.isReady returns true.
+// This prevents the need for the children to check for null/undefined
+// values everywhere before consuming the data.
+class NotationProvider extends React.Component<any, any> {
   componentDidMount(): void {
     const provider = new VexProvider();
     provider.afterSetup = this.props.emitUpdate;
@@ -84,4 +88,4 @@ const enhance = compose(
   withViewport
 );
 
-export default enhance(Provider);
+export default enhance(NotationProvider);
