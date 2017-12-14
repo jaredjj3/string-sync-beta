@@ -42,6 +42,7 @@ class NotationProvider extends React.Component<any, any> {
 
     if (provider.shouldTrySetup) {
       provider.setup();
+      provider._setupTickman();
     }
   }
 

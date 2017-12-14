@@ -9,8 +9,15 @@ class Fretman {
   strings: any = { };
 
   constructor(markers: Array<any> = [], strings: Array<any> = []) {
-    markers.forEach(this.addMarker);
-    strings.forEach(this.addString);
+    markers.forEach(marker => {
+      this.addMarker(marker);
+      marker.unlight();
+    });
+
+    strings.forEach(string => {
+      this.addString(string);
+      string.unlight();
+    });
   }
 
   addMarker = (markerComponent: any): void => {

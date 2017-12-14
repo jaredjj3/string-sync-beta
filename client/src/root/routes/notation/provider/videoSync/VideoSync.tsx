@@ -15,7 +15,12 @@ interface VideoSyncState {
 
 class VideoSync extends React.Component<VideoSyncProps, VideoSyncState> {
   componentWillReceiveProps(nextProps: any): void {
-    nextProps.video.isActive ? this.registerRAFLoop() : this.unregisterRAFLoop();
+    if (nextProps.video.isActive) {
+      this.registerRAFLoop();
+    } else {
+      this.unregisterRAFLoop();
+      this.updateTime();
+    }
   }
 
   shouldComponentUpdate(nextProps: any): boolean {
@@ -38,7 +43,7 @@ class VideoSync extends React.Component<VideoSyncProps, VideoSyncState> {
     this.props.raf.loop.unregister('VideoSync.updateTime');
   }
 
-  updateTime = (dt: number): void => {
+  updateTime = (dt?: number): void => {
     const videoPlayer = this.props.video.player;
     const provider = this.props.tab.provider;
 

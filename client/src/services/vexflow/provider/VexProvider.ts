@@ -113,14 +113,14 @@ class VexProvider {
     this.scoreLinePosY = [];
     this.fretman       = new Fretman(this.mountedMarkers, this.mountedStrings);
     this.formatter     = new Formatter();
-    this.player        = new Player();
     this.scaleman      = new ScaleVisualizer(this.fretman)  ;
+    this.player        = new Player();
     this.tickman       = new Tickman(this.player);
     this.currentTimeMs = 0;
   }
 
-  setup(): boolean {
-    if (this.isReady) {
+  setup(forceSetup: boolean = false): boolean {
+    if (this.isReady && !forceSetup) {
       return true;
     }
 
