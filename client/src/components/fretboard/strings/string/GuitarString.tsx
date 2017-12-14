@@ -17,7 +17,11 @@ class GuitarString extends React.PureComponent<GuitarStringProps, GuitarStringSt
   state: GuitarStringState = { lit: false };
 
   componentDidMount(): void {
-    this.props.tab.provider.fretman.addString(this);
+    this.props.tab.provider.addString(this);
+  }
+
+  componentWillUnmount(): void {
+    this.props.tab.provider.removeString(this);
   }
 
   light = (e?: React.SyntheticEvent<any>): void => {

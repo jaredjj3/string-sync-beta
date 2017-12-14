@@ -34,7 +34,7 @@ const enhance = compose(
   })
 );
 
-const NotationShow = () => (
+const NotationShow = (props) => (
   <div className="NotationShow">
     <Banner />
     <Video />

@@ -22,7 +22,11 @@ class FretMarker extends React.Component<FretMarkerProps, FretMarkerState> {
   state: FretMarkerState = { lit: false, pressed: false };
 
   componentDidMount(): void {
-    this.props.tab.provider.fretman.addMarker(this);
+    this.props.tab.provider.addMarker(this);
+  }
+
+  componentWillUnmount(): void {
+    this.props.tab.provider.removeMarker(this);
   }
 
   shouldComponentUpdate(nextProps: FretMarkerProps, nextState: FretMarkerState): boolean {

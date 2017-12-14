@@ -22,6 +22,10 @@ class VexProvider {
   scaleman: ScaleVisualizer;
   tickman: Tickman;
 
+  // Fretboard components
+  mountedMarkers: Array<any> = [];
+  mountedStrings: Array<any> = [];
+
   private _vextabString: string;
   private _bpm: number;
   private _deadTimeMs: number;
@@ -107,10 +111,10 @@ class VexProvider {
     this.parseError    = null;
     this.vextabs       = [];
     this.scoreLinePosY = [];
-    this.fretman       = new Fretman();
+    this.fretman       = new Fretman(this.mountedMarkers, this.mountedStrings);
     this.formatter     = new Formatter();
     this.player        = new Player();
-    this.scaleman      = new ScaleVisualizer(this.fretman);
+    this.scaleman      = new ScaleVisualizer(this.fretman)  ;
     this.tickman       = new Tickman(this.player);
     this.currentTimeMs = 0;
   }
@@ -136,6 +140,26 @@ class VexProvider {
     }
 
     return this.isReady = this.editMode || this.isReady;
+  }
+
+  addMarker(marker: any): void {
+    this.mountedMarkers.push(marker);
+    this.fretman.addMarker(marker);
+  }
+
+  removeMarker(marker: any): void {
+    this.mountedMarkers.filter(mountedMarker => mountedMarker !== marker);
+    this.fretman.removeMarker(marker);
+  }
+
+  addString(string: any): void {
+    this.mountedMarkers.push(string);
+    this.fretman.addMarker(string);
+  }
+
+  removeString(string: any): void {
+    this.mountedMarkers.filter(mountedString => mountedString !== string);
+    this.fretman.removeString(string);
   }
 
   private _setupFormatter(): boolean {

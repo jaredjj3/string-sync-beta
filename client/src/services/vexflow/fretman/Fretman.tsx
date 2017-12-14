@@ -1,5 +1,6 @@
 import { VexPlayer } from 'services/vexflow';
 import { flatMap, compact } from 'lodash';
+import Frets from 'components/fretboard/frets';
 
 class Fretman {
   lit: Array<any> = [];
@@ -7,7 +8,12 @@ class Fretman {
   markers: any = { strings: { } };
   strings: any = { };
 
-  addMarker(markerComponent: any): void {
+  constructor(markers: Array<any> = [], strings: Array<any> = []) {
+    markers.forEach(this.addMarker);
+    strings.forEach(this.addString);
+  }
+
+  addMarker = (markerComponent: any): void => {
     const { string, fret } = markerComponent.props;
 
     this.markers.strings[string] = this.markers.strings[string] || { frets: { } };
@@ -15,17 +21,21 @@ class Fretman {
     this.markers.strings[string].frets[fret] = markerComponent;
   }
 
-  addString(stringComponent: any): void {
+  removeMarker = (markerComponent: any): void => {
+    const { string, fret } = markerComponent.props;
+    const guitarString = this.markers.strings[string];
+
+    if (guitarString) {
+      delete guitarString.frets[fret];
+    }
+  }
+
+  addString = (stringComponent: any): void => {
     this.strings[stringComponent.props.string] = stringComponent;
   }
 
-  reset(): void {
-    this.lit.forEach(component => component.unlight());
-    this.pressed.forEach(component => component.unpress());
-    this.lit = [];
-    this.pressed = [];
-    this.markers = { strings: { } };
-    this.strings = { };
+  removeString = (stringComponent: any): void => {
+    delete this.strings[stringComponent.props.string];
   }
 
   updateWithPlayer(player: VexPlayer): void {
