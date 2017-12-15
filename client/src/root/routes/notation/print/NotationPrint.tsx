@@ -1,7 +1,32 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { compose, lifecycle } from 'recompose';
-import { withFeatures, withNotation } from 'enhancers';
+import { withFeatures, withNotation, withTab, identity } from 'enhancers';
+import NotationProvider from '../provider';
+import Score from 'components/tab/score';
+
+const NotationPrint = (props) => (
+  <div className="NotationPrint Print">
+    <div className="Print--hide">
+      <Link to={`/n/${notationId(props)}/`}>
+        back
+      </Link>
+    </div>
+    {
+      props.tab.provider && props.tab.provider.isReady ?
+        <div className="NotationPrint__title">
+          <h3>{`${props.notation.songName} by ${props.notation.artistName}`}</h3>
+          <p>{`transcribed by @${props.notation.transcriber.username}`}</p>
+        </div> :
+        <div className="NotationPrint__title">
+          Loading...
+        </div>
+    }
+    <NotationProvider overrideWidth={900}>
+      <Score />
+    </NotationProvider>
+  </div>
+);
 
 const notationId = (props) => (
   props.match.params.id
@@ -18,6 +43,7 @@ const enhance = compose(
   withRouter,
   withFeatures,
   withNotation,
+  withTab,
   lifecycle({
     componentDidMount(): void {
       this.props.disableFeatures(['navbar']);
@@ -27,17 +53,6 @@ const enhance = compose(
       this.props.enableFeatures(['navbar']);
     }
   })
-);
-
-const NotationPrint = (props) => (
-  <div className="NotationPrint">
-    <div>
-      <Link to={`/n/${notationId(props)}/`}>
-        back
-      </Link>
-    </div>
-    NotationPrint
-  </div>
 );
 
 export default enhance(NotationPrint);

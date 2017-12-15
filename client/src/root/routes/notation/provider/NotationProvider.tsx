@@ -31,6 +31,7 @@ class NotationProvider extends React.Component<any, any> {
   }
 
   updateProviderInternals(props: any): void {
+    const { overrideWidth } = props;
     const { provider } = props.tab;
     const { vextabString, bpm, deadTimeMs } = props.notation;
     const viewportWidth = props.viewport.width;
@@ -38,7 +39,7 @@ class NotationProvider extends React.Component<any, any> {
     provider.vextabString  = vextabString;
     provider.bpm           = bpm;
     provider.deadTime      = deadTimeMs;
-    provider.viewportWidth = viewportWidth;
+    provider.viewportWidth = overrideWidth || viewportWidth;
 
     if (provider.shouldTrySetup) {
       provider.setup();
