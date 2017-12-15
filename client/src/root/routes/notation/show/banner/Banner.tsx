@@ -25,10 +25,10 @@ class Banner extends React.Component<BannerProps, BannerState> {
           <Col span={5}>
             <Row className="NotationShowBanner__icons" type="flex" justify="start">
               <span>
-                <Link to={`/n/${id}/print`}>
-                  <div className="NotationsShowBanner__print">
-                    <Icon type="printer" style={{ fontSize: '24px' }} />
-                    <span>print</span>
+                <Link to="/library">
+                  <div className="NotationsShowBanner__back">
+                    <Icon type="close" style={{ fontSize: '24px' }} />
+                    <span>back</span>
                   </div>
                 </Link>
               </span>
@@ -40,10 +40,10 @@ class Banner extends React.Component<BannerProps, BannerState> {
           <Col span={5}>
             <Row className="NotationShowBanner__icons" type="flex" justify="end">
               <span>
-                <Link to="/library">
-                  <div className="NotationsShowBanner__back">
-                    <Icon type="close" style={{ fontSize: '24px' }} />
-                    <span>back</span>
+                <Link to={`/n/${id}/print`}>
+                  <div className="NotationsShowBanner__print">
+                    <Icon type="printer" style={{ fontSize: '24px' }} />
+                  <span>print</span>
                   </div>
                 </Link>
               </span>

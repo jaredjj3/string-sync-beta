@@ -4,13 +4,21 @@ import { compose, lifecycle } from 'recompose';
 import { withFeatures, withNotation, withTab, identity } from 'enhancers';
 import NotationProvider from '../provider';
 import Score from 'components/tab/score';
+import { Row, Icon } from 'antd';
 
 const NotationPrint = (props) => (
   <div className="NotationPrint Print">
     <div className="Print--hide">
-      <Link to={`/n/${notationId(props)}/`}>
-        back
-      </Link>
+      <Row type="flex" justify="start">
+        <span>
+          <Link to={`/n/${notationId(props)}/`}>
+            <div className="NotationPrint__back">
+              <Icon type="close" style={{ fontSize: '24px' }} />
+              <span>back</span>
+            </div>
+          </Link>
+        </span>
+      </Row>
     </div>
     {
       props.tab.provider && props.tab.provider.isReady ?
