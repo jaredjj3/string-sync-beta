@@ -14,6 +14,8 @@ const Notation = ({ match }) => (
   </Switch>
 );
 
-export default compose(
+const enhance = compose(
   withRouter
-)(Notation);
+);
+
+export default enhance(Notation);

@@ -22,7 +22,18 @@ class Banner extends React.Component<BannerProps, BannerState> {
     return (
       <div className="NotationShowBanner" >
         <Row type="flex" align="middle" justify="center">
-          <Col span={5} />
+          <Col span={5}>
+            <Row className="NotationShowBanner__icons" type="flex" justify="start">
+              <span>
+                <Link to={`/n/${id}/print`}>
+                  <div className="NotationsShowBanner__print">
+                    <Icon type="printer" style={{ fontSize: '24px' }} />
+                    <span>print</span>
+                  </div>
+                </Link>
+              </span>
+            </Row>
+          </Col>
           <Col className="NotationShowBanner__text" span={14}>
             {bannerText}
           </Col>
