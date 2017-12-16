@@ -54,11 +54,11 @@ const enhance = compose(
   withTab,
   lifecycle({
     componentDidMount(): void {
-      this.props.disableFeatures(['navbar']);
+      this.props.disableFeatures(['navbar', 'gradient']);
       fetchNotation(this.props);
     },
     componentWillUnmount(): void {
-      this.props.enableFeatures(['navbar']);
+      this.props.enableFeatures(['navbar', 'gradient']);
     }
   })
 );
