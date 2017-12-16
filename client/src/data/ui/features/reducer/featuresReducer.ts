@@ -7,7 +7,8 @@ const defaultState: Features = Object.freeze({
   fretboard: true,
   autoSave: false,
   scaleVisualization: false,
-  navbar: true
+  navbar: true,
+  gradient: true
 });
 
 export default (state = defaultState, action): Features => {
