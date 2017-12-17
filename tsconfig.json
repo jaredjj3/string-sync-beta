@@ -1,25 +1,31 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "lib": [
-      "es2016",
-      "dom"
-    ],
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": "client/src",
+    "sourceMap": true,
+    "target": "es5",
     "jsx": "react",
-    "outDir": "tmp-see-ts-loader-issue-171",
-    "module": "es6",
+    "module": "commonjs",
     "moduleResolution": "node",
-    "pretty": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "declaration": false,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "removeComments": true,
+    "strictNullChecks": false,
+    "outDir": "app/assets/javascripts",
+    "baseUrl": "client/src",
     "paths": {
       "client/src/*": ["./src/*"]
     },
-    "sourceMap": true
+    "lib": [
+      "es6",
+      "es7",
+      "dom"
+    ]
   },
-  "compileOnSave": true,
   "exclude": [
+    "dist",
+    "build",
     "node_modules"
   ]
 }
