@@ -15,7 +15,7 @@
     "outDir": "app/assets/javascripts",
     "baseUrl": "client/src",
     "paths": {
-      "client/src/*": ["./src/*"]
+      "client/src/*": ["./*"]
     },
     "lib": [
       "es6",
@@ -24,8 +24,7 @@
     ]
   },
   "exclude": [
-    "dist",
-    "build",
+    "app/assets/javascripts",
     "node_modules"
   ]
 }
