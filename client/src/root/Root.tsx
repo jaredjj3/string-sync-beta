@@ -7,7 +7,9 @@ import { Button } from 'antd';
 const Root = ({ handleButtonClick }) => (
   <div>
     <NotificationSystem />
-    If i make a change, will it work.
+    <div className="test">
+      How quick is this?
+    </div>
     <Button
       onClick={handleButtonClick}
     >

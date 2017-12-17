@@ -5,7 +5,6 @@ import Root from 'root';
 
 declare global {
   interface Window {
-    notification: any;
     currentUser: any;
     $: any;
     store: any;
