@@ -13,5 +13,5 @@ declare global {
 }
 
 document.addEventListener('DOMContentLoaded', (): void => {
-  ReactDOM.render(<Root />, document.getElementById('root'));
+  ReactDOM.render(<Root store={{}} />, document.getElementById('root'));
 });
