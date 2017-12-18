@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose, lifecycle } from 'recompose';
+import { compose, lifecycle, renderNothing } from 'recompose';
 import { add, remove } from 'eventlistener';
 import getViewport from 'ssUtil/getViewport';
 import { throttle } from 'lodash';
@@ -20,7 +20,7 @@ const maybeSetViewport = throttle(({ viewport }) => event => {
   }
 }, 30);
 
-const ViewportManager = ({ viewport }) => null;
+const ViewportManager = renderNothing();
 
 const enhance = compose(
   withViewport,

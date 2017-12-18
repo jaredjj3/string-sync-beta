@@ -1,9 +1,11 @@
 import * as React from 'react';
+import { compose, shouldUpdate } from 'recompose';
 import SignupButton from './SignupButton';
 import { Button } from 'antd';
 import { Link } from 'react-router-dom';
+import { withSession } from 'enhancers';
 
-const Section1 = ({ isLoggedIn }) => (
+const Section1 = ({ session }) => (
   <section>
     <h1 className="Landing--desktop__title">
       Learn more. Think less.
@@ -16,9 +18,16 @@ const Section1 = ({ isLoggedIn }) => (
           </Link>
         </Button>
       </span>
-      <SignupButton isLoggedIn={isLoggedIn} />
+      <SignupButton isLoggedIn={session.state.isLoggedIn} />
     </div>
   </section>
 );
 
-export default Section1;
+const enhance = compose(
+  withSession,
+  shouldUpdate((props, nextProps) => (
+    props.session.state.isLoggedIn !== nextProps.session.state.isLoggedIn
+  ))
+);
+
+export default enhance(Section1);

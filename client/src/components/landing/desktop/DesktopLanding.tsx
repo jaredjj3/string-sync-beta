@@ -6,21 +6,16 @@ import { withFeatures, withSession } from 'enhancers';
 import Section1 from 'components/landing/desktop/Section1';
 import Section2 from 'components/landing/desktop/Section2';
 
-const DesktopLanding = ({ session }) => {
-  const { isLoggedIn } = session.state;
-
-  return (
-    <div className="Landing--desktop">
-      <ActionBar isLoggedIn={isLoggedIn} />
-      <Section1 isLoggedIn={isLoggedIn} />
-      <Section2 />
-    </div>
-  );
-};
+const DesktopLanding = () => (
+  <div className="Landing--desktop">
+    <ActionBar />
+    <Section1 />
+    <Section2 />
+  </div>
+);
 
 const enhance = compose(
   withFeatures,
-  withSession,
   lifecycle({
     componentDidMount(): void {
       this.props.features.dispatch.disableFeatures(['navbar']);

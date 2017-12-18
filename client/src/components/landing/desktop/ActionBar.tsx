@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { branch } from 'recompose';
+import { branch, compose, shouldUpdate } from 'recompose';
+import { withSession } from 'enhancers';
 
-const LoginLinkListItem = branch(
+const showIfLoggedIn = branch(
   ({ isLoggedIn }) => !isLoggedIn,
   i => i,
-)(() => (
+);
+
+const LoginLinkListItem = showIfLoggedIn(() => (
   <li>
     <Link to="/login">
       login
@@ -13,7 +16,7 @@ const LoginLinkListItem = branch(
   </li>
 ));
 
-const ActionBar = ({ isLoggedIn }) => (
+const ActionBar = ({ session }) => (
   <div className="Landing--desktop__altActionBar">
     <ul className="AltActionBar__links">
       <li>
@@ -31,9 +34,16 @@ const ActionBar = ({ isLoggedIn }) => (
           library
         </Link>
       </li>
-      <LoginLinkListItem isLoggedIn={isLoggedIn} />
+      <LoginLinkListItem isLoggedIn={session.state.isLoggedIn} />
     </ul>
   </div>
 );
 
-export default ActionBar;
+const enhance = compose(
+  withSession,
+  shouldUpdate((props, nextProps) => (
+    props.session.state.isLoggedIn !== nextProps.session.state.isLoggedIn
+  ))
+);
+
+export default enhance(ActionBar);

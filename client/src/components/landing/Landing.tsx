@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose, branch, shouldUpdate, renderComponent, createSink } from 'recompose';
+import { compose, branch, shouldUpdate, renderComponent, renderNothing, createSink } from 'recompose';
 import withViewport from 'enhancers/withViewport';
 import DesktopLanding from './desktop';
 import { withRouter } from 'react-router';
@@ -16,9 +16,9 @@ const enhance = compose(
   )),
   branch(
     ({ viewport }) => viewport.state.type === 'DESKTOP',
-    renderComponent(DesktopLanding),
+    i => i,
     renderComponent(createSink(redirectToLibrary))
   )
 );
 
-export default enhance(() => null);
+export default enhance(DesktopLanding);

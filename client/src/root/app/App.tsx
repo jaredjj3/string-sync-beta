@@ -13,15 +13,17 @@ const scrollToTop = (): void => {
 };
 
 const App = () => (
-  <div className="App">
+  <div id="App" className="App">
     <LocaleProvider locale={enUS}>
       <main>
-        <div id="App__functionality" className="hidden">
+        <div className="App__functionality hidden">
           <NotificationSystem />
           <ViewportManager />
           <UserProcessor />
         </div>
-        <Routes />
+        <div className="App__body" >
+          <Routes />
+        </div>
       </main>
     </LocaleProvider>
   </div>
