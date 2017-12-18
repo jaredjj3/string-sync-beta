@@ -1,14 +1,16 @@
-import * as API from './notationsApi';
-import * as constants from './notationsConstants';
-import { camelCaseObjKeys } from 'ssUtil';
+import API from '../api';
+import { ignoreIfExecuting, camelCaseObjKeys } from 'stringSyncUtil';
 
-export const setNotations = (notations: Store.Notations) => ({
-  type: constants.SET_NOTATIONS,
+export const SET_NOTATIONS = 'SET_NOTATIONS';
+export const RESET_NOTATIONS = 'RESET_NOTATIONS';
+
+export const setNotations = notations => ({
+  type: SET_NOTATIONS,
   notations,
 });
 
 export const resetNotations = () => ({
-  type: constants.RESET_NOTATIONS
+  type: RESET_NOTATIONS
 });
 
 // NotationsController#index
