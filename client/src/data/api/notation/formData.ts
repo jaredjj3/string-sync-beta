@@ -36,12 +36,12 @@ const formData = (notation: FormNotation) => {
   }
 
   if (typeof featured !== 'undefined') {
-    data.append('notation[featured]', featured);
+    data.append('notation[featured]', JSON.stringify(featured));
   }
 
   if (tagIds && tagIds.length > 0) {
     tagIds.map(id => {
-      data.append(`notation[tag_ids][]`, id);
+      data.append(`notation[tag_ids][]`, JSON.stringify(id));
     });
   }
 

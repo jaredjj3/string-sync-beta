@@ -37,4 +37,8 @@ declare namespace Store {
   type Notations = Array<PresentationalNotation>
 
   type Tags = Array<Tag>
+
+  interface RAF {
+    instance: any;
+  }
 }
