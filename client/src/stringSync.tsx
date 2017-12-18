@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import Root from 'root';
+import store from 'data/store';
 
 declare global {
   interface Window {
@@ -13,5 +14,5 @@ declare global {
 }
 
 document.addEventListener('DOMContentLoaded', (): void => {
-  ReactDOM.render(<Root store={{}} />, document.getElementById('root'));
+  ReactDOM.render(<Root store={store} />, document.getElementById('root'));
 });

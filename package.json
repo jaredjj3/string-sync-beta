@@ -5,7 +5,7 @@
   "description": "A frontend boilerplate with React, Redux and Typescript",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --debug --devtool cheap-module-source-map --output-pathinfo --history-api-fallback --hot --inline --progress --colors --port 8080",
+    "dev": "webpack-dev-server --debug --devtool cheap-module-source-map --output-pathinfo --history-api-fallback --hot --inline --progress --colors --port 8080",
     "build": "webpack -p --progress --colors"
   },
   "license": "MIT",
@@ -45,9 +45,11 @@
     "antd": "^3.0.1",
     "antd-mobile": "^2.1.2",
     "classnames": "^2.2.5",
+    "eventlistener": "0.0.1",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
     "less-vars-to-js": "^1.2.1",
+    "lodash": "^4.17.4",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "react-redux": "^5.0.6",
@@ -55,6 +57,6 @@
     "react-router-dom": "^4.2.2",
     "recompose": "^0.26.0",
     "redux": "^3.7.2",
-    "redux-actions": "^2.2.1"
+    "redux-thunk": "^2.2.0"
   }
 }
