@@ -1,8 +1,8 @@
 import * as React from 'react';
-import NotificationSystem from './notificationSystem';
+import NotificationSystem from './NotificationSystem';
 import Routes from 'root/routes';
-import ViewportManager from './viewportManager';
-import UserProcessor from './userProcessor';
+import ViewportManager from './ViewportManager';
+import UserProcessor from './UserProcessor';
 import enUS from 'antd/lib/locale-provider/en_US.js';
 import { LocaleProvider } from 'antd';
 import { compose, lifecycle } from 'recompose';
