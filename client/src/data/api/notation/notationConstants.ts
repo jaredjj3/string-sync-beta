@@ -1,0 +1,2 @@
+export const SET_NOTATION = 'SET_NOTATION';
+export const RESET_NOTATION = 'RESET_NOTATION';

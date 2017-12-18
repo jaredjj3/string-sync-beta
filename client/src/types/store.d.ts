@@ -19,4 +19,22 @@ declare namespace Store {
     navbar: boolean;
     gradient: boolean;
   }
+
+  interface Notation {
+    id: number;
+    songName: string;
+    durationMs: number;
+    deadTimeMs: number;
+    bpm: number;
+    transcriber: User;
+    artistName: string;
+    thumbnailUrl: string;
+    vextabString: string;
+    youtubeVideoId?: string;
+    tags: Array<string>;
+  }
+
+  type Notations = Array<PresentationalNotation>
+
+  type Tags = Array<Tag>
 }
