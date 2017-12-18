@@ -4,10 +4,10 @@ import rootReducer from './rootReducer';
 import rootMiddleware from './rootMiddleware';
 
 const preLoadedState = {
-  // session: {
-  //   currentUser: window.currentUser,
-  //   isLoggedIn: isLoggedIn(window.currentUser)
-  // },
+  session: {
+    currentUser: window.currentUser,
+    isLoggedIn: isLoggedIn(window.currentUser)
+  },
   viewport: getViewport()
 };
 

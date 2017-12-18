@@ -6,4 +6,9 @@ declare namespace Store {
     type: ViewportType;
     isTouch: boolean;
   }
+
+  interface Session {
+    currentUser: User;
+    isLoggedIn: boolean
+  }
 }

@@ -6,6 +6,7 @@ import store from 'data/store';
 
 declare global {
   interface Window {
+    notification: any;
     currentUser: any;
     $: any;
     store: any;
