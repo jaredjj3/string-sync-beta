@@ -1,6 +1,6 @@
 import * as React from 'react';
 import NotificationSystem from './NotificationSystem';
-import Routes from 'root/routes';
+import Routes from './Routes';
 import ViewportManager from './ViewportManager';
 import UserProcessor from './UserProcessor';
 import enUS from 'antd/lib/locale-provider/en_US.js';
