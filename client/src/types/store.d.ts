@@ -41,4 +41,9 @@ declare namespace Store {
   interface RAF {
     instance: any;
   }
+
+  interface Tab {
+    provider: any;
+    updatedAt: number;
+  }
 }
