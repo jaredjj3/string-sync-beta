@@ -46,4 +46,11 @@ declare namespace Store {
     provider: any;
     updatedAt: number;
   }
+
+  interface Video {
+    player: VideoPlayer;
+    playerState: string;
+    isActive: boolean;
+    loop: Array<number>;
+  }
 }
