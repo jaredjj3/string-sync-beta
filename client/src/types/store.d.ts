@@ -11,4 +11,12 @@ declare namespace Store {
     currentUser: User;
     isLoggedIn: boolean
   }
+
+  interface Features {
+    fretboard: boolean;
+    autoSave: boolean;
+    scaleVisualization: boolean;
+    navbar: boolean;
+    gradient: boolean;
+  }
 }
