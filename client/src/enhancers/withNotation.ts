@@ -7,11 +7,11 @@ const mapStateToProps = ({ notation }) => ({
 
 const mapDispatchToProps = dispatch => ({
   setNotation: notation => dispatch(actions.setNotation(notation)),
-    resetNotation: () => dispatch(actions.resetNotation),
-    fetchNotation: notationId => dispatch(actions.fetchNotation(notationId)),
-    createNotation: notation => dispatch(actions.createNotation(notation)),
-    updateNotation: notation => dispatch(actions.updateNotation(notation)),
-    destroyNotation: notationId => dispatch(actions.destroyNotation(notationId))
+  resetNotation: () => dispatch(actions.resetNotation),
+  fetchNotation: notationId => dispatch(actions.fetchNotation(notationId)),
+  createNotation: notation => dispatch(actions.createNotation(notation)),
+  updateNotation: notation => dispatch(actions.updateNotation(notation)),
+  destroyNotation: notationId => dispatch(actions.destroyNotation(notationId))
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => ({
@@ -22,10 +22,10 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   }
 });
 
-const withViewport = Component => connect(
+const withNotation = Component => connect(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps
 )(Component);
 
-export default withViewport;
+export default withNotation;

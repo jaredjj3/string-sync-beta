@@ -11,7 +11,7 @@ export const resetTags = () => ({
 });
 
 // TagsController#index
-export const fetchTags = user => async dispatch => {
+export const fetchTags = () => async dispatch => {
   try {
     const tags = await API.fetchTags();
     dispatch(setTags(tags));

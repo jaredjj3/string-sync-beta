@@ -20,10 +20,10 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   }
 });
 
-const withViewport = Component => connect(
+const withSession = Component => connect(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps
 )(Component);
 
-export default withViewport;
+export default withSession;

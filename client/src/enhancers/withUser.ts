@@ -15,10 +15,10 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   }
 });
 
-const withViewport = Component => connect(
+const withUser = Component => connect(
   null,
   mapDispatchToProps,
   mergeProps
 )(Component);
 
-export default withViewport;
+export default withUser;
