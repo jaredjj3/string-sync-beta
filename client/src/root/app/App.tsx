@@ -2,6 +2,7 @@ import * as React from 'react';
 import NotificationSystem from './notificationSystem';
 import Routes from 'root/routes';
 import ViewportManager from './viewportManager';
+import UserProcessor from './userProcessor';
 import enUS from 'antd/lib/locale-provider/en_US.js';
 import { LocaleProvider } from 'antd';
 import { compose, lifecycle } from 'recompose';
@@ -18,6 +19,7 @@ const App = () => (
         <div id="App__functionality" className="hidden">
           <NotificationSystem />
           <ViewportManager />
+          <UserProcessor />
         </div>
         <Routes />
       </main>
