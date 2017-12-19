@@ -1,14 +1,17 @@
 import * as React from 'react';
 import { compose, lifecycle, withState, withHandlers } from 'recompose';
 import { withNotations } from 'enhancers';
-import { LoadingText, Nav } from 'components';
+import { Nav } from 'components';
+import LibraryContent from './content';
 
 const Library = ({ isLoading }) => (
   <div id="Library" className="Library">
     <Nav />
-    <LoadingText isLoading={isLoading} />
+    <LibraryContent isLoading={isLoading} />
   </div>
 );
+
+const shouldFetchNotations = (notations): boolean => notations.state.length === 0;
 
 const enhance = compose(
   withNotations,
@@ -18,10 +21,13 @@ const enhance = compose(
     stopLoading: ({ setLoading }) => () => setLoading(false)
   }),
   lifecycle({
-    async componentDidMount(): Promise<void> {
-      this.props.startLoading();
-      await this.props.notations.dispatch.fetchNotations();
-      this.props.stopLoading();
+    componentDidMount: async (): Promise<void> => {
+      const { startLoading, notations, stopLoading } = this.props;
+      if (shouldFetchNotations(notations)) {
+        startLoading();
+        await notations.dispatch.fetchNotations();
+        stopLoading();
+      }
     }
   })
 );

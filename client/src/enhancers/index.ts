@@ -9,6 +9,8 @@ import withUser from './withUser';
 import withVideo from './withVideo';
 import withViewport from './withViewport';
 
+import textWhileLoading from './textWhileLoading';
+
 export {
   withFeatures,
   withNotation,
@@ -19,5 +21,6 @@ export {
   withTags,
   withUser,
   withVideo,
-  withViewport
+  withViewport,
+  textWhileLoading
 };
