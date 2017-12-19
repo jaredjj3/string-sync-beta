@@ -1,14 +1,19 @@
 import * as React from 'react';
-import { compose } from 'recompose';
+import DesktopNavLeft from './DesktopNavLeft';
+import DesktopNavRight from './DesktopNavRight';
+import { Row, Col } from 'antd';
 
 const DesktopNav = () => (
   <div className="Nav--desktop">
-    DesktopNav
+    <Row type="flex" justify="space-between" align="middle">
+      <Col xs={0} sm={0} md={12} lg={12}>
+        <DesktopNavLeft />
+      </Col>
+      <Col xs={0} sm={0} md={12} lg={12}>
+        <DesktopNavRight />
+      </Col>
+    </Row>
   </div>
 );
 
-const enhance = compose(
-
-);
-
-export default enhance(DesktopNav);
+export default DesktopNav;

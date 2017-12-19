@@ -17,7 +17,7 @@ const LoginLinkListItem = showIfLoggedIn(() => (
 ));
 
 const ActionBar = ({ session }) => (
-  <div className="Landing--desktop__altActionBar">
+  <nav className="Landing--desktop__altActionBar">
     <ul className="AltActionBar__links">
       <li>
         <Link to="/about">
@@ -36,7 +36,7 @@ const ActionBar = ({ session }) => (
       </li>
       <LoginLinkListItem isLoggedIn={session.state.isLoggedIn} />
     </ul>
-  </div>
+  </nav>
 );
 
 const enhance = compose(

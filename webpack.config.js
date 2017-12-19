@@ -22,6 +22,7 @@ module.exports = {
       'react-dom',
       'react-redux',
       'react-router',
+      'recompose',
       'redux'
     ]
   },
