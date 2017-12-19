@@ -21,14 +21,17 @@ const enhance = compose(
   }),
   lifecycle({
     async componentDidMount(): Promise<void> {
-      const { startLoading, notations, stopLoading } = this.props;
+      const { startLoading, notations, stopLoading, isLoading } = this.props;
       const shouldFetchNotations = notations.state.length === 0;
 
       if (shouldFetchNotations) {
-        startLoading();
+        if (!isLoading) {
+          startLoading();
+        }
         await notations.dispatch.fetchNotations();
-        stopLoading();
       }
+
+      stopLoading();
     }
   })
 );
