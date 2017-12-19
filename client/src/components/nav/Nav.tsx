@@ -4,8 +4,6 @@ import DesktopNav from './desktop';
 import MobileNav from './mobile';
 import withViewport from 'enhancers/withViewport';
 
-const Nav = renderNothing();
-
 const enhance = compose(
   withViewport,
   branch(
@@ -14,5 +12,7 @@ const enhance = compose(
     renderComponent(DesktopNav)
   )
 );
+
+const Nav = renderNothing();
 
 export default enhance(Nav);

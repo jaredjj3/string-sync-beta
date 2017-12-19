@@ -20,8 +20,6 @@ const maybeSetViewport = throttle(({ viewport }) => event => {
   }
 }, 30);
 
-const ViewportManager = renderNothing();
-
 const enhance = compose(
   withViewport,
   lifecycle({
@@ -33,5 +31,7 @@ const enhance = compose(
     }
   })
 );
+
+const ViewportManager = renderNothing();
 
 export default enhance(ViewportManager);

@@ -8,6 +8,13 @@ const showIfLoggedIn = branch(
   i => i,
 );
 
+const enhance = compose(
+  withSession,
+  shouldUpdate((props, nextProps) => (
+    props.session.state.isLoggedIn !== nextProps.session.state.isLoggedIn
+  ))
+);
+
 const LoginLinkListItem = showIfLoggedIn(() => (
   <li>
     <Link to="/login">
@@ -37,13 +44,6 @@ const ActionBar = ({ session }) => (
       <LoginLinkListItem isLoggedIn={session.state.isLoggedIn} />
     </ul>
   </nav>
-);
-
-const enhance = compose(
-  withSession,
-  shouldUpdate((props, nextProps) => (
-    props.session.state.isLoggedIn !== nextProps.session.state.isLoggedIn
-  ))
 );
 
 export default enhance(ActionBar);

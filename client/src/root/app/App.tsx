@@ -12,6 +12,15 @@ const scrollToTop = (): void => {
   window.scrollTo(null, 0);
 };
 
+const enhance = compose(
+  withRouter,
+  lifecycle({
+    componentDidUpdate: ({ history }) => {
+      history.listen(scrollToTop);
+    }
+  })
+);
+
 const App = () => (
   <div id="App" className="App">
     <LocaleProvider locale={enUS}>
@@ -27,15 +36,6 @@ const App = () => (
       </main>
     </LocaleProvider>
   </div>
-);
-
-const enhance = compose(
-  withRouter,
-  lifecycle({
-    componentDidUpdate: ({ history }) => {
-      history.listen(scrollToTop);
-    }
-  })
 );
 
 export default enhance(App);

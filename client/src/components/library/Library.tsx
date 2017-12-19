@@ -4,14 +4,6 @@ import { withNotations } from 'enhancers';
 import { Nav, Footer } from 'components';
 import LibraryContent from './content';
 
-const Library = ({ isLoading }) => (
-  <div id="Library" className="RouteEntry Library">
-    <Nav />
-    <LibraryContent isLoading={isLoading} />
-    <Footer />
-  </div>
-);
-
 const enhance = compose(
   withNotations,
   withState('isLoading', 'setLoading', true),
@@ -34,6 +26,14 @@ const enhance = compose(
       stopLoading();
     }
   })
+);
+
+const Library = ({ isLoading }) => (
+  <div id="Library" className="RouteEntry Library">
+    <Nav />
+    <LibraryContent isLoading={isLoading} />
+    <Footer />
+  </div>
 );
 
 export default enhance(Library);

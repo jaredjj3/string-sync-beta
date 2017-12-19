@@ -5,6 +5,13 @@ import { Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { withSession } from 'enhancers';
 
+const enhance = compose(
+  withSession,
+  shouldUpdate((props, nextProps) => (
+    props.session.state.isLoggedIn !== nextProps.session.state.isLoggedIn
+  ))
+);
+
 const Section1 = ({ session }) => (
   <section>
     <h1 className="Landing--desktop__title">
@@ -21,13 +28,6 @@ const Section1 = ({ session }) => (
       <SignupButton isLoggedIn={session.state.isLoggedIn} />
     </div>
   </section>
-);
-
-const enhance = compose(
-  withSession,
-  shouldUpdate((props, nextProps) => (
-    props.session.state.isLoggedIn !== nextProps.session.state.isLoggedIn
-  ))
 );
 
 export default enhance(Section1);

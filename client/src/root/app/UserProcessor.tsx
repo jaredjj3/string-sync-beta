@@ -3,15 +3,15 @@ import { compose, createSink } from 'recompose';
 import { getNullUser, camelCaseObjKeys } from 'ssUtil';
 import { withUser } from 'enhancers';
 
+const enhance = compose(
+  withUser,
+  createSink
+);
+
 const processUser = ({ user }) => {
   const currentUser = window.currentUser || getNullUser();
   delete window.currentUser;
   user.dispatch.setUser(camelCaseObjKeys(currentUser, false));
 };
-
-const enhance = compose(
-  withUser,
-  createSink
-);
 
 export default enhance(processUser);

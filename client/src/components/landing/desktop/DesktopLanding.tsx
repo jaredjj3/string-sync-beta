@@ -6,14 +6,6 @@ import { withFeatures, withSession } from 'enhancers';
 import Section1 from 'components/landing/desktop/Section1';
 import Section2 from 'components/landing/desktop/Section2';
 
-const DesktopLanding = () => (
-  <div className="RouteEntry Landing--desktop">
-    <ActionBar />
-    <Section1 />
-    <Section2 />
-  </div>
-);
-
 const enhance = compose(
   withFeatures,
   lifecycle({
@@ -24,6 +16,14 @@ const enhance = compose(
       this.props.features.dispatch.enableFeatures(['navbar']);
     }
   })
+);
+
+const DesktopLanding = () => (
+  <div className="RouteEntry Landing--desktop">
+    <ActionBar />
+    <Section1 />
+    <Section2 />
+  </div>
 );
 
 export default enhance(DesktopLanding);
