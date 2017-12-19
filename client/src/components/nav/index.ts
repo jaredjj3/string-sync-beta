@@ -1,7 +1,3 @@
-import DesktopNav from './desktop';
-import MobileNav from './mobile';
+import Nav from './Nav';
 
-export {
-  DesktopNav,
-  MobileNav
-};
+export default Nav;

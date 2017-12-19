@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { compose, lifecycle, withState, withHandlers } from 'recompose';
 import { withNotations } from 'enhancers';
-import { LoadingText } from 'components';
+import { LoadingText, Nav } from 'components';
 
 const Library = ({ isLoading }) => (
   <div id="Library" className="Library">
+    <Nav />
     <LoadingText isLoading={isLoading} />
   </div>
 );
