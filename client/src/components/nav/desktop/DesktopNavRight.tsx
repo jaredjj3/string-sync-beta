@@ -6,9 +6,9 @@ import { Menu, Icon } from 'antd';
 
 const { Item, SubMenu } = Menu;
 
-// FIXME: There's a wonky issue where the SubMenu and Items can't be
-// rendered outside of the <Menu/> tag. This issue sources from antd's
-// library. Can't use recompose's branch for now.
+// The reason that this component has ternary hell is due to ant design's Menu
+// component forcing the children of Menu to be either a SubMenu component or
+// a Menu Item component. It's not that bad. Really.
 const DesktopNavRight = ({ handleMenuClick, logout, location, session, isAdmin, isTeacher }) => (
   <div className="Nav--desktop__right">
     <Menu

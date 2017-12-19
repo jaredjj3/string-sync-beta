@@ -90,7 +90,6 @@ module.exports = {
       filename: 'vendor.bundle.js',
       minChunks: Infinity
     }),
-    new webpack.optimize.AggressiveMergingPlugin(),
     new ExtractTextPlugin({
       filename: 'styles.css',
       disable: !isProduction
