@@ -5,7 +5,7 @@ import { Nav, Footer } from 'components';
 import LibraryContent from './content';
 
 const Library = ({ isLoading }) => (
-  <div id="Library" className="Library">
+  <div id="Library" className="RouteEntry Library">
     <Nav />
     <LibraryContent isLoading={isLoading} />
     <Footer />

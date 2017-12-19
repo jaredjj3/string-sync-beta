@@ -5,7 +5,7 @@ const enhance = textWhileLoading(({ isLoading }) => isLoading);
 
 const LibraryContent = enhance((props) => (
   <div className="Library--content">
-    
+    Library content
   </div>
 ));
 

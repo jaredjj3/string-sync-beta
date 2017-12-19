@@ -7,7 +7,7 @@ import Section1 from 'components/landing/desktop/Section1';
 import Section2 from 'components/landing/desktop/Section2';
 
 const DesktopLanding = () => (
-  <div className="Landing--desktop">
+  <div className="RouteEntry Landing--desktop">
     <ActionBar />
     <Section1 />
     <Section2 />
