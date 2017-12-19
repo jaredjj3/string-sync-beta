@@ -3,9 +3,9 @@ import { textWhileLoading } from 'enhancers';
 
 const enhance = textWhileLoading(({ isLoading }) => isLoading);
 
-const LibraryContent = enhance(() => (
-  <div>
-    Library Content!
+const LibraryContent = enhance((props) => (
+  <div className="Library--content">
+    
   </div>
 ));
 
