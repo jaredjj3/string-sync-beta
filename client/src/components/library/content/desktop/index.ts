@@ -1,1 +1,1 @@
-export { default } from './DesktopLibraryContent.tsx';
+export { default } from './DesktopLibraryContent';
