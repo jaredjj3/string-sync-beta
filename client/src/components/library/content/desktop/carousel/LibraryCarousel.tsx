@@ -31,7 +31,10 @@ const enhance = compose(
 
 const Page = ({ title, notationChunk }) => (
   notationChunk.map((notation, ndx) => (
-    <Col key={`carousel-page-${title}-${notation.id}-${ndx}`}>
+    <Col
+      span={8}
+      key={`carousel-page-${title}-${notation.id}-${ndx}`}
+    >
       <NotationDetail notation={notation} />
     </Col>
   ))
@@ -59,8 +62,11 @@ const LibraryCarousel = ({ title, notations, handleCarouselRef, handlePrevClick,
     >
       {
         chunk(notations, NOTATIONS_PER_PAGE).map((notationChunk, ndx) => (
-          <div key={`carousel-page-group-${title}-${ndx}`}>
-            <Row>
+          <div
+            className="LibraryCarousel__carouselPage"
+            key={`carousel-page-group-${title}-${ndx}`}
+          >
+            <Row gutter={10}>
               <Page title={title} notationChunk={notationChunk} />
             </Row>
           </div>
