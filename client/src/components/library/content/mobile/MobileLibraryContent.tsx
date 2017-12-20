@@ -3,6 +3,7 @@ import { compose } from 'recompose';
 import { withNotations } from 'enhancers';
 import { LogoImage, LogoText } from 'components';
 import { Affix } from 'antd';
+import LibraryGrid from './LibraryGrid';
 
 const ContentHeader = () => (
   <div className="Library--mobile--contentHeader">
@@ -25,7 +26,7 @@ const TagContent = ({ sortedTags, notationsByTag }) => (
         offsetTop={2}
       >
         <h1>{tag.toUpperCase()}</h1>
-        Grid
+        <LibraryGrid notations={notationsByTag[tag]} />
       </Affix>
     </div>
   ))
