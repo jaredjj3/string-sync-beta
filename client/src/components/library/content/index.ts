@@ -1,3 +1,1 @@
-import LibraryContent from './LibraryContent';
-
-export default LibraryContent;
+export { default } from './LibraryContent';
