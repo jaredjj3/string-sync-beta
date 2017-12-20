@@ -6,6 +6,26 @@ import { Menu, Icon } from 'antd';
 
 const { Item, SubMenu } = Menu;
 
+const enhance = compose(
+  withRouter,
+  withSession,
+  withProps(({ session }) => ({
+    isTeacher: session.state.currentUser.roles.includes('teacher'),
+    isAdmin: session.state.currentUser.roles.includes('admin')
+  })),
+  withHandlers({
+    handleMenuClick: props => params => {
+      props.history.push(params.key);
+    },
+    logout: props => event => {
+      event.preventDefault();
+      event.stopPropagation();
+      props.session.dispatch.logout();
+      props.history.push('/');
+    }
+  })
+);
+
 // The reason that this component has ternary hell is due to ant design's Menu
 // component forcing the children of Menu to be either a SubMenu component or
 // a Menu Item component. It's not that bad. Really.
@@ -70,26 +90,6 @@ const DesktopNavRight = ({ handleMenuClick, logout, location, session, isAdmin, 
       }
     </Menu>
   </div>
-);
-
-const enhance = compose(
-  withRouter,
-  withSession,
-  withProps(({ session }) => ({
-    isTeacher: session.state.currentUser.roles.includes('teacher'),
-    isAdmin: session.state.currentUser.roles.includes('admin')
-  })),
-  withHandlers({
-    handleMenuClick: props => params => {
-      props.history.push(params.key);
-    },
-    logout: props => event => {
-      event.preventDefault();
-      event.stopPropagation();
-      props.session.dispatch.logout();
-      props.history.push('/');
-    }
-  })
 );
 
 export default enhance(DesktopNavRight);
