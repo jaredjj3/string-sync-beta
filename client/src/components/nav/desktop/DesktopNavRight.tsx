@@ -35,9 +35,6 @@ const DesktopNavRight = ({ handleMenuClick, logout, location, session, isAdmin, 
           social
         </Item>
       </SubMenu>
-      <Item key="/search">
-        search
-      </Item>
       <Item key="/library">
         library
       </Item>
