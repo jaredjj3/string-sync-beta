@@ -3,3 +3,4 @@ export { default as Library } from './library';
 export { default as Nav } from './nav';
 export { default as Footer } from './footer';
 export { LogoImage, LogoText } from './logo';
+export { Contact, Overview, Roadmap, Social } from './about';
