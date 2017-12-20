@@ -2,5 +2,6 @@ export { default as Landing } from './landing';
 export { default as Library } from './library';
 export { default as Nav } from './nav';
 export { default as Footer } from './footer';
+export { default as Dashboard } from './dashboard';
 export { LogoImage, LogoText } from './logo';
 export { Contact, Overview, Roadmap, Social } from './about';
