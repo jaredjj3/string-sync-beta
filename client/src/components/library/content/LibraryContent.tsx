@@ -1,11 +1,22 @@
 import * as React from 'react';
-import { textWhileLoading } from 'enhancers';
+import { compose } from 'recompose';
+import { textWhileLoading, withNotations } from 'enhancers';
+import { NotationDetail } from 'components/notation';
 
-const enhance = textWhileLoading(({ isLoading }) => isLoading);
+interface LibraryContentProps {
+  
+}
 
-const LibraryContent = (props) => (
+const enhance = compose(
+  textWhileLoading(({ isLoading }) => isLoading),
+  withNotations
+);
+
+const LibraryContent = ({ notations }: any) => (
   <div className="Library--content">
-    Library content
+    {
+      notations.state.map(notation => <NotationDetail notation={notation} />)
+    }
   </div>
 );
 

@@ -1,1 +1,1 @@
-export { default } from './detail';
+export { default as NotationDetail } from './detail';

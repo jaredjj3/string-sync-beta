@@ -2,8 +2,6 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Tag, Card } from 'antd';
 
-import './_notationDetail.less';
-
 interface NotationDetailProps {
   notation: Notation | PresentationalNotation;
 }
