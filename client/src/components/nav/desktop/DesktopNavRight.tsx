@@ -18,19 +18,19 @@ const DesktopNavRight = ({ handleMenuClick, logout, location, session, isAdmin, 
       onClick={handleMenuClick}
     >
       <SubMenu title="about">
-        <Item key="/about">
+        <Item key="/about/overview">
           <Icon type="info-circle-o" />
           overview
         </Item>
-        <Item key="/roadmap">
+        <Item key="/about/roadmap">
           <Icon type="car" />
           roadmap
         </Item>
-        <Item key="/contact">
+        <Item key="/about/contact">
           <Icon type="contacts" />
           contact
         </Item>
-        <Item key="/social">
+        <Item key="/about/social">
           <Icon type="usergroup-add" />
           social
         </Item>
