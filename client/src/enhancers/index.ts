@@ -1,26 +1,11 @@
-import withFeatures from './withFeatures';
-import withNotation from './withNotation';
-import withNotations from './withNotations';
-import withRaf from './withRaf';
-import withSession from './withSession';
-import withTab from './withTab';
-import withTags from './withTags';
-import withUser from './withUser';
-import withVideo from './withVideo';
-import withViewport from './withViewport';
-
-import textWhileLoading from './textWhileLoading';
-
-export {
-  withFeatures,
-  withNotation,
-  withNotations,
-  withRaf,
-  withSession,
-  withTab,
-  withTags,
-  withUser,
-  withVideo,
-  withViewport,
-  textWhileLoading
-};
+export { default as textWhileLoading } from './textWhileLoading';
+export { default as withFeatures } from './withFeatures';
+export { default as withNotation } from './withNotation';
+export { default as withNotations } from './withNotations';
+export { default as withRaf } from './withRaf';
+export { default as withSession } from './withSession';
+export { default as withTab } from './withTab';
+export { default as withTags } from './withTags';
+export { default as withUser } from './withUser';
+export { default as withVideo } from './withVideo';
+export { default as withViewport } from './withViewport';

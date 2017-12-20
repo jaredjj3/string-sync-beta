@@ -26,8 +26,8 @@ const TagContent = ({ sortedTags, notationsByTag }) => (
         offsetTop={2}
       >
         <h1>{tag.toUpperCase()}</h1>
-        <LibraryGrid notations={notationsByTag[tag]} />
       </Affix>
+      <LibraryGrid notations={notationsByTag[tag]} />
     </div>
   ))
 );

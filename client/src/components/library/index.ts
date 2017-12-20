@@ -1,3 +1,1 @@
-import Library from './Library';
-
-export default Library;
+export { default } from './Library';

@@ -1,4 +1,3 @@
-import Footer from './Footer';
 import './_footer.less';
 
-export default Footer;
+export { default } from './Footer';

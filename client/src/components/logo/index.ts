@@ -1,8 +1,4 @@
-import LogoImage from './LogoImage';
-import LogoText from './LogoText';
 import './_logo.less';
 
-export {
-  LogoImage,
-  LogoText
-};
+export { default as LogoImage } from './LogoImage';
+export { default as LogoText } from './LogoText';

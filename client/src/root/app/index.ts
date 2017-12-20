@@ -1,6 +1,6 @@
-import App from './App';
-import './_app.less';
+// import order matters!
 import 'antd-mobile/dist/antd-mobile.less';
 import 'antd/dist/antd.less';
+import './_app.less';
 
-export default App;
+export { default } from './App';

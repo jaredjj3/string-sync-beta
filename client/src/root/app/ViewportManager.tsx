@@ -12,13 +12,15 @@ const shouldUpdateViewport = (currViewport: Viewport, nextViewport: Viewport): b
   );
 };
 
-const maybeSetViewport = throttle(({ viewport }) => event => {
+let maybeSetViewport = ({ viewport }) => event => {
   const currViewport = viewport.state;
   const nextViewport = getViewport();
   if (shouldUpdateViewport(currViewport, nextViewport)) {
     viewport.dispatch.setViewport(nextViewport);
   }
-}, 30);
+};
+
+maybeSetViewport = throttle(maybeSetViewport, 30);
 
 const enhance = compose(
   withViewport,

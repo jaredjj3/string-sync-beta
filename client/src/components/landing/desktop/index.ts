@@ -1,3 +1,1 @@
-import DesktopLanding from './DesktopLanding';
-
-export default DesktopLanding;
+export { default } from './DesktopLanding';

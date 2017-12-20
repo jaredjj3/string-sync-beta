@@ -1,5 +1,1 @@
-import RAFLoop from './RAFLoop';
-
-export {
-  RAFLoop
-};
+export { default as RAFLoop } from './RAFLoop';
