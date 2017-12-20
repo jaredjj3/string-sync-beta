@@ -29,7 +29,7 @@ const LibraryContent = ({ viewport, notations }) => {
     return (
       <MobileLibraryContent
         sortedTags={sortedTags}
-        notationsByTag={notationsByTag} 
+        notationsByTag={notationsByTag}
       />
     );
   } else {
