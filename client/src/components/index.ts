@@ -5,3 +5,6 @@ export { default as Footer } from './footer';
 export { default as Dashboard } from './dashboard';
 export { LogoImage, LogoText } from './logo';
 export { Contact, Overview, Roadmap, Social } from './about';
+export { Login } from './session';
+export { Signup } from './user';
+export { NotationDetail, NotationEdit, Upload, NotationShow } from './notation';
