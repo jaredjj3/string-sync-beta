@@ -12,4 +12,4 @@ const Notation = ({ match }) => (
   </Switch>
 );
 
-export default Notation;
+export default withRouter(Notation);

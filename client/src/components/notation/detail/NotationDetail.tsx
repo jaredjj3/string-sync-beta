@@ -24,16 +24,18 @@ const MetaDescription = ({ notation }) => (
 );
 
 const NotationDetail = ({ notation }: NotationDetailProps) => (
-  <Card
-    className="NotationDetail"
-    style={{ width: '240px' }}
-    cover={<img alt={notation.songName} src={notation.thumbnailUrl} />}
-  >
-    <Meta
-      title={`${notation.songName} by ${notation.artistName}`}
-      description={<MetaDescription notation={notation} />}
-    />
-  </Card>
+  <Link to={`/n/${notation.id}`}>
+    <Card
+      className="NotationDetail"
+      style={{ width: '240px' }}
+      cover={<img alt={notation.songName} src={notation.thumbnailUrl} />}
+    >
+      <Meta
+        title={`${notation.songName} by ${notation.artistName}`}
+        description={<MetaDescription notation={notation} />}
+      />
+    </Card>
+  </Link>
 );
 
 export default NotationDetail;
