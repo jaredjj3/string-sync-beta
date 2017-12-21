@@ -6,9 +6,9 @@ const mapStateToProps = ({ session }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setUser: user => dispatch(actions.setUser(user)),
+  setUser: (user: User) => dispatch(actions.setUser(user)),
   resetUser: () => dispatch(actions.resetUser()),
-  login: user => dispatch(actions.login(user)),
+  login: (user: FormUser) => dispatch(actions.login(user)),
   logout: () => dispatch(actions.logout())
 });
 
