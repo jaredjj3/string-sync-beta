@@ -1,5 +1,6 @@
 export { Login } from './session';
 export { LogoImage, LogoText } from './logo';
+export { NotationNew } from './notation';
 export { Signup } from './user';
 export { default as About } from './about';
 export { default as Dashboard } from './dashboard';
