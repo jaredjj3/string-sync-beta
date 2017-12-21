@@ -1,11 +1,19 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { compose, withState, withHandlers, toClass } from 'recompose';
+import { compose, withState, withHandlers, toClass, shouldUpdate } from 'recompose';
 import { Button, Form, Input } from 'antd';
 import { UsernameInput, PasswordInput } from './LoginInputs';
 import Errors from './LoginErrors';
+import classNames from 'classnames';
+import withViewport from 'enhancers/withViewport';
 
 const { Item } = Form;
+
+const maybeGoToLibrary = props => {
+  if (props.session.state.isLoggedIn) {
+    props.history.push('/library');
+  }
+};
 
 const tryLogin = async (props, user: FormUser) => {
   try {
@@ -20,9 +28,8 @@ const tryLogin = async (props, user: FormUser) => {
       props.setErrors(errors);
     }
   } finally {
-    if (!props.session.state.isLoggedIn) {
-      props.setLoading(false);
-    }
+    props.setLoading(false);
+    maybeGoToLibrary(props);
   }
 };
 
@@ -36,6 +43,10 @@ const afterValidate = props => (validationError, user: FormUser) => {
 
 const enhance = compose(
   toClass,
+  withViewport,
+  shouldUpdate((currProps, nextProps) => (
+    currProps.viewport.state.type !== nextProps.viewport.state.type
+  )),
   withState('loading', 'setLoading', false),
   withState('errors', 'addErrors', []),
   withHandlers({
@@ -53,7 +64,7 @@ const enhance = compose(
   Form.create()
 );
 
-const Footer = () => (
+const LoginFooter = () => (
   <div className="Form__footer">
     <div>Don't have an account?</div>
     <h3>
@@ -64,9 +75,21 @@ const Footer = () => (
   </div>
 );
 
-const Login = ({ handleSubmit, handleErrorClose, form, loading, errors }) => (
+const getFormClassNames = (viewport: Enhancers.Viewport) => {
+  const { type } = viewport.state;
+
+  return classNames(
+    'Form',
+    {
+      'Form--desktop': type === 'DESKTOP',
+      'Form--mobile': type === 'MOBILE'
+    }
+  );
+};
+
+const Login = ({ handleSubmit, handleErrorClose, form, loading, errors, viewport }) => (
   <div className="Login">
-    <div className="Form">
+    <div className={getFormClassNames(viewport)}>
       <h1 className="Form__title">LOGIN</h1>
       <Form
         className="Form__form"
@@ -87,7 +110,7 @@ const Login = ({ handleSubmit, handleErrorClose, form, loading, errors }) => (
           >
             Login
           </Button>
-          <Footer />
+          <LoginFooter />
         </Item>
       </Form>
     </div>
