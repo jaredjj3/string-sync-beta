@@ -7,7 +7,7 @@ const BASE_DECORATOR_OPTS = {
   validateTrigger: 'onBlur'
 };
 
-export const EmailInput = ({ form }) => {
+export const EmailInput = (form) => {
   const fieldDecoratorOpts = Object.assign({}, BASE_DECORATOR_OPTS, {
     rules: [
       { type: 'email', message: 'please enter a valid email' },
@@ -20,7 +20,7 @@ export const EmailInput = ({ form }) => {
   return decorate(<Input />);
 };
 
-export const UsernameInput = ({ form }) => {
+export const UsernameInput = (form) => {
   const fieldDecoratorOpts = Object.assign({}, BASE_DECORATOR_OPTS, {
     rules: [
       { required: true, message: 'username is required' },
@@ -35,7 +35,7 @@ export const UsernameInput = ({ form }) => {
   return decorate(<Input />);
 };
 
-export const PasswordInput = ({ form }) => {
+export const PasswordInput = (form) => {
   const fieldDecoratorOpts = Object.assign({}, BASE_DECORATOR_OPTS, {
     rules: [
       { required: true, message: 'password is required' },
@@ -59,7 +59,7 @@ const checkPassword = form => (rule, value, callback) => {
   }
 };
 
-export const PasswordConfirmInput = ({ form, onBlur }) => {
+export const PasswordConfirmInput = (form, onBlur) => {
   const fieldDecoratorOpts = Object.assign({}, BASE_DECORATOR_OPTS, {
     rules: [
       { required: true, message: 'confirm your password' },
