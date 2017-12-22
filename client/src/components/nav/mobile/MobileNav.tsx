@@ -1,15 +1,20 @@
 import * as React from 'react';
-import { compose } from 'recompose';
-import NavBar from 'antd-mobile/lib/nav-bar';
+import { NavBar } from 'antd-mobile';
+import MobileNavLeft from './MobileNavLeft';
+import MobileNavRight from './MobileNavRight';
+import MobileNavCenter from './MobileNavCenter';
 
 const MobileNav = () => (
   <div className="Nav--mobile">
-    MobileNav
+    <NavBar
+      mode="light"
+      className="Nav--mobile__navBar"
+      leftContent={<MobileNavLeft />}
+      rightContent={<MobileNavRight />}
+    >
+      <MobileNavCenter />
+    </NavBar>
   </div>
 );
 
-const enhance = compose(
-
-);
-
-export default enhance(MobileNav);
+export default MobileNav;
