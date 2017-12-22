@@ -3,7 +3,7 @@ import { Input, Icon } from 'antd';
 
 // https://ant.design/components/form/#getFieldDecorator(id,-options)-parameters
 const BASE_DECORATOR_OPTS = {
-
+  validateTrigger: 'onBlur'
 };
 
 export const UsernameInput = (form) => {

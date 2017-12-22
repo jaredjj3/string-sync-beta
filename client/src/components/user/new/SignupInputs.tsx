@@ -4,7 +4,7 @@ import { toClass } from 'recompose';
 
 // https://ant.design/components/form/#getFieldDecorator(id,-options)-parameters
 const BASE_DECORATOR_OPTS = {
-
+  validateTrigger: 'onBlur'
 };
 
 export const EmailInput = ({ form }) => {
