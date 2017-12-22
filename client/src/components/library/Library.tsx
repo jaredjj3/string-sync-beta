@@ -3,6 +3,7 @@ import { compose, lifecycle, withState, withHandlers } from 'recompose';
 import { withNotations } from 'enhancers';
 import { Nav, Footer } from 'components';
 import LibraryContent from './content';
+import { Icon } from 'antd';
 
 const enhance = compose(
   withNotations,

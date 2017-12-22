@@ -21,7 +21,7 @@ const enhance = compose(
         await props.session.dispatch.login(user);
         window.notification.success({
           message: 'Login',
-          description: `logged in as @${this.props.session.state.currentUser.username}`
+          description: `logged in as @${user.username}`
         });
 
         props.setLoading(false);
@@ -50,7 +50,7 @@ const enhance = compose(
       // FIXME: HACK! Since the onClose event gets called
       // before the animation can finish. Probably should
       // wrap in a CSSTransitionGroup component eventually.
-      window.setTimeout(() => this.props.setErrors([]), 500);
+      window.setTimeout(() => props.setErrors([]), 500);
     },
     handleSubmit: props => event => {
       event.preventDefault();

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { withRouter, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import NotationEdit from './edit';
 import NotationShow from './show';
 import NotationPrint from './print';
@@ -12,4 +12,4 @@ const Notation = ({ match }) => (
   </Switch>
 );
 
-export default withRouter(Notation);
+export default Notation;

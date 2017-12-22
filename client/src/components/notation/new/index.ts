@@ -1,1 +1,1 @@
-export { default as NotationNew } from './NotationNew';
+export { default } from './NotationNew';

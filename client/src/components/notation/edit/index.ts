@@ -1,1 +1,1 @@
-export { default as NotationEdit } from './NotationEdit';
+export { default } from './NotationEdit';
