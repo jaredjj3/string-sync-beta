@@ -7,7 +7,7 @@ const ErrorMessages = ({ errors }) => (
   </ul>
 );
 
-const LoginErrors = ({ errors, onErrorClose }) => (
+const SignupErrors = ({ errors, onErrorClose }) => (
   <div className="Form__errors">
     {
       errors.length === 0
@@ -23,4 +23,4 @@ const LoginErrors = ({ errors, onErrorClose }) => (
   </div>
 );
 
-export default LoginErrors;
+export default SignupErrors;

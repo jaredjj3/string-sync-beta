@@ -1,8 +1,24 @@
 import * as React from 'react';
-import { Form } from 'antd';
+import { Form, Button } from 'antd';
 import { compose, withState, withHandlers } from 'recompose';
+import withSession from 'enhancers/withSession';
+import withViewport from 'enhancers/withViewport';
+import { Link } from 'react-router-dom';
+import SignupErrors from 'components/user/new/SignupErrors';
+import { EmailInput, UsernameInput, PasswordInput, PasswordConfirmInput } from './SignupInputs';
 
 const { Item } = Form;
+
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 24 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 24 },
+  },
+};
 
 const maybeGoToLibrary = props => {
   if (props.session.state.isLoggedIn) {
@@ -39,7 +55,18 @@ const afterValidate = props => (validationError, user) => {
   }
 };
 
+const checkConfirm = props => (rule, value, callback) => {
+  const { form, confirmDirty } = props;
+  if (value && confirmDirty) {
+    form.validateFields(['confirm'], { force: true });
+  } else {
+    callback();
+  }
+};
+
 const enhance = compose(
+  withSession,
+  withViewport,
   withState('confirmDirty', 'setConfirmDirty', false),
   withState('loading', 'setLoading', false),
   withState('errors', 'setErrors', []),
@@ -57,36 +84,74 @@ const enhance = compose(
       // wrap in a CSSTransitionGroup component eventually.
       window.setTimeout(() => props.setErrors([]), 500);
     }
-  })
+  }),
+  Form.create()
 );
 
-const checkPassword = props => (rule, value, callback) => {
-  const { form } = props;
-  if (value && value !== form.getFieldValue('password')) {
-    callback('passwords do not match');
-  } else {
-    callback();
-  }
-};
+const SignupFooter = () => (
+  <div className="Form__footer">
+    <div>Already have an account?</div>
+    <h3>
+      <Link to="login">
+        Login
+      </Link>
+    </h3>
+  </div>
+);
 
-const checkConfirm = props => (rule, value, callback) => {
-  const { form, confirmDirty } = props;
-  if (value && confirmDirty) {
-    form.validateFields(['confirm'], { force: true });
-  } else {
-    callback();
-  }
-};
-
-const Signup = () => (
+const Signup = ({ form, loading, errors, handleErrorClose, handleConfirmBlur }) => (
   <div className="Signup">
     <div className="Form">
       <h1 className="Form__title">SIGNUP</h1>
       <Form>
+        <Item
+          hasFeedback
+          label="email"
+          {...formItemLayout}
+        >
+          <EmailInput form={form} />
+        </Item>
+        <Item
+          hasFeedback
+          label="username"
+          {...formItemLayout}
+        >
+          <UsernameInput form={form} />
+        </Item>
+        <Item
+          hasFeedback
+          label="password"
+          {...formItemLayout}
+        >
+          <PasswordInput form={form} />
+        </Item>
+        <Item
+          hasFeedback
+          label="confirm password"
+          {...formItemLayout}
+        >
+          <PasswordConfirmInput
+            form={form}
+            onBlur={handleConfirmBlur}
+          />
+        </Item>
         <Item>
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="Form__submit"
+            loading={loading}
+          >
+            Signup
+          </Button>
+          <SignupFooter />
         </Item>
       </Form>
     </div>
+    <SignupErrors
+      errors={errors}
+      onErrorClose={handleErrorClose}
+    />
   </div>
 );
 

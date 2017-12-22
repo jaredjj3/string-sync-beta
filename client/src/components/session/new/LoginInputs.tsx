@@ -3,10 +3,10 @@ import { Input, Icon } from 'antd';
 
 // https://ant.design/components/form/#getFieldDecorator(id,-options)-parameters
 const BASE_DECORATOR_OPTS = {
-  validateTrigger: 'onBlur',
+
 };
 
-export const UsernameInput = ({ form }) => {
+export const UsernameInput = (form) => {
   const fieldDecoratorOpts = Object.assign({}, BASE_DECORATOR_OPTS, {
     rules: [
       { required: true, message: 'username or email is required' }
@@ -23,7 +23,7 @@ export const UsernameInput = ({ form }) => {
   );
 };
 
-export const PasswordInput = ({ form }) => {
+export const PasswordInput = (form) => {
   const fieldDecoratorOpts = Object.assign({}, BASE_DECORATOR_OPTS, {
     rules: [
       { required: true, message: 'password is required' }
@@ -31,7 +31,7 @@ export const PasswordInput = ({ form }) => {
   });
 
   return (
-    form.getFieldDecorator('username', fieldDecoratorOpts)(
+    form.getFieldDecorator('password', fieldDecoratorOpts)(
       <Input
         type="password"
         placeholder="password"
