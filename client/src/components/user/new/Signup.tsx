@@ -31,8 +31,6 @@ const trySignup = async (props, user) => {
       message: 'Signup',
       description: `logged in as @${props.session.state.currentUser.username}`
     });
-
-    props.history.push('/library');
   } catch (error) {
     if (error.responseJSON) {
       const errors = error.responseJSON.messages || [];
