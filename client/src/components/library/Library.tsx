@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, lifecycle, withState, withHandlers } from 'recompose';
 import { withNotations } from 'enhancers';
-import { Nav, Footer } from 'components';
+import { Nav, Footer, Gradient } from 'components';
 import LibraryContent from './content';
 import { Icon } from 'antd';
 
@@ -31,6 +31,7 @@ const enhance = compose(
 
 const Library = ({ isLoading }) => (
   <div id="Library" className="RouteEntry Library">
+    <Gradient />
     <Nav />
     <LibraryContent isLoading={isLoading} />
     <Footer />

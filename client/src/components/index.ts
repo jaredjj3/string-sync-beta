@@ -3,6 +3,7 @@ export { LogoImage, LogoText } from './logo';
 export { NotationNew } from './notation';
 export { Signup } from './user';
 export { Notation } from './notation';
+export { default as Gradient } from './gradient';
 export { default as About } from './about';
 export { default as Dashboard } from './dashboard';
 export { default as Footer } from './footer';
