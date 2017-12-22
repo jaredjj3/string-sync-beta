@@ -1,12 +1,10 @@
 import * as React from 'react';
-import { Form, Button } from 'antd';
-import { compose, withState, withHandlers } from 'recompose';
-import withSession from 'enhancers/withSession';
-import withViewport from 'enhancers/withViewport';
-import { Link } from 'react-router-dom';
 import SignupErrors from 'components/user/new/SignupErrors';
+import SignupFooter from './SignupFooter';
 import { EmailInput, UsernameInput, PasswordInput, PasswordConfirmInput } from './SignupInputs';
-import withUser from 'enhancers/withUser';
+import { Form, Button } from 'antd';
+import { compose, withState, withProps, withHandlers } from 'recompose';
+import { withSession, withViewport, withUser } from 'enhancers';
 
 const { Item } = Form;
 
@@ -21,46 +19,6 @@ const formItemLayout = {
   },
 };
 
-const trySignup = async (props, user) => {
-  try {
-    const signupUser = Object.assign({}, user);
-    delete signupUser.confirm;
-    await props.user.dispatch.signup({ user: signupUser });
-
-    window.notification.info({
-      message: 'Signup',
-      description: `logged in as @${props.session.state.currentUser.username}`
-    });
-  } catch (error) {
-    if (error.responseJSON) {
-      const errors = error.responseJSON.messages || [];
-      props.setErrors(errors);
-    } else {
-      window.notification.error({
-        message: 'Signup',
-        description: error.message
-      });
-    }
-  } finally {
-    props.setLoading(false);
-  }
-};
-
-const afterValidate = props => (errors, user) => {
-  if (!errors) {
-    trySignup(props, user);
-  }
-};
-
-const checkConfirm = props => (rule, value, callback) => {
-  const { form, confirmDirty } = props;
-  if (value && confirmDirty) {
-    form.validateFields(['confirm'], { force: true });
-  } else {
-    callback();
-  }
-};
-
 const enhance = compose(
   Form.create(),
   withSession,
@@ -69,6 +27,47 @@ const enhance = compose(
   withState('confirmDirty', 'setConfirmDirty', false),
   withState('loading', 'setLoading', false),
   withState('errors', 'setErrors', []),
+  withProps(props => ({
+    trySignup: async user => {
+      try {
+        const signupUser = Object.assign({}, user);
+        delete signupUser.confirm;
+        await props.user.dispatch.signup({ user: signupUser });
+
+        window.notification.info({
+          message: 'Signup',
+          description: `logged in as @${signupUser.username}`
+        });
+
+        props.setLoading(false);
+        props.history.push('/library');
+      } catch (error) {
+        if (error.responseJSON) {
+          const errors = error.responseJSON.messages || [];
+          props.setErrors(errors);
+        } else {
+          console.error(error);
+        }
+
+        props.setLoading(false);
+      }
+    }
+  })),
+  withProps(props => ({
+    checkConfirm: (rule, value, callback) => {
+      const { form, confirmDirty } = props;
+      if (value && confirmDirty) {
+        form.validateFields(['confirm'], { force: true });
+      }
+
+      callback();
+    },
+    afterValidate: (errors, user) => {
+      if (!errors) {
+        props.trySignup(user);
+      }
+    },
+  })),
   withHandlers({
     handleConfirmBlur: props => event => {
       const { value } = event.target;
@@ -76,7 +75,7 @@ const enhance = compose(
     },
     handleSubmit: props => event => {
       event.preventDefault();
-      props.form.validateFields(afterValidate(props));
+      props.form.validateFields(props.afterValidate);
     },
     handleErrorClose: props => event => {
       // FIXME: HACK! Since the onClose event gets called
@@ -85,17 +84,6 @@ const enhance = compose(
       window.setTimeout(() => props.setErrors([]), 500);
     }
   })
-);
-
-const SignupFooter = () => (
-  <div className="Form__footer">
-    <div>Already have an account?</div>
-    <h3>
-      <Link to="login">
-        Login
-      </Link>
-    </h3>
-  </div>
 );
 
 const Signup = ({ form, loading, errors, handleSubmit, handleErrorClose, handleConfirmBlur }) => (

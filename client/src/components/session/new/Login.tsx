@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { compose, withState, withHandlers } from 'recompose';
+import { compose, withState, withProps, withHandlers } from 'recompose';
 import { Button, Form, Input } from 'antd';
 import { UsernameInput, PasswordInput } from './LoginInputs';
 import LoginErrors from './LoginErrors';
@@ -15,6 +15,36 @@ const enhance = compose(
   withRouter,
   withState('loading', 'setLoading', false),
   withState('errors', 'setErrors', []),
+  withProps(props => ({
+    tryLogin: async user => {
+      try {
+        await props.session.dispatch.login(user);
+        window.notification.success({
+          message: 'Login',
+          description: `logged in as @${this.props.session.state.currentUser.username}`
+        });
+
+        props.setLoading(false);
+        props.history.push('/library');
+      } catch (error) {
+        if (error.responseJSON) {
+          const errors = error.responseJSON.messages || [];
+          props.setErrors(errors);
+        } else {
+          console.error(error);
+        }
+
+        props.setLoading(false);
+      }
+    }
+  })),
+  withProps(props => ({
+    afterValidate: (errors, user) => {
+      if (!errors) {
+        props.tryLogin(user);
+      }
+    }
+  })),
   withHandlers({
     handleErrorClose: props => event => {
       // FIXME: HACK! Since the onClose event gets called
@@ -25,33 +55,6 @@ const enhance = compose(
     handleSubmit: props => event => {
       event.preventDefault();
       props.form.validateFields(props.afterValidate);
-    },
-    tryLogin: props => async user => {
-      try {
-        await this.props.session.dispatch.login(user);
-        window.notification.success({
-          message: 'Login',
-          description: `logged in as @${this.props.session.state.currentUser.username}`
-        });
-      } catch ({ responseJSON }) {
-        if (responseJSON) {
-          const errors = responseJSON.messages || [];
-          props.setErrors(errors);
-        }
-      } finally {
-        props.setLoading(false);
-        props.maybeGoToLibrary();
-      }
-    },
-    afterValidate: props => (errors, user) => {
-      if (!errors) {
-        props.tryLogin(user);
-      }
-    },
-    maybeGoToLibrary: props => () => {
-      if (props.session.state.isLoggedIn) {
-        props.history.push('/library');
-      }
     }
   })
 );
