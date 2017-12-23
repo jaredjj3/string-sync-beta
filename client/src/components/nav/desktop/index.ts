@@ -1,3 +1,3 @@
 import './_desktopNav.less';
 
-export { default } from './DesktopNav';
+export { default as DesktopNav } from './DesktopNav';
