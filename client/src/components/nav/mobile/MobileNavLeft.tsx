@@ -15,8 +15,8 @@ const enhance = compose(
 
 const MobileNavLeft = ({ handleClick }) => (
   <div
-    onClick={handleClick}
     className="Nav--mobile--left"
+    onClick={handleClick}
   >
     <Icon
       className="Nav--mobile__icon"
@@ -25,4 +25,4 @@ const MobileNavLeft = ({ handleClick }) => (
   </div>
 );
 
-export default withRouter(MobileNavLeft);
+export default enhance(MobileNavLeft);
