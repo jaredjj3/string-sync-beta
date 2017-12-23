@@ -5,6 +5,7 @@ import { EmailInput, UsernameInput, PasswordInput, PasswordConfirmInput } from '
 import { Form, Button } from 'antd';
 import { compose, withState, withProps, withHandlers } from 'recompose';
 import { withSession, withViewport, withUser } from 'enhancers';
+import { Gradient, Nav } from 'components';
 
 const { Item } = Form;
 
@@ -88,6 +89,8 @@ const enhance = compose(
 
 const Signup = ({ form, loading, errors, handleSubmit, handleErrorClose, handleConfirmBlur }) => (
   <div className="Signup">
+    <Gradient />
+    <Nav />
     <div className="Form">
       <h1 className="Form__title">SIGNUP</h1>
       <Form onSubmit={handleSubmit}>

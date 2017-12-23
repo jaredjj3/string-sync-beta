@@ -9,10 +9,17 @@ const { Item, SubMenu } = Menu;
 const enhance = compose(
   withRouter,
   withSession,
-  withProps(({ session }) => ({
-    isTeacher: session.state.currentUser.roles.includes('teacher'),
-    isAdmin: session.state.currentUser.roles.includes('admin')
-  })),
+  withProps(props => {
+    const { session, location } = props;
+    const { pathname } = location;
+    const adjPathname = pathname === '/signup' ? '/login' : pathname;
+
+    return ({
+      isTeacher: session.state.currentUser.roles.includes('teacher'),
+      isAdmin: session.state.currentUser.roles.includes('admin'),
+      selectedKeys: [adjPathname]
+    });
+  }),
   withHandlers({
     handleMenuClick: props => params => {
       props.history.push(params.key);
@@ -29,11 +36,11 @@ const enhance = compose(
 // The reason that this component has ternary hell is due to ant design's Menu
 // component forcing the children of Menu to be either a SubMenu component or
 // a Menu Item component. It's not that bad. Really.
-const DesktopNavRight = ({ handleMenuClick, logout, location, session, isAdmin, isTeacher }) => (
+const DesktopNavRight = ({ handleMenuClick, logout, selectedKeys, session, isAdmin, isTeacher }) => (
   <div className="Nav--desktop__right">
     <Menu
       className="Nav--desktop__right__menu"
-      selectedKeys={[location.pathname]}
+      selectedKeys={selectedKeys}
       mode="horizontal"
       onClick={handleMenuClick}
     >

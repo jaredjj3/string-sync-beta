@@ -6,6 +6,7 @@ import { UsernameInput, PasswordInput } from './LoginInputs';
 import LoginErrors from './LoginErrors';
 import { withSession } from 'enhancers';
 import { withRouter } from 'react-router-dom';
+import { Gradient, Nav } from 'components';
 
 const { Item } = Form;
 
@@ -72,6 +73,8 @@ const LoginFooter = () => (
 
 const Login = ({ form, errors, loading, handleSubmit, handleErrorClose }) => (
   <div className="Login">
+    <Gradient />
+    <Nav />
     <div className="Form--desktop">
       <h1 className="Form__title">LOGIN</h1>
       <Form
