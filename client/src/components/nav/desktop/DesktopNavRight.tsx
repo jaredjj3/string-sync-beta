@@ -4,7 +4,7 @@ import { compose, withHandlers, withProps } from 'recompose';
 import { withSession } from 'enhancers';
 import { Menu, Icon } from 'antd';
 
-const { Item, SubMenu } = Menu;
+const { Item, ItemGroup, SubMenu } = Menu;
 
 const enhance = compose(
   withRouter,
@@ -24,10 +24,15 @@ const enhance = compose(
     handleMenuClick: props => params => {
       props.history.push(params.key);
     },
-    logout: props => event => {
+    logout: props => async event => {
       event.preventDefault();
-      event.stopPropagation();
-      props.session.dispatch.logout();
+      await props.session.dispatch.logout();
+
+      window.notification.success({
+        message: 'Logout',
+        description: 'successful'
+      });
+
       props.history.push('/');
     }
   })
@@ -45,22 +50,24 @@ const DesktopNavRight = ({ handleMenuClick, logout, selectedKeys, session, isAdm
       onClick={handleMenuClick}
     >
       <SubMenu title="about">
-        <Item key="/about/overview">
-          <Icon type="info-circle-o" />
-          overview
-        </Item>
-        <Item key="/about/roadmap">
-          <Icon type="car" />
-          roadmap
-        </Item>
-        <Item key="/about/contact">
-          <Icon type="contacts" />
-          contact
-        </Item>
-        <Item key="/about/social">
-          <Icon type="usergroup-add" />
-          social
-        </Item>
+        <ItemGroup>
+          <Item key="/about/overview">
+            <Icon type="info-circle-o" />
+            overview
+          </Item>
+          <Item key="/about/roadmap">
+            <Icon type="car" />
+            roadmap
+          </Item>
+          <Item key="/about/contact">
+            <Icon type="contacts" />
+            contact
+          </Item>
+          <Item key="/about/social">
+            <Icon type="usergroup-add" />
+            social
+          </Item>
+        </ItemGroup>
       </SubMenu>
       <Item key="/library">
         library
@@ -68,28 +75,30 @@ const DesktopNavRight = ({ handleMenuClick, logout, selectedKeys, session, isAdm
       {
         session.state.isLoggedIn
           ? <SubMenu title="other">
-              {
-                isAdmin || isTeacher
-                  ? <Item key="/upload">
-                      <Icon type="upload" />
-                      upload
-                    </Item>
-                  : null
-              }
-              {
-                isAdmin
-                  ? <Item key="/dashboard">
-                      <Icon type="compass" />
-                      dashboard
-                    </Item>
-                  : null
-              }
-              <Item>
-                <div onClick={logout}>
-                  <Icon type="logout" />
-                  logout
-                </div>
-              </Item>
+              <ItemGroup title={`@${session.state.currentUser.username}`}>
+                {
+                  isAdmin || isTeacher
+                    ? <Item key="/upload">
+                        <Icon type="upload" />
+                        upload
+                      </Item>
+                    : null
+                }
+                {
+                  isAdmin
+                    ? <Item key="/dashboard">
+                        <Icon type="compass" />
+                        dashboard
+                      </Item>
+                    : null
+                }
+                <Item>
+                  <div onClick={logout}>
+                    <Icon type="logout" />
+                    logout
+                  </div>
+                </Item>
+              </ItemGroup>
             </SubMenu>
           : <Item key="/login">
               login

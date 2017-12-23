@@ -1,7 +1,10 @@
 import * as React from 'react';
+import { Gradient, Nav } from 'components';
 
 const Overview = () => (
-  <div>
+  <div className="Overview">
+    <Gradient />
+    <Nav />
     Overview
   </div>
 );

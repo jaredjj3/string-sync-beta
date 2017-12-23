@@ -1,7 +1,10 @@
 import * as React from 'react';
+import { Gradient, Nav } from 'components';
 
 const Roadmap = () => (
-  <div>
+  <div className="Roadmap">
+    <Gradient />
+    <Nav />
     Roadmap
   </div>
 );
