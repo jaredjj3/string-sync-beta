@@ -17,11 +17,21 @@ const enhance = compose(
         await props.notation.dispatch.fetchNotation(notationId);
         props.setLoading(false);
       }
+    },
+    setBodyColor: backgroundColor => {
+      window.$('body').css('background-color', backgroundColor);
     }
   })),
   lifecycle({
     componentDidMount(): void {
+      // Update the <body></body> color so that the extra space in the Instagram
+      // browser is consistent with the bottom object, which in this case is
+      // the NotationShowControls component.
+      this.props.setBodyColor('black');
       this.props.maybeFetchNotation();
+    },
+    componentWillUnmount(): void {
+      this.props.setBodyColor('white');
     }
   })
 );
