@@ -1,11 +1,10 @@
 import { vextabParser } from 'services';
 import { flatMap, mapValues, mapKeys, groupBy, compact } from 'lodash';
+import MeasureSplitter from './MeasureSplitter';
 
 class VextabParser {
   static BACKEND_PARSER: any = vextabParser;
   static OPTION_TOKEN_REGEX: RegExp = /^([a-z]+)=/;
-  static LINE_BEGINNING_REGEX: RegExp = /\s?note/;
-  static MEASURE_TOKENS: Array<string> = ['|', '=||', '=|:', '=::', '=|='];
 
   vextabString: string = '';
   vextabElements: Array<Vextab.Element> = [];
@@ -19,42 +18,8 @@ class VextabParser {
   }
 
   static splitIntoMeasures(vextabString: string): Array<string> {
-    const { MEASURE_TOKENS } = VextabParser;
-    const tokens = MEASURE_TOKENS.map(token => `notes ${token}`).concat(MEASURE_TOKENS);
-    let measureTokensByLength = groupBy(tokens, token => token.length);
-    measureTokensByLength = mapValues(measureTokensByLength, measureTokens => new Set(measureTokens));
-
-    let buffer = '';
-    const measures = [];
-    let i = 0;
-    const chars = vextabString;
-    while (i < chars.length - 1) {
-      const lengths = Object.keys(measureTokensByLength);
-      let measureDetected = false;
-
-      for (let length of lengths) {
-        const measureTokens = measureTokensByLength[length];
-        const n = parseInt(length, 10);
-        const nChars = chars.slice(i, i + n);
-        if (measureTokens.has(nChars)) {
-          measureDetected = true;
-          measures.push(buffer);
-          buffer = nChars;
-          i += n;
-          break;
-        }
-      }
-
-      if (!measureDetected) {
-        buffer += chars[i];
-        i++;
-      }
-    }
-
-    // push the last buffer to the measure
-    measures.push(buffer);
-
-    return compact(measures.map(measure => measure.trim()));
+    const measureSplitter = new MeasureSplitter(vextabString).split();
+    return measureSplitter.measures;
   }
 
   constructor(vextabString: string) {
