@@ -52,6 +52,8 @@
     "style-loader": "^0.19.0",
     "typescript": "^2.6.1",
     "url-loader": "^0.6.2",
+    "vexflow": "^1.2.84",
+    "vextab": "https://github.com/jaredjj3/vextab.git",
     "webpack": "^3.8.1"
   }
 }
