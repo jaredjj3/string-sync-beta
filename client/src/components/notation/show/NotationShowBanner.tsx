@@ -3,8 +3,8 @@ import { Row, Col } from 'antd';
 import { Link } from 'react-router-dom';
 import { IconDescribe } from 'components';
 
-const NotationShowBanner = ({ loading, songName, transcriber }) => {
-  const bannerText = loading
+const NotationShowBanner = ({ isFetching, songName, transcriber }) => {
+  const bannerText = isFetching
     ? 'Loading...'
     : `${songName} by ${transcriber.username}`;
 

@@ -7,15 +7,15 @@ import NotationShowControls from './NotationShowControls';
 
 const enhance = compose(
   withNotation,
-  withState('loading', 'setLoading', false),
+  withState('isFetching', 'setIsFetching', false),
   withProps(props => ({
     maybeFetchNotation: async () => {
       const notationId = props.match.params.id;
 
       if (props.notation.state.id !== notationId) {
-        props.setLoading(true);
+        props.setIsFetching(true);
         await props.notation.dispatch.fetchNotation(notationId);
-        props.setLoading(false);
+        props.setIsFetching(false);
       }
     },
     setBodyColor: backgroundColor => {
@@ -36,11 +36,11 @@ const enhance = compose(
   })
 );
 
-const NotationShow = ({ loading, notation }) => (
+const NotationShow = ({ isFetching, notation }) => (
   <div className="NotationShow">
     <Gradient />
     <NotationShowBanner
-      loading={loading}
+      isFetching={isFetching}
       songName={notation.state.songName}
       transcriber={notation.state.transcriber}
     />
