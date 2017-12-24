@@ -1,24 +1,19 @@
 import * as React from 'react';
 import { compose, lifecycle } from 'recompose';
 import { withNotation } from 'enhancers';
-import { Parser } from 'services';
+import TabParser from './TabParser';
 
 interface TabProps {
   notation: Enhancers.Notation
 }
 
 const enhance = compose(
-  withNotation,
-  lifecycle({
-    componentWillReceiveProps(nextProps: TabProps): void {
-      const { vextabString } = nextProps.notation.state;
-      const parser = new Parser(vextabString).parse();
-    }
-  })
+  withNotation
 );
 
-const Tab = () => (
+const Tab = ({ notation }) => (
   <div className="Tab">
+    <TabParser />
     Tab
   </div>
 );
