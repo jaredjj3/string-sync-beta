@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Input, Icon } from 'antd';
-import { toClass } from 'recompose';
 
 // https://ant.design/components/form/#getFieldDecorator(id,-options)-parameters
 const BASE_DECORATOR_OPTS = {
