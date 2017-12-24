@@ -2,6 +2,7 @@ import * as React from 'react';
 import { compose, withState, withProps, lifecycle } from 'recompose';
 import { withNotation } from 'enhancers';
 import NotationShowBanner from './NotationShowBanner';
+import { Gradient, Video } from 'components';
 
 const enhance = compose(
   withNotation,
@@ -26,11 +27,13 @@ const enhance = compose(
 
 const NotationShow = ({ loading, notation }) => (
   <div className="NotationShow">
+    <Gradient />
     <NotationShowBanner
       loading={loading}
       songName={notation.state.songName}
       transcriber={notation.state.transcriber}
     />
+    <Video />
   </div>
 );
 
