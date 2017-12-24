@@ -1,13 +1,18 @@
 import * as React from 'react';
 import { compose, lifecycle } from 'recompose';
 import { withNotation } from 'enhancers';
+import { Parser } from 'services';
+
+interface TabProps {
+  notation: Enhancers.Notation
+}
 
 const enhance = compose(
   withNotation,
   lifecycle({
-    componentDidMount(): void {
-      const { vextabString } = this.props.notation.state;
-
+    componentWillReceiveProps(nextProps: TabProps): void {
+      const { vextabString } = nextProps.notation.state;
+      const parser = new Parser(vextabString).parse();
     }
   })
 );
@@ -18,4 +23,4 @@ const Tab = () => (
   </div>
 );
 
-export default Tab;
+export default enhance(Tab);
