@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { compose, withState, withProps, lifecycle } from 'recompose';
 import { withNotation } from 'enhancers';
+import { Gradient, Video, Tab } from 'components';
 import NotationShowBanner from './NotationShowBanner';
-import { Gradient, Video } from 'components';
+import NotationShowControls from './NotationShowControls';
 
 const enhance = compose(
   withNotation,
@@ -34,6 +35,8 @@ const NotationShow = ({ loading, notation }) => (
       transcriber={notation.state.transcriber}
     />
     <Video />
+    <Tab />
+    <NotationShowControls />
   </div>
 );
 
