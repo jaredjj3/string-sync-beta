@@ -12,7 +12,9 @@ const NotationShowBanner = ({ isFetching, songName, transcriber }) => {
     <div className="NotationShowBanner">
       <Row type="flex" align="middle" justify="center">
         <Col span={5}>
-          <IconDescribe type="close" description="back" />
+          <Link to="/library">
+            <IconDescribe type="close" description="back" />
+          </Link>
         </Col>
         <Col className="NotationShowBanner__text" span={14}>
           {bannerText}
