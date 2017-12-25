@@ -57,6 +57,8 @@ class MeasureSplitter {
     return this;
   }
 
+  // get rid of lines that are just space characters so that we
+  // don't mis-index measures
   private _compactMeasures(): MeasureSplitter {
     this.measures = compact(this.measures.map(measure => measure.trim()));
     return this;
