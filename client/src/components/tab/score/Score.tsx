@@ -23,7 +23,6 @@ const ScoreLines = ({ provider }) => {
       provider.lines.map((line: Line) => (
         <ScoreLine
           key={`score-line-${line.number}-${hash(line.vextabString)}`}
-          vextabString={line.vextabString}
           number={line.number}
         />
       ))
