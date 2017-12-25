@@ -36,7 +36,7 @@ class Line {
       if (measure.vextabOptionsId !== options.id) {
         if (options.string) {
           // purge string from buffer
-          vextabStrings.push(options.string + '\n' + buffer.join(''));
+          vextabStrings.push(options.string + '\n\n' + buffer.join('\n') + '\n\n');
           buffer = [];
         }
 
@@ -48,7 +48,7 @@ class Line {
     });
 
     // purge the last buffer
-    vextabStrings.push(options.string + '\n' + buffer.join(''));
+    vextabStrings.push(options.string + '\n\n' + buffer.join('\n'));
 
     return this.vextabString = vextabStrings.join('\n');
   }

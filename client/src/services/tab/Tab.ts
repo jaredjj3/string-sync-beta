@@ -20,13 +20,13 @@ class Tab {
     const chunks = this.parser.chunk();
 
     this._createMeasures(chunks);
-    this.createLines();
 
     return this;
   }
 
-  createLines(): Array<Line> {
-    const lines = chunk(this.measures, this.measuresPerLine).
+  createLines(measuresPerLine: number): Array<Line> {
+    this.measuresPerLine = measuresPerLine;
+    const lines = chunk(this.measures, measuresPerLine).
       map(measureGroup => new Line(measureGroup));
 
     lines.forEach((line, ndx) => {
@@ -34,7 +34,7 @@ class Tab {
       line.setPrev(prev);
     });
 
-    return lines;
+    return this.lines = lines;
   }
 
   private _createMeasures(chunks: Array<Vextab.Chunk>): Array<Measure> {
