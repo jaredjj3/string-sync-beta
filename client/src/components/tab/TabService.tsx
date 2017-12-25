@@ -41,20 +41,25 @@ const enhance = compose(
       if (shouldCreate) {
         const tab = new Tab(vextabString);
         tab.setup();
-        tab.createLines(props.getMeasuresPerLine(props.viewport.state.width));
+
+        const { width } = props.viewport.state;
+        const measuresPerLine = props.getMeasuresPerLine(width);
+        tab.createLines(measuresPerLine, width);
+
         props.tab.dispatch.setProvider(tab);
       }
     },
     maybeUpdateTab: () => {
       const tab = props.tab.state.provider;
-      const nextMeasuresPerLine = props.getMeasuresPerLine(props.viewport.state.width);
+      const { width } = props.viewport.state;
+      const nextMeasuresPerLine = props.getMeasuresPerLine(width);
       const shouldUpdate = (
         tab &&
         tab.measuresPerLine !== nextMeasuresPerLine
       );
 
       if (shouldUpdate) {
-        tab.createLines(nextMeasuresPerLine);
+        tab.createLines(nextMeasuresPerLine, width);
       }
     }
   })),

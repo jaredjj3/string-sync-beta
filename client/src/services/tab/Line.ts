@@ -1,15 +1,19 @@
 import { Measure } from 'services';
 
 class Line {
+  static MAX_MEASURE_LENGTH: number = 300;
+
   measures: Array<Measure> = [];
   vextabString: string = '';
   number: number = null;
+  width: number = null;
   prev: Line = null;
   next: Line = null;
 
-  constructor(measures: Array<Measure>, number: number) {
+  constructor(measures: Array<Measure>, number: number, width: number) {
     this.measures = measures;
     this.number = number;
+    this.width = width;
 
     this._extractVextabString();
   }
@@ -38,7 +42,8 @@ class Line {
       if (measure.vextabOptionsId !== options.id) {
         if (options.string) {
           // purge string from buffer
-          vextabStrings.push(options.string + '\n\n' + buffer.join('\n') + '\n\n');
+          const optionsString = this._adjustedOptionsString(options.string, buffer.length);
+          vextabStrings.push(optionsString + '\n\n' + buffer.join('\n') + '\n\n');
           buffer = [];
         }
 
@@ -50,9 +55,22 @@ class Line {
     });
 
     // purge the last buffer
-    vextabStrings.push(options.string + '\n\n' + buffer.join('\n'));
+    const optionsString = this._adjustedOptionsString(options.string, buffer.length);
+    vextabStrings.push(optionsString + '\n\n' + buffer.join('\n'));
 
     return this.vextabString = vextabStrings.join('\n');
+  }
+
+  private _adjustedOptionsString(optionsString: string, numMeasures: number): string {
+    const { MAX_MEASURE_LENGTH } = Line;
+    const pxPerMeasure = this.width / numMeasures;
+
+    if (pxPerMeasure > MAX_MEASURE_LENGTH) {
+      const targetWidth = numMeasures * MAX_MEASURE_LENGTH;
+      return `options width=${targetWidth}\n${optionsString}`;
+    } else {
+      return optionsString;
+    }
   }
 }
 

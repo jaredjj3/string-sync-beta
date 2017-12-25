@@ -30,10 +30,10 @@ class Tab {
     }
   }
 
-  createLines(measuresPerLine: number): Array<Line> {
+  createLines(measuresPerLine: number, width: number): Array<Line> {
     this.measuresPerLine = measuresPerLine;
     const lines = chunk(this.measures, measuresPerLine).map((measureGroup, lineNumber) =>
-      new Line(measureGroup, lineNumber)
+      new Line(measureGroup, lineNumber, width)
     );
 
     lines.forEach((line, ndx) => {
