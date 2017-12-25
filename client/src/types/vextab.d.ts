@@ -1,41 +1,39 @@
 declare namespace Vextab {
-  interface Option {
+  interface Option extends Specs.Base {
     key: string;
     value: string;
-    _l: number;
-    _c: number;
   }
 
   namespace Specs {
-    interface Text {
-      text: string;
+    interface Base {
       _l: number;
-      _c: number;
+      _c0: number;
+      _c1: number;
+    }
+
+    interface Text extends Base {
+      text: string;
     }
   
-    interface Command {
+    interface Command extends Base {
       command: string;
       type?: string;
       params?: Array<string> | { position: number } | { tuplet: string };
-      _l: number;
-      _c: number;
     }
   
-    interface Time {
+    interface Time extends Base {
       time: string;
       dot: boolean;
     }
 
-    interface TabPos {
+    interface TabPos extends Base {
       fret: string;
       decorator: string;
       string: string;
-      _l: number;
-      _c: number;
       articulation?: string;
     }
   
-    interface Chord {
+    interface Chord extends Base {
       chord: Array<TabPos>
     }
   }

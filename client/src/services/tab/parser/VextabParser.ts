@@ -7,6 +7,7 @@ class VextabParser {
   static OPTION_TOKEN_REGEX: RegExp = /^([a-z]+)=/;
 
   vextabString: string = '';
+  strippedLines: Array<string> = [];
   vextabElements: Array<Vextab.Element> = [];
   vextabChunks: Array<Vextab.Chunk> = [];
 
@@ -30,6 +31,7 @@ class VextabParser {
   // in the link function.
   parse(): VextabParser {
     const strippedVextabString = VextabParser.trimEachLine(this.vextabString);
+    this.strippedLines = strippedVextabString.split('\n');
     this.vextabElements = VextabParser.BACKEND_PARSER.parse(strippedVextabString);
     return this;
   }
@@ -39,8 +41,8 @@ class VextabParser {
   chunk(): VextabParser {
     const optionTokens = this._getOptionTokens();
     this.vextabChunks = [];
-    let currVextabOptions = [];
-    let currVextabString = [];
+    let vextabOptions = [];
+    let vextabString = [];
 
     this.vextabString.split('\n').forEach(line => {
       const tokens = line.split(/\s/).map(token => {
@@ -50,24 +52,74 @@ class VextabParser {
       });
 
       const isOptionLine = tokens.some(token => optionTokens.has(token));
-      const shouldPurge = isOptionLine && currVextabString.length > 0;
+      const shouldPurge = isOptionLine && vextabString.length > 0;
       if (shouldPurge) {
-        this._appendVextabChunk(currVextabOptions, currVextabString);
+        this._appendVextabChunk(vextabOptions, vextabString);
 
         // reset the collections
-        currVextabOptions = [];
-        currVextabString = [];
+        vextabOptions = [];
+        vextabString = [];
       }
 
       // handle the line categorization
-      (isOptionLine ? currVextabOptions : currVextabString).push(line);
+      (isOptionLine ? vextabOptions : vextabString).push(line);
     });
 
     // purge one more time since the last iteration of the main loop will not
     // account for it.
-    this._appendVextabChunk(currVextabOptions, currVextabString);
+    this._appendVextabChunk(vextabOptions, vextabString);
 
     return this;
+  }
+
+  unparse(spec: any): string {
+    const { _l, _c0, _c1 } = spec;
+    const areArgumentsValid = (
+      typeof _l  !== 'undefined' &&
+      typeof _c0 !== 'undefined' &&
+      typeof _c1 !== 'undefined'
+    );
+
+    if (!areArgumentsValid) {
+      throw new Error(`expected ${JSON.stringify(spec)} to have defined properties: _l, _c0, _c1`);
+    }
+
+    const line = this.strippedLines[_l - 1];
+
+    if (typeof line !== 'string') {
+      return null;
+    }
+
+    // first pass try
+    let vextabString = line.slice(_c0, _c1);
+
+    if (spec.hasOwnProperty('time')) {
+      vextabString = `:${spec.time}`;
+    }
+
+    if (spec.hasOwnProperty('string')) {
+      vextabString += `/${spec.string}`;
+    }
+
+    // reset the vextabString to acommodate a chord
+    if (spec.hasOwnProperty('chord')) {
+      const chord = spec.chord.map(({ fret, string}) => `${fret}/${string}`).join('.');
+      vextabString = `(${chord})`;
+    }
+
+    if (spec.command === 'bar') {
+      vextabString = `\nnotes ${vextabString}`;
+    }
+
+    if (spec.dot) {
+      vextabString += 'd';
+    }
+
+    if (spec.articulation) {
+      vextabString = spec.articulation + vextabString;
+    }
+
+    return vextabString;
   }
 
   // In the context of this function, a token is considered a contiguous string with

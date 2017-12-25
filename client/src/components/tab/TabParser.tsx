@@ -14,6 +14,7 @@ const enhance = compose(
       const { vextabString } = nextProps.notation.state;
       const parser = new VextabParser(vextabString);
       parser.parse().chunk();
+      debugger
     }
   })
 );
