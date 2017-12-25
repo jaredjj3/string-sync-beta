@@ -1,8 +1,7 @@
 import Line from './Line';
 import Measure from './Measure';
-import Note from './Note';
 import { VextabParser } from './parser';
-import { flatMap } from 'lodash';
+import { chunk } from 'lodash';
 
 class Tab {
   measures: Array<Measure> = [];
@@ -22,8 +21,14 @@ class Tab {
     return this;
   }
 
+  toLines(measuresPerLine: number): Array<Line> {
+    return chunk(this.measures, measuresPerLine).map(measureGroup => new Line(measureGroup));
+  }
+
   private _setupMeasures(): Tab {
     this.measures = [];
+    const lastMeasure = null;
+    const nextMeasure = null;
 
     this.parser.vextabChunks.forEach(vextabChunk => {
       vextabChunk.vextabStringMeasures.forEach(vextabString => {
