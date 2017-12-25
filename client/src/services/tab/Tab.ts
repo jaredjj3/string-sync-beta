@@ -1,12 +1,14 @@
 import Line from './Line';
 import Measure from './Measure';
 import { VextabParser } from './parser';
-import { chunk } from 'lodash';
+import { chunk, last } from 'lodash';
 
 class Tab {
   measures: Array<Measure> = [];
+  lines: Array<Line> = [];
   vextabString: string = '';
   parser: VextabParser = null;
+  measuresPerLine: number = 0;
 
   constructor(vextabString: string) {
     this.vextabString = vextabString;
@@ -14,29 +16,46 @@ class Tab {
 
   setup(): Tab {
     this.parser = new VextabParser(this.vextabString);
-    this.parser.parse().chunk();
+    const parsed = this.parser.parse();
+    const chunks = this.parser.chunk();
 
-    this._setupMeasures();
+    this._createMeasures(chunks);
+    this.createLines();
 
     return this;
   }
 
-  toLines(measuresPerLine: number): Array<Line> {
-    return chunk(this.measures, measuresPerLine).map(measureGroup => new Line(measureGroup));
+  createLines(): Array<Line> {
+    const lines = chunk(this.measures, this.measuresPerLine).
+      map(measureGroup => new Line(measureGroup));
+
+    lines.forEach((line, ndx) => {
+      const prev = lines[ndx - 1] || null;
+      line.setPrev(prev);
+    });
+
+    return lines;
   }
 
-  private _setupMeasures(): Tab {
+  private _createMeasures(chunks: Array<Vextab.Chunk>): Array<Measure> {
     this.measures = [];
-    const lastMeasure = null;
-    const nextMeasure = null;
 
-    this.parser.vextabChunks.forEach(vextabChunk => {
-      vextabChunk.vextabStringMeasures.forEach(vextabString => {
-        this.measures.push(new Measure(vextabString, vextabChunk.vextabOptionsString));
+    chunks.forEach(chunk => {
+      chunk.vextabStringMeasures.forEach((vextabStringMeasure, ndx) => {
+        const measure = new Measure(
+          vextabStringMeasure,
+          chunk.vextabOptionsString,
+          chunk.vextabOptionsId
+        );
+
+        const prev = last(this.measures) || null;
+        measure.setPrev(prev);
+
+        this.measures.push(measure);
       });
     });
 
-    return this;
+    return this.measures;
   }
 }
 

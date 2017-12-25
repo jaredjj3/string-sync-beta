@@ -48,6 +48,7 @@ declare namespace Vextab {
   }
 
   interface Chunk {
+    vextabOptionsId: number;
     vextabOptionsString: string;
     vextabStringMeasures: Array<string>;
   }

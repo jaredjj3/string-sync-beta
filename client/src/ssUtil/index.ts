@@ -4,3 +4,4 @@ export { default as getNullUser } from './getNullUser';
 export { default as camelCaseObjKeys } from './camelCaseObjKeys';
 export { default as mapKeysDeep } from './mapKeysDeep';
 export { default as isVideoActive } from './isVideoActive';
+export { default as hash } from './hash';

@@ -1,6 +1,7 @@
 import { vextabParser } from 'services';
 import { flatMap, mapValues, mapKeys, groupBy, compact } from 'lodash';
 import MeasureSplitter from './MeasureSplitter';
+import { hash } from 'ssUtil';
 
 class VextabParser {
   static BACKEND_PARSER: any = vextabParser;
@@ -8,8 +9,8 @@ class VextabParser {
 
   vextabString: string = '';
   strippedLines: Array<string> = [];
-  vextabElements: Array<Vextab.Element> = [];
-  vextabChunks: Array<Vextab.Chunk> = [];
+  parsed: Array<Vextab.Element> = [];
+  chunks: Array<Vextab.Chunk> = [];
 
   static trimEachLine(vextabString: string): string {
     return vextabString.
@@ -29,18 +30,19 @@ class VextabParser {
 
   // Deconstruct the vextabString into an intermediate object that will be consumed
   // in the link function.
-  parse(): VextabParser {
+  parse(): Array<Vextab.Element> {
     const strippedVextabString = VextabParser.trimEachLine(this.vextabString);
     this.strippedLines = strippedVextabString.split('\n');
-    this.vextabElements = VextabParser.BACKEND_PARSER.parse(strippedVextabString);
-    return this;
+    this.parsed = VextabParser.BACKEND_PARSER.parse(strippedVextabString);
+
+    return this.parsed;
   }
 
   // Groups chunks of the vextabString by its options header. Each element is headed
   // with vextabOptions followed by the vextabString it is relevant to.
-  chunk(): VextabParser {
+  chunk(): Array<Vextab.Chunk> {
     const optionTokens = this._getOptionTokens();
-    this.vextabChunks = [];
+    this.chunks = [];
     let vextabOptions = [];
     let vextabString = [];
 
@@ -69,7 +71,7 @@ class VextabParser {
     // account for it.
     this._appendVextabChunk(vextabOptions, vextabString);
 
-    return this;
+    return this.chunks;
   }
 
   unparse(spec: any): string {
@@ -126,9 +128,9 @@ class VextabParser {
   // In the context of this function, a token is considered a contiguous string with
   // no space characters.
   private _getOptionTokens(): Set<string> {
-    const elements = this.vextabElements.map(element => element.element);
+    const elements = this.parsed.map(element => element.element);
     const options = flatMap(
-      this.vextabElements, element => element.options.map(option => option.key)
+      this.parsed, element => element.options.map(option => option.key)
     );
     return new Set([...elements, ...options]);
   }
@@ -137,13 +139,15 @@ class VextabParser {
     const vextabOptionsString = vextabOptions.join('\n');
     const vextabString = vextabStringLines.join('\n');
     const vextabStringMeasures = VextabParser.splitIntoMeasures(vextabString);
+    const vextabOptionsId = hash(vextabOptionsString);
 
-    this.vextabChunks.push({
+    this.chunks.push({
+      vextabOptionsId,
       vextabOptionsString,
       vextabStringMeasures
     });
 
-    return this.vextabChunks;
+    return this.chunks;
   }
 }
 
