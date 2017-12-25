@@ -1,2 +1,2 @@
 export { default as Artist } from './Artist';
-export { parser } from './parser';
+export { parser as jisonVextabParser } from './jisonVextabParser';

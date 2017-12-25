@@ -1,10 +1,10 @@
-import { vextabParser } from 'services';
+import { jisonVextabParser } from 'services';
 import { flatMap, mapValues, mapKeys, groupBy, compact } from 'lodash';
 import MeasureSplitter from './MeasureSplitter';
 import { hash } from 'ssUtil';
 
 class VextabParser {
-  static BACKEND_PARSER: any = vextabParser;
+  static BACKEND_PARSER: any = jisonVextabParser;
   static OPTION_TOKEN_REGEX: RegExp = /^([a-z]+)=/;
 
   vextabString: string = '';

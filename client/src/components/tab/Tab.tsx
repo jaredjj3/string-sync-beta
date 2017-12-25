@@ -1,19 +1,14 @@
 import * as React from 'react';
-import { compose, lifecycle } from 'recompose';
-import { withNotation } from 'enhancers';
-import TabParser from './TabParser';
-
-interface TabProps {
-  notation: Enhancers.Notation
-}
+import { compose } from 'recompose';
+import TabService from './TabService';
 
 const enhance = compose(
-  withNotation
+
 );
 
 const Tab = ({ notation }) => (
   <div className="Tab">
-    <TabParser />
+    <TabService />
     Tab
   </div>
 );
