@@ -1,15 +1,16 @@
 import * as React from 'react';
 import { compose } from 'recompose';
 import TabService from './TabService';
+import Score from './score';
 
 const enhance = compose(
 
 );
 
-const Tab = ({ notation }) => (
+const Tab = () => (
   <div className="Tab">
     <TabService />
-    Tab
+    <Score />
   </div>
 );
 
