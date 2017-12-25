@@ -107,6 +107,7 @@ class VextabParser {
       vextabString = `(${chord})`;
     }
 
+    // reset the vextabString if the spec command is a bar
     if (spec.command === 'bar') {
       vextabString = `\nnotes ${vextabString}`;
     }
