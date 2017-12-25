@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose } from 'recompose';
 import TabService from './TabService';
-import Score from './score';
+import Score from './Score';
 
 const enhance = compose(
 

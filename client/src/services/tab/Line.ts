@@ -3,11 +3,13 @@ import { Measure } from 'services';
 class Line {
   measures: Array<Measure> = [];
   vextabString: string = '';
+  number: number = null;
   prev: Line = null;
   next: Line = null;
 
-  constructor(measures: Array<Measure>) {
+  constructor(measures: Array<Measure>, number: number) {
     this.measures = measures;
+    this.number = number;
 
     this._extractVextabString();
   }

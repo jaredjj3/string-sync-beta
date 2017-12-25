@@ -1,4 +1,9 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+
+const enhance = compose(
+
+);
 
 const ScoreLine = () => (
   <div className="ScoreLine">
@@ -6,4 +11,4 @@ const ScoreLine = () => (
   </div>
 );
 
-export default ScoreLine;
+export default enhance(ScoreLine);

@@ -9,25 +9,32 @@ class Tab {
   vextabString: string = '';
   parser: VextabParser = null;
   measuresPerLine: number = 0;
+  error: string = null;
 
   constructor(vextabString: string) {
     this.vextabString = vextabString;
   }
 
-  setup(): Tab {
-    this.parser = new VextabParser(this.vextabString);
-    const parsed = this.parser.parse();
-    const chunks = this.parser.chunk();
+  setup(): boolean {
+    this.error = null;
 
-    this._createMeasures(chunks);
-
-    return this;
+    try {
+      this.parser = new VextabParser(this.vextabString);
+      const parsed = this.parser.parse();
+      const chunks = this.parser.chunk();
+      this._createMeasures(chunks);
+      return true;
+    } catch (error) {
+      this.error = error.message;
+      return false;
+    }
   }
 
   createLines(measuresPerLine: number): Array<Line> {
     this.measuresPerLine = measuresPerLine;
-    const lines = chunk(this.measures, measuresPerLine).
-      map(measureGroup => new Line(measureGroup));
+    const lines = chunk(this.measures, measuresPerLine).map((measureGroup, lineNumber) =>
+      new Line(measureGroup, lineNumber)
+    );
 
     lines.forEach((line, ndx) => {
       const prev = lines[ndx - 1] || null;
