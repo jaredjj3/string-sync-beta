@@ -24,7 +24,7 @@ const enhance = compose(
   })),
   lifecycle({
     componentDidMount(): void {
-      // Update the <body></body> color so that the extra space in the Instagram
+      // Update the body color so that the extra space in the Instagram
       // browser is consistent with the bottom object, which in this case is
       // the NotationShowControls component.
       this.props.setBodyColor('black');
