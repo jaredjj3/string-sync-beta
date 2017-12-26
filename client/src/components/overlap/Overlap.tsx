@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose, setStatic, mapProps } from 'recompose';
-import classNames from 'classnames';
+import * as classNames from 'classnames';
 import { omit } from 'lodash';
 import Layer from './Layer';
 
