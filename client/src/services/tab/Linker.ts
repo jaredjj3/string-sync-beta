@@ -81,14 +81,12 @@ class Linker {
     this._linkLine();
     this._linkMeasures();
     this._linkNotes();
-    debugger
     return this;
   }
 
   unlink(): Linker {
     this._unlinkLine();
     this._unlinkMeasures();
-    this._unlinkNotes();
     return this;
   }
 
@@ -139,11 +137,10 @@ class Linker {
   }
 
   private _unlinkMeasures(): void {
-
-  }
-
-  private _unlinkNotes(): void {
-
+    this.line.measures.forEach(measure => {
+      measure.notes.forEach(note => note.measure = null);
+      measure.notes = [];
+    });
   }
 }
 
