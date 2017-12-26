@@ -1,5 +1,5 @@
 import { Line, Measure, Note } from 'services';
-import { groupBy, merge } from 'lodash';
+import { groupBy, merge, last } from 'lodash';
 
 interface BarNoteChunk {
   barNote: any;
@@ -47,7 +47,7 @@ class Linker {
           chunks.push({
             barNote,
             tabNotes: tabNotes.slice(beginIndex, endIndex),
-            noteNotes: noteNotes.slice(beginIndex, endIndex)
+            staveNotes: noteNotes.slice(beginIndex, endIndex)
           });
 
           barNote = note;
@@ -60,7 +60,7 @@ class Linker {
     chunks.push({
       barNote,
       tabNotes: tabNotes.slice(beginIndex, tabNotes.length),
-      noteNotes: noteNotes.slice(beginIndex, noteNotes.length)
+      staveNotes: noteNotes.slice(beginIndex, noteNotes.length)
     });
 
     return chunks;
@@ -81,6 +81,7 @@ class Linker {
     this._linkLine();
     this._linkMeasures();
     this._linkNotes();
+    debugger
     return this;
   }
 
@@ -108,7 +109,28 @@ class Linker {
   }
 
   private _linkNotes(): void {
-    debugger
+    const { measures } = this.line;
+
+    this.barNoteChunks.forEach((chunk, measureNumber) => {
+      if (chunk.staveNotes.length !== chunk.tabNotes.length) {
+        console.warn('expected staveNotes and tabNotes lengths to be equal, continuing anyway');
+      }
+
+      const notes = [];
+      const measure = measures[measureNumber];
+
+      chunk.staveNotes.forEach((staveNote, noteIndex) => {
+        const tabNote = chunk.tabNotes[noteIndex];
+
+        const note = new Note(measure, tabNote, staveNote);
+        const prev = last(notes) || null;
+
+        note.setPrev(prev);
+        notes.push(note);
+      });
+
+      measure.notes = notes;
+    });
   }
 
   private _unlinkLine(): void {
