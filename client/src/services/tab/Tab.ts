@@ -1,7 +1,8 @@
 import Line from './Line';
 import Measure from './Measure';
+import Note from './Note';
 import { VextabParser } from './parser';
-import { chunk, last } from 'lodash';
+import { last } from 'lodash';
 
 class Tab {
   measures: Array<Measure> = [];
@@ -10,6 +11,7 @@ class Tab {
   parser: VextabParser = null;
   measuresPerLine: number = 0;
   error: string = null;
+  width: number = 0;
 
   constructor(vextabString: string) {
     this.vextabString = vextabString;
@@ -32,8 +34,10 @@ class Tab {
 
   createLines(measuresPerLine: number, width: number): Array<Line> {
     this.measuresPerLine = measuresPerLine;
-    const lines = chunk(this.measures, measuresPerLine).map((measureGroup, lineNumber) =>
-      new Line(measureGroup, lineNumber, width)
+    this.width = width;
+
+    const lines = this._getMeasureGroups().map((measureGroup, lineNumber) =>
+      new Line(measureGroup, lineNumber, width, this.measuresPerLine)
     );
 
     lines.forEach((line, ndx) => {
@@ -44,16 +48,35 @@ class Tab {
     return this.lines = lines;
   }
 
+  select(line?: number, measure?: number, note?: number): Line | Measure | Note {
+    const l = typeof line === 'number';
+    const m = typeof measure === 'number';
+    const n = typeof note === 'number';
+
+    let result = null;
+
+    if (l && m && n) {
+      result = this.lines[line].measures[measure].notes[note];
+    } else if (l && m) {
+      result = this.lines[line].measures[measure];
+    } else if (l) {
+      result = this.lines[line];
+    }
+
+    return result ? result : null;
+  }
+
   private _createMeasures(chunks: Array<Vextab.Chunk>): Array<Measure> {
     this.measures = [];
 
     chunks.forEach(chunk => {
       chunk.vextabStringMeasures.forEach((vextabStringMeasure, ndx) => {
-        const measure = new Measure(
-          vextabStringMeasure,
-          chunk.vextabOptionsString,
-          chunk.vextabOptionsId
-        );
+        const measure = new Measure({
+          vextabString: vextabStringMeasure,
+          vextabOptions: chunk.vextabOptionsString,
+          vextabOptionsId: chunk.vextabOptionsId,
+          number: this.measures.length + 1
+        });
 
         const prev = last(this.measures) || null;
         measure.setPrev(prev);
@@ -63,6 +86,29 @@ class Tab {
     });
 
     return this.measures;
+  }
+
+  private _getMeasureGroups(): Array<Array<Measure>> {
+    const measureGroups = [];
+
+    this.measures.forEach(measure => {
+      const shouldCreateNewGroup = (
+        measureGroups.length === 0 ||
+        last(measureGroups).length === this.measuresPerLine ||
+        (
+          last(measureGroups).length > 0 &&
+          last(last(measureGroups)).vextabOptionsId !== measure.vextabOptionsId
+        )
+      );
+
+      if (shouldCreateNewGroup) {
+        measureGroups.push([]);
+      }
+
+      last(measureGroups).push(measure);
+    });
+
+    return measureGroups;
   }
 }
 

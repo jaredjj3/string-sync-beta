@@ -1,19 +1,21 @@
 import { Measure } from 'services';
 
 class Line {
-  static MAX_MEASURE_LENGTH: number = 300;
+  static MAX_MEASURE_LENGTH: number = 400;
 
   measures: Array<Measure> = [];
+  targetNumMeasures: number = null;
   vextabString: string = '';
   number: number = null;
   width: number = null;
   prev: Line = null;
   next: Line = null;
 
-  constructor(measures: Array<Measure>, number: number, width: number) {
+  constructor(measures: Array<Measure>, number: number, width: number, targetNumMeasures: number) {
     this.measures = measures;
     this.number = number;
     this.width = width;
+    this.targetNumMeasures = targetNumMeasures;
 
     this._extractVextabString();
   }
@@ -42,7 +44,7 @@ class Line {
       if (measure.vextabOptionsId !== options.id) {
         if (options.string) {
           // purge string from buffer
-          const optionsString = this._adjustedOptionsString(options.string, buffer.length);
+          const optionsString = this._addWidthToOptions(options.string);
           vextabStrings.push(optionsString + '\n\n' + buffer.join('\n') + '\n\n');
           buffer = [];
         }
@@ -55,17 +57,18 @@ class Line {
     });
 
     // purge the last buffer
-    const optionsString = this._adjustedOptionsString(options.string, buffer.length);
+    const optionsString = this._addWidthToOptions(options.string);
     vextabStrings.push(optionsString + '\n\n' + buffer.join('\n'));
 
     return this.vextabString = vextabStrings.join('\n');
   }
 
-  private _adjustedOptionsString(optionsString: string, numMeasures: number): string {
+  private _addWidthToOptions(optionsString: string): string {
     const { MAX_MEASURE_LENGTH } = Line;
+    const numMeasures = this.measures.length;
     const pxPerMeasure = this.width / numMeasures;
 
-    if (pxPerMeasure > MAX_MEASURE_LENGTH) {
+    if (this.targetNumMeasures > 1 && pxPerMeasure > MAX_MEASURE_LENGTH) {
       const targetWidth = numMeasures * MAX_MEASURE_LENGTH;
       return `options width=${targetWidth}\n${optionsString}`;
     } else {

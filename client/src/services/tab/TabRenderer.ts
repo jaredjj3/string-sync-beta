@@ -80,10 +80,9 @@ class TabRenderer {
     this.artist.staves[0].note_notes.
         filter(note => note.attrs.type === 'BarNote').
         map(barNote => barNote.getAbsoluteX()).
-        forEach((x, ndx) => {
-          const { measuresPerLine } = this.tab;
-          const measureNum = (measuresPerLine * this.lineIndex) + ndx + 1;
-          this.ctx.fillText(measureNum, x - 3, 50);
+        forEach((x, measureIndex) => {
+          const measureNumber = this.tab.select(this.lineIndex, measureIndex).number;
+          this.ctx.fillText(measureNumber.toString(), x - 3, 50);
       });
 
     this.ctx.restore();

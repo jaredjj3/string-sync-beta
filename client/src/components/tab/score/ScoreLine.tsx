@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { compose, withHandlers } from 'recompose';
+import { compose, withHandlers, withState, lifecycle } from 'recompose';
 import { TabRenderer } from 'services';
 import { withViewport, withTab } from 'enhancers';
 
 const SCORE_LINE_HEIGHT_PX = 300;
 
 const enhance = compose(
-  withViewport,
   withTab,
+  withViewport,
+  withState('tabRenderer', 'setTabRenderer', null),
   withHandlers({
     handleCanvasRef: props => canvas => {
       if (!canvas) {
@@ -24,6 +25,19 @@ const enhance = compose(
 
       tabRenderer.setup();
       tabRenderer.render();
+
+      props.setTabRenderer(tabRenderer);
+    }
+  }),
+  lifecycle({
+    componentDidUpdate(): void {
+      const { tabRenderer } = this.props;
+
+      if (tabRenderer) {
+        tabRenderer.width = this.props.viewport.state.width;
+        tabRenderer.setup();
+        tabRenderer.render();
+      }
     }
   })
 );

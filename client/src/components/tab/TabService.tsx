@@ -52,14 +52,12 @@ const enhance = compose(
     maybeUpdateTab: () => {
       const tab = props.tab.state.provider;
       const { width } = props.viewport.state;
-      const nextMeasuresPerLine = props.getMeasuresPerLine(width);
-      const shouldUpdate = (
-        tab &&
-        tab.measuresPerLine !== nextMeasuresPerLine
-      );
+      const measuresPerLine = props.getMeasuresPerLine(width);
+      const shouldUpdate = tab && (width !== tab.width);
 
       if (shouldUpdate) {
-        tab.createLines(nextMeasuresPerLine, width);
+        tab.createLines(measuresPerLine, width);
+        props.tab.dispatch.emitUpdate();
       }
     }
   })),

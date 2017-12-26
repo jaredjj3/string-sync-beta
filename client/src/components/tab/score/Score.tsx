@@ -10,7 +10,6 @@ const enhance = compose(
   textWhileLoading(({ tab }) => tab.state.provider === null),
   shouldUpdate((currProps, nextProps) => {
     const { provider } = nextProps.tab.state;
-
     return provider && !provider.error;
   })
 );
@@ -20,7 +19,7 @@ const ScoreLines = ({ provider }) => {
     return null;
   } else {
     return (
-      provider.lines.map((line: Line) => (
+      provider.lines.map((line: Line, ndx) => (
         <ScoreLine
           key={`score-line-${line.number}-${hash(line.vextabString)}`}
           number={line.number}

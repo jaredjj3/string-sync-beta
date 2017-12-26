@@ -46,7 +46,7 @@ class VextabParser {
     let vextabOptions = [];
     let vextabString = [];
 
-    this.vextabString.split('\n').forEach(line => {
+    this.strippedLines.forEach(line => {
       const tokens = line.split(/\s/).map(token => {
         // Try matching foo=none, bar=some
         const match = token.match(VextabParser.OPTION_TOKEN_REGEX);

@@ -21,7 +21,7 @@ class MeasureSplitter {
 
   split(): MeasureSplitter {
     let beginIndex = 0;
-    while (beginIndex < this.vextabString.length - 1) {
+    while (beginIndex < this.vextabString.length) {
       let measureDetected = false;
 
       for (let length of LENGTHS) {
@@ -40,8 +40,7 @@ class MeasureSplitter {
       }
 
       if (!measureDetected) {
-        this.buffer += this.vextabString[beginIndex];
-        beginIndex++;
+        this.buffer += this.vextabString[beginIndex++];
       }
     }
 
