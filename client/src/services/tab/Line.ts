@@ -1,4 +1,5 @@
-import { Measure } from 'services';
+import { Artist, Measure } from 'services';
+import Linker from './Linker';
 
 class Line {
   static MAX_MEASURE_LENGTH: number = 400;
@@ -10,6 +11,9 @@ class Line {
   width: number = null;
   prev: Line = null;
   next: Line = null;
+  tabStave: any = null;
+  noteStave: any = null;
+  linker: Linker = null;
 
   constructor(measures: Array<Measure>, number: number, width: number, targetNumMeasures: number) {
     this.measures = measures;
@@ -33,6 +37,19 @@ class Line {
   setNext(next: Line): Line {
     next.setPrev(this);
     return next;
+  }
+
+  link(artist: Artist): Linker {
+    this.linker = new Linker(this, artist.staves[0]);
+    this.linker.link();
+    return this.linker;
+  }
+
+  unlink(): Linker {
+    const { linker } = this;
+    this.linker = null;
+    linker.unlink();
+    return linker;
   }
 
   private _extractVextabString(): string {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose, withHandlers, withState, lifecycle } from 'recompose';
+import { compose, withHandlers, withState, withProps, lifecycle } from 'recompose';
 import { TabRenderer } from 'services';
 import { withViewport, withTab } from 'enhancers';
 
@@ -23,12 +23,19 @@ const enhance = compose(
         height: SCORE_LINE_HEIGHT_PX
       });
 
-      tabRenderer.setup();
-      tabRenderer.render();
-
       props.setTabRenderer(tabRenderer);
     }
   }),
+  withProps(props => ({
+    link: () => {
+      const { tabRenderer, tab, number } = props;
+
+      if (tabRenderer) {
+        const line = tab.state.provider.select(number);
+        line.link(tabRenderer.artist);
+      }
+    }
+  })),
   lifecycle({
     componentDidUpdate(): void {
       const { tabRenderer } = this.props;
@@ -37,6 +44,8 @@ const enhance = compose(
         tabRenderer.width = this.props.viewport.state.width;
         tabRenderer.setup();
         tabRenderer.render();
+
+        this.props.link();
       }
     }
   })

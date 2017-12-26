@@ -1,6 +1,5 @@
 import { Flow } from 'vexflow';
-import { Artist, Tab } from 'services';
-import { VexTab } from 'vextab/releases/vextab-div.js';
+import { Artist, Vextab, Tab } from 'services';
 
 const { Renderer } = Flow;
 
@@ -40,7 +39,7 @@ class TabRenderer {
     this._resize();
 
     this.artist = new Artist(10, 20, this.width - 20);
-    this.vextab = new VexTab(this.artist);
+    this.vextab = new Vextab(this.artist);
     this.vextab.parse(this.vextabString);
 
     return this;

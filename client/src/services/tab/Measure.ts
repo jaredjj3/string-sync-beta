@@ -16,6 +16,7 @@ class Measure {
   number: number = 0;
   prev: Measure = null;
   next: Measure = null;
+  barNote: any = null;
 
   constructor(spec: MeasureSpec) {
     this.vextabString = spec.vextabString;
