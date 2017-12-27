@@ -35,24 +35,18 @@ class Linker {
       // we only need to keep track of the index and act if the current note is
       // a BarNote.
       if (isBarNote) {
-        if (barNote === null) {
-          // If there is no barNote set, set it and move on.
-          barNote = note;
-          beginIndex = endIndex + 1;
-        } else {
-          // Otherwise, you have found a second BarNote. The notes in
-          // [beginIndex, endIndex] must contain all the notes that belong
-          // to the current barNote. Create a BarNoteChunk, and advance the
-          // beginIndex to endIndex + 1.
+        if (barNote !== null) {
+          // A second barNote has been found. The notes in [beginIndex, endIndex]
+          // must contain all the notes that belong to the current barNote.
           chunks.push({
             barNote,
             tabNotes: tabNotes.slice(beginIndex, endIndex),
             staveNotes: noteNotes.slice(beginIndex, endIndex)
           });
-
-          barNote = note;
-          beginIndex = endIndex + 1;
         }
+
+        barNote = note;
+        beginIndex = endIndex + 1;
       }
     });
 

@@ -17,7 +17,7 @@ const enhance = compose(
 
       const tabRenderer = new TabRenderer({
         tab: props.tab.state.provider,
-        lineIndex: props.number,
+        lineNumber: props.number,
         canvas: canvas,
         width: props.viewport.state.width,
         height: SCORE_LINE_HEIGHT_PX
@@ -34,6 +34,14 @@ const enhance = compose(
         const line = tab.state.provider.select(number);
         line.link(tabRenderer.artist);
       }
+    },
+    unlink: () => {
+      const { tab, number } = props;
+      const line = tab.state.provider.select(number);
+
+      if (line.linker) {
+        line.linker.unlink();
+      }
     }
   })),
   lifecycle({
@@ -45,8 +53,12 @@ const enhance = compose(
         tabRenderer.setup();
         tabRenderer.render();
 
+        this.props.unlink();
         this.props.link();
       }
+    },
+    componentWillUnmount(): void {
+      this.props.unlink();
     }
   })
 );

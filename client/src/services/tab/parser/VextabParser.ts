@@ -56,7 +56,7 @@ class VextabParser {
       const isOptionLine = tokens.some(token => optionTokens.has(token));
       const shouldPurge = isOptionLine && vextabString.length > 0;
       if (shouldPurge) {
-        this._appendVextabChunk(vextabOptions, vextabString);
+        this._pushChunk(vextabOptions, vextabString);
 
         // reset the collections
         vextabOptions = [];
@@ -69,7 +69,7 @@ class VextabParser {
 
     // purge one more time since the last iteration of the main loop will not
     // account for it.
-    this._appendVextabChunk(vextabOptions, vextabString);
+    this._pushChunk(vextabOptions, vextabString);
 
     return this.chunks;
   }
@@ -135,7 +135,7 @@ class VextabParser {
     return new Set([...elements, ...options]);
   }
 
-  private _appendVextabChunk(vextabOptions: Array<string>, vextabStringLines: Array<string>): Array<Vextab.Chunk> {
+  private _pushChunk(vextabOptions: Array<string>, vextabStringLines: Array<string>): Array<Vextab.Chunk> {
     const vextabOptionsString = vextabOptions.join('\n');
     const vextabString = vextabStringLines.join('\n');
     const vextabStringMeasures = VextabParser.splitIntoMeasures(vextabString);

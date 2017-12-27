@@ -1,11 +1,11 @@
 import { Flow } from 'vexflow';
-import { Artist, Vextab, Tab } from 'services';
+import { Artist, Vextab, Tab, Line } from 'services';
 
 const { Renderer } = Flow;
 
 interface TabRendererSpec {
   tab: Tab;
-  lineIndex: number;
+  lineNumber: number;
   canvas: HTMLCanvasElement;
   width: number;
   height: number;
@@ -20,17 +20,18 @@ class TabRenderer {
   artist: any = null;
   vextab: any = null;
   vextabString: string = '';
-  lineIndex: number = 0;
+  lineNumber: number = 0;
   tab: Tab;
 
   constructor(spec: TabRendererSpec) {
-    this.lineIndex = spec.lineIndex;
+    this.lineNumber = spec.lineNumber;
     this.tab = spec.tab;
     this.canvas = spec.canvas;
     this.width = spec.width;
     this.height = spec.height;
 
-    this.vextabString = this.tab.lines[this.lineIndex].vextabString;
+    const line = this.tab.select(this.lineNumber) as Line;
+    this.vextabString = line.vextabString;
   }
 
   setup(): TabRenderer {
@@ -80,7 +81,7 @@ class TabRenderer {
         filter(note => note.attrs.type === 'BarNote').
         map(barNote => barNote.getAbsoluteX()).
         forEach((x, measureIndex) => {
-          const measureNumber = this.tab.select(this.lineIndex, measureIndex).number;
+          const measureNumber = this.tab.select(this.lineNumber, measureIndex).number;
           this.ctx.fillText(measureNumber.toString(), x - 3, 50);
       });
 
