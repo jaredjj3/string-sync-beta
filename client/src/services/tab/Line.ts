@@ -1,4 +1,4 @@
-import { Artist, Measure } from 'services';
+import { Artist, Measure, Note } from 'services';
 import Linker from './Linker';
 
 class Line {
@@ -39,17 +39,33 @@ class Line {
     return next;
   }
 
-  link(artist: Artist): Linker {
-    this.linker = new Linker(this, artist.staves[0]);
+  linkVexInstances(stave: any): Linker {
+    this.linker = new Linker(this, stave);
     this.linker.link();
     return this.linker;
   }
 
-  unlink(): Linker {
+  unlinkVexInstances(): Linker {
     const { linker } = this;
     this.linker = null;
     linker.unlink();
     return linker;
+  }
+
+  select(measure?: number, note?: number): Measure | Note {
+    const m = typeof measure === 'number';
+    const n = typeof note === 'number';
+
+    let result = null;
+    const _measure = this.measures[measure];
+
+    if (m && n) {
+      result = _measure.select(note);
+    } else if (m) {
+      result = _measure;
+    }
+
+    return result || null;
   }
 
   private _extractVextabString(): string {

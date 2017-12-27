@@ -1,17 +1,16 @@
 import { Flow } from 'vexflow';
-import { Artist, Vextab, Tab, Line } from 'services';
+import { Artist, Vextab, Measure, Line } from 'services';
 
-const { Renderer } = Flow;
+const { Renderer } = Flow; // backend renderer
 
-interface TabRendererSpec {
-  tab: Tab;
-  lineNumber: number;
+interface ScoreLineRendererSpec {
+  line: Line;
   canvas: HTMLCanvasElement;
   width: number;
   height: number;
 }
 
-class TabRenderer {
+class ScoreLineRenderer implements Renderer  {
   canvas: HTMLCanvasElement = null;
   ctx: CanvasRenderingContext2D = null;
   renderer: any = null;
@@ -20,21 +19,17 @@ class TabRenderer {
   artist: any = null;
   vextab: any = null;
   vextabString: string = '';
-  lineNumber: number = 0;
-  tab: Tab;
+  line: Line = null;
 
-  constructor(spec: TabRendererSpec) {
-    this.lineNumber = spec.lineNumber;
-    this.tab = spec.tab;
-    this.canvas = spec.canvas;
-    this.width = spec.width;
-    this.height = spec.height;
-
-    const line = this.tab.select(this.lineNumber) as Line;
+  constructor(line: Line, canvas: HTMLCanvasElement, width: number, height: number) {
+    this.line = line;
     this.vextabString = line.vextabString;
+    this.canvas = canvas;
+    this.width = width;
+    this.height = height;
   }
 
-  setup(): TabRenderer {
+  setup(): ScoreLineRenderer {
     this.renderer = new Renderer(this.canvas, Renderer.Backends.CANVAS);
     this.ctx = this.renderer.getContext();
     this._resize();
@@ -46,7 +41,7 @@ class TabRenderer {
     return this;
   }
 
-  render(): TabRenderer {
+  render(): ScoreLineRenderer {
     this._renderTab();
     this._renderMeasureNumbers();
     this._renderTabText();
@@ -55,7 +50,7 @@ class TabRenderer {
     return this;
   }
 
-  private _resize(): TabRenderer {
+  private _resize(): ScoreLineRenderer {
     const { canvas, width, height } = this;
     const ratio = window.devicePixelRatio || 1;
 
@@ -67,12 +62,12 @@ class TabRenderer {
     return this;
   }
 
-  private _renderTab(): TabRenderer {
+  private _renderTab(): ScoreLineRenderer {
     this.artist.render(this.renderer);
     return this;
   }
 
-  private _renderMeasureNumbers(): TabRenderer {
+  private _renderMeasureNumbers(): ScoreLineRenderer {
     this.ctx.save();
     this.ctx.fillStyle = 'darkgray';
     this.ctx.font = 'italic 10px arial';
@@ -81,7 +76,7 @@ class TabRenderer {
         filter(note => note.attrs.type === 'BarNote').
         map(barNote => barNote.getAbsoluteX()).
         forEach((x, measureIndex) => {
-          const measureNumber = this.tab.select(this.lineNumber, measureIndex).number;
+          const measureNumber = this.line.select(measureIndex).number;
           this.ctx.fillText(measureNumber.toString(), x - 3, 50);
       });
 
@@ -90,7 +85,7 @@ class TabRenderer {
     return this;
   }
 
-  private _renderTabText(): TabRenderer {
+  private _renderTabText(): ScoreLineRenderer {
     this.ctx.save();
     this.ctx.font = '24px sans-serif';
 
@@ -107,7 +102,7 @@ class TabRenderer {
     return this;
   }
 
-  private _renderBranding(): TabRenderer {
+  private _renderBranding(): ScoreLineRenderer {
     this.ctx.save();
     this.ctx.fillStyle = 'darkgray';
     this.ctx.font = 'italic 12px arial';
@@ -127,4 +122,4 @@ class TabRenderer {
   }
 }
 
-export default TabRenderer;
+export default ScoreLineRenderer;

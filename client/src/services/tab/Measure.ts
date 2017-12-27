@@ -39,6 +39,11 @@ class Measure {
     next.setPrev(this);
     return next;
   }
+
+  select(note?: number): Note {
+    const result = typeof note === 'number' ? this.notes[note] : null;
+    return result || null;
+  }
 }
 
 export default Measure;

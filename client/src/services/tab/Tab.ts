@@ -54,16 +54,18 @@ class Tab {
     const n = typeof note === 'number';
 
     let result = null;
+    let _line = this.lines[line];
 
     if (l && m && n) {
-      result = this.lines[line].measures[measure].notes[note];
+      const _measure = _line.select(measure) as Measure;
+      result = _measure.select(note);
     } else if (l && m) {
-      result = this.lines[line].measures[measure];
+      result = _line.select(measure);
     } else if (l) {
-      result = this.lines[line];
+      result = _line;
     }
 
-    return result ? result : null;
+    return result || null;
   }
 
   private _createMeasures(chunks: Array<Vextab.Chunk>): Array<Measure> {

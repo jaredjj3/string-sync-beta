@@ -1,57 +1,61 @@
 import * as React from 'react';
 import { compose, withHandlers, withState, withProps, lifecycle } from 'recompose';
-import { TabRenderer } from 'services';
+import { ScoreLineRenderer } from 'services';
 import { withViewport, withTab } from 'enhancers';
+import Caret from './Caret';
+import { Overlap } from 'components';
+
+const { Layer } = Overlap;
 
 const SCORE_LINE_HEIGHT_PX = 300;
 
 const enhance = compose(
   withTab,
   withViewport,
-  withState('tabRenderer', 'setTabRenderer', null),
+  withState('scoreLineRenderer', 'setScoreLineRenderer', null),
+  withProps(props => ({
+    line: props.tab.state.provider.select(props.number)
+  })),
   withHandlers({
     handleCanvasRef: props => canvas => {
       if (!canvas) {
         return;
       }
 
-      const tabRenderer = new TabRenderer({
-        tab: props.tab.state.provider,
-        lineNumber: props.number,
-        canvas: canvas,
-        width: props.viewport.state.width,
-        height: SCORE_LINE_HEIGHT_PX
-      });
+      const scoreLineRenderer = new ScoreLineRenderer(
+        props.line,
+        canvas,
+        props.viewport.state.width,
+        SCORE_LINE_HEIGHT_PX
+      );
 
-      props.setTabRenderer(tabRenderer);
+      props.setScoreLineRenderer(scoreLineRenderer);
     }
   }),
   withProps(props => ({
     link: () => {
-      const { tabRenderer, tab, number } = props;
+      const { scoreLineRenderer } = props;
 
-      if (tabRenderer) {
-        const line = tab.state.provider.select(number);
-        line.link(tabRenderer.artist);
+      if (scoreLineRenderer) {
+        props.line.linkVexInstances(scoreLineRenderer.artist.staves[0]);
       }
     },
     unlink: () => {
-      const { tab, number } = props;
-      const line = tab.state.provider.select(number);
+      const { line } = props;
 
       if (line.linker) {
-        line.linker.unlink();
+        line.linker.unlinkVexInstances();
       }
     }
   })),
   lifecycle({
     componentDidUpdate(): void {
-      const { tabRenderer } = this.props;
+      const { scoreLineRenderer } = this.props;
 
-      if (tabRenderer) {
-        tabRenderer.width = this.props.viewport.state.width;
-        tabRenderer.setup();
-        tabRenderer.render();
+      if (scoreLineRenderer) {
+        scoreLineRenderer.width = this.props.viewport.state.width;
+        scoreLineRenderer.setup();
+        scoreLineRenderer.render();
 
         this.props.unlink();
         this.props.link();
@@ -63,9 +67,16 @@ const enhance = compose(
   })
 );
 
-const ScoreLine = ({ handleCanvasRef }) => (
+const ScoreLine = ({ line, handleCanvasRef }) => (
   <div className="ScoreLine">
-    <canvas ref={handleCanvasRef} />
+    <Overlap style={{ height: '300px' }}>
+      <Layer style={{ zIndex: '10' }}>
+        <canvas ref={handleCanvasRef} />
+      </Layer>
+      <Layer style={{ zIndex: '11' }}>
+        <Caret line={line} />
+      </Layer>
+    </Overlap>
   </div>
 );
 
