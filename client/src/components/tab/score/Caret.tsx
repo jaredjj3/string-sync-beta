@@ -19,6 +19,8 @@ const enhance = compose(
       const height = CARET_HEIGHT_PX;
 
       const caretRenderer = new CaretRenderer(props.line, canvas, width, height);
+      caretRenderer.setup();
+      caretRenderer.render();
 
       props.setCaretRenderer(caretRenderer);
     }

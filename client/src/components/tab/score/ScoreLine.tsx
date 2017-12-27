@@ -45,6 +45,12 @@ const enhance = compose(
       }
     }
   })),
+  withProps(({ linkVexInstances, unlinkVexInstances }) => ({
+    refreshLinkedVexInstances: () => {
+      unlinkVexInstances();
+      linkVexInstances();
+    },
+  })),
   lifecycle({
     componentDidUpdate(): void {
       const { scoreLineRenderer } = this.props;
@@ -53,8 +59,7 @@ const enhance = compose(
         this.props.updateScoreLineRendererWidth();
         scoreLineRenderer.render();
 
-        this.props.unlinkVexInstances();
-        this.props.linkVexInstances();
+        this.props.refreshLinkedVexInstances();
       }
     },
     componentWillUnmount(): void {
