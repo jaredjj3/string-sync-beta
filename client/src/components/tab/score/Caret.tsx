@@ -20,7 +20,6 @@ const enhance = compose(
 
       const caretRenderer = new CaretRenderer(props.line, canvas, width, height);
       caretRenderer.setup();
-      caretRenderer.render();
 
       props.setCaretRenderer(caretRenderer);
     }
