@@ -17,34 +17,31 @@ const enhance = compose(
     line: props.tab.state.provider.select(props.number)
   })),
   withHandlers({
-    handleCanvasRef: props => canvas => {
-      if (!canvas) {
-        return;
+    handleCanvasRef: ({ line, viewport, setScoreLineRenderer }) => canvas => {
+      if (canvas) {
+        const { width } = viewport.state;
+        const height = SCORE_LINE_HEIGHT_PX;
+
+        const scoreLineRenderer = new ScoreLineRenderer(line, canvas, width, height);
+        setScoreLineRenderer(scoreLineRenderer);
       }
-
-      const scoreLineRenderer = new ScoreLineRenderer(
-        props.line,
-        canvas,
-        props.viewport.state.width,
-        SCORE_LINE_HEIGHT_PX
-      );
-
-      props.setScoreLineRenderer(scoreLineRenderer);
     }
   }),
-  withProps(props => ({
-    link: () => {
-      const { scoreLineRenderer } = props;
-
+  withProps(({ scoreLineRenderer, line, viewport }) => ({
+    linkVexInstances: () => {
       if (scoreLineRenderer) {
-        props.line.linkVexInstances(scoreLineRenderer.artist.staves[0]);
+        line.linkVexInstances(scoreLineRenderer.artist.staves[0]);
       }
     },
-    unlink: () => {
-      const { line } = props;
-
-      if (line.linker) {
-        line.linker.unlinkVexInstances();
+    unlinkVexInstances: () => {
+      if (line) {
+        line.unlinkVexInstances();
+      }
+    },
+    updateScoreLineRendererWidth: () => {
+      if (scoreLineRenderer) {
+        scoreLineRenderer.width = viewport.state.width;
+        scoreLineRenderer.setup();
       }
     }
   })),
@@ -53,16 +50,15 @@ const enhance = compose(
       const { scoreLineRenderer } = this.props;
 
       if (scoreLineRenderer) {
-        scoreLineRenderer.width = this.props.viewport.state.width;
-        scoreLineRenderer.setup();
+        this.props.updateScoreLineRendererWidth();
         scoreLineRenderer.render();
 
-        this.props.unlink();
-        this.props.link();
+        this.props.unlinkVexInstances();
+        this.props.linkVexInstances();
       }
     },
     componentWillUnmount(): void {
-      this.props.unlink();
+      this.props.unlinkVexInstances();
     }
   })
 );

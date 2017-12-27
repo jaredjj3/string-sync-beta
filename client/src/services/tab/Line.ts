@@ -45,11 +45,11 @@ class Line {
     return this.linker;
   }
 
-  unlinkVexInstances(): Linker {
-    const { linker } = this;
-    this.linker = null;
-    linker.unlink();
-    return linker;
+  unlinkVexInstances(): void {
+    if (this.linker) {
+      this.linker.unlink();
+      this.linker = null;
+    }
   }
 
   select(measure?: number, note?: number): Measure | Note {
