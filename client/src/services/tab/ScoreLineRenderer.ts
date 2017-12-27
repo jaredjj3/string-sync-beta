@@ -1,5 +1,6 @@
 import { Flow } from 'vexflow';
 import { Artist, Vextab, Measure, Line } from 'services';
+import { rafActions } from 'data/ui/raf';
 
 const { Renderer } = Flow; // backend renderer
 
@@ -47,6 +48,11 @@ class ScoreLineRenderer implements Renderer  {
     this._renderTabText();
     this._renderBranding();
 
+    return this;
+  }
+
+  clear(): ScoreLineRenderer {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     return this;
   }
 
