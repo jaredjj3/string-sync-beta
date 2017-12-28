@@ -11,6 +11,7 @@ export { default as Gradient } from './gradient';
 export { default as Landing } from './landing';
 export { default as Library } from './library';
 export { default as Nav } from './nav';
+export { default as Overflow } from './overflow';
 export { default as Overlap } from './overlap';
 export { default as Tab } from './tab';
 export { default as Video } from './video';
