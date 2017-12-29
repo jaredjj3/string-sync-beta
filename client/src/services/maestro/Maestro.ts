@@ -8,7 +8,8 @@ import { toTick } from 'ssUtil';
 // attribute
 //
 // When the instance has the state isConducting === true, the Maestro will call onMaestroConduct
-// passing optionally used arguments: active, currentTimeMs, currentTick.
+// passing optionally used arguments: active, currentTimeMs, currentTick. If the member does not
+// have onMaestroConduct defined, it will log a warning that no callback was called and continue.
 class Maestro {
   orchestra: Array<any> = [];
 
@@ -22,6 +23,16 @@ class Maestro {
     return this.bpm * (Flow.RESOLUTION / 4);
   }
 
+  addMember<T>(member: T): T {
+    this.orchestra.push(member);
+    return member;
+  }
+
+  removeMember<T>(member: T): T {
+    this.orchestra = this.orchestra.filter(_member => member !== _member);
+    return member;
+  }
+
   conduct(): Maestro {
     // compute once
     const callbackArgs = [
@@ -31,7 +42,15 @@ class Maestro {
     ];
 
     this.orchestra.forEach(member => {
-      member.onMaestroConduct(...callbackArgs);
+      const callback = member.onMaestroConduct;
+      if (typeof callback === 'function') {
+        callback(...callbackArgs);
+      } else {
+        console.warn(
+          `${member.constructor.name}: expected orchestra member to have an ` +
+          'onMaestroConduct callback defined, continuing anyway'
+        );
+      }
     });
 
     return this;
