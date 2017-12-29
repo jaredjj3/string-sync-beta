@@ -5,15 +5,18 @@ import Frets from './Frets';
 import Strings from './Strings';
 import { withFretboard } from 'enhancers';
 import { Fretboard as FretboardService } from 'services';
+import { Overlap } from 'components';
+
+const { Layer } = Overlap;
 
 const enhance = compose(
   withFretboard,
   lifecycle({
     componentDidMount(): void {
-      this.props.setFretboard(new FretboardService());
+      this.props.fretboard.dispatch.setFretboard(new FretboardService());
     },
     componentWillUnmount(): void {
-      this.props.resetFretboard();
+      this.props.fretboard.dispatch.resetFretboard();
     }
   })
 );
@@ -39,8 +42,14 @@ const FretboardIndicators = () => {
 const Fretboard = () => (
   <div className="Fretboard">
     <FretboardIndicators />
-    <Frets />
-    <Strings />
+    <Overlap>
+      <Layer>
+        <Frets />
+      </Layer>
+      <Layer>
+        <Strings />
+      </Layer>
+    </Overlap>
   </div>
 );
 
