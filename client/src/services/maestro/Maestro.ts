@@ -1,0 +1,41 @@
+import { Flow } from 'vexflow';
+import { toTick } from 'ssUtil';
+
+// The purpose of this service is to coordinate a video player's state (i.e. isActive and
+// current time states) with DOM elements or other services. Its role is distinct from the
+// RAFLoop singleton in a sense that there can be consumers that do not require knowledge
+// of a video player's state. It is up to the caller to update the maestro's currentTime
+// attribute
+//
+// When the instance has the state isConducting === true, the Maestro will call onMaestroConduct
+// passing optionally used arguments: active, currentTimeMs, currentTick.
+class Maestro {
+  orchestra: Array<any> = [];
+
+  bpm: number = 0;
+  deadTimeMs: number = 0;
+
+  isMediaActive: boolean = false;
+  currentTimeMs: number = 0;
+
+  get tpm(): number {
+    return this.bpm * (Flow.RESOLUTION / 4);
+  }
+
+  conduct(): Maestro {
+    // compute once
+    const callbackArgs = [
+      this.isMediaActive,
+      this.currentTimeMs,
+      toTick(this.currentTimeMs, this.tpm)
+    ];
+
+    this.orchestra.forEach(member => {
+      member.onMaestroConduct(...callbackArgs);
+    });
+
+    return this;
+  }
+}
+
+export default Maestro;

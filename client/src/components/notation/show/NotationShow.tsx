@@ -4,6 +4,7 @@ import { withNotation } from 'enhancers';
 import { Gradient, Video, Tab } from 'components';
 import NotationShowBanner from './NotationShowBanner';
 import NotationShowControls from './NotationShowControls';
+import { toTick, toTimeMs } from 'ssUtil';
 
 const enhance = compose(
   withNotation,
