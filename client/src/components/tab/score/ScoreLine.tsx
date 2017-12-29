@@ -7,7 +7,7 @@ import { Overlap } from 'components';
 
 const { Layer } = Overlap;
 
-const SCORE_LINE_HEIGHT_PX = 300;
+const SCORE_LINE_HEIGHT_PX = 260;
 
 const enhance = compose(
   withTab,
@@ -70,7 +70,7 @@ const enhance = compose(
 
 const ScoreLine = ({ line, handleCanvasRef }) => (
   <div className="ScoreLine">
-    <Overlap style={{ height: '300px' }}>
+    <Overlap style={{ height: SCORE_LINE_HEIGHT_PX }}>
       <Layer style={{ zIndex: '10' }}>
         <canvas ref={handleCanvasRef} />
       </Layer>

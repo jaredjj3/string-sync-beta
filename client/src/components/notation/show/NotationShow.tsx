@@ -45,7 +45,10 @@ const NotationShow = ({ isFetching, notation }) => (
       transcriber={notation.state.transcriber}
     />
     <Video />
-    <div className="NotationShow__tabContainer">
+    <div
+      className="NotationShow__tabContainer"
+      style={{ height: '260px' }}
+    >
       <Tab />
     </div>
     <NotationShowControls />
