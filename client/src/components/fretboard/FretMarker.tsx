@@ -1,10 +1,23 @@
 import * as React from 'react';
-import { compose, toClass, lifecycle } from 'recompose';
-import { withFretboard } from 'enhancers';
+import { compose, withState, lifecycle, withProps } from 'recompose';
+import { withFretboard, withViewport } from 'enhancers';
+import * as classNames from 'classnames';
 
 const enhance = compose(
   withFretboard,
-  toClass,
+  withViewport,
+  withState('lit', 'setLit', false),
+  withState('pressed', 'setPressed', false),
+  withProps(props => ({
+    rootClassNames: classNames(
+      'FretMarker',
+      {
+        'FretMarker--lit': props.lit,
+        'FretMarker--pressed': props.pressed,
+        'FretMarker--mobile': props.viewport.state.type === 'MOBILE'
+      }
+    )
+  })),
   lifecycle({
     componentDidMount(): void {
       const { fretboard, string, fret } = this.props;
@@ -27,10 +40,6 @@ const enhance = compose(
   })
 );
 
-const FretMarker = ({ string, fret }) => (
-  <div className="FretMarker">
-    {`${string},${fret}`}
-  </div>
-);
+const FretMarker = ({ rootClassNames }) => <div className={rootClassNames} />;
 
 export default enhance(FretMarker);

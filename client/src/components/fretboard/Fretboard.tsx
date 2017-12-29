@@ -1,16 +1,30 @@
 import * as React from 'react';
-import { compose, lifecycle } from 'recompose';
+import { compose, lifecycle, withProps, shouldUpdate } from 'recompose';
 import { Row, Col } from 'antd';
 import Frets from './Frets';
 import Strings from './Strings';
-import { withFretboard } from 'enhancers';
+import { withFretboard, withViewport } from 'enhancers';
 import { Fretboard as FretboardService } from 'services';
 import { Overlap } from 'components';
+import * as classNames from 'classnames';
 
 const { Layer } = Overlap;
 
 const enhance = compose(
   withFretboard,
+  withViewport,
+  shouldUpdate((currProps, nextProps) => (
+    currProps.viewport.state.type !== nextProps.viewport.state.type
+  )),
+  withProps(props => ({
+    rootClassNames: classNames(
+      'Fretboard',
+      {
+        'Fretboard--mobile': props.viewport.state.type === 'MOBILE',
+        'Fretboard--desktop': props.viewport.state.type === 'DESKTOP'
+      }
+    )
+  })),
   lifecycle({
     componentDidMount(): void {
       this.props.fretboard.dispatch.resetFretboard();
@@ -31,7 +45,9 @@ const FretboardIndicators = () => {
       {
         indicators.map((indicator, fret) => (
           <Col key={`fret-indicator-${fret}`} span={fret === 0 ? 2 : 1}>
-            {indicator}
+            <Row type="flex" justify="center">
+              {indicator}
+            </Row>
           </Col>
         ))
       }
@@ -39,8 +55,8 @@ const FretboardIndicators = () => {
   );
 };
 
-const Fretboard = () => (
-  <div className="Fretboard">
+const Fretboard = ({ rootClassNames }) => (
+  <div className={rootClassNames}>
     <FretboardIndicators />
     <Overlap>
       <Layer>

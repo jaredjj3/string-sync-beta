@@ -16,7 +16,7 @@ const getEmptyStrings = () => new Array(6).fill(null);
 
 class Fretboard {
   fretMarkers: Array<Array<FretMarker>> = getEmptyFretMarkers();
-  strings: Array<GuitarString> = getEmptyStrings();
+  guitarStrings: Array<GuitarString> = getEmptyStrings();
 
   addFretMarker(string: number, fret: number, markerProps: any): FretMarker {
     const fretMarker = new FretMarker(string, fret, markerProps);
@@ -34,19 +34,19 @@ class Fretboard {
   }
 
   // stringNumber === stringIndex + 1
-  addString(stringNumber: number, stringProps: any): GuitarString {
+  addGuitarString(stringNumber: number, stringProps: any): GuitarString {
     const string = new GuitarString(stringNumber, stringProps);
-    this.strings[stringNumber - 1] = string;
+    this.guitarStrings[stringNumber - 1] = string;
     return string;
   }
 
-  removeString(stringNumber: number): Array<GuitarString> {
-    this.strings[stringNumber - 1] = null;
-    return this.strings;
+  removeGuitarString(stringNumber: number): Array<GuitarString> {
+    this.guitarStrings[stringNumber - 1] = null;
+    return this.guitarStrings;
   }
 
-  selectString(stringNumber: number): any {
-    return this.strings[stringNumber - 1];
+  selectGuitarString(stringNumber: number): any {
+    return this.guitarStrings[stringNumber - 1];
   }
 }
 
