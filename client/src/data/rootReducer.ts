@@ -12,7 +12,7 @@ import { tagsReducer as tags } from './api/tags';
 // However, data managed here may originate from an API, but these reducers
 // must not be the "first pass" managers of such data.
 import { featuresReducer as features } from './ui/features';
-import { rafReducer as raf } from './ui/raf';
+import { syncReducer as sync } from './ui/sync';
 import { tabReducer as tab } from './ui/tab';
 import { videoReducer as video } from './ui/video';
 import { viewportReducer as viewport } from './ui/viewport';
@@ -23,7 +23,7 @@ const rootReducer = combineReducers({
   session,
   tags,
   features,
-  raf,
+  sync,
   tab,
   video,
   viewport

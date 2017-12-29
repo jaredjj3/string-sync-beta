@@ -73,4 +73,11 @@ declare namespace Enhancers {
       resetVideo(): void;
     }
   }
+
+  interface Sync {
+    state: Store.Sync;
+    dispatch: {
+      resetSync(): void;
+    }
+  }
 }

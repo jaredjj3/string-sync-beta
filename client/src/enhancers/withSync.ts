@@ -1,18 +1,18 @@
 import { connect } from 'react-redux';
-import { rafActions as actions } from 'data/ui/raf';
+import { syncActions as actions } from 'data/ui/sync';
 
-const mapStateToProps = ({ raf }) => ({
-  raf
+const mapStateToProps = ({ sync }) => ({
+  sync
 });
 
 const mapDispatchToProps = dispatch => ({
-  resetRafLoop: () => dispatch(actions.resetRafLoop())
+  resetRafLoop: () => dispatch(actions.resetSync())
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   ...ownProps,
-  raf: {
-    state: stateProps.raf,
+  sync: {
+    state: stateProps.sync,
     dispatch: dispatchProps
   }
 });

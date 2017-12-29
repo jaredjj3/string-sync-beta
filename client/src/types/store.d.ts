@@ -38,8 +38,9 @@ declare namespace Store {
 
   type Tags = Array<Tag>
 
-  interface RAF {
-    instance: any;
+  interface Sync {
+    maestro: any;
+    rafLoop: any;
   }
 
   interface Tab {

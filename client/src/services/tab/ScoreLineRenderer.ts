@@ -1,6 +1,5 @@
 import { Flow } from 'vexflow';
 import { Artist, Vextab, Measure, Line } from 'services';
-import { rafActions } from 'data/ui/raf';
 
 const { Renderer } = Flow; // backend renderer
 
