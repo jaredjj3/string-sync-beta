@@ -7,6 +7,7 @@ export { Signup } from './user';
 export { default as About } from './about';
 export { default as Dashboard } from './dashboard';
 export { default as Footer } from './footer';
+export { default as Fretboard } from './fretboard';
 export { default as Gradient } from './gradient';
 export { default as Landing } from './landing';
 export { default as Library } from './library';

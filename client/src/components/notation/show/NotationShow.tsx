@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, withState, withProps, lifecycle } from 'recompose';
 import { withNotation } from 'enhancers';
-import { Gradient, Video, Tab } from 'components';
+import { Gradient, Video, Tab, Fretboard } from 'components';
 import NotationShowBanner from './NotationShowBanner';
 import NotationShowControls from './NotationShowControls';
 import { toTick, toTimeMs } from 'ssUtil';
@@ -46,6 +46,7 @@ const NotationShow = ({ isFetching, notation }) => (
       transcriber={notation.state.transcriber}
     />
     <Video />
+    <Fretboard />
     <div
       className="NotationShow__tabContainer"
       style={{ height: '260px' }}
