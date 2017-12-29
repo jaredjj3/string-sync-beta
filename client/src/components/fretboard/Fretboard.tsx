@@ -1,8 +1,22 @@
 import * as React from 'react';
-import { compose } from 'recompose';
+import { compose, lifecycle } from 'recompose';
 import { Row, Col } from 'antd';
 import Frets from './Frets';
 import Strings from './Strings';
+import { withFretboard } from 'enhancers';
+import { Fretboard as FretboardService } from 'services';
+
+const enhance = compose(
+  withFretboard,
+  lifecycle({
+    componentDidMount(): void {
+      this.props.setFretboard(new FretboardService());
+    },
+    componentWillUnmount(): void {
+      this.props.resetFretboard();
+    }
+  })
+);
 
 const FretboardIndicators = () => {
   const indicators = Frets.DOTS.map((dots, fret) => (
@@ -30,4 +44,4 @@ const Fretboard = () => (
   </div>
 );
 
-export default Fretboard;
+export default enhance(Fretboard);
