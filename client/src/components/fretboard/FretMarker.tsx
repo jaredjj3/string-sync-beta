@@ -14,6 +14,7 @@ const enhance = compose(
       {
         'FretMarker--lit': props.lit,
         'FretMarker--pressed': props.pressed,
+        'FretMarker--hidden': !props.lit && !props.pressed,
         'FretMarker--mobile': props.viewport.state.type === 'MOBILE'
       }
     )

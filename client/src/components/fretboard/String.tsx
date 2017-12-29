@@ -13,6 +13,7 @@ const enhance = compose(
       {
         'String--lit': props.lit,
         'String--pressed': props.pressed,
+        'String--hidden': !props.lit && !props.pressed,
         'String--thin': props.string <= 3,
         'String--thick': props.string > 3
       }
