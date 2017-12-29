@@ -1,4 +1,5 @@
 export { default as textWhileLoading } from './textWhileLoading';
+export { default as withClassNames } from './withClassNames';
 export { default as withFeatures } from './withFeatures';
 export { default as withNotation } from './withNotation';
 export { default as withNotations } from './withNotations';

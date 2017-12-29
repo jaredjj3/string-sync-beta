@@ -1,22 +1,11 @@
 import * as React from 'react';
-import { compose, setStatic, mapProps } from 'recompose';
-import * as classNames from 'classnames';
-import { omit } from 'lodash';
+import { compose, setStatic } from 'recompose';
 import Layer from './Layer';
+import { withClassNames } from 'enhancers';
 
 const enhance = compose(
   setStatic('Layer', Layer),
-  mapProps(props => {
-    const restProps = omit(props, ['className']);
-    const className = classNames(
-      'Overlap',
-      props.className
-        ? props.className.split(/\s+/)
-        : null
-    );
-
-    return { ...restProps, className };
-  })
+  withClassNames(['Overlap'])
 );
 
 const Overlap = (props) => <div {...props} />;
