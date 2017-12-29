@@ -5,6 +5,6 @@ export const setFretboard = (fretboard: any) => ({
   fretboard
 });
 
-export const resetTab = () => ({
+export const resetFretboard = () => ({
   type: constants.RESET_FRETBOARD
 });

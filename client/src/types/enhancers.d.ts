@@ -80,4 +80,12 @@ declare namespace Enhancers {
       resetSync(): void;
     }
   }
+
+  interface Fretboard {
+    state: Store.Fretboard;
+    dispatch: {
+      setFretboard(fretboard: any): void;
+      resetFretboard(): void;
+    }
+  }
 }

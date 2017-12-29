@@ -6,7 +6,7 @@ const mapStateToProps = ({ sync }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  resetRafLoop: () => dispatch(actions.resetSync())
+  resetSync: () => dispatch(actions.resetSync())
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => ({
@@ -17,10 +17,10 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
   }
 });
 
-const withRaf = Component => connect(
+const withSync = Component => connect(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps
 )(Component);
 
-export default withRaf;
+export default withSync;
