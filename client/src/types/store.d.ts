@@ -57,5 +57,6 @@ declare namespace Store {
 
   interface Fretboard {
     instance: any;
+    updatedAt: number;
   }
 }

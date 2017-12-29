@@ -1,9 +1,13 @@
 
 import * as constants from './fretboardConstants';
+import { Fretboard } from 'services';
 
-const defaultState: Store.Fretboard = Object.freeze({
-  instance: null
+const getDefaultState = (): Store.Fretboard => ({
+  instance: new Fretboard,
+  updatedAt: Date.now()
 });
+
+const defaultState: Store.Fretboard = Object.freeze(getDefaultState());
 
 const dup = (state: Store.Fretboard): Store.Fretboard => Object.assign({}, state);
 
@@ -12,13 +16,8 @@ const tabReducer = (state = defaultState, action): Store.Fretboard => {
   const nextState = dup(state);
 
   switch (action.type) {
-    case constants.SET_FRETBOARD:
-      nextState.instance = action.fretboard;
-      return nextState;
-
     case constants.RESET_FRETBOARD:
-      nextState.instance = null;
-      return nextState;
+      return getDefaultState();
 
     default:
       return nextState;

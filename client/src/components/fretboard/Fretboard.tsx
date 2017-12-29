@@ -13,7 +13,7 @@ const enhance = compose(
   withFretboard,
   lifecycle({
     componentDidMount(): void {
-      this.props.fretboard.dispatch.setFretboard(new FretboardService());
+      this.props.fretboard.dispatch.resetFretboard();
     },
     componentWillUnmount(): void {
       this.props.fretboard.dispatch.resetFretboard();
