@@ -16,6 +16,7 @@ import { syncReducer as sync } from './ui/sync';
 import { tabReducer as tab } from './ui/tab';
 import { videoReducer as video } from './ui/video';
 import { viewportReducer as viewport } from './ui/viewport';
+import { fretboardReducer as fretboard } from './ui/fretboard';
 
 const rootReducer = combineReducers({
   notation,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   session,
   tags,
   features,
+  fretboard,
   sync,
   tab,
   video,

@@ -54,4 +54,8 @@ declare namespace Store {
     isActive: boolean;
     loop: Array<number>;
   }
+
+  interface Fretboard {
+    instance: any;
+  }
 }
