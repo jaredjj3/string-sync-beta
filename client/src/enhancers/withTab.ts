@@ -6,7 +6,7 @@ const mapStateToProps = ({ tab }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setProvider: provider => dispatch(actions.setProvider(provider)),
+  setTab: instance => dispatch(actions.setTab(instance)),
   emitUpdate: () => dispatch(actions.emitUpdate()),
   resetTab: () => dispatch(actions.resetTab())
 });

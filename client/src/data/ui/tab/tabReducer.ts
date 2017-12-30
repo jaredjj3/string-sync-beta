@@ -2,7 +2,7 @@
 import * as constants from './tabConstants';
 
 const getDefaultState = (): Store.Tab => ({
-  provider: null,
+  instance: null,
   updatedAt: null
 });
 
@@ -15,8 +15,8 @@ const tabReducer = (state = defaultState, action): Store.Tab => {
   let nextState = dup(state);
 
   switch (action.type) {
-    case constants.SET_PROVIDER:
-      nextState.provider = action.provider;
+    case constants.SET_TAB:
+      nextState.instance = action.tab;
       break;
 
     case constants.EMIT_UPDATE:
@@ -24,7 +24,7 @@ const tabReducer = (state = defaultState, action): Store.Tab => {
       break;
 
     case constants.RESET_TAB:
-      nextState = dup(defaultState);
+      nextState = getDefaultState();
       break;
 
     default:

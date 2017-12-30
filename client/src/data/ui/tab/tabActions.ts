@@ -1,8 +1,8 @@
 import * as constants from './tabConstants';
 
-export const setProvider = (provider: any) => ({
-  type: constants.SET_PROVIDER,
-  provider
+export const setTab = (tab: any) => ({
+  type: constants.SET_TAB,
+  tab
 });
 
 export const emitUpdate = () => ({

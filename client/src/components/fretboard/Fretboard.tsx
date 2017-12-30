@@ -3,7 +3,7 @@ import { compose, lifecycle, withProps, shouldUpdate } from 'recompose';
 import { Row, Col } from 'antd';
 import Frets from './Frets';
 import Strings from './Strings';
-import { withFretboard, withViewport } from 'enhancers';
+import { withFretboard, withViewport, withSync } from 'enhancers';
 import { Fretboard as FretboardService } from 'services';
 import { Overlap } from 'components';
 import * as classNames from 'classnames';

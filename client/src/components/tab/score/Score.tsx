@@ -7,19 +7,19 @@ import { hash } from 'ssUtil';
 
 const enhance = compose(
   withTab,
-  textWhileLoading(({ tab }) => tab.state.provider === null),
+  textWhileLoading(({ tab }) => tab.state.instance === null),
   shouldUpdate((currProps, nextProps) => {
-    const { provider } = nextProps.tab.state;
-    return provider && !provider.error;
+    const { instance } = nextProps.tab.state;
+    return instance && !instance.error;
   })
 );
 
-const ScoreLines = ({ provider }) => {
-  if (!provider) {
+const ScoreLines = ({ tab }) => {
+  if (!tab) {
     return null;
   } else {
     return (
-      provider.lines.map((line: Line, ndx) => (
+      tab.lines.map((line: Line, ndx) => (
         <ScoreLine
           key={`score-line-${line.number}-${hash(line.vextabString)}`}
           number={line.number}
@@ -31,7 +31,7 @@ const ScoreLines = ({ provider }) => {
 
 const Score = ({ tab }) => (
   <div className="Score">
-    <ScoreLines provider={tab.state.provider} />
+    <ScoreLines tab={tab.state.instance} />
   </div>
 );
 

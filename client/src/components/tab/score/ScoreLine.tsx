@@ -14,7 +14,7 @@ const enhance = compose(
   withViewport,
   withState('scoreLineRenderer', 'setScoreLineRenderer', null),
   withProps(props => ({
-    line: props.tab.state.provider.select(props.number)
+    line: props.tab.state.instance.select(props.number)
   })),
   withHandlers({
     handleCanvasRef: ({ line, viewport, setScoreLineRenderer }) => canvas => {

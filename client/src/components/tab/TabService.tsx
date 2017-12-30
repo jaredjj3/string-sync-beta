@@ -34,8 +34,8 @@ const enhance = compose(
     maybeCreateTab: () => {
       const { vextabString } = props.notation.state;
       const shouldCreate = (
-        (!props.tab.state.provider && vextabString) ||
-        vextabString !== props.tab.state.provider.vextabString
+        (!props.tab.state.instance && vextabString) ||
+        vextabString !== props.tab.state.instance.vextabString
       );
 
       if (shouldCreate) {
@@ -46,11 +46,11 @@ const enhance = compose(
         const measuresPerLine = props.getMeasuresPerLine(width);
         tab.createLines(measuresPerLine, width);
 
-        props.tab.dispatch.setProvider(tab);
+        props.tab.dispatch.setTab(tab);
       }
     },
     maybeUpdateTab: () => {
-      const tab = props.tab.state.provider;
+      const tab = props.tab.state.instance;
       const { width } = props.viewport.state;
       const measuresPerLine = props.getMeasuresPerLine(width);
       const shouldUpdate = tab && (width !== tab.width);

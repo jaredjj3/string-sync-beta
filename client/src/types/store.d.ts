@@ -44,7 +44,7 @@ declare namespace Store {
   }
 
   interface Tab {
-    provider: any;
+    instance: any;
     updatedAt: number;
   }
 

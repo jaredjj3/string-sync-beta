@@ -58,7 +58,7 @@ declare namespace Enhancers {
   interface Tab {
     state: Store.Tab;
     dispatch: {
-      setProvider(provider: any): void;
+      setTab(tab: any): void;
       emitUpdate(): void;
       resetTab(): void;
     }
