@@ -30,7 +30,9 @@ class Tuning {
     if (baseNotes) {
       return new Tuning(baseNotes);
     } else {
-      throw new TypeError(`expected tuning ${tuningName} to be in ${Object.keys(TUNING_BASE_NOTES_BY_TUNING_NAME)}`);
+      throw new TypeError(
+        `expected tuning ${tuningName} to be in ${Object.keys(TUNING_BASE_NOTES_BY_TUNING_NAME)}`
+      );
     }
   }
 
