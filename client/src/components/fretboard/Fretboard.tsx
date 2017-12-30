@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { compose, lifecycle, withProps, shouldUpdate } from 'recompose';
+import { compose, lifecycle, withState, withProps, shouldUpdate } from 'recompose';
 import { Row, Col } from 'antd';
 import Frets from './Frets';
 import Strings from './Strings';
-import { withFretboard, withViewport, withSync } from 'enhancers';
+import { withFretboard, withViewport, withSync, textWhileLoading } from 'enhancers';
 import { Fretboard as FretboardService } from 'services';
 import { Overlap } from 'components';
 import * as classNames from 'classnames';
@@ -13,8 +13,11 @@ const { Layer } = Overlap;
 const enhance = compose(
   withFretboard,
   withViewport,
+  withState('loading', 'setLoading', true),
   shouldUpdate((currProps, nextProps) => (
-    currProps.viewport.state.type !== nextProps.viewport.state.type
+    currProps.viewport.state.type !== nextProps.viewport.state.type ||
+    currProps.fretboard.state.instance !== nextProps.fretboard.state.instance ||
+    currProps.loading !== nextProps.loading
   )),
   withProps(props => ({
     rootClassNames: classNames(
@@ -27,7 +30,12 @@ const enhance = compose(
   })),
   lifecycle({
     componentDidMount(): void {
-      this.props.fretboard.dispatch.resetFretboard();
+      const fretboard = new FretboardService();
+      this.props.fretboard.dispatch.setFretboard(fretboard);
+    },
+    componentWillReceiveProps(nextProps: any): void {
+      const loading = nextProps.fretboard.state.instance === null;
+      nextProps.setLoading(loading);
     },
     componentWillUnmount(): void {
       this.props.fretboard.dispatch.resetFretboard();
@@ -55,18 +63,28 @@ const FretboardIndicators = () => {
   );
 };
 
-const Fretboard = ({ rootClassNames }) => (
-  <div className={rootClassNames}>
-    <FretboardIndicators />
-    <Overlap>
-      <Layer>
-        <Frets />
-      </Layer>
-      <Layer>
-        <Strings />
-      </Layer>
-    </Overlap>
-  </div>
-);
+const Fretboard = ({ loading, rootClassNames }) => {
+  if (loading) {
+    return (
+      <div className={rootClassNames}>
+        Loading...
+      </div>
+    );
+  } else {
+    return (
+      <div className={rootClassNames}>
+        <FretboardIndicators />
+        <Overlap>
+          <Layer>
+            <Frets />
+          </Layer>
+          <Layer>
+            <Strings />
+          </Layer>
+        </Overlap>
+      </div>
+    );
+  }
+};
 
 export default enhance(Fretboard);

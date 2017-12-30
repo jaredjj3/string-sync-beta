@@ -6,6 +6,7 @@ const mapStateToProps = ({ fretboard }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  setFretboard: fretboard => dispatch(actions.setFretboard(fretboard)),
   resetFretboard: () => dispatch(actions.resetFretboard())
 });
 

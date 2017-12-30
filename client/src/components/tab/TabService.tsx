@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { compose, lifecycle, withProps, shouldUpdate } from 'recompose';
-import { withNotation, withTab, withViewport } from 'enhancers';
-import { Tab } from 'services';
+import { withNotation, withTab, withViewport, withSync } from 'enhancers';
+import { Tab, TabPlan } from 'services';
 import { isBetween } from 'ssUtil';
 
 const enhance = compose(
   withNotation,
   withTab,
   withViewport,
+  withSync,
   shouldUpdate((currProps, nextProps) => (
     currProps.notation.state.vextabString !== nextProps.notation.state.vextabString ||
     currProps.viewport.state.width !== nextProps.viewport.state.width
@@ -46,7 +47,13 @@ const enhance = compose(
         const measuresPerLine = props.getMeasuresPerLine(width);
         tab.createLines(measuresPerLine, width);
 
+        // Set the newly created tab instance in the Redux store
         props.tab.dispatch.setTab(tab);
+
+        // Create a new TabPlan from the tab and notify the maestro
+        // of it.
+        const tabPlan = new TabPlan(tab);
+        props.sync.state.maestro.plans.tabPlan = tabPlan;
       }
     },
     maybeUpdateTab: () => {
