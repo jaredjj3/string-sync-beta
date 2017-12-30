@@ -4,7 +4,7 @@ import { Row, Col } from 'antd';
 import Frets from './Frets';
 import Strings from './Strings';
 import { withFretboard, withViewport, withSync, textWhileLoading } from 'enhancers';
-import { Fretboard as FretboardService } from 'services';
+import { Fretboard as FretboardService, FretboardPlan } from 'services';
 import { Overlap } from 'components';
 import * as classNames from 'classnames';
 
@@ -13,6 +13,7 @@ const { Layer } = Overlap;
 const enhance = compose(
   withFretboard,
   withViewport,
+  withSync,
   withState('loading', 'setLoading', true),
   shouldUpdate((currProps, nextProps) => (
     currProps.viewport.state.type !== nextProps.viewport.state.type ||
@@ -32,6 +33,9 @@ const enhance = compose(
     componentDidMount(): void {
       const fretboard = new FretboardService();
       this.props.fretboard.dispatch.setFretboard(fretboard);
+
+      const fretboardPlan = new FretboardPlan(fretboard);
+      this.props.sync.state.maestro.plans.fretboardPlan = fretboardPlan;
     },
     componentWillReceiveProps(nextProps: any): void {
       const loading = nextProps.fretboard.state.instance === null;
