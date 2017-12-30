@@ -7,7 +7,7 @@ const Strings = () => (
       Array(6).fill(null).map((_, string) => (
         <String
           key={`string-${string}`}
-          string={string + 1}
+          string={string}
         />
       ))
     }

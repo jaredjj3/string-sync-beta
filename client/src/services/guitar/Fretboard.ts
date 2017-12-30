@@ -1,5 +1,6 @@
 import FretMarker from './FretMarker';
 import GuitarString from './GuitarString';
+import Tuning from './Tuning';
 
 const DOTS_LENGTH = 23;
 
@@ -17,36 +18,36 @@ const getEmptyStrings = () => new Array(6).fill(null);
 class Fretboard {
   fretMarkers: Array<Array<FretMarker>> = getEmptyFretMarkers();
   guitarStrings: Array<GuitarString> = getEmptyStrings();
+  tuning: Tuning = Tuning.get('standard');
 
   addFretMarker(string: number, fret: number, markerProps: any): FretMarker {
     const fretMarker = new FretMarker(string, fret, markerProps);
-    this.fretMarkers[string - 1][fret] = fretMarker;
+    this.fretMarkers[string][fret] = fretMarker;
     return fretMarker;
   }
 
   removeFretMarker(string: number, fret: number): Array<Array<FretMarker>> {
-    this.fretMarkers[string - 1][fret] = null;
+    this.fretMarkers[string][fret] = null;
     return this.fretMarkers;
   }
 
   selectFretMarker(string: number, fret: number): FretMarker {
-    return this.fretMarkers[string - 1][fret];
+    return this.fretMarkers[string][fret];
   }
 
-  // stringNumber === stringIndex + 1
-  addGuitarString(stringNumber: number, stringProps: any): GuitarString {
-    const string = new GuitarString(stringNumber, stringProps);
-    this.guitarStrings[stringNumber - 1] = string;
-    return string;
+  addGuitarString(string: number, stringProps: any): GuitarString {
+    const stringObj = new GuitarString(string, stringProps);
+    this.guitarStrings[string] = stringObj;
+    return stringObj;
   }
 
-  removeGuitarString(stringNumber: number): Array<GuitarString> {
-    this.guitarStrings[stringNumber - 1] = null;
+  removeGuitarString(string: number): Array<GuitarString> {
+    this.guitarStrings[string] = null;
     return this.guitarStrings;
   }
 
-  selectGuitarString(stringNumber: number): any {
-    return this.guitarStrings[stringNumber - 1];
+  selectGuitarString(string: number): any {
+    return this.guitarStrings[string];
   }
 }
 

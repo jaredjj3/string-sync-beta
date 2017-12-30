@@ -10,8 +10,8 @@ const Fret = ({ fret, dots }) => (
     <Layer className="Fret__markers" style={{ zIndex: '10' }}>
       {
         Array(6).fill(null).map((_, string) => (
-          <Row type="flex" justify="center" key={`marker-${string + 1}-${fret}`}>
-            <FretMarker string={string + 1} fret={fret} />
+          <Row type="flex" justify="center" key={`marker-${string}-${fret}`}>
+            <FretMarker string={string} fret={fret} />
           </Row>
         ))
       }

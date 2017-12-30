@@ -24,7 +24,7 @@ class Tuning {
   baseNotes: Array<string> = [];
   notes: Array<Array<string>> = getEmptyNotes();
 
-  static getTuning(tuningName: string): Tuning {
+  static get(tuningName: string): Tuning {
     const baseNotes = constants.TUNING_BASE_NOTES_BY_TUNING_NAME[tuningName];
 
     if (baseNotes) {
