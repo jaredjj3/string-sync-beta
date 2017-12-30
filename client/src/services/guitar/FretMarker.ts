@@ -10,7 +10,7 @@ class FretMarker {
   }
 
   hide(): FretMarker {
-    this.props.unpress().unlight();
+    this.unpress().unlight();
     return this;
   }
 
