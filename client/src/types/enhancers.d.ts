@@ -59,7 +59,7 @@ declare namespace Enhancers {
     state: Store.Tab;
     dispatch: {
       setTab(tab: any): void;
-      emitUpdate(): void;
+      emitTabUpdate(): void;
       resetTab(): void;
     }
   }

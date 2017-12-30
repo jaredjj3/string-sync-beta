@@ -1,5 +1,6 @@
 import { Artist, Measure, Note } from 'services';
 import Linker from './Linker';
+import { ScoreLineRenderer } from 'services';
 
 class Line {
   static MAX_MEASURE_LENGTH: number = 400;
@@ -14,6 +15,7 @@ class Line {
   tabStave: any = null;
   noteStave: any = null;
   linker: Linker = null;
+  renderer: ScoreLineRenderer = null;
 
   constructor(measures: Array<Measure>, number: number, width: number, targetNumMeasures: number) {
     this.measures = measures;

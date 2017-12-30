@@ -11,7 +11,8 @@ const enhance = compose(
   withSync,
   shouldUpdate((currProps, nextProps) => (
     currProps.notation.state.vextabString !== nextProps.notation.state.vextabString ||
-    currProps.viewport.state.width !== nextProps.viewport.state.width
+    currProps.viewport.state.width !== nextProps.viewport.state.width ||
+    currProps.tab.state.updatedAt !== nextProps.tab.state.updatedAt
   )),
   withProps(props => ({
     getMeasuresPerLine: width => {
@@ -31,47 +32,62 @@ const enhance = compose(
       }
     }
   })),
-  withProps(props => ({
-    maybeCreateTab: () => {
-      const { vextabString } = props.notation.state;
+  withProps(currProps => ({
+    maybeCreateTab: nextProps => {
+      const { vextabString } = nextProps.notation.state;
       const shouldCreate = (
-        (!props.tab.state.instance && vextabString) ||
-        vextabString !== props.tab.state.instance.vextabString
+        (!nextProps.tab.state.instance && vextabString) ||
+        vextabString !== nextProps.tab.state.instance.vextabString
       );
 
       if (shouldCreate) {
         const tab = new Tab(vextabString);
         tab.setup();
 
-        const { width } = props.viewport.state;
-        const measuresPerLine = props.getMeasuresPerLine(width);
+        const { width } = nextProps.viewport.state;
+        const measuresPerLine = nextProps.getMeasuresPerLine(width);
         tab.createLines(measuresPerLine, width);
 
         // Set the newly created tab instance in the Redux store
-        props.tab.dispatch.setTab(tab);
+        nextProps.tab.dispatch.setTab(tab);
 
         // Create a new TabPlan from the tab and notify the maestro
         // of it.
         const tabPlan = new TabPlan(tab);
-        props.sync.state.maestro.plans.tabPlan = tabPlan;
+        nextProps.sync.state.maestro.plans.tabPlan = tabPlan;
       }
     },
-    maybeUpdateTab: () => {
-      const tab = props.tab.state.instance;
-      const { width } = props.viewport.state;
-      const measuresPerLine = props.getMeasuresPerLine(width);
+    maybeUpdateTab: nextProps => {
+      const tab = nextProps.tab.state.instance;
+      const { width } = nextProps.viewport.state;
+      const measuresPerLine = nextProps.getMeasuresPerLine(width);
       const shouldUpdate = tab && (width !== tab.width);
 
       if (shouldUpdate) {
         tab.createLines(measuresPerLine, width);
-        props.tab.dispatch.emitUpdate();
+        nextProps.tab.dispatch.emitTabUpdate();
+      }
+    },
+    maybeSetupTabPlan: nextProps => {
+      const tab = nextProps.tab.state.instance;
+      const { tabPlan } = nextProps.sync.state.maestro.plans;
+
+      const shouldSetup = (
+        tabPlan &&
+        tab &&
+        tab.lines.every(line => line.noteStave && line.noteStave.rendered)
+      );
+
+      if (shouldSetup) {
+        tabPlan.setup();
       }
     }
   })),
   lifecycle({
     componentWillReceiveProps(nextProps: any): void {
-      nextProps.maybeCreateTab();
-      nextProps.maybeUpdateTab();
+      nextProps.maybeCreateTab(nextProps);
+      nextProps.maybeSetupTabPlan(nextProps);
+      nextProps.maybeUpdateTab(nextProps);
     }
   })
 );

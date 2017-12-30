@@ -3,7 +3,7 @@ import * as constants from './tabConstants';
 
 const getDefaultState = (): Store.Tab => ({
   instance: null,
-  updatedAt: null
+  updatedAt: Date.now()
 });
 
 const defaultState: Store.Tab = Object.freeze(getDefaultState());
@@ -17,22 +17,19 @@ const tabReducer = (state = defaultState, action): Store.Tab => {
   switch (action.type) {
     case constants.SET_TAB:
       nextState.instance = action.tab;
-      break;
+      nextState.updatedAt = Date.now();
+      return nextState;
 
-    case constants.EMIT_UPDATE:
-      // effectively updates the updatedAt
-      break;
+    case constants.EMIT_TAB_UPDATE:
+      nextState.updatedAt = Date.now();
+      return nextState;
 
     case constants.RESET_TAB:
-      nextState = getDefaultState();
-      break;
+      return getDefaultState();
 
     default:
       return nextState;
   }
-
-  nextState.updatedAt = Date.now();
-  return nextState;
 };
 
 export default tabReducer;

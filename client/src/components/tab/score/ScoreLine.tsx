@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { compose, withHandlers, withState, withProps, lifecycle } from 'recompose';
+import { compose, withHandlers, withState, withProps, lifecycle, shouldUpdate } from 'recompose';
 import { ScoreLineRenderer } from 'services';
 import { withViewport, withTab } from 'enhancers';
 import Caret from './Caret';
 import { Overlap } from 'components';
+import { omit, isEqual } from 'lodash';
 
 const { Layer } = Overlap;
 
@@ -13,6 +14,12 @@ const enhance = compose(
   withTab,
   withViewport,
   withState('scoreLineRenderer', 'setScoreLineRenderer', null),
+  shouldUpdate((currProps, nextProps) => (
+    !isEqual(
+      omit(currProps, 'tab'),
+      omit(nextProps, 'tab')
+    )
+  )),
   withProps(props => ({
     line: props.tab.state.instance.select(props.number)
   })),
@@ -24,6 +31,8 @@ const enhance = compose(
 
         const scoreLineRenderer = new ScoreLineRenderer(line, canvas, width, height);
         setScoreLineRenderer(scoreLineRenderer);
+
+        line.renderer = scoreLineRenderer;
       }
     }
   }),
@@ -45,10 +54,13 @@ const enhance = compose(
       }
     }
   })),
-  withProps(({ linkVexInstances, unlinkVexInstances }) => ({
+  withProps(({ tab, linkVexInstances, unlinkVexInstances }) => ({
     refreshLinkedVexInstances: () => {
       unlinkVexInstances();
       linkVexInstances();
+
+      // Force the TabService component to call componentWillReceiveProps()
+      tab.dispatch.emitTabUpdate();
     },
   })),
   lifecycle({
@@ -64,6 +76,7 @@ const enhance = compose(
     },
     componentWillUnmount(): void {
       this.props.unlinkVexInstances();
+      this.props.line.renderer = null;
     }
   })
 );

@@ -5,8 +5,8 @@ export const setTab = (tab: any) => ({
   tab
 });
 
-export const emitUpdate = () => ({
-  type: constants.EMIT_UPDATE
+export const emitTabUpdate = () => ({
+  type: constants.EMIT_TAB_UPDATE
 });
 
 export const resetTab = () => ({

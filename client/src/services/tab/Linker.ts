@@ -114,7 +114,7 @@ class Linker {
       chunk.staveNotes.forEach((staveNote, noteIndex) => {
         const tabNote = chunk.tabNotes[noteIndex];
 
-        const note = new Note(measure, tabNote, staveNote);
+        const note = new Note(measure, tabNote, staveNote, noteIndex);
         const prev = last(notes) || null;
 
         note.setPrev(prev);
