@@ -1,5 +1,6 @@
 import * as constants from './guitarConstants';
 import { uniq } from 'lodash';
+import { TUNING_BASE_NOTES_BY_TUNING_NAME } from './guitarConstants';
 
 const DOTS_LENGTH = 23;
 
@@ -22,6 +23,16 @@ class Tuning {
 
   baseNotes: Array<string> = [];
   notes: Array<Array<string>> = getEmptyNotes();
+
+  static getTuning(tuningName: string): Tuning {
+    const baseNotes = constants.TUNING_BASE_NOTES_BY_TUNING_NAME[tuningName];
+
+    if (baseNotes) {
+      return new Tuning(baseNotes);
+    } else {
+      throw new TypeError(`expected tuning ${tuningName} to be in ${Object.keys(TUNING_BASE_NOTES_BY_TUNING_NAME)}`);
+    }
+  }
 
   constructor(baseNotes: Array<string>) {
     this.baseNotes = baseNotes;

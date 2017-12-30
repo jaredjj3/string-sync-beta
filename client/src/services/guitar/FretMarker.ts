@@ -8,6 +8,31 @@ class FretMarker {
     this.fret = fret;
     this.props = markerProps;
   }
+
+  hide(): FretMarker {
+    this.props.unpress().unlight();
+    return this;
+  }
+
+  unlight(): FretMarker {
+    this.props.setLit(false);
+    return this;
+  }
+
+  light(): FretMarker {
+    this.props.setLit(true);
+    return this;
+  }
+
+  press(): FretMarker {
+    this.props.setPressed(true);
+    return this;
+  }
+
+  unpress(): FretMarker {
+    this.props.setPressed(false);
+    return this;
+  }
 }
 
 export default FretMarker;

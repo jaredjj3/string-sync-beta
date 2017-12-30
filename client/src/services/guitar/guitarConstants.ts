@@ -43,3 +43,9 @@ export const VALID_NOTES: Array<any> = [
   'F' , 'F#',
   'Gb', 'G' , 'G#'
 ];
+
+export const TUNING_BASE_NOTES_BY_TUNING_NAME: any = {
+  'standard': ['E', 'B', 'G', 'D', 'A', 'E'],
+  'dropd'   : ['E', 'B', 'G', 'D', 'A', 'D'],
+  'dadgad'  : ['D', 'A', 'G', 'D', 'A', 'D']
+};
