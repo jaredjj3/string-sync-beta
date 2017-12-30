@@ -36,6 +36,8 @@ class Tuning {
 
   constructor(baseNotes: Array<string>) {
     this.baseNotes = baseNotes;
+
+    this.setup();
   }
 
   setup(): Tuning {
