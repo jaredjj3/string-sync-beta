@@ -10,17 +10,18 @@ const enhance = compose(
   withVideo,
   withProps(props => ({
     update: () => {
-      const { sync, video } = props;
-      const { maestro } = sync.state;
-      const { player, isActive } = video.state;
+      const { maestro } = props.sync.state;
+      const { player, isActive } = props.video.state;
 
-      maestro.currentTimeMs = player.getCurrentTime() / 1000;
-      maestro.isMediaActive = isActive;
+      if (player) {
+        maestro.currentTimeMs = player.getCurrentTime() * 1000;
+        maestro.isMediaActive = isActive;
+      }
     }
   })),
   withProps(props => {
     const { rafLoop, maestro } = props.sync.state;
-    const name = 'Maestro.conduct';
+    const name = 'Maestro.update';
 
     return ({
       registerRaf: () => {
