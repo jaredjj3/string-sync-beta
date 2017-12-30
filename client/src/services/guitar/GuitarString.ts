@@ -6,6 +6,31 @@ class GuitarString {
     this.string = string;
     this.props = stringProps;
   }
+
+  hide(): GuitarString {
+    this.props.unpress().unlight();
+    return this;
+  }
+
+  unlight(): GuitarString {
+    this.props.setLit(false);
+    return this;
+  }
+
+  light(): GuitarString {
+    this.props.setLit(true);
+    return this;
+  }
+
+  press(): GuitarString {
+    this.props.setPressed(true);
+    return this;
+  }
+
+  unpress(): GuitarString {
+    this.props.setPressed(false);
+    return this;
+  }
 }
 
 export default GuitarString;
