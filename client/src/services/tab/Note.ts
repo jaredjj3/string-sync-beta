@@ -1,4 +1,5 @@
 import Measure from './Measure';
+import NoteRenderer from './NoteRenderer';
 
 class Note {
   number: number = 0;
@@ -7,6 +8,7 @@ class Note {
   tabNote: any = null;
   staveNote: any = null;
   measure: Measure = null;
+  renderer: NoteRenderer = null;
   tick: TickRange = {
     start: 0,
     stop: 0
@@ -16,6 +18,8 @@ class Note {
     this.measure = measure;
     this.tabNote = tabNote;
     this.staveNote = staveNote;
+
+    this.renderer = new NoteRenderer(this).setStyle('DEFAULT');
   }
 
   setPrev(prev: Note): Note {

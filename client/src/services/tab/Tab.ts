@@ -12,6 +12,11 @@ class Tab {
   measuresPerLine: number = 0;
   error: string = null;
   width: number = 0;
+  lastExecution: PlanExecutions.Tab = {
+    currentLine: null,
+    currentMeasure: null,
+    currentNote: null
+  };
 
   constructor(vextabString: string) {
     this.vextabString = vextabString;
@@ -33,6 +38,18 @@ class Tab {
   }
 
   update(execution: PlanExecutions.Tab): Tab {
+    if (this.lastExecution !== execution) {
+      if (this.lastExecution.currentNote) {
+        this.lastExecution.currentNote.renderer.setStyle('DEFAULT').redraw();
+      }
+
+      if (execution.currentNote) {
+        execution.currentNote.renderer.setStyle('ACTIVE').redraw();
+      }
+
+      this.lastExecution = execution;
+    }
+
     return this;
   }
 

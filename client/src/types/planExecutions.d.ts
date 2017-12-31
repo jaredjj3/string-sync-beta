@@ -5,7 +5,8 @@ declare namespace PlanExecutions {
   }
 
   interface Tab {
-    currentNote: any;
     currentLine: any;
+    currentMeasure: any;
+    currentNote: any;
   }
 }

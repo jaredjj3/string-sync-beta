@@ -8,8 +8,9 @@ const { Fraction } = Flow;
 class TabPlan {
   tab: Tab = null;
   execution: PlanExecutions.Tab = {
-    currentNote: null,
-    currentLine: null
+    currentLine: null,
+    currentMeasure: null,
+    currentNote: null
   };
 
   constructor(tab: Tab) {
@@ -26,26 +27,31 @@ class TabPlan {
     const { currentNote } = this.execution;
 
     if (!currentNote || !isBetween(currentTick, currentNote.tick.start, currentNote.tick.stop)) {
-      this.execution.currentNote = this._getNote(currentTick);
-      this.execution.currentLine = this._getLine(currentTick);
+      this.execution = this._getExecution(currentTick);
     }
 
     return this;
   }
 
-  private _getNote(tick: number): Note {
-    let resultNote: Note = null;
+  private _getExecution(tick: number): PlanExecutions.Tab {
+    let execution = {
+      currentLine: null,
+      currentMeasure: null,
+      currentNote: null
+    };
 
     // FIXME: Make this look cleaner
     this.tab.lines.forEach(line => {
       const lineTickRange = line.getTickRange();
       if (isBetween(tick, lineTickRange.start, lineTickRange.stop)) {
+        execution.currentLine = line;
         line.measures.forEach(measure => {
           const measureTickRange = measure.getTickRange();
           if (isBetween(tick, measureTickRange.start, measureTickRange.stop)) {
+            execution.currentMeasure = measure;
             measure.notes.forEach(note => {
               if (isBetween(tick, note.tick.start, note.tick.stop)) {
-                resultNote = note;
+                execution.currentNote = note;
               }
             });
           }
@@ -53,20 +59,7 @@ class TabPlan {
       }
     });
 
-    return resultNote;
-  }
-
-  private _getLine(tick: number): Line {
-    let resultLine: Line = null;
-
-    this.tab.lines.forEach(line => {
-      const lineTickRange = line.getTickRange();
-      if (isBetween(tick, lineTickRange.start, lineTickRange.stop)) {
-        resultLine = line;
-      }
-    })
-
-    return resultLine;
+    return execution;
   }
 
   private _updateNoteTickStarts(): TabPlan {
