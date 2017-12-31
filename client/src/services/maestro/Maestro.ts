@@ -2,6 +2,7 @@ import { Flow } from 'vexflow';
 import { toTick } from 'ssUtil';
 import FretboardPlan from './FretboardPlan';
 import TabPlan from './TabPlan';
+import { values } from 'lodash';
 
 interface MaestroPlans {
   fretboardPlan: FretboardPlan;
@@ -36,22 +37,11 @@ class Maestro {
   }
 
   get currentTick(): number {
-    return toTick(this.currentTimeMs, this.tpm);
+    const tick = toTick(this.currentTimeMs, this.tpm);
+    return tick !== tick ? 0 : tick; // guard against NaN
   }
 
   conduct(): Maestro {
-    const missingPlans = [];
-    Object.keys(this.plans).forEach(planName => {
-      const plan = this.plans[planName];
-      if (!plan) {
-        missingPlans.push(planName);
-      }
-    });
-
-    if (missingPlans.length > 0) {
-      throw new Error(`missing plans: ${missingPlans.join(', ')}`);
-    }
-
     const tabPlan = this._executeTabPlan();
     const fretboardPlan = this._executeFretboardPlan();
 
@@ -64,11 +54,13 @@ class Maestro {
   }
 
   private _executeTabPlan(): TabPlan {
-    return this.plans.tabPlan.execute(this.isMediaActive, this.currentTimeMs, this.currentTick);
+    const { tabPlan } = this.plans;
+    return tabPlan ? tabPlan.execute(this.currentTick) : null;
   }
 
   private _executeFretboardPlan(): FretboardPlan {
-    return this.plans.fretboardPlan.execute(this.isMediaActive, this.currentTimeMs, this.currentTick);
+    const { fretboardPlan } = this.plans;
+    return fretboardPlan ? fretboardPlan.execute(this.currentTick) : null;
   }
 }
 

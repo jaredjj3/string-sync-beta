@@ -1,12 +1,19 @@
 import { Tab, Note } from 'services';
 import { Flow } from 'vexflow';
 import { flatMap, sortBy, values, last } from 'lodash';
+import { isBetween } from 'ssUtil';
 
 const { Fraction } = Flow;
 
+interface TabPlanExecution {
+  currentNote: Note;
+}
+
 class TabPlan {
   tab: Tab = null;
-  execution: any = null;
+  execution: TabPlanExecution = {
+    currentNote: null
+  };
 
   constructor(tab: Tab) {
     this.tab = tab;
@@ -18,8 +25,37 @@ class TabPlan {
     return this;
   }
 
-  execute(isMediaActive: boolean, currentTimeMs: number, currentTick: number): TabPlan {
+  execute(currentTick: number): TabPlan {
+    const { currentNote } = this.execution;
+
+    if (!currentNote || !isBetween(currentTick, currentNote.tick.start, currentNote.tick.stop)) { 
+      this.execution.currentNote = this._getNote(currentTick);
+    }
+
     return this;
+  }
+
+  private _getNote(tick: number): Note {
+    let resultNote: Note = null;
+
+    // FIXME: Make this look cleaner
+    this.tab.lines.forEach(line => {
+      const lineTickRange = line.getTickRange();
+      if (isBetween(tick, lineTickRange.start, lineTickRange.stop)) {
+        line.measures.forEach(measure => {
+          const measureTickRange = measure.getTickRange();
+          if (isBetween(tick, measureTickRange.start, measureTickRange.stop)) {
+            measure.notes.forEach(note => {
+              if (isBetween(tick, note.tick.start, note.tick.stop)) {
+                resultNote = note;
+              }
+            });
+          }
+        });
+      }
+    });
+
+    return resultNote;
   }
 
   private _updateNoteTickStarts(): TabPlan {
@@ -57,7 +93,7 @@ class TabPlan {
       line.measures.forEach(measure => {
         measure.notes.forEach(note => {
           if (note.next) {
-            note.tick.stop = note.next.tick.start - 1;
+            note.tick.stop = note.next.tick.start;
           }
         });
       });

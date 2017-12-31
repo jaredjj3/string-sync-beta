@@ -1,10 +1,5 @@
 import Measure from './Measure';
 
-interface Tick {
-  start: number;
-  stop: number;
-}
-
 class Note {
   number: number = 0;
   prev: Note = null;
@@ -12,16 +7,15 @@ class Note {
   tabNote: any = null;
   staveNote: any = null;
   measure: Measure = null;
-  tick: Tick = {
+  tick: TickRange = {
     start: 0,
     stop: 0
   };
 
-  constructor(measure: Measure, tabNote: any, staveNote: any, number: any) {
+  constructor(measure: Measure, tabNote: any, staveNote: any) {
     this.measure = measure;
     this.tabNote = tabNote;
     this.staveNote = staveNote;
-    this.number = number;
   }
 
   setPrev(prev: Note): Note {
@@ -35,7 +29,7 @@ class Note {
   }
 
   setNext(next: Note): Note {
-
+    next.setPrev(this);
     return next;
   }
 

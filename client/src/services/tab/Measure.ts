@@ -44,6 +44,13 @@ class Measure {
     const result = typeof note === 'number' ? this.notes[note] : null;
     return result || null;
   }
+
+  getTickRange(): TickRange {
+    return {
+      start: this.select(0).tick.start,
+      stop: this.select(this.notes.length - 1).tick.stop
+    };
+  }
 }
 
 export default Measure;

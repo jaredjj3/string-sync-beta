@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { compose, withProps, lifecycle } from 'recompose';
-import { withSync, withVideo } from 'enhancers';
+import { compose, withProps, withHandlers, lifecycle } from 'recompose';
+import { withSync, withVideo, withNotation } from 'enhancers';
 
 // The purpose of this component is to wrap the Maestro service
 // in a react wrapper, so that it can respond to changes in redux
@@ -8,8 +8,9 @@ import { withSync, withVideo } from 'enhancers';
 const enhance = compose(
   withSync,
   withVideo,
-  withProps(props => ({
-    update: () => {
+  withNotation,
+  withHandlers({
+    handleAnimationLoop: props => () => {
       const { maestro } = props.sync.state;
       const { player, isActive } = props.video.state;
 
@@ -17,18 +18,20 @@ const enhance = compose(
         maestro.currentTimeMs = player.getCurrentTime() * 1000;
         maestro.isMediaActive = isActive;
       }
+
+      maestro.conduct();
     }
-  })),
+  }),
   withProps(props => {
     const { rafLoop, maestro } = props.sync.state;
-    const name = 'Maestro.update';
+    const name = 'Maestro.handleAnimationLoop';
 
     return ({
       registerRaf: () => {
         rafLoop.register({
           name,
           precedence: 0,
-          onAnimationLoop: props.update
+          onAnimationLoop: props.handleAnimationLoop
         });
       },
       unregisterRaf: () => {
@@ -39,13 +42,16 @@ const enhance = compose(
       },
       stopRafLoop: () => {
         rafLoop.stop();
-      },
+      }
     });
   }),
   lifecycle({
     componentDidMount(): void {
       this.props.registerRaf();
       this.props.startRafLoop();
+    },
+    componentWillReceiveProps(nextProps: any): void {
+      this.props.sync.state.maestro.bpm = nextProps.notation.state.bpm;
     },
     componentWillUnmount(): void {
       this.props.stopRafLoop();

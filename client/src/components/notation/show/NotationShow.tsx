@@ -39,8 +39,8 @@ const enhance = compose(
 
 const NotationShow = ({ isFetching, notation }) => (
   <div className="NotationShow">
-    <Maestro />
     <Gradient />
+    <Maestro />
     <NotationShowBanner
       isFetching={isFetching}
       songName={notation.state.songName}

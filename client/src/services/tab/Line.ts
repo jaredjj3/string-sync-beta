@@ -1,6 +1,7 @@
 import { Artist, Measure, Note } from 'services';
 import Linker from './Linker';
 import { ScoreLineRenderer } from 'services';
+import { last } from 'lodash';
 
 class Line {
   static MAX_MEASURE_LENGTH: number = 400;
@@ -68,6 +69,13 @@ class Line {
     }
 
     return result || null;
+  }
+
+  getTickRange(): TickRange {
+    return {
+      start: (this.select(0, 0) as Note).tick.start,
+      stop: last(last(this.measures).notes).tick.stop
+    };
   }
 
   private _extractVextabString(): string {

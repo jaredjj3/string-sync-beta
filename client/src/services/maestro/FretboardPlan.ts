@@ -8,7 +8,7 @@ class FretboardPlan {
     this.fretboard = fretboard;
   }
 
-  execute(isMediaActive: boolean, currentTimeMs: number, currentTick: number): FretboardPlan {
+  execute(currentTick: number): FretboardPlan {
     return this;
   }
 }

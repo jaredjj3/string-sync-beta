@@ -1,5 +1,5 @@
 import { Line, Measure, Note } from 'services';
-import { groupBy, merge, last } from 'lodash';
+import { flatMap, groupBy, merge, last } from 'lodash';
 
 interface BarNoteChunk {
   barNote: any;
@@ -114,14 +114,40 @@ class Linker {
       chunk.staveNotes.forEach((staveNote, noteIndex) => {
         const tabNote = chunk.tabNotes[noteIndex];
 
-        const note = new Note(measure, tabNote, staveNote, noteIndex);
+        const note = new Note(measure, tabNote, staveNote);
         const prev = last(notes) || null;
 
-        note.setPrev(prev);
         notes.push(note);
       });
 
       measure.notes = notes;
+    });
+
+    // if on the last line
+    if (this.line.next === null) {
+      this._fillRestNoteAttrs();
+    }
+  }
+
+  // FIXME: Kind of janky...
+  private _fillRestNoteAttrs(): void {
+    const lines = [];
+    let nextLine = this.line;
+
+    while (nextLine) {
+      lines.push(nextLine);
+      nextLine = nextLine.prev;
+    }
+
+    const measures = flatMap(lines.reverse(), line => line.measures);
+    const notes = flatMap(measures, measure => measure.notes);
+
+    notes.forEach((note, noteIndex) => {
+      note.number = noteIndex;
+      
+      if (noteIndex > 0) {
+        note.setPrev(notes[noteIndex - 1])
+      }
     });
   }
 
