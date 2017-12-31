@@ -34,7 +34,7 @@ const enhance = compose(
           name,
           precedence: 2,
           onAnimationLoop: props.handleAnimationLoop
-        })
+        });
       },
       unregisterRaf: () => {
         rafLoop.unregister(name);

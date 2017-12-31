@@ -10,6 +10,7 @@ class CaretRenderer implements Renderer {
   ctx: CanvasRenderingContext2D = null;
   width: number = 0;
   height: number = 0;
+  posX: number = 0;
 
   constructor(line: Line, canvas: HTMLCanvasElement, width: number, height: number) {
     this.line = line;
@@ -57,7 +58,7 @@ class CaretRenderer implements Renderer {
   }
 
   private _renderCaret(): CaretRenderer {
-    const x = this._getCaretPosX();
+    const x = this.posX;
     const y = 0;
 
     if (x > 0) {
@@ -69,10 +70,6 @@ class CaretRenderer implements Renderer {
     }
 
     return this;
-  }
-
-  private _getCaretPosX(): number {
-    return 20;
   }
 }
 
