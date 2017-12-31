@@ -19,7 +19,7 @@ class CaretPlan {
 
     const point2 = {
       x: tickRange.stop,
-      y: posRange.stop
+      y: posRange.start > posRange.stop ? note.staveNote.stave.width : posRange.stop
     }
 
     return interpolator(point1, point2);
@@ -28,7 +28,7 @@ class CaretPlan {
   execute(currentTick: number, currentNote: Note, currentLine: Line): CaretPlan {
     const shouldReExecute = (
       !this.execution.tickRange ||
-      isBetween(currentTick, this.execution.tickRange.start, this.execution.tickRange.stop)
+      !isBetween(currentTick, this.execution.tickRange.start, this.execution.tickRange.stop)
     );
 
     if (shouldReExecute) {
