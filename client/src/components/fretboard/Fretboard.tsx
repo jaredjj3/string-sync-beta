@@ -31,8 +31,8 @@ const enhance = compose(
   })),
   withHandlers({
     handleAnimationLoop: props => () => {
-      const { fretboardPlan } = props.sync.state.maestro;
       const fretboard = props.fretboard.state.instance;
+      const { fretboardPlan } = props.sync.state.maestro;
 
       if (fretboard && fretboardPlan) {
         fretboard.update(fretboardPlan.execution);

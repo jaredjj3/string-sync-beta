@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose, lifecycle, withProps, shouldUpdate } from 'recompose';
+import { compose, lifecycle, withProps, shouldUpdate, withHandlers } from 'recompose';
 import { withNotation, withTab, withViewport, withSync } from 'enhancers';
 import { Tab, TabPlan } from 'services';
 import { isBetween } from 'ssUtil';
@@ -14,6 +14,33 @@ const enhance = compose(
     currProps.viewport.state.width !== nextProps.viewport.state.width ||
     currProps.tab.state.updatedAt !== nextProps.tab.state.updatedAt
   )),
+  withHandlers({
+    handleAnimationLoop: props => () => {
+      const tab = props.tab.state.instance;
+      const { tabPlan } = props.sync.state.maestro;
+
+      if (tab && tabPlan) {
+        tab.update(tabPlan.execution);
+      }
+    }
+  }),
+  withProps(props => {
+    const { rafLoop } = props.sync.state;
+    const name = 'TabService.handleAnimationLoop'
+
+    return ({
+      registerRaf: () => {
+        rafLoop.register({
+          name,
+          precedence: 2,
+          onAnimationLoop: props.handleAnimationLoop
+        })
+      },
+      unregisterRaf: () => {
+        rafLoop.unregister(name);
+      }
+    });
+  }),
   withProps(props => ({
     getMeasuresPerLine: width => {
       switch (true) {
@@ -84,10 +111,17 @@ const enhance = compose(
     }
   })),
   lifecycle({
+    componentDidMount(): void {
+      this.props.registerRaf();
+    },
     componentWillReceiveProps(nextProps: any): void {
       nextProps.maybeCreateTab(nextProps);
       nextProps.maybeSetupTabPlan(nextProps);
       nextProps.maybeUpdateTab(nextProps);
+    },
+    componentWillUnmount(): void {
+      this.props.tab.dispatch.resetTab();
+      this.props.unregisterRaf();
     }
   })
 );

@@ -32,6 +32,10 @@ class Tab {
     }
   }
 
+  update(execution: PlanExecutions.Tab): Tab {
+    return this;
+  }
+
   createLines(measuresPerLine: number, width: number): Array<Line> {
     this.measuresPerLine = measuresPerLine;
     this.width = width;
