@@ -34,6 +34,15 @@ class Maestro {
     return tick !== tick ? 0 : tick; // guard against NaN
   }
 
+  get offsetTimeMs(): number {
+    return this.currentTimeMs - this.deadTimeMs;
+  }
+
+  get offsetTick(): number {
+    const offset = toTick(this.deadTimeMs, this.tpm);
+    return offset !== offset ? 0 : this.currentTick - offset; // guard against NaN
+  }
+
   conduct(): Maestro {
     this._executeTabPlan();
     this._executeFretboardPlan();
@@ -41,17 +50,23 @@ class Maestro {
     return this;
   }
 
-  private _executeTabPlan(): TabPlan {
-    return this.tabPlan ? this.tabPlan.execute(this.currentTick) : null;
+  private _executeTabPlan(): boolean {
+    if (this.tabPlan) {
+      this.tabPlan.execute(this.offsetTick)
+    }
+    
+    return !!this.tabPlan;
   }
 
-  private _executeFretboardPlan(): FretboardPlan {
-    if (this.tabPlan && this.tabPlan.execution) {
+  private _executeFretboardPlan(): boolean {
+    const shouldExecute = this.tabPlan && this.tabPlan.execution && this.fretboardPlan;
+
+    if (shouldExecute) {
       const { currentNote } = this.tabPlan.execution;
-      return this.fretboardPlan ? this.fretboardPlan.execute(currentNote) : null;
-    } else {
-      return null;
+      this.fretboardPlan.execute(currentNote);
     }
+
+    return !!shouldExecute;
   }
 }
 
