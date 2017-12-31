@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose, lifecycle, withState, withProps, shouldUpdate } from 'recompose';
+import { compose, lifecycle, withState, withProps, withHandlers, shouldUpdate } from 'recompose';
 import { Row, Col } from 'antd';
 import Frets from './Frets';
 import Strings from './Strings';
@@ -27,8 +27,35 @@ const enhance = compose(
         'Fretboard--mobile': props.viewport.state.type === 'MOBILE',
         'Fretboard--desktop': props.viewport.state.type === 'DESKTOP'
       }
-    )
+    ),
   })),
+  withHandlers({
+    handleAnimationLoop: props => () => {
+      const { tabPlan } = props.sync.state.maestro.plans;
+      const { fretboard } = props.fretboard.state.instance;
+
+      if (fretboard && tabPlan && tabPlan.execution.currentNote) {
+        const guitarPositions = tabPlan.execution.currentNote.getGuitarPos();
+      }
+    }
+  }),
+  withProps(props => {
+    const { rafLoop } = props.sync.state;
+    const name = 'Fretboard.handleAnimationLoop';
+
+    return ({
+      registerRaf: () => {
+        rafLoop.register({
+          name,
+          precedence: 1,
+          onAnimationLoop: props.handleAnimationLoop
+        })
+      },
+      unregisterRaf: () => {
+        rafLoop.unregister(name);
+      }
+    });
+  }),
   lifecycle({
     componentDidMount(): void {
       const fretboard = new FretboardService();
@@ -36,6 +63,8 @@ const enhance = compose(
 
       const fretboardPlan = new FretboardPlan(fretboard);
       this.props.sync.state.maestro.plans.fretboardPlan = fretboardPlan;
+
+      this.props.registerRaf();
     },
     componentWillReceiveProps(nextProps: any): void {
       const loading = nextProps.fretboard.state.instance === null;
@@ -43,6 +72,7 @@ const enhance = compose(
     },
     componentWillUnmount(): void {
       this.props.fretboard.dispatch.resetFretboard();
+      this.props.unregisterRaf();
     }
   })
 );

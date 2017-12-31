@@ -51,6 +51,14 @@ class Note {
   getPosX(): number {
     return this.staveNote.getAbsoluteX();
   }
+
+  getGuitarPos(): Array<GuitarPosition> {
+    const guitarPositions = this.tabNote.positions || [];
+    return guitarPositions.map(position => ({
+      fret: parseInt(position.fret, 10),
+      string: parseInt(position.str, 10)
+    }))
+  }
 }
 
 export default Note;

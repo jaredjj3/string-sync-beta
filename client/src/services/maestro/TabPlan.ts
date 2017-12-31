@@ -1,4 +1,4 @@
-import { Tab, Note } from 'services';
+import { Tab, Note, Line } from 'services';
 import { Flow } from 'vexflow';
 import { flatMap, sortBy, values, last } from 'lodash';
 import { isBetween } from 'ssUtil';
@@ -7,12 +7,14 @@ const { Fraction } = Flow;
 
 interface TabPlanExecution {
   currentNote: Note;
+  currentLine: Line;
 }
 
 class TabPlan {
   tab: Tab = null;
   execution: TabPlanExecution = {
-    currentNote: null
+    currentNote: null,
+    currentLine: null
   };
 
   constructor(tab: Tab) {
@@ -28,8 +30,9 @@ class TabPlan {
   execute(currentTick: number): TabPlan {
     const { currentNote } = this.execution;
 
-    if (!currentNote || !isBetween(currentTick, currentNote.tick.start, currentNote.tick.stop)) { 
+    if (!currentNote || !isBetween(currentTick, currentNote.tick.start, currentNote.tick.stop)) {
       this.execution.currentNote = this._getNote(currentTick);
+      this.execution.currentLine = this._getLine(currentTick);
     }
 
     return this;
@@ -56,6 +59,19 @@ class TabPlan {
     });
 
     return resultNote;
+  }
+
+  private _getLine(tick: number): Line {
+    let resultLine: Line = null;
+
+    this.tab.lines.forEach(line => {
+      const lineTickRange = line.getTickRange();
+      if (isBetween(tick, lineTickRange.start, lineTickRange.stop)) {
+        resultLine = line;
+      }
+    })
+
+    return resultLine;
   }
 
   private _updateNoteTickStarts(): TabPlan {
