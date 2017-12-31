@@ -4,11 +4,6 @@ import FretboardPlan from './FretboardPlan';
 import TabPlan from './TabPlan';
 import { values } from 'lodash';
 
-interface MaestroPlans {
-  fretboardPlan: FretboardPlan;
-  tabPlan: TabPlan;
-}
-
 // The purpose of this service is to coordinate a video player's state (i.e. isActive and
 // current time states) with DOM elements or other services. Its role is distinct from the
 // RAFLoop singleton in a sense that there can be consumers that do not require knowledge
@@ -21,10 +16,8 @@ interface MaestroPlans {
 // plan to another. The purpose of the plans are to provide plan executions, which can
 // be consumed to update the DOM.
 class Maestro {
-  plans: MaestroPlans = {
-    fretboardPlan: null,
-    tabPlan: null
-  };
+  fretboardPlan: FretboardPlan = null;
+  tabPlan: TabPlan = null;
 
   bpm: number = 0;
   deadTimeMs: number = 0;
@@ -42,25 +35,23 @@ class Maestro {
   }
 
   conduct(): Maestro {
-    const tabPlan = this._executeTabPlan();
-    const fretboardPlan = this._executeFretboardPlan();
-
-    this.plans = {
-      tabPlan,
-      fretboardPlan
-    };
+    this._executeTabPlan();
+    this._executeFretboardPlan();
 
     return this;
   }
 
   private _executeTabPlan(): TabPlan {
-    const { tabPlan } = this.plans;
-    return tabPlan ? tabPlan.execute(this.currentTick) : null;
+    return this.tabPlan ? this.tabPlan.execute(this.currentTick) : null;
   }
 
   private _executeFretboardPlan(): FretboardPlan {
-    const { fretboardPlan } = this.plans;
-    return fretboardPlan ? fretboardPlan.execute(this.currentTick) : null;
+    if (this.tabPlan && this.tabPlan.execution) {
+      const { currentNote } = this.tabPlan.execution;
+      return this.fretboardPlan ? this.fretboardPlan.execute(currentNote) : null;
+    } else {
+      return null;
+    }
   }
 }
 

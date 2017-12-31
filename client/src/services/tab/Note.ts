@@ -56,7 +56,7 @@ class Note {
     const guitarPositions = this.tabNote.positions || [];
     return guitarPositions.map(position => ({
       fret: parseInt(position.fret, 10),
-      string: parseInt(position.str, 10)
+      string: parseInt(position.str, 10) - 1
     }))
   }
 }

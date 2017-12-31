@@ -12,7 +12,7 @@ const enhance = compose(
     rootClassNames: classNames(
       'FretMarker',
       {
-        'FretMarker--lit': props.lit,
+        'FretMarker--lit': props.lit && !props.pressed,
         'FretMarker--pressed': props.pressed,
         'FretMarker--hidden': !props.lit && !props.pressed,
         'FretMarker--mobile': props.viewport.state.type === 'MOBILE'

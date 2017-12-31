@@ -5,14 +5,9 @@ import { isBetween } from 'ssUtil';
 
 const { Fraction } = Flow;
 
-interface TabPlanExecution {
-  currentNote: Note;
-  currentLine: Line;
-}
-
 class TabPlan {
   tab: Tab = null;
-  execution: TabPlanExecution = {
+  execution: PlanExecutions.Tab = {
     currentNote: null,
     currentLine: null
   };

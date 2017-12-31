@@ -54,7 +54,7 @@ const enhance = compose(
         // Create a new TabPlan from the tab and notify the maestro
         // of it.
         const tabPlan = new TabPlan(tab);
-        nextProps.sync.state.maestro.plans.tabPlan = tabPlan;
+        nextProps.sync.state.maestro.tabPlan = tabPlan;
       }
     },
     maybeUpdateTab: nextProps => {
@@ -70,7 +70,7 @@ const enhance = compose(
     },
     maybeSetupTabPlan: nextProps => {
       const tab = nextProps.tab.state.instance;
-      const { tabPlan } = nextProps.sync.state.maestro.plans;
+      const { tabPlan } = nextProps.sync.state.maestro;
 
       const shouldSetup = (
         tabPlan &&

@@ -31,11 +31,11 @@ const enhance = compose(
   })),
   withHandlers({
     handleAnimationLoop: props => () => {
-      const { tabPlan } = props.sync.state.maestro.plans;
-      const { fretboard } = props.fretboard.state.instance;
+      const { fretboardPlan } = props.sync.state.maestro;
+      const fretboard = props.fretboard.state.instance;
 
-      if (fretboard && tabPlan && tabPlan.execution.currentNote) {
-        const guitarPositions = tabPlan.execution.currentNote.getGuitarPos();
+      if (fretboard && fretboardPlan) {
+        fretboard.update(fretboardPlan.execution);
       }
     }
   }),
@@ -62,7 +62,7 @@ const enhance = compose(
       this.props.fretboard.dispatch.setFretboard(fretboard);
 
       const fretboardPlan = new FretboardPlan(fretboard);
-      this.props.sync.state.maestro.plans.fretboardPlan = fretboardPlan;
+      this.props.sync.state.maestro.fretboardPlan = fretboardPlan;
 
       this.props.registerRaf();
     },

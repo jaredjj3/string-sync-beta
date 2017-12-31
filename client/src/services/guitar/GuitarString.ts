@@ -1,5 +1,6 @@
 class GuitarString {
   string: number = 0;
+  fret: void = null;
   props: any = {};
 
   constructor(string: number, stringProps: any) {
