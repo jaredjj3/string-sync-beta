@@ -18,6 +18,8 @@ class CaretRenderer implements Renderer {
     this.height = height;
 
     this.ctx = canvas.getContext('2d');
+
+    this.line.caretRenderer = this;
   }
 
   setup(): CaretRenderer {

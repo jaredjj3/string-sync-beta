@@ -121,6 +121,7 @@ const enhance = compose(
     },
     componentWillUnmount(): void {
       this.props.tab.dispatch.resetTab();
+      this.props.sync.state.maestro.tabPlan = null;
       this.props.unregisterRaf();
     }
   })

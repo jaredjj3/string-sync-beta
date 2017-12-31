@@ -4,7 +4,8 @@ import { flatMap, uniqWith, uniqBy, isEqual } from 'lodash';
 class FretboardPlan {
   execution: PlanExecutions.Fretboard = {
     lightPos: [],
-    pressPos: []
+    pressPos: [],
+    currentNote: null
   }
   fretboard: Fretboard = null;
 
@@ -13,6 +14,10 @@ class FretboardPlan {
   }
 
   execute(currentNote: Note): FretboardPlan {
+    if (currentNote === this.execution.currentNote) {
+      return this;
+    }
+
     let lightPos = [];
     let pressPos = [];
 
@@ -24,7 +29,8 @@ class FretboardPlan {
 
     this.execution = {
       lightPos,
-      pressPos
+      pressPos,
+      currentNote
     };
 
     return this;

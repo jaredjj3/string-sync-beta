@@ -2,6 +2,7 @@ import { Flow } from 'vexflow';
 import { toTick } from 'ssUtil';
 import FretboardPlan from './FretboardPlan';
 import TabPlan from './TabPlan';
+import CaretPlan from './CaretPlan';
 import { values } from 'lodash';
 
 // The purpose of this service is to coordinate a video player's state (i.e. isActive and
@@ -18,6 +19,7 @@ import { values } from 'lodash';
 class Maestro {
   fretboardPlan: FretboardPlan = null;
   tabPlan: TabPlan = null;
+  caretPlan: CaretPlan = null;
 
   bpm: number = 0;
   deadTimeMs: number = 0;
@@ -46,6 +48,7 @@ class Maestro {
   conduct(): Maestro {
     this._executeTabPlan();
     this._executeFretboardPlan();
+    this._executeCaretPlan();
 
     return this;
   }
@@ -59,11 +62,31 @@ class Maestro {
   }
 
   private _executeFretboardPlan(): boolean {
-    const shouldExecute = this.tabPlan && this.tabPlan.execution && this.fretboardPlan;
+    const shouldExecute = (
+      this.tabPlan &&
+      this.tabPlan.execution &&
+      this.fretboardPlan
+    );
 
     if (shouldExecute) {
       const { currentNote } = this.tabPlan.execution;
       this.fretboardPlan.execute(currentNote);
+    }
+
+    return !!shouldExecute;
+  }
+
+  private _executeCaretPlan(): boolean {
+    const shouldExecute = (
+      this.caretPlan &&
+      this.tabPlan &&
+      this.tabPlan.execution.currentNote &&
+      this.tabPlan.execution.currentLine
+    );
+
+    if (shouldExecute) {
+      const { currentNote, currentLine } = this.tabPlan.execution;
+      this.caretPlan.execute(this.offsetTick, currentNote, currentLine);
     }
 
     return !!shouldExecute;

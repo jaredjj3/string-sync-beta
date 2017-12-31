@@ -72,6 +72,7 @@ const enhance = compose(
     },
     componentWillUnmount(): void {
       this.props.fretboard.dispatch.resetFretboard();
+      this.props.sync.state.maestro.fretboardPlan = null;
       this.props.unregisterRaf();
     }
   })

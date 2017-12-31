@@ -1,6 +1,6 @@
 import { Artist, Measure, Note } from 'services';
 import Linker from './Linker';
-import { ScoreLineRenderer } from 'services';
+import { ScoreLineRenderer, CaretRenderer } from 'services';
 import { last } from 'lodash';
 
 class Line {
@@ -17,6 +17,7 @@ class Line {
   noteStave: any = null;
   linker: Linker = null;
   renderer: ScoreLineRenderer = null;
+  caretRenderer: CaretRenderer = null;
 
   constructor(measures: Array<Measure>, number: number, width: number, targetNumMeasures: number) {
     this.measures = measures;
@@ -71,7 +72,7 @@ class Line {
     return result || null;
   }
 
-  getTickRange(): TickRange {
+  getTickRange(): NumRange {
     return {
       start: (this.select(0, 0) as Note).tick.start,
       stop: last(last(this.measures).notes).tick.stop

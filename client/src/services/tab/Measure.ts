@@ -45,7 +45,7 @@ class Measure {
     return result || null;
   }
 
-  getTickRange(): TickRange {
+  getTickRange(): NumRange {
     return {
       start: this.select(0).tick.start,
       stop: this.select(this.notes.length - 1).tick.stop

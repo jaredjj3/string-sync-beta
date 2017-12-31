@@ -9,7 +9,7 @@ class Note {
   staveNote: any = null;
   measure: Measure = null;
   renderer: NoteRenderer = null;
-  tick: TickRange = {
+  tick: NumRange = {
     start: 0,
     stop: 0
   };
@@ -54,6 +54,13 @@ class Note {
 
   getPosX(): number {
     return this.staveNote.getAbsoluteX();
+  }
+
+  getPosXRange(): NumRange {
+    return {
+      start: this.getPosX(),
+      stop: this.next ? this.next.getPosX() : Number.MAX_SAFE_INTEGER
+    };
   }
 
   getGuitarPos(): Array<GuitarPosition> {
