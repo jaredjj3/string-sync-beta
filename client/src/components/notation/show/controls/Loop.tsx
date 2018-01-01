@@ -1,19 +1,44 @@
 import * as React from 'react';
 import { compose, withState, withHandlers, withProps, lifecycle } from 'recompose';
 import { Slider } from 'antd';
-import { withVideo, withSync } from 'enhancers';
+import { withVideo, withSync, withNotation } from 'enhancers';
+import { isBetween } from 'ssUtil';
 
 const enhance = compose (
   withVideo,
   withSync,
+  withNotation,
   withState('values', 'setValues', [0, 100]),
   withState('isScrubbing', 'setIsScrubbing', false),
+  withState('wasActive', 'setWasActive', false),
+  withProps(props => ({
+    seekToLoopStart: () => {
+      const videoPlayer = props.video.state.player;
+      const durationMs = (
+        props.notation.state.durationMs ||
+        videoPlayer.getDuration() * 1000
+      );
+
+      if (durationMs > 0) {
+        const timeSecs = ((props.values[0] + 1) / 100) * (durationMs / 1000);
+        videoPlayer.pauseVideo();
+        videoPlayer.seekTo(timeSecs, true);
+        videoPlayer.playVideo();
+      }
+    }
+  })),
   withHandlers({
     handleChange: props => values => {
-      props.setIsScrubbing(true);
+      if (props.video.state.isActive && !props.isScrubbing) {
+        props.setWasActive(true);
+      }
 
-      if (props.video.state.playerState === 'PLAYING') {
-        props.video.state.player.pauseVideo();
+      if (!props.isScrubbing) {
+        props.setIsScrubbing(true);
+
+        if (props.video.state.playerState === 'PLAYING') {
+          props.video.state.player.pauseVideo();
+        }
       }
 
       props.setValues(Object.assign([], values));
@@ -21,9 +46,46 @@ const enhance = compose (
     handleAfterChange: props => values => {
       props.setIsScrubbing(false);
       props.setValues(Object.assign([], values));
+
+      const videoPlayer = props.video.state.player;
+      const currentTimeMs = videoPlayer.getCurrentTime() * 1000;
+      const durationMs = props.notation.state.durationMs || videoPlayer.getDuration() * 1000;
+      const nextFirstValueTimeMs = (values[0] / 100) * durationMs;
+
+      const shouldPlayVideo = (
+        props.wasActive &&
+        (currentTimeMs >= nextFirstValueTimeMs)
+      );
+
+      if (shouldPlayVideo) {
+        props.video.state.player.playVideo();
+      }
+
+      props.setWasActive(false);
     },
     handleAnimationLoop: props => dt => {
+      const videoPlayer = props.video.state.player;
 
+      if (!videoPlayer || props.isScrubbing) {
+        return;
+      }
+
+      const currentTimeMs = videoPlayer.getCurrentTime() * 1000;
+      const durationMs = (
+        props.notation.state.durationMs  ||
+        videoPlayer.getDuration() * 1000
+      );
+
+      if (durationMs > 0) {
+        const currentValue = (currentTimeMs / durationMs) * 100;
+        const shouldSeekToLoopStart = (
+          currentValue === currentValue &&
+          !isBetween(currentValue, props.values[0] - 1, props.values[1] + 1)
+        );
+        if (shouldSeekToLoopStart) {
+          props.seekToLoopStart();
+        }
+      }
     }
   }),
   withProps(props => {
