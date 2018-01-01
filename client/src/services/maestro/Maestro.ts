@@ -1,9 +1,10 @@
 import { Flow } from 'vexflow';
 import { toTick } from 'ssUtil';
+import { values } from 'lodash';
 import FretboardPlan from './FretboardPlan';
 import TabPlan from './TabPlan';
 import CaretPlan from './CaretPlan';
-import { values } from 'lodash';
+import ScrollPlan from './ScrollPlan';
 
 // The purpose of this service is to coordinate a video player's state (i.e. isActive and
 // current time states) with DOM elements or other services. Its role is distinct from the
@@ -20,6 +21,7 @@ class Maestro {
   fretboardPlan: FretboardPlan = null;
   tabPlan: TabPlan = null;
   caretPlan: CaretPlan = null;
+  scrollPlan: ScrollPlan = null;
 
   bpm: number = 0;
   deadTimeMs: number = 0;
@@ -49,15 +51,16 @@ class Maestro {
     this._executeTabPlan();
     this._executeFretboardPlan();
     this._executeCaretPlan();
+    this._executeScrollPlan();
 
     return this;
   }
 
   private _executeTabPlan(): boolean {
     if (this.tabPlan) {
-      this.tabPlan.execute(this.offsetTick)
+      this.tabPlan.execute(this.offsetTick);
     }
-    
+
     return !!this.tabPlan;
   }
 
@@ -90,6 +93,14 @@ class Maestro {
     }
 
     return !!shouldExecute;
+  }
+
+  private _executeScrollPlan(): boolean {
+    if (this.scrollPlan) {
+      this.scrollPlan.execute(this.tabPlan.execution.currentLine);
+    }
+
+    return !!this.scrollPlan;
   }
 }
 

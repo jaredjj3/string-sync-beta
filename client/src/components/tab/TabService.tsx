@@ -26,13 +26,13 @@ const enhance = compose(
   }),
   withProps(props => {
     const { rafLoop } = props.sync.state;
-    const name = 'TabService.handleAnimationLoop'
+    const name = 'TabService.handleAnimationLoop';
 
     return ({
       registerRaf: () => {
         rafLoop.register({
           name,
-          precedence: 2,
+          precedence: 4,
           onAnimationLoop: props.handleAnimationLoop
         });
       },

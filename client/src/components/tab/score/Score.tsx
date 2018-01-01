@@ -32,10 +32,10 @@ const ScoreLines = ({ tab }) => {
 };
 
 const Score = ({ tab }) => (
-  <div id="Score" className="Score">
-    <CaretManager />
-    <ScrollManager />
+  <div id="Score" className="Score Score--noScroll">
     <ScoreLines tab={tab.state.instance} />
+    <CaretManager />
+    <ScrollManager /> {/* rendering order matters! */}
   </div>
 );
 

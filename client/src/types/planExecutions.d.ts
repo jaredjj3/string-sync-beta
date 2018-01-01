@@ -16,4 +16,8 @@ declare namespace PlanExecutions {
     interpolator: any;
     tickRange: NumRange;
   }
+
+  interface Scroll {
+    currentLine: any;
+  }
 }

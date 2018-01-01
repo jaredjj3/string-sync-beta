@@ -35,7 +35,7 @@ const enhance = compose(
       registerRaf: () => {
         rafLoop.register({
           name,
-          precedence: 1,
+          precedence: 2,
           onAnimationLoop: props.handleAnimationLoop
         });
       },
