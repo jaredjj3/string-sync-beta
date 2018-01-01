@@ -18,7 +18,7 @@ const enhance = compose(
       if (maestro.caretPlan) {
         const { execution } = maestro.caretPlan;
 
-        if (execution) {
+        if (execution && execution.caretRenderer) {
           execution.caretRenderer.posX = execution.interpolator(maestro.offsetTick);
           execution.caretRenderer.render();
         }
