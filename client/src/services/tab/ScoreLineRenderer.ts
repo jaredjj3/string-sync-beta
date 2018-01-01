@@ -115,11 +115,11 @@ class ScoreLineRenderer implements Renderer  {
     const websiteName = 'stringsync.com';
     const instagramName = '@stringsynced';
 
-    this.ctx.fillText(websiteName, 10, 17);
+    this.ctx.fillText(websiteName, 10, 22);
     this.ctx.fillText(
       instagramName,
-      parseInt(this.canvas.style.width, 10) - 83,
-      17
+      parseInt(this.canvas.style.width, 10) - 85,
+      22
     );
 
     this.ctx.restore();

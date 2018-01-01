@@ -35,10 +35,10 @@ const enhance = compose (
 
       if (!props.isScrubbing) {
         props.setIsScrubbing(true);
+      }
 
-        if (props.video.state.playerState === 'PLAYING') {
-          props.video.state.player.pauseVideo();
-        }
+      if (props.video.state.playerState === 'PLAYING') {
+        props.video.state.player.pauseVideo();
       }
 
       props.setValues(Object.assign([], values));
@@ -80,6 +80,8 @@ const enhance = compose (
           !isBetween(currentValue, props.values[0] - 1, props.values[1] + 1)
         );
         if (shouldSeekToLoopStart) {
+          props.setWasActive(props.video.state.isActive);
+          props.setIsScrubbing(true);
           props.seekToLoopStart();
         }
       }
