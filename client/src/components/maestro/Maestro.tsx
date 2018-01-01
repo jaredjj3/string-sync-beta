@@ -14,7 +14,7 @@ const enhance = compose(
       const { maestro } = props.sync.state;
       const { player, isActive } = props.video.state;
 
-      if (player) {
+      if (player && isActive) {
         maestro.currentTimeMs = player.getCurrentTime() * 1000;
         maestro.isMediaActive = isActive;
       }

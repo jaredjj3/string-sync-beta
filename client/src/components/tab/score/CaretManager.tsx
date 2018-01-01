@@ -9,8 +9,11 @@ const enhance = compose(
   withHandlers({
     handleAnimationLoop: props => () => {
       if (props.lastExecution) {
-        props.lastExecution.caretRenderer.clear();
-        props.lastExecution.caretRenderer.posX = 0;
+        const { caretRenderer } = props.lastExecution;
+        if (caretRenderer) {
+          caretRenderer.clear();
+          caretRenderer.posX = 0;
+        }
       }
 
       const { maestro } = props.sync.state;

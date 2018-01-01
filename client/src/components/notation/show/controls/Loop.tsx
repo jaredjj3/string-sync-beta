@@ -70,11 +70,8 @@ const enhance = compose (
         return;
       }
 
-      const currentTimeMs = videoPlayer.getCurrentTime() * 1000;
-      const durationMs = (
-        props.notation.state.durationMs  ||
-        videoPlayer.getDuration() * 1000
-      );
+      const { currentTimeMs } = props.sync.state.maestro;
+      const durationMs = props.notation.state.durationMs || videoPlayer.getDuration() * 1000;
 
       if (durationMs > 0) {
         const currentValue = (currentTimeMs / durationMs) * 100;
