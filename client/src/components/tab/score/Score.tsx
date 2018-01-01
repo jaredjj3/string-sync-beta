@@ -3,6 +3,7 @@ import { compose, shouldUpdate } from 'recompose';
 import { withTab, textWhileLoading } from 'enhancers';
 import ScoreLine from './ScoreLine';
 import CaretManager from './CaretManager';
+import ScrollManager from './ScrollManager';
 import { Line } from 'services';
 import { hash } from 'ssUtil';
 
@@ -31,8 +32,9 @@ const ScoreLines = ({ tab }) => {
 };
 
 const Score = ({ tab }) => (
-  <div className="Score">
+  <div id="Score" className="Score">
     <CaretManager />
+    <ScrollManager />
     <ScoreLines tab={tab.state.instance} />
   </div>
 );

@@ -42,7 +42,7 @@ const enhance = compose(
       unregisterRaf: () => {
         rafLoop.unregister(name);
       }
-    })
+    });
   }),
   lifecycle({
     componentDidMount(): void {

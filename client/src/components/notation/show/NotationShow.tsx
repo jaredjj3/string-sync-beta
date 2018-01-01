@@ -48,12 +48,7 @@ const NotationShow = ({ isFetching, notation }) => (
     />
     <Video />
     <Fretboard />
-    <div
-      className="NotationShow__tabContainer"
-      style={{ height: '260px' }}
-    >
-      <Tab />
-    </div>
+    <Tab />
     <NotationShowControls />
   </div>
 );
