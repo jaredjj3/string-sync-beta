@@ -6,7 +6,7 @@ class CaretPlan {
     caretRenderer: null,
     interpolator: null,
     tickRange: null
-  }
+  };
 
   static getInterpolator(note: Note): any {
     const posRange = note.getPosXRange();
@@ -20,7 +20,7 @@ class CaretPlan {
     const point2 = {
       x: tickRange.stop,
       y: posRange.start > posRange.stop ? note.staveNote.stave.width : posRange.stop
-    }
+    };
 
     return interpolator(point1, point2);
   }
@@ -40,7 +40,7 @@ class CaretPlan {
         interpolator,
         tickRange,
         caretRenderer
-      }
+      };
     }
 
     return this;

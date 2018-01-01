@@ -29,7 +29,7 @@ const enhance = compose(
   }),
   withProps(props => {
     const { rafLoop } = props.sync.state;
-    const name = 'CaretManager.handleAnimationLoop'
+    const name = 'CaretManager.handleAnimationLoop';
 
     return ({
       registerRaf: () => {
