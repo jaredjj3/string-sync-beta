@@ -1,5 +1,5 @@
 import * as React from 'react';
-import TabService from './TabService';
+import TabManager from './TabManager';
 import Score from './Score';
 import { Overlap } from 'components';
 
@@ -14,7 +14,7 @@ const { Layer } = Overlap;
 const Tab = ({ allowOverflow, overrideWidth, withCaret }: TabProps) => (
   <div className="Tab">
     {/* rendering order matters! */}
-    <TabService
+    <TabManager
       isDynamic={withCaret}
       overrideWidth={overrideWidth}
     />

@@ -134,6 +134,6 @@ const enhance = compose(
   })
 );
 
-const TabService = () => null;
+const TabManager = () => null;
 
-export default enhance(TabService);
+export default enhance(TabManager);
