@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, withState, withProps, withHandlers } from 'recompose';
 import { Icon } from 'antd';
-import NotationShowMenu from './NotationShowMenu';
+import NotationControlsMenu from './NotationControlsMenu';
 import * as classNames from 'classnames';
 
 const enhance = compose(
@@ -13,28 +13,28 @@ const enhance = compose(
   }),
   withProps(props => ({
     maskClassNames: classNames(
-      'NotationShowMenuMask',
+      'NotationControlsMenuMask',
       {
-        'NotationShowMenuMask--hidden': props.collapsed
+        'NotationControlsMenuMask--hidden': props.collapsed
       }
     )
   }))
 );
 
-const ToggleNotationShowMenu = ({ collapsed, maskClassNames, handleClick }) => (
-  <span className="ToggleNotationShowMenu">
+const ToggleControls = ({ collapsed, maskClassNames, handleClick }) => (
+  <span className="ToggleControls">
     <Icon
       type="setting"
       onClick={handleClick}
     />
-    <div className="NotationShowMenuContainer">
+    <div className="NotationControlsMenuContainer">
       <div
         onClick={handleClick}
         className={maskClassNames}
       />
-      <NotationShowMenu collapsed={collapsed} />
+      <NotationControlsMenu collapsed={collapsed} />
     </div>
   </span>
 );
 
-export default enhance(ToggleNotationShowMenu);
+export default enhance(ToggleControls);

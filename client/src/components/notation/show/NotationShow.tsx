@@ -3,7 +3,7 @@ import { compose, withState, withProps, lifecycle } from 'recompose';
 import { withNotation } from 'enhancers';
 import { Gradient, Video, Tab, Fretboard, Maestro } from 'components';
 import NotationShowBanner from './NotationShowBanner';
-import NotationShowControls from './controls';
+import { NotationControls } from 'components';
 import { toTick, toTimeMs } from 'ssUtil';
 
 const enhance = compose(
@@ -49,7 +49,7 @@ const NotationShow = ({ isFetching, notation }) => (
     <Video />
     <Fretboard />
     <Tab withCaret />
-    <NotationShowControls />
+    <NotationControls />
   </div>
 );
 

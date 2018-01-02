@@ -23,9 +23,9 @@ const enhance = compose (
   })
 );
 
-const NotationShowMenu = ({ match, showEditItem, collapsed }) => (
+const NotationControlsMenu = ({ match, showEditItem, collapsed }) => (
   <Menu
-    className="NotationShowMenu"
+    className="NotationControlsMenu"
     defaultSelectedKeys={[]}
     defaultOpenKeys={[]}
     mode="inline"
@@ -52,4 +52,4 @@ const NotationShowMenu = ({ match, showEditItem, collapsed }) => (
   </Menu>
 );
 
-export default enhance(NotationShowMenu);
+export default enhance(NotationControlsMenu);

@@ -49,7 +49,7 @@ const enhance = compose(
           name,
           precedence: 1,
           onAnimationLoop: props.handleAnimationLoop
-        })
+        });
       },
       unregisterRaf: () => {
         rafLoop.unregister(name);
