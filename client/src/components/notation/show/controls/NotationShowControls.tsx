@@ -3,7 +3,7 @@ import { Row, Col } from 'antd';
 import Loop from './Loop';
 import Scrubber from './Scrubber';
 import Play from './Play';
-import NotationShowMenu from './NotationShowMenu';
+import ToggleNotationShowMenu from './ToggleNotationShowMenu';
 
 const ControlRow1 = () => (
   <Row
@@ -47,7 +47,7 @@ const NotationShowControls = () => (
           className="NotationControls__content--aside"
           type="flex" align="middle" justify="start"
           >
-          <NotationShowMenu />
+          <ToggleNotationShowMenu />
         </Row>
       </Col>
     </Row>

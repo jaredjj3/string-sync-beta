@@ -53,24 +53,24 @@ const DesktopNavRight = ({ handleMenuClick, logout, selectedKeys, session, isAdm
         <ItemGroup>
           <Item key="/about/overview">
             <Icon type="info-circle-o" />
-            overview
+            <span>overview</span>
           </Item>
           <Item key="/about/roadmap">
             <Icon type="car" />
-            roadmap
+            <span>roadmap</span>
           </Item>
           <Item key="/about/contact">
             <Icon type="contacts" />
-            contact
+            <span>contact</span>
           </Item>
           <Item key="/about/social">
             <Icon type="usergroup-add" />
-            social
+            <span>social</span>
           </Item>
         </ItemGroup>
       </SubMenu>
       <Item key="/library">
-        library
+        <span>library</span>
       </Item>
       {
         session.state.isLoggedIn
@@ -80,7 +80,7 @@ const DesktopNavRight = ({ handleMenuClick, logout, selectedKeys, session, isAdm
                   isAdmin || isTeacher
                     ? <Item key="/upload">
                         <Icon type="upload" />
-                        upload
+                        <span>upload</span>
                       </Item>
                     : null
                 }
@@ -88,20 +88,20 @@ const DesktopNavRight = ({ handleMenuClick, logout, selectedKeys, session, isAdm
                   isAdmin
                     ? <Item key="/dashboard">
                         <Icon type="compass" />
-                        dashboard
+                        <span>dashboard</span>
                       </Item>
                     : null
                 }
                 <Item>
                   <div onClick={logout}>
                     <Icon type="logout" />
-                    logout
+                    <span>logout</span>
                   </div>
                 </Item>
               </ItemGroup>
             </SubMenu>
           : <Item key="/login">
-              login
+              <span>login</span>
             </Item>
       }
     </Menu>
