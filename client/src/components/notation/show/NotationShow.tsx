@@ -48,7 +48,7 @@ const NotationShow = ({ isFetching, notation }) => (
     />
     <Video />
     <Fretboard />
-    <Tab />
+    <Tab withCaret />
     <NotationShowControls />
   </div>
 );

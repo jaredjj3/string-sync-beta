@@ -5,14 +5,23 @@ import { Overlap } from 'components';
 
 interface TabProps {
   allowOverflow?: boolean;
+  overrideWidth?: number;
+  withCaret?: boolean;
 }
 
 const { Layer } = Overlap;
 
-const Tab = ({ allowOverflow }: TabProps) => (
+const Tab = ({ allowOverflow, overrideWidth, withCaret }: TabProps) => (
   <div className="Tab">
-    <TabService />
-    <Score allowOverflow={!!allowOverflow} />
+    {/* rendering order matters! */}
+    <TabService
+      isDynamic={withCaret}
+      overrideWidth={overrideWidth}
+    />
+    <Score
+      withCaret={Boolean(withCaret)}
+      allowOverflow={Boolean(allowOverflow)}
+    />
   </div>
 );
 

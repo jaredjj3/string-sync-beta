@@ -9,9 +9,12 @@ const enhance = compose(
   withTab,
   withViewport,
   withSync,
+  withProps(props => ({
+    width: props.overrideWidth || props.viewport.state.width
+  })),
   shouldUpdate((currProps, nextProps) => (
     currProps.notation.state.vextabString !== nextProps.notation.state.vextabString ||
-    currProps.viewport.state.width !== nextProps.viewport.state.width ||
+    currProps.width !== nextProps.width ||
     currProps.tab.state.updatedAt !== nextProps.tab.state.updatedAt
   )),
   withHandlers({
@@ -71,7 +74,7 @@ const enhance = compose(
         const tab = new Tab(vextabString);
         tab.setup();
 
-        const { width } = nextProps.viewport.state;
+        const { width } = nextProps;
         const measuresPerLine = nextProps.getMeasuresPerLine(width);
         tab.createLines(measuresPerLine, width);
 
@@ -86,7 +89,7 @@ const enhance = compose(
     },
     maybeUpdateTab: nextProps => {
       const tab = nextProps.tab.state.instance;
-      const { width } = nextProps.viewport.state;
+      const { width } = nextProps;
       const measuresPerLine = nextProps.getMeasuresPerLine(width);
       const shouldUpdate = tab && (width !== tab.width);
 
@@ -118,6 +121,10 @@ const enhance = compose(
       nextProps.maybeCreateTab(nextProps);
       nextProps.maybeSetupTabPlan(nextProps);
       nextProps.maybeUpdateTab(nextProps);
+
+      if (!nextProps.isDynamic) {
+        nextProps.unregisterRaf();
+      }
     },
     componentWillUnmount(): void {
       this.props.tab.dispatch.resetTab();

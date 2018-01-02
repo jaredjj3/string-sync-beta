@@ -1,28 +1,58 @@
 import * as React from 'react';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { compose, withProps, lifecycle } from 'recompose';
-import { withNotation } from 'enhancers';
-import { Gradient, Tab } from 'components';
+import { withNotation, textWhileLoading } from 'enhancers';
+import { Gradient, Tab, IconDescribe } from 'components';
+import { Row } from 'antd';
 
 const enhance = compose(
   withNotation,
   withRouter,
   withProps(props => ({
-    fetchNotation: () => {
-      props.notation.dispatch.fetchNotation(props.match.params.id);
-    }
+    isLoading: parseInt(props.notation.state.id, 10) !== parseInt(props.match.params.id, 10)
   })),
   lifecycle({
     componentDidMount(): void {
-      this.props.fetchNotation();
+      const notationId = this.props.match.params.id;
+      this.props.notation.dispatch.fetchNotation(notationId);
     }
   })
 );
 
-const NotationPrint = () => (
+const NotationPrintHeader = ({ isLoading, notation }) => (
+  <div className="NotationPrint__header">
+    <div className="Print--hide">
+      <Gradient />
+      <Row type="flex" justify="start">
+        <Link to={`/n/${notation.id}`}>
+          <IconDescribe
+            type="close"
+            description="back"
+          />
+        </Link>
+      </Row>
+    </div>
+    {
+      isLoading
+        ? null
+        : <div className="NotationPrint__title">
+            <h3>{`${notation.songName} by ${notation.artistName}`}</h3>
+            <p>{`transcribed by @${notation.transcriber.username}`}</p>
+          </div>
+    }
+  </div>
+);
+
+const NotationPrint = ({ isLoading, notation }) => (
   <div className="NotationPrint">
-    <Gradient />
-    <Tab allowOverflow />
+    <NotationPrintHeader
+      isLoading={isLoading}
+      notation={notation.state}
+    />
+    <Tab
+      allowOverflow
+      overrideWidth={900}
+    />
   </div>
 );
 

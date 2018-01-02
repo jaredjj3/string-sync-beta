@@ -25,13 +25,14 @@ const enhance = compose(
   })
 );
 
-const ScoreLines = ({ tab }) => {
+const ScoreLines = ({ tab, withCaret }) => {
   if (!tab) {
     return null;
   } else {
     return (
       tab.lines.map((line: Line, ndx) => (
         <ScoreLine
+          withCaret={withCaret}
           key={`score-line-${line.number}-${hash(line.vextabString)}`}
           number={line.number}
         />
@@ -40,10 +41,13 @@ const ScoreLines = ({ tab }) => {
   }
 };
 
-const Score = ({ rootClassNames, tab }) => (
+const Score = ({ rootClassNames, tab, withCaret }) => (
   <div id="Score" className={rootClassNames}>
-    <ScoreLines tab={tab.state.instance} />
-    <CaretManager />
+    <ScoreLines
+      tab={tab.state.instance}
+      withCaret={withCaret}
+    />
+    {withCaret ? <CaretManager /> : null}
     <ScrollManager /> {/* rendering order matters! */}
   </div>
 );
