@@ -1,15 +1,24 @@
 import * as React from 'react';
-import { compose, shouldUpdate } from 'recompose';
+import { compose, withProps, shouldUpdate } from 'recompose';
 import { withTab, textWhileLoading } from 'enhancers';
 import ScoreLine from './ScoreLine';
 import CaretManager from './CaretManager';
 import ScrollManager from './ScrollManager';
 import { Line } from 'services';
 import { hash } from 'ssUtil';
+import * as classNames from 'classnames';
 
 const enhance = compose(
   withTab,
   textWhileLoading(({ tab }) => tab.state.instance === null),
+  withProps(props => ({
+    rootClassNames: classNames(
+      'Score',
+      {
+        'Score--noScroll': !props.allowOverflow
+      }
+    )
+  })),
   shouldUpdate((currProps, nextProps) => {
     const { instance } = nextProps.tab.state;
     return instance && !instance.error;
@@ -31,8 +40,8 @@ const ScoreLines = ({ tab }) => {
   }
 };
 
-const Score = ({ tab }) => (
-  <div id="Score" className="Score Score--noScroll">
+const Score = ({ rootClassNames, tab }) => (
+  <div id="Score" className={rootClassNames}>
     <ScoreLines tab={tab.state.instance} />
     <CaretManager />
     <ScrollManager /> {/* rendering order matters! */}

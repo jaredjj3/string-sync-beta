@@ -3,12 +3,16 @@ import TabService from './TabService';
 import Score from './Score';
 import { Overlap } from 'components';
 
+interface TabProps {
+  allowOverflow?: boolean;
+}
+
 const { Layer } = Overlap;
 
-const Tab = () => (
+const Tab = ({ allowOverflow }: TabProps) => (
   <div className="Tab">
     <TabService />
-    <Score />
+    <Score allowOverflow={!!allowOverflow} />
   </div>
 );
 
