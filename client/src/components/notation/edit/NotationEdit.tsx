@@ -23,7 +23,10 @@ const NotationEdit = () => (
     <Video />
     <Fretboard />
     <NotationEditor />
-    <Tab allowOverflow />
+    <Tab
+      withCaret
+      allowOverflow
+    />
   </div>
 );
 
