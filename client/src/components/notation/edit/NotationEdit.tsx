@@ -3,34 +3,26 @@ import { withRouter } from 'react-router-dom';
 import { compose, withProps, lifecycle } from 'recompose';
 import { Gradient, Maestro, Video, Nav, Fretboard, Tab } from 'components';
 import { withNotation } from 'enhancers';
+import NotationEditor from './editor';
 
 const enhance = compose(
   withNotation,
-  withProps(props => ({
-    setBodyColor: backgroundColor => {
-      window.$('body').css('background-color', backgroundColor);
-    }
-  })),
   lifecycle({
     componentDidMount(): void {
-      this.props.setBodyColor('black');
-
       const notationId = this.props.match.params.id;
       this.props.notation.dispatch.fetchNotation(notationId);
-    },
-    componentWillUnmount(): void {
-      this.props.setBodyColor('white');
     }
   })
 );
 
 const NotationEdit = () => (
   <div className="NotationEdit">
+    <Gradient />
     <Nav />
     <Maestro />
-    <Gradient />
     <Video />
     <Fretboard />
+    <NotationEditor />
     <Tab allowOverflow />
   </div>
 );

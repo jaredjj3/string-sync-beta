@@ -2,14 +2,14 @@ import * as React from 'react';
 import { compose, withProps } from 'recompose';
 import { withNotation } from 'enhancers';
 import { Affix } from 'antd';
+import Save from './Save';
+import DeadTime from './DeadTime';
+import Bpm from './Bpm';
 
 const enhance = compose(
   withNotation,
   withProps(props => ({
-    getAffixTarget: () => {
-      const desktopNav = window.$('.Nav--desktop');
-      return desktopNav.length > 0 ? desktopNav : window;
-    }
+    getAffixTarget: () => window
   }))
 );
 
@@ -19,6 +19,9 @@ const NotationEditor = ({ getAffixTarget }) => (
       target={getAffixTarget}
       offsetTop={10}
     >
+      <Save />
+      <DeadTime />
+      <Bpm />
       NotationEditor
     </Affix>
   </div>
