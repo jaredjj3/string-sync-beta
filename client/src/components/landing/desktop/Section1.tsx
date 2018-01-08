@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose, shouldUpdate } from 'recompose';
-import SignupButton from './SignupButton';
+import { SignupButton } from './';
 import { Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { withSession } from 'enhancers';

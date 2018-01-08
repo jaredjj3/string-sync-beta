@@ -1,12 +1,16 @@
 import * as React from 'react';
-import { branch } from 'recompose';
+import { compose, branch } from 'recompose';
 import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 
-const SignupButton = branch(
-  ({ isLoggedIn }) => !isLoggedIn,
-  i => i
-)(() => (
+const enhance = compose (
+  branch(
+    ({ isLoggedIn }) => !isLoggedIn,
+    i => i
+  )
+)
+
+const SignupButton = () => (
   <span>
     <Button size="large">
       <Link to="/signup">
@@ -14,6 +18,6 @@ const SignupButton = branch(
       </Link>
     </Button>
   </span>
-));
+);
 
-export default SignupButton;
+export default enhance(SignupButton);

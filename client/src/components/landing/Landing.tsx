@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { compose, branch, shouldUpdate, renderComponent, renderNothing, createSink } from 'recompose';
-import withViewport from 'enhancers/withViewport';
-import { DesktopLanding } from './';
 import { withRouter } from 'react-router';
+import { withViewport } from 'enhancers';
+import { DesktopLanding } from './';
 
 const redirectToLibrary = ({ history }) => {
   history.push('/library');
@@ -11,9 +11,7 @@ const redirectToLibrary = ({ history }) => {
 const enhance = compose(
   withViewport,
   withRouter,
-  shouldUpdate((props, nextProps) => (
-    props.viewport.state.type !== nextProps.viewport.state.type
-  )),
+  shouldUpdate((props, nextProps) => props.viewport.state.type !== nextProps.viewport.state.type),
   branch(
     ({ viewport }) => viewport.state.type === 'DESKTOP',
     i => i,
