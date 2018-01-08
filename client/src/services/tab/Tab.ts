@@ -3,6 +3,7 @@ import Measure from './Measure';
 import Note from './Note';
 import { VextabParser } from './parser';
 import { last } from 'lodash';
+import { isBetween } from 'ssUtil';
 
 class Tab {
   measures: Array<Measure> = [];
@@ -18,25 +19,12 @@ class Tab {
     currentNote: null
   };
 
-  constructor(vextabString: string) {
+  constructor(vextabString: string, width: number) {
     this.vextabString = vextabString;
+    this.width = width;
 
-    this.setup();
-  }
-
-  setup(): boolean {
-    this.error = null;
-
-    try {
-      this.parser = new VextabParser(this.vextabString);
-      const parsed = this.parser.parse();
-      const chunks = this.parser.chunk();
-      this._createMeasures(chunks);
-      return true;
-    } catch (error) {
-      this.error = error.message;
-      return false;
-    }
+    this._setup();
+    this._createLines(width);
   }
 
   update(execution: PlanExecutions.Tab): Tab {
@@ -53,22 +41,6 @@ class Tab {
     }
 
     return this;
-  }
-
-  createLines(measuresPerLine: number, width: number): Array<Line> {
-    this.measuresPerLine = measuresPerLine;
-    this.width = width;
-
-    const lines = this._getMeasureGroups().map((measureGroup, lineNumber) =>
-      new Line(measureGroup, lineNumber, width, this.measuresPerLine)
-    );
-
-    lines.forEach((line, ndx) => {
-      const prev = lines[ndx - 1] || null;
-      line.setPrev(prev);
-    });
-
-    return this.lines = lines;
   }
 
   select(line?: number, measure?: number, note?: number): Line | Measure | Note {
@@ -89,6 +61,54 @@ class Tab {
     }
 
     return result || null;
+  }
+
+  private _setup(): boolean {
+    this.error = null;
+
+    try {
+      this.parser = new VextabParser(this.vextabString);
+      const parsed = this.parser.parse();
+      const chunks = this.parser.chunk();
+      this._createMeasures(chunks);
+      return true;
+    } catch (error) {
+      this.error = error.message;
+      return false;
+    }
+  }
+
+  private _createLines(width: number): Array<Line> {
+    this.measuresPerLine = this._getMeasuresPerLine(width);
+    this.width = width;
+
+    const lines = this._getMeasureGroups().map((measureGroup, lineNumber) =>
+      new Line(measureGroup, lineNumber, width, this.measuresPerLine)
+    );
+
+    lines.forEach((line, ndx) => {
+      const prev = lines[ndx - 1] || null;
+      line.setPrev(prev);
+    });
+
+    return this.lines = lines;
+  }
+
+  private _getMeasuresPerLine(width: number): number {
+    switch (true) {
+      case width <= 646:
+        return 1;
+      case isBetween(width, 646, 768):
+        return 2;
+      case isBetween(width, 768, 992):
+        return 3;
+      case isBetween(width, 992, 1200):
+        return 4;
+      case isBetween(width, 1200, 1680):
+        return 5;
+      default:
+        return Math.ceil(width / 336);
+    }
   }
 
   private _createMeasures(chunks: Array<Vextab.Chunk>): Array<Measure> {

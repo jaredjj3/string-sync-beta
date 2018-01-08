@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose, withProps, shouldUpdate } from 'recompose';
-import { withTab, textWhileLoading } from 'enhancers';
+import { withTab } from 'enhancers';
 import ScoreLine from './ScoreLine';
 import CaretManager from './CaretManager';
 import ScrollManager from './ScrollManager';
@@ -10,7 +10,6 @@ import * as classNames from 'classnames';
 
 const enhance = compose(
   withTab,
-  textWhileLoading(({ tab }) => tab.state.instance === null),
   withProps(props => ({
     rootClassNames: classNames(
       'Score',
@@ -29,12 +28,13 @@ const ScoreLines = ({ tab, withCaret }) => {
   if (!tab) {
     return null;
   } else {
+    const vextabStringHash = hash(tab.vextabString);
     return (
       tab.lines.map((line: Line, ndx) => (
         <ScoreLine
+          line={line}
           withCaret={withCaret}
-          key={`score-line-${line.number}-${hash(line.vextabString)}`}
-          number={line.number}
+          key={`score-line-${line.number}-${vextabStringHash}`}
         />
       ))
     );

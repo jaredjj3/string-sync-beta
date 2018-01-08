@@ -20,12 +20,7 @@ class CaretRenderer implements Renderer {
 
     this.ctx = canvas.getContext('2d');
 
-    this.line.caretRenderer = this;
-  }
-
-  setup(): CaretRenderer {
     this.resize();
-    return this;
   }
 
   render(): CaretRenderer {

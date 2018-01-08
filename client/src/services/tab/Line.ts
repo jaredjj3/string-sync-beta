@@ -16,7 +16,7 @@ class Line {
   tabStave: any = null;
   noteStave: any = null;
   linker: Linker = null;
-  renderer: ScoreLineRenderer = null;
+  scoreLineRenderer: ScoreLineRenderer = null;
   caretRenderer: CaretRenderer = null;
 
   constructor(measures: Array<Measure>, number: number, width: number, targetNumMeasures: number) {
@@ -73,9 +73,12 @@ class Line {
   }
 
   getTickRange(): NumRange {
+    const startNote = this.select(0, 0) as Note;
+    const stopNote = last(last(this.measures).notes);
+
     return {
-      start: (this.select(0, 0) as Note).tick.start,
-      stop: last(last(this.measures).notes).tick.stop
+      start: startNote ? startNote.tick.start : 0,
+      stop: stopNote ? stopNote.tick.stop : 0
     };
   }
 

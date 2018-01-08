@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { compose, withHandlers, withState, withProps, lifecycle, shouldUpdate } from 'recompose';
+import { compose, withState, withHandlers, mapProps, withProps, lifecycle } from 'recompose';
 import { ScoreLineRenderer } from 'services';
-import { withTab } from 'enhancers';
+import { withTab, withSync } from 'enhancers';
 import Caret from './Caret';
 import { Overlap } from 'components';
-import { omit, isEqual } from 'lodash';
 
 const { Layer } = Overlap;
 
@@ -12,70 +11,40 @@ const SCORE_LINE_HEIGHT_PX = 260;
 
 const enhance = compose(
   withTab,
-  withState('scoreLineRenderer', 'setScoreLineRenderer', null),
-  shouldUpdate((currProps, nextProps) => (
-    !isEqual(
-      omit(currProps, 'tab'),
-      omit(nextProps, 'tab')
-    )
-  )),
-  withProps(props => ({
-    line: props.tab.state.instance.select(props.number)
+  withSync,
+  mapProps(props => ({
+    tab: props.tab,
+    tabPlan: props.sync.state.maestro.tabPlan,
+    line: props.line,
+    withCaret: props.withCaret
   })),
+  withState('canvas', 'setCanvas', null),
   withHandlers({
-    handleCanvasRef: ({ line, tab, setScoreLineRenderer }) => canvas => {
-      if (canvas) {
-        const { width } = tab.state.instance;
-        const height = SCORE_LINE_HEIGHT_PX;
-
-        const scoreLineRenderer = new ScoreLineRenderer(line, canvas, width, height);
-        setScoreLineRenderer(scoreLineRenderer);
-
-        line.renderer = scoreLineRenderer;
-      }
+    handleCanvasRef: props => canvas => {
+      props.setCanvas(canvas);
     }
   }),
-  withProps(({ scoreLineRenderer, line, tab }) => ({
-    linkVexInstances: () => {
-      if (scoreLineRenderer) {
-        line.linkVexInstances(scoreLineRenderer.artist.staves[0]);
-      }
-    },
-    unlinkVexInstances: () => {
-      if (line) {
-        line.unlinkVexInstances();
-      }
-    },
-    updateScoreLineRendererWidth: () => {
-      if (scoreLineRenderer) {
-        scoreLineRenderer.width = tab.state.instance.width;
-        scoreLineRenderer.setup();
-      }
-    }
-  })),
-  withProps(({ tab, linkVexInstances, unlinkVexInstances }) => ({
-    refreshLinkedVexInstances: () => {
-      unlinkVexInstances();
-      linkVexInstances();
-
-      // Force the TabService component to call componentWillReceiveProps()
-      tab.dispatch.emitTabUpdate();
-    },
-  })),
   lifecycle({
     componentDidUpdate(): void {
-      const { scoreLineRenderer } = this.props;
+      const { line, canvas } = this.props;
 
-      if (scoreLineRenderer) {
-        this.props.updateScoreLineRendererWidth();
-        scoreLineRenderer.render();
-
-        this.props.refreshLinkedVexInstances();
+      if (!canvas) {
+        return;
       }
-    },
-    componentWillUnmount(): void {
-      this.props.unlinkVexInstances();
-      this.props.line.renderer = null;
+
+      const scoreLineRenderer = new ScoreLineRenderer(line, canvas, line.width, SCORE_LINE_HEIGHT_PX);
+      line.scoreLineRenderer = scoreLineRenderer;
+
+      // After rendering, the scoreLineRenderer should have an artist and will
+      // have a stave for linking
+      scoreLineRenderer.render();
+      line.linkVexInstances(scoreLineRenderer.artist.staves[0]);
+
+      // if this is the last ScoreLine rendered, setup the tabPlan to update the
+      // ticks
+      if (line.next === null) {
+        this.props.tabPlan.reset().setup();
+      }
     }
   })
 );

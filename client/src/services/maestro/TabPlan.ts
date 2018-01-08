@@ -23,6 +23,15 @@ class TabPlan {
     return this;
   }
 
+  reset(): TabPlan {
+    this.execution = {
+      currentLine: null,
+      currentMeasure: null,
+      currentNote: null
+    };
+    return this;
+  }
+
   execute(currentTick: number): TabPlan {
     const { currentNote } = this.execution;
 
@@ -109,7 +118,9 @@ class TabPlan {
     });
 
     const lastNote = last(last(last(this.tab.lines).measures).notes);
-    lastNote.tick.stop = Number.MAX_SAFE_INTEGER;
+    if (lastNote) {
+      lastNote.tick.stop = Number.MAX_SAFE_INTEGER;
+    }
 
     return this;
   }

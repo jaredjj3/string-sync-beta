@@ -102,7 +102,7 @@ class Maestro {
   }
 
   private _executeScrollPlan(): boolean {
-    if (this.scrollPlan) {
+    if (this.scrollPlan && this.tabPlan && this.tabPlan.execution) {
       this.scrollPlan.execute(this.tabPlan.execution.currentLine);
     }
 

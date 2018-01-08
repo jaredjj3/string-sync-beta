@@ -1,27 +1,26 @@
 import * as React from 'react';
-import { compose, withState, withProps, withHandlers } from 'recompose';
+import { compose, withState, withHandlers, lifecycle } from 'recompose';
 import { CaretRenderer, CaretPlan } from 'services';
-import { withViewport } from 'enhancers';
 
 const CARET_HEIGHT_PX = 228;
 
 const enhance = compose(
-  withViewport,
-  withState('caretRenderer', 'setCaretRenderer', null),
+  withState('canvas', 'setCanvas', null),
   withHandlers({
     handleCanvasRef: props => canvas => {
+      props.setCanvas(canvas);
+    }
+  }),
+  lifecycle({
+    componentDidUpdate(): void {
+      const { line, canvas } = this.props;
+
       if (!canvas) {
         return;
       }
 
-      const { line, viewport } = props;
-      const width = viewport.state.width;
-      const height = CARET_HEIGHT_PX;
-
-      const caretRenderer = new CaretRenderer(props.line, canvas, width, height);
-      caretRenderer.setup().resize();
-
-      props.setCaretRenderer(caretRenderer);
+      const caretRenderer = new CaretRenderer(line, canvas, line.width, CARET_HEIGHT_PX);
+      line.caretRenderer = caretRenderer;
     }
   })
 );

@@ -13,9 +13,8 @@ const { Layer } = Overlap;
 
 const Tab = ({ allowOverflow, overrideWidth, withCaret }: TabProps) => (
   <div className="Tab">
-    {/* rendering order matters! */}
     <TabManager
-      isDynamic={withCaret}
+      isDynamic={Boolean(withCaret)}
       overrideWidth={overrideWidth}
     />
     <Score

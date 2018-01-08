@@ -46,9 +46,12 @@ class Measure {
   }
 
   getTickRange(): NumRange {
+    const startNote = this.select(0);
+    const stopNote = this.select(this.notes.length - 1);
+
     return {
-      start: this.select(0).tick.start,
-      stop: this.select(this.notes.length - 1).tick.stop
+      start: startNote ? startNote.tick.start : 0,
+      stop: stopNote ? stopNote.tick.stop : 0
     };
   }
 }
