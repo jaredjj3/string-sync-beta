@@ -1,10 +1,7 @@
 import { Flow } from 'vexflow';
 import { toTick } from 'ssUtil';
 import { values } from 'lodash';
-import FretboardPlan from './FretboardPlan';
-import TabPlan from './TabPlan';
-import CaretPlan from './CaretPlan';
-import ScrollPlan from './ScrollPlan';
+import { FretboardPlan, TabPlan, CaretPlan, ScrollPlan } from './';
 
 // The purpose of this service is to coordinate a video player's state (i.e. isActive and
 // current time states) with DOM elements or other services. Its role is distinct from the
