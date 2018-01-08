@@ -23,8 +23,9 @@ class Tab {
     this.vextabString = vextabString;
     this.width = width;
 
+    this.measuresPerLine = this._getMeasuresPerLine(width);
     this._setup();
-    this._createLines(width);
+    this._createLines();
   }
 
   update(execution: PlanExecutions.Tab): Tab {
@@ -78,12 +79,9 @@ class Tab {
     }
   }
 
-  private _createLines(width: number): Array<Line> {
-    this.measuresPerLine = this._getMeasuresPerLine(width);
-    this.width = width;
-
+  private _createLines(): Array<Line> {
     const lines = this._getMeasureGroups().map((measureGroup, lineNumber) =>
-      new Line(measureGroup, lineNumber, width, this.measuresPerLine)
+      new Line(measureGroup, lineNumber, this.width, this.measuresPerLine)
     );
 
     lines.forEach((line, ndx) => {

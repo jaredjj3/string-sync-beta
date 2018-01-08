@@ -15,7 +15,7 @@ const enhance = compose(
   mapProps(props => ({
     tab: props.tab,
     maestro: props.sync.state.maestro,
-    parseError: props.tab.state.instance.error,
+    parseError: props.tab.state.instance && props.tab.state.instance.error,
     line: props.line,
     withCaret: props.withCaret
   })),
@@ -54,7 +54,6 @@ const enhance = compose(
 
 const ScoreLine = ({ line, withCaret, handleCanvasRef }) => (
   <div className="ScoreLine">
-    {console.log('scoreline')}
     <Overlap style={{ height: SCORE_LINE_HEIGHT_PX }}>
       <Layer style={{ zIndex: '10' }}>
         <canvas ref={handleCanvasRef} />
