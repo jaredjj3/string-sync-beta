@@ -1,10 +1,8 @@
 import * as React from 'react';
-import ActionBar from './ActionBar';
+import { ActionBar, Section1, Section2 } from './';
 import { Link } from 'react-router-dom';
 import { compose, lifecycle } from 'recompose';
 import { withFeatures, withSession } from 'enhancers';
-import Section1 from 'components/landing/desktop/Section1';
-import Section2 from 'components/landing/desktop/Section2';
 
 const enhance = compose(
   withFeatures,

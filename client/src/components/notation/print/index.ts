@@ -1,1 +1,1 @@
-export { default } from './NotationPrint';
+export { default as NotationPrint } from './NotationPrint';

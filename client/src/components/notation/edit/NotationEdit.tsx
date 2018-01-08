@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { compose, withProps, lifecycle } from 'recompose';
 import { Gradient, Maestro, Video, Nav, Fretboard, Tab } from 'components';
 import { withNotation } from 'enhancers';
-import NotationEditor from './editor';
+import { NotationEditor } from './';
 
 const enhance = compose(
   withNotation,

@@ -1,6 +1,5 @@
 import * as React from 'react';
-import DesktopNavLeft from './DesktopNavLeft';
-import DesktopNavRight from './DesktopNavRight';
+import { DesktopNavLeft, DesktopNavRight } from './';
 import { Row, Col } from 'antd';
 
 const DesktopNav = () => (

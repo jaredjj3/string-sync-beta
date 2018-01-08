@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Row, Col } from 'antd';
 import { Overlap } from 'components';
-import FretMarker from './FretMarker';
+import { FretMarker } from './';
 
 const { Layer } = Overlap;
 

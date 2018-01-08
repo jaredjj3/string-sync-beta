@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { compose, branch, renderComponent, renderNothing } from 'recompose';
 import { withViewport, withNotations, textWhileLoading } from 'enhancers';
-import MobileLibraryContent from './mobile';
-import DesktopLibraryContent from './desktop';
+import { DesktopLibraryContent, MobileLibraryContent } from './';
 import { sortBy } from 'lodash';
 
 const enhance = compose(

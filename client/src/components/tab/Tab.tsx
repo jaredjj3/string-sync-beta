@@ -1,6 +1,5 @@
 import * as React from 'react';
-import TabManager from './TabManager';
-import Score from './Score';
+import { TabManager, Score } from './';
 import { Overlap } from 'components';
 
 interface TabProps {

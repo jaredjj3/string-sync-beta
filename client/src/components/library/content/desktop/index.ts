@@ -1,1 +1,2 @@
-export { default } from './DesktopLibraryContent';
+export * from './carousel';
+export { default as DesktopLibraryContent } from './DesktopLibraryContent';

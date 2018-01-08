@@ -40,6 +40,6 @@ const enhance = compose(
   })
 );
 
-const String = ({ rootClassNames }) => <div className={rootClassNames} />;
+const GuitarString = ({ rootClassNames }) => <div className={rootClassNames} />;
 
-export default enhance(String);
+export default enhance(GuitarString);

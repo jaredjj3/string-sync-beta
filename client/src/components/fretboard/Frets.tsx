@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose, setStatic } from 'recompose';
-import Fret from './Fret';
+import { Fret } from './';
 import { Row, Col } from 'antd';
 
 const DOTS: Array<number> = [

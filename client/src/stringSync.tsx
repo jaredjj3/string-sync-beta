@@ -1,8 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-
 import { Root } from 'root';
-import store from 'data/store';
+import { store } from 'data';
 
 declare global {
   interface Window {

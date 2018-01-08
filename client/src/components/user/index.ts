@@ -1,1 +1,1 @@
-export { default as Signup } from './new';
+export * from './new';

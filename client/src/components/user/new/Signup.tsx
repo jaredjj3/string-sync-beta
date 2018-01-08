@@ -1,6 +1,5 @@
 import * as React from 'react';
-import SignupErrors from 'components/user/new/SignupErrors';
-import SignupFooter from './SignupFooter';
+import { SignupErrors, SignupFooter } from './';
 import { EmailInput, UsernameInput, PasswordInput, PasswordConfirmInput } from './SignupInputs';
 import { Form, Button } from 'antd';
 import { compose, withState, withProps, withHandlers } from 'recompose';

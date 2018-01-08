@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { compose, lifecycle, withState, withProps, withHandlers, shouldUpdate } from 'recompose';
 import { Row, Col } from 'antd';
-import Frets from './Frets';
-import Strings from './Strings';
+import { Frets, GuitarStrings } from './';
 import { withFretboard, withViewport, withSync, textWhileLoading } from 'enhancers';
 import { Fretboard as FretboardService, FretboardPlan } from 'services';
 import { Overlap } from 'components';
@@ -114,7 +113,7 @@ const Fretboard = ({ loading, rootClassNames }) => {
             <Frets />
           </Layer>
           <Layer>
-            <Strings />
+            <GuitarStrings />
           </Layer>
         </Overlap>
       </div>

@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { Row, Col } from 'antd';
-import Loop from './Loop';
-import Scrubber from './Scrubber';
-import Play from './Play';
-import ToggleControls from './ToggleControls';
+import { Loop, Scrubber, Play, ToggleControls } from './';
 
 const ControlRow1 = () => (
   <Row

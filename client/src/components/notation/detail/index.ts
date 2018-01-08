@@ -1,3 +1,3 @@
 import './_notationDetail.less';
 
-export { default } from './NotationDetail';
+export { default as NotationDetail } from './NotationDetail';

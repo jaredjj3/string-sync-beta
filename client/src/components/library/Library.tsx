@@ -2,7 +2,7 @@ import * as React from 'react';
 import { compose, lifecycle, withState, withHandlers } from 'recompose';
 import { withNotations } from 'enhancers';
 import { Nav, Footer, Gradient } from 'components';
-import LibraryContent from './content';
+import { LibraryContent } from './';
 import { Icon } from 'antd';
 
 const enhance = compose(

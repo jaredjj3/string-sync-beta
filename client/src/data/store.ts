@@ -1,7 +1,6 @@
 import { createStore } from 'redux';
 import { getViewport, isLoggedIn } from 'ssUtil';
-import rootReducer from './rootReducer';
-import rootMiddleware from './rootMiddleware';
+import { rootReducer, rootMiddleware } from './';
 
 const preLoadedState = {
   session: {

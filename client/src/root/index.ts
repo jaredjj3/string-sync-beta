@@ -1,2 +1,2 @@
-export { default as Root } from './Root';
 export * from './app';
+export { default as Root } from './Root';

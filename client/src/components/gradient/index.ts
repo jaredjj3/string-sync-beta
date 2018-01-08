@@ -1,2 +1,3 @@
 import './_gradient.less';
-export { default } from './Gradient';
+
+export { default as Gradient } from './Gradient';

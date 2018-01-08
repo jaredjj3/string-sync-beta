@@ -2,7 +2,7 @@ import * as React from 'react';
 import { compose, withState, withHandlers, mapProps, withProps, lifecycle } from 'recompose';
 import { ScoreLineRenderer } from 'services';
 import { withTab, withSync } from 'enhancers';
-import Caret from './Caret';
+import { Caret } from './';
 import { Overlap } from 'components';
 
 const { Layer } = Overlap;

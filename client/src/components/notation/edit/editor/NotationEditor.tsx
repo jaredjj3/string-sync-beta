@@ -2,10 +2,7 @@ import * as React from 'react';
 import { compose, withProps } from 'recompose';
 import { withNotation } from 'enhancers';
 import { Affix } from 'antd';
-import Save from './Save';
-import DeadTime from './DeadTime';
-import Bpm from './Bpm';
-import VextabStringEditor from './VextabStringEditor';
+import { Save, DeadTime, Bpm, VextabStringEditor } from './';
 
 const enhance = compose(
   withNotation,

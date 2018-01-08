@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose, setStatic } from 'recompose';
-import Layer from './Layer';
+import { Layer } from './';
 import { withClassNames } from 'enhancers';
 
 const enhance = compose(

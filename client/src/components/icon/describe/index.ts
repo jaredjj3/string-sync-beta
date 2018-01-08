@@ -1,2 +1,3 @@
 import './_iconDescribe.less';
-export { default } from './IconDescribe';
+
+export { default as IconDescribe } from './IconDescribe';

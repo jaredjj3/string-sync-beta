@@ -3,8 +3,14 @@ import { compose, withState, withProps, withHandlers, lifecycle } from 'recompos
 import { Form, Button, Select } from 'antd';
 import { Gradient, Nav } from 'components';
 import { withNotation, withTags } from 'enhancers';
-import NotationNewErrors from './NotationNewErrors';
-import { YoutubeVideoIdInput, SongNameInput, ArtistNameInput, TagsInput, FileInput } from './NotationNewInputs';
+import {
+  NotationNewErrors,
+  YoutubeVideoIdInput,
+  SongNameInput,
+  ArtistNameInput,
+  TagsInput,
+  FileInput
+} from './';
 
 const { Item } = Form;
 const { Option } = Select;

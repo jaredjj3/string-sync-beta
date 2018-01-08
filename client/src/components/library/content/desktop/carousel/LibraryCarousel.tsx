@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose, toClass, withHandlers } from 'recompose';
-import { NotationDetail } from 'components/notation';
+import { NotationDetail } from 'components';
 import { Carousel, Icon, Row, Col } from 'antd';
 import { chunk } from 'lodash';
 import { NOTATIONS_PER_PAGE } from './constants';

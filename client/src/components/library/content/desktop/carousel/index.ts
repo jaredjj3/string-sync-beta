@@ -1,3 +1,3 @@
 import './_libraryCarousel.less';
 
-export { default } from './LibraryCarousel';
+export { default as LibraryCarousel } from './LibraryCarousel';

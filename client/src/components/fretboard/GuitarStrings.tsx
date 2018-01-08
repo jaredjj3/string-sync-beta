@@ -1,11 +1,11 @@
 import * as React from 'react';
-import String from './String';
+import { GuitarString } from './'
 
-const Strings = () => (
-  <div className="Strings">
+const GuitarStrings = () => (
+  <div className="GuitarStrings">
     {
       Array(6).fill(null).map((_, string) => (
-        <String
+        <GuitarString
           key={`string-${string}`}
           string={string}
         />
@@ -14,4 +14,4 @@ const Strings = () => (
   </div>
 );
 
-export default Strings;
+export default GuitarStrings;

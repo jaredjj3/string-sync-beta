@@ -1,1 +1,1 @@
-export { default } from './Maestro';
+export { default as Maestro } from './Maestro';

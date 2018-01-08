@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 import { compose, branch, renderNothing, renderComponent } from 'recompose';
 import { Icon } from 'antd';
 import { withSession } from 'enhancers';
-import MobileNavLogin from './MobileNavLogin';
-import MobileNavLogout from './MobileNavLogout';
+import { MobileNavLogin, MobileNavLogout } from './';
 
 const enhance = compose(
   withSession,

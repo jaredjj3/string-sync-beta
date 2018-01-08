@@ -1,5 +1,5 @@
 import * as React from 'react';
-import LibraryCarousel from './carousel';
+import { LibraryCarousel } from './';
 
 const LibraryCarouselListItems = ({ sortedTags, notationsByTag }) => (
   sortedTags.map(tag => (

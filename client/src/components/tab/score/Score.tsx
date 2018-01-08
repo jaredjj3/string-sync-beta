@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { compose, withProps, shouldUpdate } from 'recompose';
+import * as classNames from 'classnames';
 import { withTab } from 'enhancers';
-import ScoreLine from './ScoreLine';
-import CaretManager from './CaretManager';
-import ScrollManager from './ScrollManager';
+import { ScoreLine, CaretManager, ScrollManager } from './';
 import { Line } from 'services';
 import { hash } from 'ssUtil';
-import * as classNames from 'classnames';
 
 const enhance = compose(
   withTab,

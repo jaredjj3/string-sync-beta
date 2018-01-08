@@ -1,2 +1,4 @@
 import './_overlap.less';
-export { default } from './Overlap';
+
+export { default as Layer } from './Layer';
+export { default as Overlap } from './Overlap';

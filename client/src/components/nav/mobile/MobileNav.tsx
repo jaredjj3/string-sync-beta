@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { NavBar } from 'antd-mobile';
-import MobileNavLeft from './MobileNavLeft';
-import MobileNavRight from './MobileNavRight';
-import MobileNavCenter from './MobileNavCenter';
+import { MobileNavLeft, MobileNavRight, MobileNavCenter } from './';
 
 const MobileNav = () => (
   <div className="Nav--mobile">
