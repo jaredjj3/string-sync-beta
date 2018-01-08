@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { Row, Col } from 'antd';
-import { Overlap } from 'components';
+import { Overlap, Layer } from 'components';
 import { FretMarker } from './';
-
-const { Layer } = Overlap;
 
 const Fret = ({ fret, dots }) => (
   <Overlap className="Fret">

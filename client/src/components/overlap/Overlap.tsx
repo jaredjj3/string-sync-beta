@@ -1,10 +1,8 @@
 import * as React from 'react';
-import { compose, setStatic } from 'recompose';
-import { Layer } from './';
+import { compose } from 'recompose';
 import { withClassNames } from 'enhancers';
 
 const enhance = compose(
-  setStatic('Layer', Layer),
   withClassNames(['Overlap'])
 );
 

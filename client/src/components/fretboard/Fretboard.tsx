@@ -4,10 +4,8 @@ import { Row, Col } from 'antd';
 import { Frets, GuitarStrings } from './';
 import { withFretboard, withViewport, withSync, textWhileLoading } from 'enhancers';
 import { Fretboard as FretboardService, FretboardPlan } from 'services';
-import { Overlap } from 'components';
+import { Overlap, Layer } from 'components';
 import * as classNames from 'classnames';
-
-const { Layer } = Overlap;
 
 const enhance = compose(
   withFretboard,

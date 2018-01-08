@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { TabManager, Score } from './';
-import { Overlap } from 'components';
+import { Overlap, Layer } from 'components';
 
 interface TabProps {
   allowOverflow?: boolean;
   overrideWidth?: number;
   withCaret?: boolean;
 }
-
-const { Layer } = Overlap;
 
 const Tab = ({ allowOverflow, overrideWidth, withCaret }: TabProps) => (
   <div className="Tab">

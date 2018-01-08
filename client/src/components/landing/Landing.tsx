@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, branch, shouldUpdate, renderComponent, renderNothing, createSink } from 'recompose';
 import withViewport from 'enhancers/withViewport';
-import DesktopLanding from './desktop';
+import { DesktopLanding } from './';
 import { withRouter } from 'react-router';
 
 const redirectToLibrary = ({ history }) => {

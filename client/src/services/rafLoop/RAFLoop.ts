@@ -118,6 +118,5 @@ class RafLoop {
 }
 
 const instance = new RafLoop();
-Object.freeze(instance);
 
 export default instance;

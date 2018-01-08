@@ -3,9 +3,7 @@ import { compose, withState, withHandlers, mapProps, withProps, lifecycle } from
 import { ScoreLineRenderer } from 'services';
 import { withTab, withSync } from 'enhancers';
 import { Caret } from './';
-import { Overlap } from 'components';
-
-const { Layer } = Overlap;
+import { Overlap, Layer } from 'components';
 
 const SCORE_LINE_HEIGHT_PX = 260;
 
@@ -46,7 +44,9 @@ const enhance = compose(
       if (line.next === null && !parseError) {
         const { maestro } = this.props;
         maestro.resetPlans();
-        maestro.tabPlan.setup();
+        if (maestro.tabPlan) {
+          maestro.tabPlan.setup();
+        }
       }
     }
   })

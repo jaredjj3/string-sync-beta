@@ -45,7 +45,8 @@ const enhance = compose(
 
       const shouldCreateTab = (
         this.props.vextabString !== nextProps.vextabString ||
-        this.props.width !== nextProps.width
+        this.props.width !== nextProps.width ||
+        !nextProps.sync.state.maestro.tabPlan
       );
 
       if (shouldCreateTab) {
