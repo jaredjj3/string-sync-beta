@@ -1,8 +1,8 @@
 import { RESET_SYNC } from './syncConstants';
-import { RAFLoop, Maestro } from 'services';
+import { rafLoop, Maestro } from 'services';
 
 const getDefaultState = (): Store.Sync => ({
-  rafLoop: new RAFLoop(),
+  rafLoop: rafLoop,
   maestro: new Maestro()
 });
 

@@ -24,9 +24,9 @@ const hasRafFunc = (spec: RAF.Spec): boolean => (
 );
 
 // main
-// The RAFLoop's purpose is to centralize functions for requestAnimationFrame() (or RAF).
+// The RafLoop's purpose is to centralize functions for requestAnimationFrame() (or RAF).
 // This is particularly useful when multiple systems need to RAF and execute consistently.
-class RAFLoop {
+class RafLoop {
   throttleMs: number = 0;
 
   private _isActive: boolean = false; // exposed by the public isActive() getter
@@ -117,4 +117,7 @@ class RAFLoop {
   }
 }
 
-export default RAFLoop;
+const instance = new RafLoop();
+Object.freeze(instance);
+
+export default instance;
