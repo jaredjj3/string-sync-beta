@@ -3,4 +3,8 @@ import 'antd-mobile/dist/antd-mobile.less';
 import 'antd/dist/antd.less';
 import './_app.less';
 
-export { default } from './App';
+export { default as NotificationSystem } from './NotificationSystem';
+export { default as Routes } from './Routes';
+export { default as UserProcessor } from './UserProcessor';
+export { default as ViewportManager } from './ViewportManager';
+export { default as App } from './App';

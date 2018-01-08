@@ -1,12 +1,9 @@
 import * as React from 'react';
-import NotificationSystem from './NotificationSystem';
-import Routes from './Routes';
-import ViewportManager from './ViewportManager';
-import UserProcessor from './UserProcessor';
-import enUS from 'antd/lib/locale-provider/en_US.js';
-import { LocaleProvider } from 'antd';
 import { compose, lifecycle } from 'recompose';
 import { withRouter } from 'react-router';
+import { NotificationSystem, Routes, ViewportManager, UserProcessor } from './';
+import enUS from 'antd/lib/locale-provider/en_US.js';
+import { LocaleProvider } from 'antd';
 
 const scrollToTop = (): void => {
   window.scrollTo(null, 0);
