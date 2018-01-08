@@ -57,7 +57,13 @@ class Maestro {
   }
 
   private _executeTabPlan(): boolean {
-    if (this.tabPlan) {
+    const shouldExecute = (
+      this.tabPlan &&
+      this.tabPlan.tab &&
+      !this.tabPlan.tab.error
+    )
+
+    if (shouldExecute) {
       this.tabPlan.execute(this.offsetTick);
     }
 

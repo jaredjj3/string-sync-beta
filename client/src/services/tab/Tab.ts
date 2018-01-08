@@ -20,6 +20,8 @@ class Tab {
 
   constructor(vextabString: string) {
     this.vextabString = vextabString;
+
+    this.setup();
   }
 
   setup(): boolean {

@@ -8,7 +8,6 @@ const SCORE_HEIGHT_PX = 260;
 
 const enhance = compose(
   withSync,
-  withState('scoreEl', 'setScoreEl', null),
   withState('focusedLineNumber', 'setFocusedLineNumber', 0),
   withProps(props => ({
     scrollToLine: lineNumber => {
@@ -22,7 +21,7 @@ const enhance = compose(
       if (scrollPlan) {
         const { currentLine } = scrollPlan.execution;
         if (currentLine && currentLine.number !== props.focusedLineNumber) {
-          props.scoreEl.scrollTop(currentLine.number * SCORE_HEIGHT_PX);
+          window.$('#Score').scrollTop(currentLine.number * SCORE_HEIGHT_PX);
           props.setFocusedLineNumber(currentLine.number);
         }
       }
@@ -48,7 +47,6 @@ const enhance = compose(
   lifecycle({
     componentDidMount(): void {
       this.props.registerRaf();
-      this.props.setScoreEl(window.$('#Score'));
       this.props.sync.state.maestro.scrollPlan = new ScrollPlan();
     },
     componentWillUnmount(): void {

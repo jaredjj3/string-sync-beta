@@ -5,6 +5,7 @@ import { Affix } from 'antd';
 import Save from './Save';
 import DeadTime from './DeadTime';
 import Bpm from './Bpm';
+import VextabStringEditor from './VextabStringEditor';
 
 const enhance = compose(
   withNotation,
@@ -22,7 +23,7 @@ const NotationEditor = ({ getAffixTarget }) => (
       <Save />
       <DeadTime />
       <Bpm />
-      NotationEditor
+      <VextabStringEditor />
     </Affix>
   </div>
 );

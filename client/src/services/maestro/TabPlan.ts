@@ -26,7 +26,12 @@ class TabPlan {
   execute(currentTick: number): TabPlan {
     const { currentNote } = this.execution;
 
-    if (!currentNote || !isBetween(currentTick, currentNote.tick.start, currentNote.tick.stop)) {
+    const shouldExecute = (
+      !currentNote ||
+      !isBetween(currentTick, currentNote.tick.start, currentNote.tick.stop)
+    );
+
+    if (shouldExecute) {
       this.execution = this._getExecution(currentTick);
     }
 

@@ -51,7 +51,10 @@ const enhance = compose(
       this.props.startRafLoop();
     },
     componentWillReceiveProps(nextProps: any): void {
-      this.props.sync.state.maestro.bpm = nextProps.notation.state.bpm;
+      const { maestro } = nextProps.sync.state;
+      const { bpm, deadTimeMs } = nextProps.notation.state;
+      maestro.bpm = bpm;
+      maestro.deadTimeMs = deadTimeMs;
     },
     componentWillUnmount(): void {
       this.props.stopRafLoop();
