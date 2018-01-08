@@ -25,6 +25,15 @@ class CaretPlan {
     return interpolator(point1, point2);
   }
 
+  reset(): CaretPlan {
+    this.execution = {
+      caretRenderer: null,
+      interpolator: null,
+      tickRange: null
+    };
+    return this;
+  }
+
   execute(currentTick: number, currentNote: Note, currentLine: Line): CaretPlan {
     const shouldReExecute = (
       !this.execution.tickRange ||

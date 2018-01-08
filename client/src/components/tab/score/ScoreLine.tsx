@@ -15,6 +15,8 @@ const enhance = compose(
   mapProps(props => ({
     tab: props.tab,
     tabPlan: props.sync.state.maestro.tabPlan,
+    caretPlan: props.sync.state.maestro.caretPlan,
+    parseError: props.tab.state.instance.error,
     line: props.line,
     withCaret: props.withCaret
   })),
@@ -26,7 +28,7 @@ const enhance = compose(
   }),
   lifecycle({
     componentDidUpdate(): void {
-      const { line, canvas } = this.props;
+      const { line, canvas, parseError } = this.props;
 
       if (!canvas) {
         return;
@@ -42,7 +44,8 @@ const enhance = compose(
 
       // if this is the last ScoreLine rendered, setup the tabPlan to update the
       // ticks
-      if (line.next === null) {
+      if (line.next === null && !parseError) {
+        this.props.caretPlan.reset();
         this.props.tabPlan.reset().setup();
       }
     }

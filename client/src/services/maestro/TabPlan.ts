@@ -118,6 +118,7 @@ class TabPlan {
     });
 
     const lastNote = last(last(last(this.tab.lines).measures).notes);
+
     if (lastNote) {
       lastNote.tick.stop = Number.MAX_SAFE_INTEGER;
     }
