@@ -14,8 +14,7 @@ const enhance = compose(
   withSync,
   mapProps(props => ({
     tab: props.tab,
-    tabPlan: props.sync.state.maestro.tabPlan,
-    caretPlan: props.sync.state.maestro.caretPlan,
+    maestro: props.sync.state.maestro,
     parseError: props.tab.state.instance.error,
     line: props.line,
     withCaret: props.withCaret
@@ -45,8 +44,9 @@ const enhance = compose(
       // if this is the last ScoreLine rendered, setup the tabPlan to update the
       // ticks
       if (line.next === null && !parseError) {
-        this.props.caretPlan.reset();
-        this.props.tabPlan.reset().setup();
+        const { maestro } = this.props;
+        maestro.resetPlans();
+        maestro.tabPlan.setup();
       }
     }
   })
@@ -54,6 +54,7 @@ const enhance = compose(
 
 const ScoreLine = ({ line, withCaret, handleCanvasRef }) => (
   <div className="ScoreLine">
+    {console.log('scoreline')}
     <Overlap style={{ height: SCORE_LINE_HEIGHT_PX }}>
       <Layer style={{ zIndex: '10' }}>
         <canvas ref={handleCanvasRef} />

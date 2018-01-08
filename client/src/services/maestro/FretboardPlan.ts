@@ -13,6 +13,16 @@ class FretboardPlan {
     this.fretboard = fretboard;
   }
 
+  reset(): FretboardPlan {
+    this.execution = {
+      lightPos: [],
+      pressPos: [],
+      currentNote: null
+    };
+
+    return this;
+  }
+
   execute(currentNote: Note): FretboardPlan {
     if (currentNote === this.execution.currentNote) {
       return this;

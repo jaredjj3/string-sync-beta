@@ -47,6 +47,16 @@ class Maestro {
     return offset !== offset ? 0 : this.currentTick - offset; // guard against NaN
   }
 
+  resetPlans(): Maestro {
+    this.tabPlan && this.tabPlan.reset();
+    this.fretboardPlan && this.fretboardPlan.reset();
+    this.caretPlan && this.caretPlan.reset();
+    this.scrollPlan && this.scrollPlan.reset();
+
+
+    return this;
+  }
+
   conduct(): Maestro {
     this._executeTabPlan();
     this._executeFretboardPlan();

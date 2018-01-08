@@ -5,6 +5,14 @@ class ScrollPlan {
     currentLine: null
   };
 
+  reset(): ScrollPlan {
+    this.execution = {
+      currentLine: null
+    };
+
+    return this;
+  }
+
   execute(currentLine: Line): ScrollPlan {
     this.execution = {
       currentLine
