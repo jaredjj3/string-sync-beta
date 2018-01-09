@@ -48,14 +48,12 @@ class Tab {
   }
 
   updateNoteColors(prevNote: Note, currNote: Note): Tab {
-    if (prevNote !== currNote) {
-      if (prevNote) {
-        prevNote.renderer.setStyle('DEFAULT').redraw();
-      }
+    if (prevNote) {
+      prevNote.renderer.setStyle('DEFAULT').redraw();
+    }
 
-      if (currNote) {
-        currNote.renderer.setStyle('ACTIVE').redraw();
-      }
+    if (currNote) {
+      currNote.renderer.setStyle('ACTIVE').redraw();
     }
 
     return this;

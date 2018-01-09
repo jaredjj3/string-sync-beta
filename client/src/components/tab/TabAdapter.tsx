@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { compose, lifecycle, withProps, withHandlers } from 'recompose';
+import { compose, withState, lifecycle, withProps, withHandlers } from 'recompose';
 import { withNotation, withTab, withViewport, withSync } from 'enhancers';
 import { Tab } from 'services';
-import { elvis } from 'ssUtil';
 
 const enhance = compose(
   withNotation,
   withTab,
   withViewport,
   withSync,
+  withState('focusedNote', 'setFocusedNote', null),
   withProps(props => ({
     width: props.overrideWidth || props.viewport.state.width,
     vextabString: props.notation.state.vextabString
@@ -16,10 +16,13 @@ const enhance = compose(
   withHandlers({
     handleAnimationLoop: props => () => {
       const { snapshot } = props.sync.state.maestro;
-      const prevNote = elvis(snapshot.prev, 'data.note');
-      const currNote = snapshot.data.note;
+      const { note } = snapshot.data
+      const { focusedNote } = props;
       
-      props.tab.state.instance.updateNoteColors(prevNote, currNote);
+      if (note !== focusedNote) {
+        props.tab.state.instance.updateNoteColors(focusedNote, note);
+        props.setFocusedNote(note);
+      }
     }
   }),
   withProps(props => {
