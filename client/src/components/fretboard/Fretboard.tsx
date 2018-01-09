@@ -2,16 +2,16 @@ import * as React from 'react';
 import { compose, withProps, shouldUpdate } from 'recompose';
 import { Row, Col } from 'antd';
 import { FretboardManager, Frets, GuitarStrings } from './';
-import { withViewport } from 'enhancers';
+import { withViewport, withFretboard } from 'enhancers';
 import { Overlap, Layer } from 'components';
 import * as classNames from 'classnames';
 
 const enhance = compose(
   withViewport,
+  withFretboard,
   shouldUpdate((currProps, nextProps) => (
     currProps.viewport.state.type !== nextProps.viewport.state.type ||
-    currProps.fretboard.state.instance !== nextProps.fretboard.state.instance ||
-    currProps.loading !== nextProps.loading
+    currProps.fretboard.state.instance !== nextProps.fretboard.state.instance
   )),
   withProps(props => ({
     rootClassNames: classNames(
@@ -44,18 +44,24 @@ const FretboardIndicators = () => {
   );
 };
 
-const Fretboard = ({ loading, rootClassNames }) => (
+const Fretboard = ({ rootClassNames, fretboard }) => (
   <div className={rootClassNames}>
     <FretboardManager />
-    <FretboardIndicators />
-    <Overlap>
-      <Layer>
-        <Frets />
-      </Layer>
-      <Layer>
-        <GuitarStrings />
-      </Layer>
-    </Overlap>
+    {
+      fretboard.state.instance
+        ? <div className="Fretboard__afterFretboardServiceMount">
+            <FretboardIndicators />
+            <Overlap>
+              <Layer>
+                <Frets />
+              </Layer>
+              <Layer>
+                <GuitarStrings />
+              </Layer>
+            </Overlap>
+          </div>
+        : null
+    }
   </div>
 );
 

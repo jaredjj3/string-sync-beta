@@ -19,9 +19,7 @@ class Tab {
     this.vextabString = vextabString;
     this.width = width;
 
-    this.measuresPerLine = this._getMeasuresPerLine(width);
     this._setup();
-    this._createLines();
   }
 
   // GO BACK
@@ -63,12 +61,14 @@ class Tab {
 
   private _setup(): boolean {
     this.error = null;
+    this.measuresPerLine = this._getMeasuresPerLine(this.width);
 
     try {
       this.parser = new VextabParser(this.vextabString);
       const parsed = this.parser.parse();
       const chunks = this.parser.chunk();
       this._createMeasures(chunks);
+      this._createLines();
       return true;
     } catch (error) {
       this.error = error.message;
@@ -151,7 +151,7 @@ class Tab {
     return measureGroups;
   }
 
-  private _updateNoteTickStarts(): Tab {
+  private _setNoteTickStarts(): Tab {
     const totalTicks = new Fraction(0, 1);
 
     this.lines.forEach(line => {
@@ -181,7 +181,7 @@ class Tab {
     return this;
   }
 
-  private _updateNoteTickStops(): Tab {
+  private _setNoteTickStops(): Tab {
     this.lines.forEach(line => {
       line.measures.forEach(measure => {
         measure.notes.forEach(note => {

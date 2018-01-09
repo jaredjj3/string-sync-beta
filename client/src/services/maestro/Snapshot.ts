@@ -30,7 +30,7 @@ class Snapshot {
   }
 
   setData(data: SnapshotData): SnapshotData {
-    Object.assign({}, this.data, data);
+    this.data = Object.assign({}, this.data, data);
     this._snapshotAt = Date.now();
     Object.freeze(this.data);
     return this.data;
