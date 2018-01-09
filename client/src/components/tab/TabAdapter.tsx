@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose, withState, lifecycle, withProps, withHandlers } from 'recompose';
+import { compose, withState, mapProps, lifecycle, withProps, withHandlers } from 'recompose';
 import { withNotation, withTab, withViewport, withSync } from 'enhancers';
 import { Tab } from 'services';
 
@@ -8,37 +8,52 @@ const enhance = compose(
   withTab,
   withViewport,
   withSync,
+  mapProps(props => {
+    const { maestro, rafLoop } = props.sync.state;
+    const tab = props.tab.state.instance;
+    const { vextabString } = props.notation.state;
+    const width = props.overrideWidth || props.viewport.state.width;
+    const shouldCreateTab = (
+      !tab ||
+      tab.vextabString !== props.vextabString ||
+      tab.width !== width
+    );
+
+    return {
+      maestro,
+      rafLoop,
+      tab,
+      vextabString,
+      width,
+      shouldCreateTab,
+      isDynamic: props.isDynamic
+    };
+  }),
   withState('focusedNote', 'setFocusedNote', null),
-  withProps(props => ({
-    width: props.overrideWidth || props.viewport.state.width,
-    vextabString: props.notation.state.vextabString
-  })),
   withHandlers({
     handleAnimationLoop: props => () => {
-      const { snapshot } = props.sync.state.maestro;
-      const { note } = snapshot.data
+      const { note } = props.maestro.snapshot.data;
       const { focusedNote } = props;
       
       if (note !== focusedNote) {
-        props.tab.state.instance.updateNoteColors(focusedNote, note);
+        props.tab.updateNoteColors(focusedNote, note);
         props.setFocusedNote(note);
       }
     }
   }),
   withProps(props => {
-    const { rafLoop } = props.sync.state;
     const name = 'TabService.handleAnimationLoop';
 
     return ({
       registerRaf: () => {
-        rafLoop.register({
+        props.rafLoop.register({
           name,
           precedence: 4,
           onAnimationLoop: props.handleAnimationLoop
         });
       },
       unregisterRaf: () => {
-        rafLoop.unregister(name);
+        props.rafLoop.unregister(name);
       }
     });
   }),
@@ -46,18 +61,9 @@ const enhance = compose(
     componentWillReceiveProps(nextProps: any): void {
       nextProps.unregisterRaf();
 
-      const { maestro } = nextProps.sync.state;
-
-      const shouldCreateTab = (
-        !nextProps.tab.state.instance ||
-        !maestro.tab ||
-        maestro.tab.vextabString !== nextProps.vextabString ||
-        maestro.tab.width !== nextProps.width
-      );
-
-      if (shouldCreateTab) {
+      if (nextProps.shouldCreateTab) {
         const tab = new Tab(nextProps.vextabString, nextProps.width);
-        maestro.tab = tab;
+        nextProps.maestro.tab = tab;
         nextProps.tab.dispatch.setTab(tab);
       }
 
