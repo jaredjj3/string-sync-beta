@@ -25,30 +25,25 @@ const enhance = compose(
   }),
   lifecycle({
     componentDidUpdate(): void {
-    // GO BACK
-    //   const { line, canvas, parseError } = this.props;
+      const { line, canvas, parseError } = this.props;
 
-    //   if (!canvas) {
-    //     return;
-    //   }
+      if (!canvas) {
+        return;
+      }
 
-    //   const scoreLineRenderer = new ScoreLineRenderer(line, canvas, line.width, SCORE_LINE_HEIGHT_PX);
-    //   line.scoreLineRenderer = scoreLineRenderer;
+      const scoreLineRenderer = new ScoreLineRenderer(line, canvas, line.width, SCORE_LINE_HEIGHT_PX);
+      line.scoreLineRenderer = scoreLineRenderer;
 
-    //   // After rendering, the scoreLineRenderer should have an artist and will
-    //   // have a stave for linking
-    //   scoreLineRenderer.render();
-    //   line.linkVexInstances(scoreLineRenderer.artist.staves[0]);
+      // After rendering, the scoreLineRenderer should have an artist and will
+      // have a stave for linking
+      scoreLineRenderer.render();
+      line.linkVexInstances(scoreLineRenderer.artist.staves[0]);
 
-    //   // if this is the last ScoreLine rendered, setup the tabPlan to update the
-    //   // ticks
-    //   if (line.next === null && !parseError) {
-    //     const { maestro } = this.props;
-    //     maestro.resetPlans();
-    //     if (maestro.tabPlan) {
-    //       maestro.tabPlan.setup();
-    //     }
-    //   }
+      // if this is the last ScoreLine rendered, setup the tabPlan to update the
+      // ticks
+      if (line.next === null && !parseError) {
+        this.props.tab.state.instance.hydrateNotes();
+      }
     }
   })
 );

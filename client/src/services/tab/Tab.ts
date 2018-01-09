@@ -59,6 +59,11 @@ class Tab {
     return result || null;
   }
 
+  hydrateNotes(): void {
+    this._setNoteTickStarts();
+    this._setNoteTickStops();
+  }
+
   private _setup(): boolean {
     this.error = null;
     this.measuresPerLine = this._getMeasuresPerLine(this.width);
@@ -192,10 +197,10 @@ class Tab {
       });
     });
 
-    const lastNote = last(last(last(this.lines).measures).notes);
+    const lastNote = last(last(last(this.lines).measures).notes) as Note;
 
     if (lastNote) {
-      lastNote.tick.stop = Number.MAX_SAFE_INTEGER;
+      lastNote.tickRange.stop = Number.MAX_SAFE_INTEGER;
     }
 
     return this;

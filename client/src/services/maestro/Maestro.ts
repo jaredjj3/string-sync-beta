@@ -94,7 +94,7 @@ class Maestro {
           if (isBetween(tick, measureTickRange.start, measureTickRange.stop)) {
             measure = _measure;
             _measure.notes.forEach(_note => {
-              if (isBetween(tick, note.tickRange.start, note.tickRange.stop)) {
+              if (isBetween(tick, _note.tickRange.start, _note.tickRange.stop)) {
                 note = _note;
               }
             });
