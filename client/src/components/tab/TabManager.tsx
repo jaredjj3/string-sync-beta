@@ -47,6 +47,7 @@ const enhance = compose(
       const { maestro } = nextProps.sync.state;
 
       const shouldCreateTab = (
+        !nextProps.tab.state.instance ||
         !maestro.tab ||
         maestro.tab.vextabString !== nextProps.vextabString ||
         maestro.tab.width !== nextProps.width

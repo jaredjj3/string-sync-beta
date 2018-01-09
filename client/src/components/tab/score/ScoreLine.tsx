@@ -4,6 +4,7 @@ import { ScoreLineRenderer } from 'services';
 import { withTab, withSync } from 'enhancers';
 import { Caret } from './';
 import { Overlap, Layer } from 'components';
+import { elvis } from 'ssUtil';
 
 const SCORE_LINE_HEIGHT_PX = 260;
 
@@ -11,9 +12,8 @@ const enhance = compose(
   withTab,
   withSync,
   mapProps(props => ({
-    tab: props.tab,
+    tab: props.tab.state.instance,
     maestro: props.sync.state.maestro,
-    parseError: props.tab.state.instance && props.tab.state.instance.error,
     line: props.line,
     withCaret: props.withCaret
   })),
@@ -25,7 +25,7 @@ const enhance = compose(
   }),
   lifecycle({
     componentDidUpdate(): void {
-      const { line, canvas, parseError } = this.props;
+      const { line, canvas, tab } = this.props;
 
       if (!canvas) {
         return;
@@ -39,10 +39,9 @@ const enhance = compose(
       scoreLineRenderer.render();
       line.linkVexInstances(scoreLineRenderer.artist.staves[0]);
 
-      // if this is the last ScoreLine rendered, setup the tabPlan to update the
-      // ticks
-      if (line.next === null && !parseError) {
-        this.props.tab.state.instance.hydrateNotes();
+      // if this is the last ScoreLine rendered, populate the tickRanges on the tab
+      if (line.next === null && !tab.error) {
+        tab.hydrateNotes();
       }
     }
   })
