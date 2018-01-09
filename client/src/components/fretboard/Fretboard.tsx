@@ -1,17 +1,13 @@
 import * as React from 'react';
-import { compose, lifecycle, withState, withProps, withHandlers, shouldUpdate } from 'recompose';
+import { compose, withProps, shouldUpdate } from 'recompose';
 import { Row, Col } from 'antd';
-import { Frets, GuitarStrings } from './';
-import { withFretboard, withViewport, withSync, textWhileLoading } from 'enhancers';
-import { Fretboard as FretboardService } from 'services';
+import { FretboardManager, Frets, GuitarStrings } from './';
+import { withViewport } from 'enhancers';
 import { Overlap, Layer } from 'components';
 import * as classNames from 'classnames';
 
 const enhance = compose(
-  withFretboard,
   withViewport,
-  withSync,
-  withState('loading', 'setLoading', true),
   shouldUpdate((currProps, nextProps) => (
     currProps.viewport.state.type !== nextProps.viewport.state.type ||
     currProps.fretboard.state.instance !== nextProps.fretboard.state.instance ||
@@ -25,53 +21,7 @@ const enhance = compose(
         'Fretboard--desktop': props.viewport.state.type === 'DESKTOP'
       }
     ),
-  })),
-  withHandlers({
-    handleAnimationLoop: props => () => {
-      // GO BACK
-      // const fretboard = props.fretboard.state.instance;
-      // const { fretboardPlan } = props.sync.state.maestro;
-
-      // if (fretboard && fretboardPlan) {
-      //   fretboard.update(fretboardPlan.execution);
-      // }
-    }
-  }),
-  withProps(props => {
-    const { rafLoop } = props.sync.state;
-    const name = 'Fretboard.handleAnimationLoop';
-
-    return ({
-      registerRaf: () => {
-        rafLoop.register({
-          name,
-          precedence: 1,
-          onAnimationLoop: props.handleAnimationLoop
-        });
-      },
-      unregisterRaf: () => {
-        rafLoop.unregister(name);
-      }
-    });
-  }),
-  lifecycle({
-    componentDidMount(): void {
-      const fretboard = new FretboardService();
-      this.props.fretboard.dispatch.setFretboard(fretboard);
-      this.props.sync.state.maestro.fretboard = fretboard;
-
-      this.props.registerRaf();
-    },
-    componentWillReceiveProps(nextProps: any): void {
-      const loading = nextProps.fretboard.state.instance === null;
-      nextProps.setLoading(loading);
-    },
-    componentWillUnmount(): void {
-      this.props.fretboard.dispatch.resetFretboard();
-      this.props.sync.state.maestro.fretboardPlan = null;
-      this.props.unregisterRaf();
-    }
-  })
+  }))
 );
 
 const FretboardIndicators = () => {
@@ -94,28 +44,19 @@ const FretboardIndicators = () => {
   );
 };
 
-const Fretboard = ({ loading, rootClassNames }) => {
-  if (loading) {
-    return (
-      <div className={rootClassNames}>
-        Loading...
-      </div>
-    );
-  } else {
-    return (
-      <div className={rootClassNames}>
-        <FretboardIndicators />
-        <Overlap>
-          <Layer>
-            <Frets />
-          </Layer>
-          <Layer>
-            <GuitarStrings />
-          </Layer>
-        </Overlap>
-      </div>
-    );
-  }
-};
+const Fretboard = ({ loading, rootClassNames }) => (
+  <div className={rootClassNames}>
+    <FretboardManager />
+    <FretboardIndicators />
+    <Overlap>
+      <Layer>
+        <Frets />
+      </Layer>
+      <Layer>
+        <GuitarStrings />
+      </Layer>
+    </Overlap>
+  </div>
+);
 
 export default enhance(Fretboard);
