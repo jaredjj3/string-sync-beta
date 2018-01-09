@@ -8,7 +8,9 @@ const enhance = compose(
   withSync,
   withHandlers({
     handleAnimationLoop: props => () => {
-
+      const { data } = props.sync.state.maestro.snapshot;
+      const { light, press } = data;
+      props.fretboard.state.instance.update(light, press);
     }
   }),
   withProps(props => {

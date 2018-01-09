@@ -115,8 +115,9 @@ class Maestro {
     let press = null;
 
     if (note) {
+      press = note.getGuitarPos();
       light = flatMap(note.measure.notes, note => note.getGuitarPos());
-      press = uniqWith(light, isEqual);
+      light = uniqWith(light, isEqual);
     }
 
     return {
