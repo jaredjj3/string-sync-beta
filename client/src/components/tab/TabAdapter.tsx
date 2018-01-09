@@ -11,6 +11,7 @@ const enhance = compose(
   mapProps(props => {
     const { maestro, rafLoop } = props.sync.state;
     const tab = props.tab.state.instance;
+    const { setTab, resetTab } = props.tab.dispatch;
     const { vextabString } = props.notation.state;
     const width = props.overrideWidth || props.viewport.state.width;
     const shouldCreateTab = (
@@ -26,6 +27,8 @@ const enhance = compose(
       vextabString,
       width,
       shouldCreateTab,
+      setTab,
+      resetTab,
       isDynamic: props.isDynamic
     };
   }),
@@ -64,7 +67,7 @@ const enhance = compose(
       if (nextProps.shouldCreateTab) {
         const tab = new Tab(nextProps.vextabString, nextProps.width);
         nextProps.maestro.tab = tab;
-        nextProps.tab.dispatch.setTab(tab);
+        nextProps.setTab(tab);
       }
 
       if (nextProps.isDynamic) {
@@ -73,8 +76,8 @@ const enhance = compose(
     },
     componentWillUnmount(): void {
       this.props.unregisterRaf();
-      this.props.sync.state.maestro.tab = null;
-      this.props.tab.dispatch.resetTab();
+      this.props.maestro.tab = null;
+      this.props.resetTab();
     }
   })
 );
