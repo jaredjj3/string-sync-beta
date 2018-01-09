@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, withProps, shouldUpdate } from 'recompose';
 import { Row, Col } from 'antd';
-import { FretboardManager, Frets, GuitarStrings } from './';
+import { FretboardAdapter, Frets, GuitarStrings } from './';
 import { withViewport, withFretboard } from 'enhancers';
 import { Overlap, Layer } from 'components';
 import * as classNames from 'classnames';
@@ -21,6 +21,7 @@ const enhance = compose(
         'Fretboard--desktop': props.viewport.state.type === 'DESKTOP'
       }
     ),
+    shouldRenderFretboard: !!props.fretboard.state.instance
   }))
 );
 
@@ -44,11 +45,11 @@ const FretboardIndicators = () => {
   );
 };
 
-const Fretboard = ({ rootClassNames, fretboard }) => (
+const Fretboard = ({ rootClassNames, shouldRenderFretboard }) => (
   <div className={rootClassNames}>
-    <FretboardManager />
+    <FretboardAdapter />
     {
-      fretboard.state.instance
+      shouldRenderFretboard
         ? <div className="Fretboard__afterFretboardServiceMount">
             <FretboardIndicators />
             <Overlap>

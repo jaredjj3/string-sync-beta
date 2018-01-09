@@ -2,7 +2,7 @@ import * as React from 'react';
 import { compose, withProps, shouldUpdate } from 'recompose';
 import * as classNames from 'classnames';
 import { withTab } from 'enhancers';
-import { ScoreLine, CaretManager, ScrollManager } from './';
+import { ScoreLine, CaretAdapter, ScrollManager } from './';
 import { Line } from 'services';
 import { hash } from 'ssUtil';
 
@@ -45,7 +45,7 @@ const Score = ({ rootClassNames, tab, withCaret }) => (
       tab={tab.state.instance}
       withCaret={withCaret}
     />
-    {withCaret ? <CaretManager /> : null}
+    {withCaret ? <CaretAdapter /> : null}
     <ScrollManager /> {/* rendering order matters! */}
   </div>
 );

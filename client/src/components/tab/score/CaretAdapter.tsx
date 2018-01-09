@@ -44,6 +44,6 @@ const enhance = compose(
   })
 );
 
-const CaretManager = () => null;
+const CaretAdapter = () => null;
 
-export default enhance(CaretManager);
+export default enhance(CaretAdapter);

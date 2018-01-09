@@ -1,3 +1,3 @@
 export * from './score';
-export { default as TabManager } from './TabManager';
+export { default as TabAdapter } from './TabAdapter';
 export { default as Tab } from './Tab';
