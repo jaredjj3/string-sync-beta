@@ -22,23 +22,6 @@ class Tab {
     this._setup();
   }
 
-  // GO BACK
-  update(): Tab {
-    // if (this.lastExecution !== execution) {
-    //   if (this.lastExecution.currentNote) {
-    //     this.lastExecution.currentNote.renderer.setStyle('DEFAULT').redraw();
-    //   }
-
-    //   if (execution.currentNote) {
-    //     execution.currentNote.renderer.setStyle('ACTIVE').redraw();
-    //   }
-
-    //   this.lastExecution = execution;
-    // }
-
-    return this;
-  }
-
   select(line?: number, measure?: number, note?: number): Line | Measure | Note {
     const l = typeof line === 'number';
     const m = typeof measure === 'number';
@@ -62,6 +45,20 @@ class Tab {
   hydrateNotes(): void {
     this._setNoteTickStarts();
     this._setNoteTickStops();
+  }
+
+  updateNoteColors(prevNote: Note, currNote: Note): Tab {
+    if (prevNote !== currNote) {
+      if (prevNote) {
+        prevNote.renderer.setStyle('DEFAULT').redraw();
+      }
+
+      if (currNote) {
+        currNote.renderer.setStyle('ACTIVE').redraw();
+      }
+    }
+
+    return this;
   }
 
   private _setup(): boolean {

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { compose, lifecycle, withProps, withHandlers } from 'recompose';
 import { withNotation, withTab, withViewport, withSync } from 'enhancers';
 import { Tab } from 'services';
+import { elvis } from 'ssUtil';
 
 const enhance = compose(
   withNotation,
@@ -14,13 +15,11 @@ const enhance = compose(
   })),
   withHandlers({
     handleAnimationLoop: props => () => {
-      // GO BACK
-      // const tab = props.tab.state.instance;
-      // const { tabPlan } = props.sync.state.maestro;
-
-      // if (tab && tabPlan) {
-      //   tab.update(tabPlan.execution);
-      // }
+      const { snapshot } = props.sync.state.maestro;
+      const prevNote = elvis(snapshot.prev, 'data.note');
+      const currNote = snapshot.data.note;
+      
+      props.tab.state.instance.updateNoteColors(prevNote, currNote);
     }
   }),
   withProps(props => {
