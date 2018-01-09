@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose, withHandlers, lifecycle, shouldUpdate } from 'recompose';
+import { compose, mapProps, withHandlers, lifecycle, shouldUpdate } from 'recompose';
 import { withVideo, withNotation } from 'enhancers';
 import Youtube from 'react-youtube';
 
@@ -29,8 +29,12 @@ const youtubeOptions = {
 const enhance = compose(
   withVideo,
   withNotation,
+  mapProps(props => ({
+    youtubeVideoId: props.notation.state.youtubeVideoId,
+    video: props.video
+  })),
   shouldUpdate((currProps, nextProps) => (
-    currProps.notation.state.youtubeVideoId !== nextProps.notation.state.youtubeVideoId
+    currProps.youtubeVideoId !== nextProps.youtubeVideoId
   )),
   withHandlers({
     handleReady: props => event => {
@@ -47,12 +51,12 @@ const enhance = compose(
   })
 );
 
-const Video = ({ video, notation, handleReady, handleStateChange }) => (
+const Video = ({ video, youtubeVideoId, handleReady, handleStateChange }) => (
   <div className="Video">
     <Youtube
       className="Video__youtubePlayer"
       opts={youtubeOptions}
-      videoId={notation.state.youtubeVideoId}
+      videoId={youtubeVideoId}
       onReady={handleReady}
       onStateChange={handleStateChange}
     />
