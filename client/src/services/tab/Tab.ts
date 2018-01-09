@@ -1,9 +1,10 @@
-import Line from './Line';
-import Measure from './Measure';
-import Note from './Note';
+import { Line, Measure, Note } from './';
 import { VextabParser } from './parser';
 import { last } from 'lodash';
 import { isBetween } from 'ssUtil';
+import { Flow } from 'vexflow';
+
+const { Fraction } = Flow;
 
 class Tab {
   measures: Array<Measure> = [];
@@ -13,11 +14,6 @@ class Tab {
   measuresPerLine: number = 0;
   error: string = null;
   width: number = 0;
-  lastExecution: PlanExecutions.Tab = {
-    currentLine: null,
-    currentMeasure: null,
-    currentNote: null
-  };
 
   constructor(vextabString: string, width: number) {
     this.vextabString = vextabString;
@@ -28,18 +24,19 @@ class Tab {
     this._createLines();
   }
 
-  update(execution: PlanExecutions.Tab): Tab {
-    if (this.lastExecution !== execution) {
-      if (this.lastExecution.currentNote) {
-        this.lastExecution.currentNote.renderer.setStyle('DEFAULT').redraw();
-      }
+  // GO BACK
+  update(): Tab {
+    // if (this.lastExecution !== execution) {
+    //   if (this.lastExecution.currentNote) {
+    //     this.lastExecution.currentNote.renderer.setStyle('DEFAULT').redraw();
+    //   }
 
-      if (execution.currentNote) {
-        execution.currentNote.renderer.setStyle('ACTIVE').redraw();
-      }
+    //   if (execution.currentNote) {
+    //     execution.currentNote.renderer.setStyle('ACTIVE').redraw();
+    //   }
 
-      this.lastExecution = execution;
-    }
+    //   this.lastExecution = execution;
+    // }
 
     return this;
   }
@@ -152,6 +149,56 @@ class Tab {
     });
 
     return measureGroups;
+  }
+
+  private _updateNoteTickStarts(): Tab {
+    const totalTicks = new Fraction(0, 1);
+
+    this.lines.forEach(line => {
+      const maxTick = new Fraction(0, 1);
+
+      line.measures.forEach(measure => {
+        const totalMeasureTicks = new Fraction(0, 1);
+
+        measure.notes.forEach(note => {
+          const absTick = totalTicks.clone();
+          note.tickRange.start = absTick.add(totalMeasureTicks).simplify().value();
+
+          if (note.getType() === 'note') {
+            const noteTicks = note.getTicks();
+            totalMeasureTicks.add(noteTicks.numerator, noteTicks.denominator);
+          }
+        });
+
+        if (totalMeasureTicks.value() > maxTick.value()) {
+          maxTick.copy(totalMeasureTicks);
+        }
+
+        totalTicks.add(maxTick);
+      });
+    });
+
+    return this;
+  }
+
+  private _updateNoteTickStops(): Tab {
+    this.lines.forEach(line => {
+      line.measures.forEach(measure => {
+        measure.notes.forEach(note => {
+          if (note.next) {
+            note.tickRange.stop = note.next.tickRange.start;
+          }
+        });
+      });
+    });
+
+    const lastNote = last(last(last(this.lines).measures).notes);
+
+    if (lastNote) {
+      lastNote.tick.stop = Number.MAX_SAFE_INTEGER;
+    }
+
+    return this;
   }
 }
 

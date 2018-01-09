@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { compose, withState, withProps, withHandlers, lifecycle } from 'recompose';
 import { withSync } from 'enhancers';
-import { ScrollPlan } from 'services';
 import { currentId } from 'async_hooks';
 
 const SCORE_HEIGHT_PX = 260;
@@ -16,15 +15,16 @@ const enhance = compose(
   })),
   withHandlers({
     handleAnimationLoop: props => () => {
-      const { scrollPlan } = props.sync.state.maestro;
+      // GO BACK
+      // const { scrollPlan } = props.sync.state.maestro;
 
-      if (scrollPlan) {
-        const { currentLine } = scrollPlan.execution;
-        if (currentLine && currentLine.number !== props.focusedLineNumber) {
-          window.$('#Score').scrollTop(currentLine.number * SCORE_HEIGHT_PX);
-          props.setFocusedLineNumber(currentLine.number);
-        }
-      }
+      // if (scrollPlan) {
+      //   const { currentLine } = scrollPlan.execution;
+      //   if (currentLine && currentLine.number !== props.focusedLineNumber) {
+      //     window.$('#Score').scrollTop(currentLine.number * SCORE_HEIGHT_PX);
+      //     props.setFocusedLineNumber(currentLine.number);
+      //   }
+      // }
     }
   }),
   withProps(props => {
@@ -47,11 +47,9 @@ const enhance = compose(
   lifecycle({
     componentDidMount(): void {
       this.props.registerRaf();
-      this.props.sync.state.maestro.scrollPlan = new ScrollPlan();
     },
     componentWillUnmount(): void {
       this.props.unregisterRaf();
-      this.props.sync.state.maestro.scrollPlan = null;
     }
   })
 );

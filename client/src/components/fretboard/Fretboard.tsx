@@ -3,7 +3,7 @@ import { compose, lifecycle, withState, withProps, withHandlers, shouldUpdate } 
 import { Row, Col } from 'antd';
 import { Frets, GuitarStrings } from './';
 import { withFretboard, withViewport, withSync, textWhileLoading } from 'enhancers';
-import { Fretboard as FretboardService, FretboardPlan } from 'services';
+import { Fretboard as FretboardService } from 'services';
 import { Overlap, Layer } from 'components';
 import * as classNames from 'classnames';
 
@@ -28,12 +28,13 @@ const enhance = compose(
   })),
   withHandlers({
     handleAnimationLoop: props => () => {
-      const fretboard = props.fretboard.state.instance;
-      const { fretboardPlan } = props.sync.state.maestro;
+      // GO BACK
+      // const fretboard = props.fretboard.state.instance;
+      // const { fretboardPlan } = props.sync.state.maestro;
 
-      if (fretboard && fretboardPlan) {
-        fretboard.update(fretboardPlan.execution);
-      }
+      // if (fretboard && fretboardPlan) {
+      //   fretboard.update(fretboardPlan.execution);
+      // }
     }
   }),
   withProps(props => {
@@ -57,9 +58,7 @@ const enhance = compose(
     componentDidMount(): void {
       const fretboard = new FretboardService();
       this.props.fretboard.dispatch.setFretboard(fretboard);
-
-      const fretboardPlan = new FretboardPlan(fretboard);
-      this.props.sync.state.maestro.fretboardPlan = fretboardPlan;
+      this.props.sync.state.maestro.fretboard = fretboard;
 
       this.props.registerRaf();
     },

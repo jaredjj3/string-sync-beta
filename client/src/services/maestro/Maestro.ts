@@ -1,7 +1,8 @@
 import { Flow } from 'vexflow';
-import { toTick } from 'ssUtil';
-import { values } from 'lodash';
-import { FretboardPlan, TabPlan, CaretPlan, ScrollPlan } from './';
+import { elvis, toTick, isBetween, interpolator } from 'ssUtil';
+import { Snapshot } from './';
+import { flatMap, uniqWith, isEqual } from 'lodash';
+import { Tab, Fretboard, Note } from 'services';
 
 // The purpose of this service is to coordinate a video player's state (i.e. isActive and
 // current time states) with DOM elements or other services. Its role is distinct from the
@@ -9,22 +10,19 @@ import { FretboardPlan, TabPlan, CaretPlan, ScrollPlan } from './';
 // of a video player's state. It is up to the caller to update the maestro's currentTime
 // attribute. Maestro will apply the deadTimeMs to the currentTimeMs when executing each
 // plan in the plans object.
-//
-// Another way to think of this class's role is to consider the conduct() function. It takes
-// the plans in the plans object, executes each one, and possible pipe the execution of one
-// plan to another. The purpose of the plans are to provide plan executions, which can
-// be consumed to update the DOM.
 class Maestro {
-  fretboardPlan: FretboardPlan = null;
-  tabPlan: TabPlan = null;
-  caretPlan: CaretPlan = null;
-  scrollPlan: ScrollPlan = null;
+  tab: Tab = null;
+  fretboard: Fretboard = null;
 
+  currentTimeMs: number = 0;
   bpm: number = 0;
   deadTimeMs: number = 0;
 
-  isMediaActive: boolean = false;
-  currentTimeMs: number = 0;
+  private _snapshot: Snapshot = new Snapshot();
+
+  get snapshot(): Snapshot {
+    return this._snapshot;
+  }
 
   get tpm(): number {
     return this.bpm * (Flow.RESOLUTION / 4);
@@ -44,77 +42,111 @@ class Maestro {
     return offset !== offset ? 0 : this.currentTick - offset; // guard against NaN
   }
 
-  resetPlans(): Maestro {
-    this.tabPlan && this.tabPlan.reset();
-    this.fretboardPlan && this.fretboardPlan.reset();
-    this.caretPlan && this.caretPlan.reset();
-    this.scrollPlan && this.scrollPlan.reset();
-
-
-    return this;
-  }
-
-  conduct(): Maestro {
-    this._executeTabPlan();
-    this._executeFretboardPlan();
-    this._executeCaretPlan();
-    this._executeScrollPlan();
-
-    return this;
-  }
-
-  private _executeTabPlan(): boolean {
-    const shouldExecute = (
-      this.tabPlan &&
-      this.tabPlan.tab &&
-      !this.tabPlan.tab.error
-    )
-
-    if (shouldExecute) {
-      this.tabPlan.execute(this.offsetTick);
+  update(): Snapshot {
+    if (this._shouldUpdate()) {
+      const snapshot = new Snapshot(this._snapshot);
+      const data = this._getSnapshotData();
+      snapshot.setData(data);
+      this._snapshot = snapshot;
     }
 
-    return !!this.tabPlan;
+    return this.snapshot;
   }
 
-  private _executeFretboardPlan(): boolean {
-    const shouldExecute = (
-      this.tabPlan &&
-      this.tabPlan.execution &&
-      this.fretboardPlan
+  private _shouldUpdate(): boolean {
+    return Boolean(
+      this.tab &&
+      this.fretboard &&
+      this.bpm > 0
     );
-
-    if (shouldExecute) {
-      const { currentNote } = this.tabPlan.execution;
-      this.fretboardPlan.execute(currentNote);
-    }
-
-    return !!shouldExecute;
   }
 
-  private _executeCaretPlan(): boolean {
-    const shouldExecute = (
-      this.caretPlan &&
-      this.tabPlan &&
-      this.tabPlan.execution.currentNote &&
-      this.tabPlan.execution.currentLine
-    );
+  private _getSnapshotData(): SnapshotData {
+    const tick = this.offsetTick;
+    const timeMs = this.offsetTimeMs;
+    const { line, measure, note } = this._getCurrentTabElements(tick);
+    const { light, press } = this._getGuitarPositionsByState(note);
+    const interpolator = this._getInterpolator(note);
 
-    if (shouldExecute) {
-      const { currentNote, currentLine } = this.tabPlan.execution;
-      this.caretPlan.execute(this.offsetTick, currentNote, currentLine);
+    return {
+      tick,
+      timeMs,
+      line,
+      measure,
+      note,
+      light,
+      press,
+      interpolator
     }
-
-    return !!shouldExecute;
   }
 
-  private _executeScrollPlan(): boolean {
-    if (this.scrollPlan && this.tabPlan && this.tabPlan.execution) {
-      this.scrollPlan.execute(this.tabPlan.execution.currentLine);
+  private _getCurrentTabElements(tick: number): any {
+    let line = null;
+    let measure = null;
+    let note = null;
+
+    this.tab.lines.forEach(_line => {
+      const lineTickRange = _line.getTickRange();
+      if (isBetween(tick, lineTickRange.start, lineTickRange.stop)) {
+        line = _line;
+        _line.measures.forEach(_measure => {
+          const measureTickRange = _measure.getTickRange();
+          if (isBetween(tick, measureTickRange.start, measureTickRange.stop)) {
+            measure = _measure;
+            _measure.notes.forEach(_note => {
+              if (isBetween(tick, note.tickRange.start, note.tickRange.stop)) {
+                note = _note;
+              }
+            });
+          }
+        });
+      }
+    });
+
+    return {
+      line,
+      measure,
+      note
+    }
+  }
+
+  private _getGuitarPositionsByState(note: Note): any {
+    let light = null;
+    let press = null;
+
+    if (note) {
+      light = flatMap(note.measure.notes, note => note.getGuitarPos());
+      press = uniqWith(light, isEqual);
     }
 
-    return !!this.scrollPlan;
+    return {
+      light,
+      press
+    }
+  }
+
+  private _getInterpolator(note: Note): any {
+    if (!note) {
+      return interpolator({ x: 0, y: 0 }, { x: 0, y: 0 });
+    }
+
+    const posRange = note.getPosXRange();
+    const { tickRange } = note;
+
+    const point1 = {
+      x: tickRange.start,
+      y: posRange.start
+    };
+
+    const point2 = {
+      x: tickRange.stop,
+      y: posRange.start > posRange.stop ? note.staveNote.stave.width : posRange.stop
+    };
+
+    return interpolator(point1, point2);
   }
 }
 
-export default Maestro;
+const instance = new Maestro();
+
+export default instance;

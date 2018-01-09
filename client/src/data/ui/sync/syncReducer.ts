@@ -1,14 +1,14 @@
 import { RESET_SYNC } from './syncConstants';
-import { rafLoop, Maestro } from 'services';
+import { rafLoop, maestro } from 'services';
 
 const getDefaultState = (): Store.Sync => ({
   rafLoop: rafLoop,
-  maestro: new Maestro()
+  maestro: maestro
 });
 
 const defaultState: Store.Sync = Object.freeze(getDefaultState());
 
-const rafReducer = (state = defaultState, action): Store.Sync => {
+const syncReducer = (state = defaultState, action): Store.Sync => {
   Object.freeze(state);
   const nextState = Object.assign({}, state);
 
@@ -21,4 +21,4 @@ const rafReducer = (state = defaultState, action): Store.Sync => {
   }
 };
 
-export default rafReducer;
+export default syncReducer;

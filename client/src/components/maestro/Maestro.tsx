@@ -16,10 +16,9 @@ const enhance = compose(
 
       if (player && isActive) {
         maestro.currentTimeMs = player.getCurrentTime() * 1000;
-        maestro.isMediaActive = isActive;
       }
 
-      maestro.conduct();
+      maestro.update();
     }
   }),
   withProps(props => {

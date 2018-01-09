@@ -46,7 +46,7 @@ const enhance = compose (
       const nextTimeMs = (value / 100) * durationMs;
 
       maestro.currentTimeMs = nextTimeMs;
-      maestro.conduct();
+      maestro.update();
 
       videoPlayer.seekTo(nextTimeMs / 1000, true);
       props.setValue(value);

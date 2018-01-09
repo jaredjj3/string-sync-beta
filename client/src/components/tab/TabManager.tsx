@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, lifecycle, withProps, withHandlers } from 'recompose';
 import { withNotation, withTab, withViewport, withSync } from 'enhancers';
-import { Tab, TabPlan } from 'services';
+import { Tab } from 'services';
 
 const enhance = compose(
   withNotation,
@@ -14,12 +14,13 @@ const enhance = compose(
   })),
   withHandlers({
     handleAnimationLoop: props => () => {
-      const tab = props.tab.state.instance;
-      const { tabPlan } = props.sync.state.maestro;
+      // GO BACK
+      // const tab = props.tab.state.instance;
+      // const { tabPlan } = props.sync.state.maestro;
 
-      if (tab && tabPlan) {
-        tab.update(tabPlan.execution);
-      }
+      // if (tab && tabPlan) {
+      //   tab.update(tabPlan.execution);
+      // }
     }
   }),
   withProps(props => {
@@ -43,16 +44,18 @@ const enhance = compose(
     componentWillReceiveProps(nextProps: any): void {
       nextProps.unregisterRaf();
 
+      const { maestro } = nextProps.sync.state;
+
       const shouldCreateTab = (
-        this.props.vextabString !== nextProps.vextabString ||
-        this.props.width !== nextProps.width ||
-        !nextProps.sync.state.maestro.tabPlan
+        !maestro.tab ||
+        maestro.tab.vextabString !== nextProps.vextabString ||
+        maestro.tab.width !== nextProps.width
       );
 
       if (shouldCreateTab) {
         const tab = new Tab(nextProps.vextabString, nextProps.width);
+        maestro.tab = tab;
         nextProps.tab.dispatch.setTab(tab);
-        nextProps.sync.state.maestro.tabPlan = new TabPlan(tab);
       }
 
       if (nextProps.isDynamic) {
@@ -61,7 +64,6 @@ const enhance = compose(
     },
     componentWillUnmount(): void {
       this.props.unregisterRaf();
-      this.props.sync.state.maestro.tabPlan = null;
       this.props.tab.dispatch.resetTab();
     }
   })

@@ -50,8 +50,8 @@ class Measure {
     const stopNote = this.select(this.notes.length - 1);
 
     return {
-      start: startNote ? startNote.tick.start : 0,
-      stop: stopNote ? stopNote.tick.stop : 0
+      start: startNote ? startNote.tickRange.start : 0,
+      stop: stopNote ? stopNote.tickRange.stop : 0
     };
   }
 }

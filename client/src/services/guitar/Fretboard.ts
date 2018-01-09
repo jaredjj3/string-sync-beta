@@ -25,32 +25,33 @@ class Fretboard {
   lit: Set<FretboardComponent> = new Set();
   pressed: Set<FretboardComponent> = new Set();
 
-  update(execution: PlanExecutions.Fretboard): Fretboard {
-    const lightComps = this.mapComponents(execution.lightPos);
-    const pressComps = this.mapComponents(execution.pressPos);
+  update(): Fretboard {
+    // GO BACK
+    // const lightComps = this.mapComponents(execution.lightPos);
+    // const pressComps = this.mapComponents(execution.pressPos);
 
-    const lit = new Set();
-    const pressed = new Set();
+    // const lit = new Set();
+    // const pressed = new Set();
 
-    lightComps.forEach(comp => {
-      comp.light();
-      lit.add(comp);
-    });
+    // lightComps.forEach(comp => {
+    //   comp.light();
+    //   lit.add(comp);
+    // });
 
-    pressComps.forEach(comp => {
-      comp.press();
-      pressed.add(comp);
-    });
+    // pressComps.forEach(comp => {
+    //   comp.press();
+    //   pressed.add(comp);
+    // });
 
-    // Unlight the components not newly pressed nor lit.
-    const shouldUnlight = Array.from(this.lit).filter(comp => !lit.has(comp));
-    const shouldUnpress = Array.from(this.pressed).filter(comp => !pressed.has(comp));
+    // // Unlight the components not newly pressed nor lit.
+    // const shouldUnlight = Array.from(this.lit).filter(comp => !lit.has(comp));
+    // const shouldUnpress = Array.from(this.pressed).filter(comp => !pressed.has(comp));
 
-    shouldUnlight.forEach(comp => comp.unlight());
-    shouldUnpress.forEach(comp => comp.unpress());
+    // shouldUnlight.forEach(comp => comp.unlight());
+    // shouldUnpress.forEach(comp => comp.unpress());
 
-    this.lit = lit;
-    this.pressed = pressed;
+    // this.lit = lit;
+    // this.pressed = pressed;
 
     return this;
   }

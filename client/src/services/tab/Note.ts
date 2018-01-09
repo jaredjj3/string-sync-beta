@@ -9,7 +9,8 @@ class Note {
   staveNote: any = null;
   measure: Measure = null;
   renderer: NoteRenderer = null;
-  tick: NumRange = {
+
+  tickRange: NumRange = {
     start: 0,
     stop: 0
   };
