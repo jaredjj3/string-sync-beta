@@ -1,31 +1,20 @@
 import * as React from 'react';
 import { compose, withState, withProps, withHandlers, lifecycle } from 'recompose';
 import { withSync } from 'enhancers';
+import { elvis } from 'ssUtil';
 
 const enhance = compose(
   withSync,
   withHandlers({
     handleAnimationLoop: props => () => {
-      if (props.lastExecution) {
-        const { caretRenderer } = props.lastExecution;
-        if (caretRenderer) {
-          caretRenderer.clear();
-          caretRenderer.posX = 0;
-        }
+      const { snapshot } = props.sync.state.maestro;
+      const caretRenderer = elvis(snapshot.data.line, 'caretRenderer');
+
+      if (caretRenderer) {
+        const { interpolator, tick } = snapshot.data;
+        caretRenderer.posX = interpolator(tick);
+        caretRenderer.render();
       }
-
-      const { maestro } = props.sync.state;
-      // GO BACK
-      // if (maestro.caretPlan) {
-      //   const { execution } = maestro.caretPlan;
-
-      //   if (execution && execution.caretRenderer) {
-      //     execution.caretRenderer.posX = execution.interpolator(maestro.offsetTick);
-      //     execution.caretRenderer.render();
-      //   }
-
-      //   props.setLastExecution(execution);
-      // }
     }
   }),
   withProps(props => {

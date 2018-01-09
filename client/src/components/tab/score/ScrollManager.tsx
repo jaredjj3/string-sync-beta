@@ -2,6 +2,7 @@ import * as React from 'react';
 import { compose, withState, withProps, withHandlers, lifecycle } from 'recompose';
 import { withSync } from 'enhancers';
 import { currentId } from 'async_hooks';
+import { elvis } from 'ssUtil';
 
 const SCORE_HEIGHT_PX = 260;
 
@@ -15,16 +16,12 @@ const enhance = compose(
   })),
   withHandlers({
     handleAnimationLoop: props => () => {
-      // GO BACK
-      // const { scrollPlan } = props.sync.state.maestro;
+      const currentLineNumber = elvis(props.sync.state.maestro.snapshot.data.line, 'number');
 
-      // if (scrollPlan) {
-      //   const { currentLine } = scrollPlan.execution;
-      //   if (currentLine && currentLine.number !== props.focusedLineNumber) {
-      //     window.$('#Score').scrollTop(currentLine.number * SCORE_HEIGHT_PX);
-      //     props.setFocusedLineNumber(currentLine.number);
-      //   }
-      // }
+      if (typeof currentLineNumber === 'number' && (currentLineNumber !== props.focusedLineNumber)) {
+        window.$('#Score').scrollTop(currentLineNumber * SCORE_HEIGHT_PX);
+        props.setFocusedLineNumber(currentLineNumber);
+      }
     }
   }),
   withProps(props => {
