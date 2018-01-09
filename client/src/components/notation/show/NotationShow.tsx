@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, withState, withProps, lifecycle } from 'recompose';
 import { withNotation } from 'enhancers';
-import { Gradient, Video, Tab, Fretboard, Maestro } from 'components';
+import { Gradient, Video, Tab, Fretboard, MaestroAdapter } from 'components';
 import { NotationShowBanner } from './';
 import { NotationControls } from 'components';
 import { toTick, toTimeMs } from 'ssUtil';
@@ -40,7 +40,7 @@ const enhance = compose(
 const NotationShow = ({ isFetching, notation }) => (
   <div className="NotationShow">
     <Gradient />
-    <Maestro />
+    <MaestroAdapter />
     <NotationShowBanner
       isFetching={isFetching}
       songName={notation.state.songName}

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose, withProps, lifecycle } from 'recompose';
-import { Gradient, Maestro, Video, Nav, Fretboard, Tab } from 'components';
+import { Gradient, MaestroAdapter, Video, Nav, Fretboard, Tab } from 'components';
 import { withNotation } from 'enhancers';
 import { NotationEditor } from './';
 
@@ -19,7 +19,7 @@ const NotationEdit = () => (
   <div className="NotationEdit">
     <Gradient />
     <Nav />
-    <Maestro />
+    <MaestroAdapter />
     <Video />
     <Fretboard />
     <NotationEditor />
