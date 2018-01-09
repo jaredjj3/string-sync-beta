@@ -1,10 +1,14 @@
 import * as React from 'react';
-import { compose, withState, withProps, lifecycle } from 'recompose';
+import { compose, mapProps, withState, withProps, lifecycle } from 'recompose';
 import { withFretboard } from 'enhancers';
 import * as classNames from 'classnames';
 
 const enhance = compose(
   withFretboard,
+  mapProps(props => ({
+    fretboard: props.fretboard.state.instance,
+    string: props.string
+  })),
   withState('lit', 'setLit', false),
   withState('pressed', 'setPressed', false),
   withProps(props => ({
@@ -21,21 +25,20 @@ const enhance = compose(
   })),
   lifecycle({
     componentDidMount(): void {
-      const { fretboard, string, fret } = this.props;
-      fretboard.state.instance.addGuitarString(string, this.props);
+      const { fretboard, string } = this.props;
+      fretboard.addGuitarString(string, this.props);
     },
     componentWillReceiveProps(nextProps: any): void {
-      const { fretboard, string, fret } = nextProps;
-      const fretboardService = fretboard.state.instance;
-      const guitarString = fretboardService.selectGuitarString(string);
+      const { fretboard, string } = nextProps;
+      const guitarString = fretboard.selectGuitarString(string);
 
       if (guitarString === null) {
-        fretboardService.addGuitarString(string, this.props);
+        fretboard.addGuitarString(string, this.props);
       }
     },
     componentWillUnmount(): void {
-      const { fretboard, string, fret } = this.props;
-      fretboard.state.instance.removeGuitarString(string, this.props);
+      const { fretboard, string } = this.props;
+      fretboard.removeGuitarString(string, this.props);
     }
   })
 );

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose, withProps, shouldUpdate } from 'recompose';
+import { compose, mapProps, withProps, shouldUpdate } from 'recompose';
 import { Row, Col } from 'antd';
 import { FretboardAdapter, Frets, GuitarStrings } from './';
 import { withViewport, withFretboard } from 'enhancers';
@@ -9,19 +9,27 @@ import * as classNames from 'classnames';
 const enhance = compose(
   withViewport,
   withFretboard,
+  mapProps(props => {
+    const viewportType = props.viewport.state.type;
+    const fretboard = props.fretboard.state.instance;
+
+    return {
+      viewportType,
+      fretboard
+    }
+  }),
   shouldUpdate((currProps, nextProps) => (
-    currProps.viewport.state.type !== nextProps.viewport.state.type ||
-    currProps.fretboard.state.instance !== nextProps.fretboard.state.instance
+    currProps.viewportType !== nextProps.viewportType ||
+    currProps.fretboard !== nextProps.fretboard
   )),
   withProps(props => ({
     rootClassNames: classNames(
       'Fretboard',
       {
-        'Fretboard--mobile': props.viewport.state.type === 'MOBILE',
-        'Fretboard--desktop': props.viewport.state.type === 'DESKTOP'
+        'Fretboard--mobile': props.viewportType === 'MOBILE',
+        'Fretboard--desktop': props.viewportType === 'DESKTOP'
       }
-    ),
-    shouldRenderFretboard: !!props.fretboard.state.instance
+    )
   }))
 );
 
@@ -45,11 +53,11 @@ const FretboardIndicators = () => {
   );
 };
 
-const Fretboard = ({ rootClassNames, shouldRenderFretboard }) => (
+const Fretboard = ({ rootClassNames, fretboard }) => (
   <div className={rootClassNames}>
     <FretboardAdapter />
     {
-      shouldRenderFretboard
+      fretboard
         ? <div className="Fretboard__afterFretboardServiceMount">
             <FretboardIndicators />
             <Overlap>
