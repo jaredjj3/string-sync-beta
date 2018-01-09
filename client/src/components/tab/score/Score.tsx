@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose, withProps, shouldUpdate } from 'recompose';
+import { compose, mapProps, withProps, shouldUpdate } from 'recompose';
 import * as classNames from 'classnames';
 import { withTab } from 'enhancers';
 import { ScoreLine, CaretAdapter, ScrollManager } from './';
@@ -8,6 +8,11 @@ import { hash } from 'ssUtil';
 
 const enhance = compose(
   withTab,
+  mapProps(props => ({
+    tab: props.tab.state.instance,
+    withCaret: props.withCaret,
+    allowOverflow: props.allowOverflow
+  })),
   withProps(props => ({
     rootClassNames: classNames(
       'Score',
@@ -41,12 +46,12 @@ const ScoreLines = ({ tab, withCaret }) => {
 
 const Score = ({ rootClassNames, tab, withCaret }) => (
   <div id="Score" className={rootClassNames}>
+    {withCaret ? <CaretAdapter /> : null}
+    <ScrollManager />
     <ScoreLines
-      tab={tab.state.instance}
+      tab={tab}
       withCaret={withCaret}
     />
-    {withCaret ? <CaretAdapter /> : null}
-    <ScrollManager /> {/* rendering order matters! */}
   </div>
 );
 
