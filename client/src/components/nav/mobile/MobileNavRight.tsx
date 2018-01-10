@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { compose, branch, renderNothing, renderComponent } from 'recompose';
-import { Icon } from 'antd';
+import { compose, branch, renderComponent } from 'recompose';
 import { withSession } from 'enhancers';
 import { MobileNavLogin, MobileNavLogout } from './';
 
@@ -14,6 +13,6 @@ const enhance = compose(
   )
 );
 
-const MobileNavRight = () => renderNothing();
+const MobileNavRight = () => null;
 
 export default enhance(MobileNavRight);

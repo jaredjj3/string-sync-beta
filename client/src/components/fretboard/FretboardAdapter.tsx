@@ -2,6 +2,7 @@ import * as React from 'react';
 import { compose, lifecycle, withProps, withHandlers } from 'recompose';
 import { Fretboard } from 'services';
 import { withFretboard, withSync } from 'enhancers';
+import { isEmpty } from 'lodash';
 
 const enhance = compose(
   withFretboard,
@@ -9,7 +10,8 @@ const enhance = compose(
   withHandlers({
     handleAnimationLoop: props => () => {
       const { data } = props.sync.state.maestro.snapshot;
-      const { light, press } = data;
+      const light = isEmpty(data.light) ? [] : data.light;
+      const press = isEmpty(data.press) ? [] : data.press;
       props.fretboard.state.instance.update(light, press);
     }
   }),

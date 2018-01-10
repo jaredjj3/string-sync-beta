@@ -16,7 +16,7 @@ const enhance = compose(
     const width = props.overrideWidth || props.viewport.state.width;
     const shouldCreateTab = (
       !tab ||
-      tab.vextabString !== props.vextabString ||
+      tab.vextabString !== vextabString ||
       tab.width !== width
     );
 

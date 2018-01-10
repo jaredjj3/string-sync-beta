@@ -4,7 +4,7 @@ import * as classNames from 'classnames';
 import { withTab } from 'enhancers';
 import { ScoreLine, CaretAdapter, ScrollManager } from './';
 import { Line } from 'services';
-import { hash } from 'ssUtil';
+import { hash, elvis } from 'ssUtil';
 
 const enhance = compose(
   withTab,
@@ -21,10 +21,7 @@ const enhance = compose(
       }
     )
   })),
-  shouldUpdate((currProps, nextProps) => {
-    const { instance } = nextProps.tab.state;
-    return instance && !instance.error;
-  })
+  shouldUpdate((currProps, nextProps) => !elvis(nextProps.tab, 'error'))
 );
 
 const ScoreLines = ({ tab, withCaret }) => {
