@@ -75,7 +75,7 @@ const Login = ({ form, errors, loading, handleSubmit, handleErrorClose }) => (
   <div className="Login">
     <Gradient />
     <Nav />
-    <div className="Form--desktop">
+    <div className="Form">
       <h1 className="Form__title">LOGIN</h1>
       <Form
         className="Form__form"
