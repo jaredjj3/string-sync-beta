@@ -1,0 +1,33 @@
+@import "overrides";
+
+.Nav--desktop {
+  font-weight: 200;
+  border-bottom: 1px solid @border-color-base;
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+
+  .Nav--desktop__inner {
+    width: 100%;
+    max-width: 980px;
+  }
+
+  .Nav--desktop__left {
+    display: flex;
+    justify-content: flex-start;
+  }
+  
+  .Nav--desktop__right {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .Nav--desktop__left__inner {
+    display: flex;
+    align-items: center;
+  }
+
+  .ant-menu-horizontal {
+    border-bottom: none;
+  }
+}

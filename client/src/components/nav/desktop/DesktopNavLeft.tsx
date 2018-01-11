@@ -5,8 +5,10 @@ import { LogoImage, LogoText } from 'components/logo';
 const DesktopNavLeft = () => (
   <div className="Nav--desktop__left">
     <Link to="/">
-      <LogoImage style={{ width: '24px' }} />
-      <LogoText style={{ fontSize: '24px' }} />
+      <div className="Nav--desktop__left__inner">
+        <LogoImage style={{ width: '24px' }} />
+        <LogoText style={{ fontSize: '24px', marginLeft: '15px', color: 'black' }} />
+      </div>
     </Link>
   </div>
 );
