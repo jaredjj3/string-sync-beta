@@ -1,0 +1,43 @@
+@import "overrides";
+
+@content-title-height: 50px;
+
+.Library--mobile {
+  margin-bottom: 55px;
+}
+
+.Library--mobile__headerSpacer {
+  margin-top: 60px;
+  padding-bottom: 12px;
+  height: 55px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+}
+
+.Library--mobile__header {
+  position: fixed;
+  top: 0;
+  background: white;
+  width: 100%;
+  text-align: center;
+}
+
+.Library--mobile__tag {
+  background: @layout-body-background;
+  height: @content-title-height;
+  box-sizing: border-box;
+}
+
+.Library--mobile__tag__title {
+  text-align: center;
+  background: white;
+  height: @content-title-height;
+  line-height: @content-title-height;
+  font-size: 16px;
+  font-weight: 100;
+  letter-spacing: 3px;
+  box-sizing: border-box;
+}
