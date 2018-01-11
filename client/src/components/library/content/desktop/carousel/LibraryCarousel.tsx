@@ -49,7 +49,11 @@ const randAutoplaySpeed = () => 5000 + (Math.random() * 10000);
 // calculate the size of the carousel.
 const LibraryCarousel = ({ title, notations, handleCarouselRef, handlePrevClick, handleNextClick }) => (
   <div className="LibraryCarousel">
-    <Icon type="left" onClick={handlePrevClick} />
+    <Icon
+      className="LibraryCarousel__prev"
+      type="left"
+      onClick={handlePrevClick}
+    />
     <Carousel
       infinite
       lazyLoad
@@ -66,14 +70,18 @@ const LibraryCarousel = ({ title, notations, handleCarouselRef, handlePrevClick,
             className="LibraryCarousel__carouselPage"
             key={`carousel-page-group-${title}-${ndx}`}
           >
-            <Row gutter={10}>
+            <Row style={{ marginLeft: 0, marginRight: 0 }}>
               <Page title={title} notationChunk={notationChunk} />
             </Row>
           </div>
         ))
       }
     </Carousel>
-    <Icon type="right" onClick={handleNextClick} />
+    <Icon
+      className="LibraryCarousel__next"
+      type="right"
+      onClick={handleNextClick}
+    />
   </div>
 );
 

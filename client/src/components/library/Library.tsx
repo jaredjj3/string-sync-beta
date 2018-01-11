@@ -30,7 +30,7 @@ const enhance = compose(
 );
 
 const Library = ({ isLoading }) => (
-  <div id="Library" className="RouteEntry Library">
+  <div id="Library" className="Library">
     <Gradient />
     <Nav />
     <LibraryContent isLoading={isLoading} />

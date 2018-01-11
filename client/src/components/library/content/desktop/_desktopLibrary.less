@@ -1,0 +1,93 @@
+@import "overrides";
+
+@arrow-offset: -70px;
+@arrow-background: #eeeeee;
+@arrow-color: darken(@arrow-background, 10%);
+
+.Library--desktop {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.Library--desktop__inner {
+  width: 100%;
+  max-width: 980px;
+}
+
+.Library--desktop__carousels {
+  list-style: none;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.Library--desktop__carousels__item {
+  margin-bottom: 30px;
+
+  &:hover .LibraryCarousel__prev,
+  &:hover .LibraryCarousel__next {
+    opacity: 0.5;
+  }
+}
+
+.LibraryCarousel {
+  position: relative;
+  width: 100%;
+  max-width: 962px;
+}
+
+.LibraryCarousel__prev,
+.LibraryCarousel__next {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  background: @arrow-background;
+  color: @arrow-color;
+  padding: 105px 11px;
+  opacity: 0;
+  font-size: 48px;
+  font-weight: 100;
+  transition: all 175ms @ease-in;
+
+  &:hover, &:active {
+    opacity: 1 !important;
+  }
+}
+
+.LibraryCarousel__next {
+  right: @arrow-offset;
+}
+
+.LibraryCarousel__prev {
+  left: @arrow-offset;
+}
+
+.LibraryCarousel__carouselPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.LibraryCarousel__dots.slick-dots {
+  top: -35px;
+  text-align: right !important;
+
+  li {
+    background: @border-color-base;
+  }
+
+  li > button {
+    padding: 5px;
+    background: @border-color-base;
+  }
+
+  li.slick-active > button {
+    background: @primary-color !important;
+  }
+
+  li > button:hover {
+    background: @primary-color;
+  }
+}

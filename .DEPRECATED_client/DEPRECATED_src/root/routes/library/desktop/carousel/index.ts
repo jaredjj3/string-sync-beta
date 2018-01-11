@@ -1,5 +1,1 @@
-import LibraryCarousel from './LibraryCarousel';
-
-import './_libraryCarousel.less';
-
-export default LibraryCarousel;
+export { default as LibraryCarousel } from './LibraryCarousel';
