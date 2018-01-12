@@ -45,6 +45,19 @@ class Maestro {
     return offset !== offset ? 0 : this.currentTick - offset; // guard against NaN
   }
 
+  reset(): Maestro {
+    this.tab = null;
+    this.fretboard = null;
+    this.currentTimeMs = 0;
+    this.bpm = 0;
+    this.deadTimeMs = 0;
+    this.isActive = false;
+    this.updateQueued = false;
+    this._snapshot = new Snapshot();
+
+    return this;
+  }
+
   update(): Snapshot {
     if (this._shouldUpdate()) {
       const snapshot = new Snapshot(this._snapshot);
