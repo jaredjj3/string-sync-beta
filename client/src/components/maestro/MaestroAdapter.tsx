@@ -18,6 +18,8 @@ const enhance = compose(
         maestro.currentTimeMs = player.getCurrentTime() * 1000;
       }
 
+      // update will not do anything if maestro.isActive === false
+      // see Maestro._shouldUpdate()
       maestro.isActive = isActive;
       maestro.update();
     }
