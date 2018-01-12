@@ -84,6 +84,18 @@ class RafLoop {
     return this._specs.some(({ name }) => name === specName);
   }
 
+  reset(): RafLoop {
+    this.stop();
+
+    this.throttleMs = 0;
+    this._isActive = false;
+    this._specs = [];
+    this._lastInvokeMs = 0;
+    this._rafId = null;
+
+    return this;
+  }
+
   private _loop = (): void => {
     if (this._shouldLoop()) {
       this._invoke('onAnimationLoop');
@@ -119,4 +131,5 @@ class RafLoop {
 
 const instance = new RafLoop();
 
+const createRafLoop = () => new RafLoop();
 export default instance;
