@@ -32,11 +32,6 @@ const ActionBar = ({ session }) => (
         </Link>
       </li>
       <li>
-        <a href="http://instagram.com/stringsynced">
-          social
-        </a>
-      </li>
-      <li>
         <Link to="/library">
           library
         </Link>
