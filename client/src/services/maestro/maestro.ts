@@ -64,27 +64,25 @@ class Maestro {
       const data = this._getSnapshotData();
       snapshot.setData(data);
       this._snapshot = snapshot;
+      this.updateQueued = false;
     }
-
-    this.updateQueued = false;
 
     return this.snapshot;
   }
 
-  queueUpdate(): boolean {
-    return this.updateQueued = true;
+  queueUpdate(): Maestro {
+    this.updateQueued = true;
+    return this;
   }
 
   private _shouldUpdate(): boolean {
-    return (
-      this.updateQueued ||
-      (
-        this.tab &&
-        this.fretboard &&
-        this.bpm > 0 &&
-        this.isActive
-      )
+    const canUpdate = (
+      this.tab &&
+      this.fretboard &&
+      this.bpm > 0
     );
+
+    return canUpdate && (this.updateQueued || this.isActive);
   }
 
   private _getSnapshotData(): SnapshotData {

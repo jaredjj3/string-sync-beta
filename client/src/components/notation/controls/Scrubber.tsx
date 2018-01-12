@@ -46,7 +46,7 @@ const enhance = compose (
       const nextTimeMs = (value / 100) * durationMs;
 
       maestro.currentTimeMs = nextTimeMs;
-      maestro.update();
+      maestro.queueUpdate().update();
 
       videoPlayer.seekTo(nextTimeMs / 1000, true);
       props.setValue(value);
@@ -54,11 +54,15 @@ const enhance = compose (
     handleAfterChange: props => value => {
       const videoPlayer = props.video.state.player;
       const durationMs = props.notation.state.durationMs || videoPlayer.getDuration() * 1000;
+      const { maestro } = props.sync.state;
 
       props.setIsScrubbing(false);
       props.setValue(value);
 
       const nextTimeSecs = ((value / 100) * durationMs) / 1000;
+      maestro.currentTimeMs = nextTimeSecs * 1000;
+      maestro.queueUpdate().update();
+
       videoPlayer.seekTo(nextTimeSecs, true);
 
       if (props.wasActive) {
