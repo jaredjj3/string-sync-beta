@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { compose, defaultProps, mapProps, withHandlers, lifecycle, shouldUpdate } from 'recompose';
+import { VideoInitializer } from './';
 import { withVideo, withNotation } from 'enhancers';
 import Youtube from 'react-youtube';
 
@@ -20,7 +21,6 @@ const youtubeOptions = {
     showinfo: 0,
     disablekb: 1,
     fs: 0,
-    autoplay: 0,
     start: 0,
     loop: 1,
   }
@@ -55,8 +55,9 @@ const enhance = compose(
   })
 );
 
-const Video = ({ video, youtubeVideoId, handleReady, handleStateChange }) => (
+const Video = ({ video, withInitializer, youtubeVideoId, handleReady, handleStateChange }) => (
   <div className="Video">
+    {withInitializer ? <VideoInitializer /> : null}
     <Youtube
       className="Video__youtubePlayer"
       opts={youtubeOptions}
