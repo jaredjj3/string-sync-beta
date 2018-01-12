@@ -18,6 +18,7 @@ const enhance = compose(
         maestro.currentTimeMs = player.getCurrentTime() * 1000;
       }
 
+      maestro.isActive = isActive;
       maestro.update();
     }
   }),
@@ -58,6 +59,7 @@ const enhance = compose(
     componentWillUnmount(): void {
       this.props.stopRafLoop();
       this.props.unregisterRaf();
+      this.props.maestro.reset();
     }
   })
 );
