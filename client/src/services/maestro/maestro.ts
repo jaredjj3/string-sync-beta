@@ -18,6 +18,9 @@ class Maestro {
   bpm: number = 0;
   deadTimeMs: number = 0;
 
+  isActive: boolean = false;
+  updateQueued: boolean = false;
+
   private _snapshot: Snapshot = new Snapshot();
 
   get snapshot(): Snapshot {
@@ -50,14 +53,24 @@ class Maestro {
       this._snapshot = snapshot;
     }
 
+    this.updateQueued = false;
+
     return this.snapshot;
   }
 
+  queueUpdate(): boolean {
+    return this.updateQueued = true;
+  }
+
   private _shouldUpdate(): boolean {
-    return Boolean(
-      this.tab &&
-      this.fretboard &&
-      this.bpm > 0
+    return (
+      this.updateQueued ||
+      (
+        this.tab &&
+        this.fretboard &&
+        this.bpm > 0 &&
+        this.isActive
+      )
     );
   }
 
