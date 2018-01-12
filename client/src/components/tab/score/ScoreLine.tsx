@@ -26,7 +26,7 @@ const enhance = compose(
   }),
   lifecycle({
     componentDidUpdate(): void {
-      const { line, canvas, tab } = this.props;
+      const { line, canvas, tab, maestro } = this.props;
 
       if (!canvas) {
         return;
@@ -43,6 +43,7 @@ const enhance = compose(
       // if this is the last ScoreLine rendered, populate the tickRanges on the tab
       if (line.next === null && !tab.error) {
         tab.hydrateNotes();
+        maestro.queueUpdate();
       }
     }
   })
