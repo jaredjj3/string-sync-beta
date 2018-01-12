@@ -35,6 +35,7 @@ const enhance = compose(
           console.error(error);
         }
 
+        window.scrollTo(0, document.body.scrollHeight);
         props.setLoading(false);
       }
     }
@@ -72,7 +73,7 @@ const LoginFooter = () => (
 );
 
 const Login = ({ form, errors, loading, handleSubmit, handleErrorClose }) => (
-  <div className="Login">
+  <div className="Login" style={{ marginBottom: '50px', overflowY: 'hidden' }}>
     <Gradient />
     <Nav />
     <div className="Form">

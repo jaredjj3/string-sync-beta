@@ -48,7 +48,8 @@ const enhance = compose(
         } else {
           console.error(error);
         }
-
+        
+        window.scrollTo(0, document.body.scrollHeight);
         props.setLoading(false);
       }
     }
@@ -87,7 +88,7 @@ const enhance = compose(
 );
 
 const Signup = ({ form, loading, errors, handleSubmit, handleErrorClose, handleConfirmBlur }) => (
-  <div className="Signup">
+  <div className="Signup" style={{ marginBottom: '50px' }}>
     <Gradient />
     <Nav />
     <div className="Form">

@@ -107,7 +107,10 @@ const NotationNew = (props) => {
     <div className="NotationNew">
       <Gradient />
       <Nav />
-      <div className="Form">
+      <div
+        className="Form"
+        style={{ marginTop: '48px', marginBottom: '48px' }}
+      >
         <h1 className="Form__title">UPLOAD</h1>
         <Form onSubmit={handleSubmit}>
           <Item

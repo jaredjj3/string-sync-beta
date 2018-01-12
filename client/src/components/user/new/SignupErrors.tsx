@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Alert } from 'antd';
 
 const ErrorMessages = ({ errors }) => (
-  <ul>
+  <ul className="Form__errors__messages">
     {errors.map((error, ndx) => <li key={`login-error-${ndx}`}>{error}</li>)}
   </ul>
 );
@@ -14,7 +14,6 @@ const SignupErrors = ({ errors, onErrorClose }) => (
         ? null
         : <Alert
             closable
-            className="FormErrors__messages"
             onClose={onErrorClose}
             type="error"
             message={<ErrorMessages errors={errors} />}

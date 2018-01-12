@@ -3,7 +3,7 @@
 .Form {
   width: @form-width;
   margin: 0 auto;
-  margin-top: 20px;
+  margin-top: 50px;
   position: relative;
   background: white;
   padding: 20px;
@@ -32,12 +32,20 @@
   line-height: 16px;
 }
 
-.FormErrors {
+.Form__errors {
   width: @form-width;
   margin: 0 auto;
   margin-top: 20px;
 }
 
-.FormErrors__messages {
-  display: flex;
+ul.Form__errors__messages {
+  list-style: none;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    text-align: left;
+    padding-bottom: 3px;
+  }
 }
