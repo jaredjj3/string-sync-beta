@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose, mapProps, withHandlers, lifecycle, shouldUpdate } from 'recompose';
+import { compose, defaultProps, mapProps, withHandlers, lifecycle, shouldUpdate } from 'recompose';
 import { withVideo, withNotation } from 'enhancers';
 import Youtube from 'react-youtube';
 
@@ -29,9 +29,13 @@ const youtubeOptions = {
 const enhance = compose(
   withVideo,
   withNotation,
+  defaultProps({
+    withInitializer: false
+  }),
   mapProps(props => ({
     youtubeVideoId: props.notation.state.youtubeVideoId,
-    video: props.video
+    video: props.video,
+    withInitializer: props.withInitializer
   })),
   shouldUpdate((currProps, nextProps) => (
     currProps.youtubeVideoId !== nextProps.youtubeVideoId

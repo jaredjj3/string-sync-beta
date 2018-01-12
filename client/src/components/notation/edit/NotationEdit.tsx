@@ -20,7 +20,7 @@ const NotationEdit = () => (
     <Gradient />
     <Nav />
     <MaestroAdapter />
-    <Video />
+    <Video withInitializer />
     <Fretboard />
     <NotationEditor />
     <Tab

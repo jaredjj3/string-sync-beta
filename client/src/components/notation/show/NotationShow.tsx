@@ -46,7 +46,7 @@ const NotationShow = ({ isFetching, notation }) => (
       songName={notation.state.songName}
       transcriber={notation.state.transcriber}
     />
-    <Video />
+    <Video withInitializer />
     <Fretboard />
     <Tab withCaret />
     <NotationControls />
