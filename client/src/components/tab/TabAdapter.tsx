@@ -37,9 +37,16 @@ const enhance = compose(
     handleAnimationLoop: props => () => {
       const { note } = props.maestro.snapshot.data;
       const { focusedNote } = props;
-      
+
+      if (focusedNote && focusedNote.renderer.currentStyle !== 'DEFAULT') {
+        focusedNote.renderer.setStyle('DEFAULT').redraw();
+      }
+
+      if (note && note.renderer.currentStyle !== 'ACTIVE') {
+        note.renderer.setStyle('ACTIVE').redraw();
+      }
+
       if (note !== focusedNote) {
-        props.tab.updateNoteColors(focusedNote, note);
         props.setFocusedNote(note);
       }
     }

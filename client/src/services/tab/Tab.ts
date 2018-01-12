@@ -47,18 +47,6 @@ class Tab {
     this._setNoteTickStops();
   }
 
-  updateNoteColors(prevNote: Note, currNote: Note): Tab {
-    if (prevNote) {
-      prevNote.renderer.setStyle('DEFAULT').redraw();
-    }
-
-    if (currNote) {
-      currNote.renderer.setStyle('ACTIVE').redraw();
-    }
-
-    return this;
-  }
-
   private _setup(): boolean {
     this.error = null;
     this.measuresPerLine = this._getMeasuresPerLine(this.width);

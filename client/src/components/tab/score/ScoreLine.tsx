@@ -5,6 +5,7 @@ import { withTab, withSync } from 'enhancers';
 import { Caret } from './';
 import { Overlap, Layer } from 'components';
 import { elvis } from 'ssUtil';
+import { isEqual } from 'lodash';
 
 const SCORE_LINE_HEIGHT_PX = 260;
 
