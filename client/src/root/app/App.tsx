@@ -12,8 +12,11 @@ const scrollToTop = (): void => {
 const enhance = compose(
   withRouter,
   lifecycle({
-    componentDidUpdate: ({ history }) => {
-      history.listen(scrollToTop);
+    componentDidMount(): void {
+      this.props.history.listen(scrollToTop);
+    },
+    componentDidUpdate(): void {
+      this.props.history.listen(scrollToTop);
     }
   })
 );

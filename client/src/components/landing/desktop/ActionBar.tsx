@@ -27,7 +27,7 @@ const ActionBar = ({ session }) => (
   <nav className="Landing--desktop__altActionBar">
     <ul className="AltActionBar__links">
       <li>
-        <Link to="/about">
+        <Link to="/about/overview">
           about
         </Link>
       </li>
