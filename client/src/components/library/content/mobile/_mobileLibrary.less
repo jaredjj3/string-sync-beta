@@ -6,21 +6,11 @@
   margin-bottom: 55px;
 }
 
-.Library--mobile__headerSpacer {
-  margin-top: 60px;
-  padding-bottom: 12px;
-  height: 55px;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: white;
+.Library--mobile__header__logo {
+  margin-top: 10px;
 }
 
 .Library--mobile__header {
-  position: fixed;
-  top: 0;
-  background: white;
   width: 100%;
   text-align: center;
 }
@@ -29,10 +19,12 @@
   background: @layout-body-background;
   height: @content-title-height;
   box-sizing: border-box;
+  content: '';
 }
 
 .Library--mobile__tag__title {
   text-align: center;
+  z-index: 11;
   background: white;
   height: @content-title-height;
   line-height: @content-title-height;
@@ -41,3 +33,33 @@
   letter-spacing: 3px;
   box-sizing: border-box;
 }
+
+.LibraryGrid {
+  border-right: 1px solid white;
+
+  .am-grid-text {
+    font-size: 12px !important;
+  }
+
+  .am-grid-item-content {
+    padding: 0 !important;
+  }
+
+  .am-grid-null-item {
+    background: @layout-body-background !important;
+    border: none !important;
+  }
+
+  .am-grid-null-item:after {
+    content: none !important;
+  }
+
+  .am-grid-item-content {
+    background: @layout-body-background;
+  }
+  
+  .am-grid-item-content .LibraryGridItem {
+    border-left: 1px solid white;
+  }
+}
+
