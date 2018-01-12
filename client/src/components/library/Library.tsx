@@ -30,7 +30,11 @@ const enhance = compose(
 );
 
 const Library = ({ isLoading }) => (
-  <div id="Library" className="Library">
+  <div
+    id="Library"
+    className="Library"
+    style={{ overflowX: 'hidden' }}
+  >
     <Gradient />
     <Nav />
     <LibraryContent isLoading={isLoading} />
