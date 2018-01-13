@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { compose, withState, withProps, withHandlers, lifecycle } from 'recompose';
-import { withSync } from 'enhancers';
 import { elvis } from 'ssUtil';
 
 const enhance = compose(
-  withSync,
   withHandlers({
     handleAnimationLoop: props => () => {
-      const { snapshot } = props.sync.state.maestro;
+      const { snapshot } = window.ss.maestro;
       const caretRenderer = elvis(snapshot.data.line, 'caretRenderer');
 
       if (caretRenderer) {
@@ -18,7 +16,7 @@ const enhance = compose(
     }
   }),
   withProps(props => {
-    const { rafLoop } = props.sync.state;
+    const { rafLoop } = window.ss;
     const name = 'CaretManager.handleAnimationLoop';
 
     return ({

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, withState, withHandlers, mapProps, withProps, lifecycle } from 'recompose';
 import { ScoreLineRenderer } from 'services';
-import { withTab, withSync } from 'enhancers';
+import { withTab } from 'enhancers';
 import { Caret } from './';
 import { Overlap, Layer } from 'components';
 import { elvis } from 'ssUtil';
@@ -11,10 +11,8 @@ const SCORE_LINE_HEIGHT_PX = 260;
 
 const enhance = compose(
   withTab,
-  withSync,
   mapProps(props => ({
     tab: props.tab.state.instance,
-    maestro: props.sync.state.maestro,
     line: props.line,
     withCaret: props.withCaret
   })),
@@ -26,7 +24,8 @@ const enhance = compose(
   }),
   lifecycle({
     componentDidUpdate(): void {
-      const { line, canvas, tab, maestro } = this.props;
+      const { line, canvas, tab } = this.props;
+      const { maestro } = window.ss;
 
       if (!canvas) {
         return;
