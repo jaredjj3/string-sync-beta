@@ -44,7 +44,6 @@ const enhance = compose(
 const Save = ({ loading, handleClick }) => (
   <div className="Save">
     <Button
-      size="large"
       type="primary"
       icon="save"
       loading={loading}
