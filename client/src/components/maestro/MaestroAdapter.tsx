@@ -37,19 +37,13 @@ const enhance = compose(
       },
       unregisterRaf: () => {
         rafLoop.unregister(name);
-      },
-      startRafLoop: () => {
-        rafLoop.start();
-      },
-      stopRafLoop: () => {
-        rafLoop.stop();
       }
     });
   }),
   lifecycle({
     componentDidMount(): void {
       this.props.registerRaf();
-      this.props.startRafLoop();
+      window.ss.rafLoop.start();
     },
     componentWillReceiveProps(nextProps: any): void {
       const { maestro } = window.ss;
@@ -58,10 +52,9 @@ const enhance = compose(
       maestro.deadTimeMs = deadTimeMs;
     },
     componentWillUnmount(): void {
-      this.props.stopRafLoop();
-      this.props.unregisterRaf();
-
       const { rafLoop, maestro } = window.ss;
+      this.props.unregisterRaf();
+      rafLoop.stop();
       rafLoop.reset();
       maestro.reset();
     }
