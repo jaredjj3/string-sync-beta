@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { compose, withState, withHandlers, withProps, lifecycle } from 'recompose';
 import { Slider } from 'antd';
-import { withVideo, withSync, withNotation } from 'enhancers';
+import { withVideo, withNotation } from 'enhancers';
 import { isBetween } from 'ssUtil';
 
 const enhance = compose (
   withVideo,
-  withSync,
   withNotation,
   withState('values', 'setValues', [0, 100]),
   withState('isScrubbing', 'setIsScrubbing', false),
@@ -70,7 +69,7 @@ const enhance = compose (
         return;
       }
 
-      const { currentTimeMs } = props.sync.state.maestro;
+      const { currentTimeMs } = window.ss.maestro;
       const durationMs = props.notation.state.durationMs || videoPlayer.getDuration() * 1000;
 
       if (durationMs > 0) {
@@ -88,7 +87,7 @@ const enhance = compose (
     }
   }),
   withProps(props => {
-    const { rafLoop } = props.sync.state;
+    const { rafLoop } = window.ss;
     const name = 'Loop.handleAnimationLoop';
 
     return ({
