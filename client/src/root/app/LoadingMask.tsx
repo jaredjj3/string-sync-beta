@@ -7,12 +7,6 @@ import { LogoImage, Footer } from 'components';
 const enhance = compose(
   withState('isVisible', 'setVisibility', false),
   withState('isFallbackLinkVisible', 'setFallbackLinkVisibility', false),
-  withHandlers({
-    handleLibraryClick: props => event => {
-      event.preventDefault();
-      window.ss.loader.clear();
-    }
-  }),
   withProps(props => ({
     rootClassNames: classNames(
       'LoadingMask',
@@ -21,15 +15,24 @@ const enhance = compose(
       }
     ),
     message: props.isFallbackLinkVisible
-      ? <Link to="/library" onClick={props.handleLibraryClick}>library</Link>
+      ? <a href="/library">library</a>
       : <span>loading</span>
   })),
   lifecycle({
     componentDidMount(): void {
-      window.ss.loader.component = this;
+      const { loader } = window.ss;
+
+      loader.component = this;
+      
+      if (loader.tasks.size > 0) {
+        loader._show();
+      } 
     },
     componentWillUnmount(): void {
-      window.ss.loader.component = null;
+      const { loader } = window.ss;
+
+      loader.clear();
+      loader.component = null;
     }
   })
 );

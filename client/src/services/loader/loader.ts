@@ -19,7 +19,10 @@ class Loader {
     }
 
     this.tasks.add(task);
-    this._show();
+
+    if (this.component) {
+      this._show();
+    }
 
     return this.tasks;
   }

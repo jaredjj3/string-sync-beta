@@ -11,7 +11,6 @@ const youtubeOptions = {
     showinfo: 0,
     disablekb: 1,
     fs: 1,
-    autoplay: 0,
     start: 0,
     loop: 1,
   }

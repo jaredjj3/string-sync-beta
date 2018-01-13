@@ -7,7 +7,6 @@ import { sortBy } from 'lodash';
 const enhance = compose(
   withViewport,
   withNotations,
-  textWhileLoading(({ isLoading }) => isLoading)
 );
 
 const getNotationsByTag = (notations: Enhancers.Notations) => (

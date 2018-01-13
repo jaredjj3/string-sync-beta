@@ -24,6 +24,9 @@ const enhance = compose(
     }
   })),
   lifecycle({
+    componentWillMount(): void {
+      window.ss.loader.add('foo');
+    },
     componentDidMount(): void {
       // Update the body color so that the extra space in the Instagram
       // browser is consistent with the bottom object, which in this case is
