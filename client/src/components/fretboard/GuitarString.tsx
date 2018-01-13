@@ -13,13 +13,13 @@ const enhance = compose(
   withState('pressed', 'setPressed', false),
   withProps(props => ({
     rootClassNames: classNames(
-      'String',
+      'GuitarString',
       {
-        'String--lit': props.lit,
-        'String--pressed': props.pressed,
-        'String--hidden': !props.lit && !props.pressed,
-        'String--thin': props.string <= 3,
-        'String--thick': props.string > 3
+        'GuitarString--lit': props.lit,
+        'GuitarString--pressed': props.pressed,
+        'GuitarString--hidden': !props.lit && !props.pressed,
+        'GuitarString--thin': props.string <= 3,
+        'GuitarString--thick': props.string > 3
       }
     )
   })),

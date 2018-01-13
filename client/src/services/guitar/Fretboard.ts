@@ -26,8 +26,8 @@ class Fretboard {
   pressed: Set<FretboardComponent> = new Set();
 
   update(lightPositions: Array<any>, pressPositions: Array<any>): Fretboard {
-    const lightComps = this.mapComponents(lightPositions);
-    const pressComps = this.mapComponents(pressPositions);
+    const lightComps = this.mapComponents(lightPositions, true);
+    const pressComps = this.mapComponents(pressPositions, false);
 
     const lit = new Set();
     const pressed = new Set();
@@ -55,11 +55,15 @@ class Fretboard {
     return this;
   }
 
-  mapComponents(positions: Array<GuitarPosition>): Array<FretboardComponent> {
+  mapComponents(positions: Array<GuitarPosition>, markersOnly: boolean): Array<FretboardComponent> {
     const markers = positions.map(pos => this.selectFretMarker(pos.string, pos.fret));
-    const strings = positions.map(pos => this.selectGuitarString(pos.string));
 
-    return uniq(strings).concat(markers);
+    if (markersOnly) {
+      return markers; 
+    } else {
+      const strings = positions.map(pos => this.selectGuitarString(pos.string));
+      return uniq(strings).concat(markers);
+    }
   }
 
   addFretMarker(string: number, fret: number, markerProps: any): FretMarker {

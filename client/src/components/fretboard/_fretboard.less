@@ -7,10 +7,93 @@
 
 .Fretboard--mobile {
   height: 135px;
+
+  .Fret, .GuitarStrings {
+    height: 114px;
+  }
 }
 
 .Fretboard--desktop {
   height: 185px;
+
+  .Fret, .GuitarStrings {
+    height: 164px;
+  }
+}
+
+.Frets {
+  .ant-row-flex {
+    flex-flow: row;
+  }
+}
+
+.Fret {
+  background: black;
+  border-right: 1px solid rgba(211, 211, 211, 0.2);
+  position: relative;
+}
+
+.Fret__dots {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  position: absolute;
+  height: 100%;
+  width: calc(100% - 4px);
+  top: 0;
+}
+
+.FretDot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  background-color: rgba(211, 211, 211, 0.65);;
+  border-radius: 50%;
+  opacity: 0.5;
+}
+
+.Fret__markers {
+  width: 100%;
+}
+
+.Fretboard .ant-col-2 .Fret:first-child {
+  border-right: 3px solid rgba(211, 211, 211, 0.2) !important;
+}
+
+.MarkerContainer {
+  display: flex;
+}
+
+.GuitarStrings {
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.GuitarString {
+  width: 100vw;
+  background: #aaa;
+  opacity: 0.4;
+}
+
+.GuitarString--hidden {
+  transition: all 200ms @ease-in;
+}
+
+.GuitarString--thin {
+  height: 1px;
+}
+
+.GuitarString--thick {
+  height: 2px;
+}
+
+.GuitarString--pressed {
+  box-shadow: 0 0 15px 2px red;
 }
 
 .FretMarker {
