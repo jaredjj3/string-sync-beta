@@ -3,7 +3,7 @@ import { ActionBar, Section1, Section2 } from './';
 import { Link } from 'react-router-dom';
 import { compose, lifecycle } from 'recompose';
 import { withFeatures, withSession } from 'enhancers';
-import { Footer } from 'components';
+import { Gradient, Footer } from 'components';
 
 const enhance = compose(
   withFeatures,
@@ -19,6 +19,7 @@ const enhance = compose(
 
 const DesktopLanding = () => (
   <div className="Landing--desktop">
+    <Gradient />
     <div className="Landing--desktop__inner">
       <ActionBar />
       <Section1 />
