@@ -38,7 +38,6 @@ const Library = ({ isLoading }) => (
     <Gradient />
     <Nav />
     <LibraryContent isLoading={isLoading} />
-    <Footer />
   </div>
 );
 

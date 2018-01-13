@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Root } from 'root';
 import { store } from 'data';
-import { maestro, rafLoop } from 'services';
+import { maestro, rafLoop, loader } from 'services';
 
 declare global {
   interface Window {
@@ -14,13 +14,15 @@ declare global {
     ss: {
       maestro: any;
       rafLoop: any;
+      loader: any;
     }
   }
 }
 
 window.ss = {
   maestro,
-  rafLoop
+  rafLoop,
+  loader
 };
 
 document.addEventListener('DOMContentLoaded', (): void => {

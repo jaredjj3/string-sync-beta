@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, lifecycle } from 'recompose';
 import { withRouter } from 'react-router';
-import { NotificationSystem, Routes, ViewportManager, UserProcessor } from './';
+import { NotificationSystem, Routes, ViewportManager, UserProcessor, LoadingMask } from './';
 import enUS from 'antd/lib/locale-provider/en_US.js';
 import { LocaleProvider } from 'antd';
 
@@ -31,6 +31,7 @@ const App = () => (
           <UserProcessor />
         </div>
         <div className="App__body" >
+          <LoadingMask />
           <Routes />
         </div>
       </main>
