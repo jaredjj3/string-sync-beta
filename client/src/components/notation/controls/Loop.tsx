@@ -25,7 +25,7 @@ const enhance = compose (
         const timeSecs = ((props.values[0] + 1) / 100) * (durationMs / 1000);
         videoPlayer.pauseVideo();
         videoPlayer.seekTo(timeSecs, true);
-        videoPlayer.playVideo();
+        window.setTimeout(() => videoPlayer.playVideo(), 500);
       }
     }
   })),
