@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose, withState, withProps, withHandlers, lifecycle } from 'recompose';
-import { withVideo, withSync } from 'enhancers';
+import { withVideo } from 'enhancers';
 
 // FIXME: This component depends on another component calling rafLoop.start().
 //
@@ -11,7 +11,6 @@ import { withVideo, withSync } from 'enhancers';
 // greater than 0.
 const enhance = compose (
   withVideo,
-  withSync,
   withState('wasVideoPlayerMuted', 'setWasVideoPlayerMuted', false),
   withState('isVideoInitialized', 'setIsVideoInitialized', false),
   withState('isVideoInitializing', 'setIsVideoInitializing', false),
@@ -26,7 +25,7 @@ const enhance = compose (
   })),
   withProps(props => ({
     unregisterRaf: () => {
-      props.sync.state.rafLoop.unregister('VideoInitializer.handleAnimationLoop');
+      window.ss.rafLoop.unregister('VideoInitializer.handleAnimationLoop');
     }
   })),
   withHandlers({
@@ -60,13 +59,13 @@ const enhance = compose (
         props.setIsVideoInitializing(false);
         props.setIsVideoInitialized(true);
 
-        props.sync.state.maestro.queueUpdate();
+        window.ss.maestro.queueUpdate();
       }
     }
   }),
   withProps(props => ({
     registerRaf: () => {
-      props.sync.state.rafLoop.register({
+      window.ss.rafLoop.register({
         name: 'VideoInitializer.handleAnimationLoop',
         precedence: 0,
         onAnimationLoop: props.handleAnimationLoop
