@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { compose, withState, withProps, withHandlers, lifecycle } from 'recompose';
 import { Slider } from 'antd';
-import { withVideo, withSync, withNotation } from 'enhancers';
+import { withVideo, withNotation } from 'enhancers';
 
 const enhance = compose (
   withVideo,
-  withSync,
   withNotation,
   withState('value', 'setValue', 0),
   withState('isScrubbing', 'setIsScrubbing', false),
@@ -19,7 +18,7 @@ const enhance = compose (
       }
 
       const durationMs = props.notation.state.durationMs || videoPlayer.getDuration() * 1000;
-      const { currentTimeMs } = props.sync.state.maestro;
+      const { currentTimeMs } = window.ss.maestro;
       const nextValue = (currentTimeMs / durationMs) * 100;
 
       // Avoid NaN
@@ -41,7 +40,7 @@ const enhance = compose (
       }
 
       const videoPlayer = props.video.state.player;
-      const { maestro } = props.sync.state;
+      const { maestro } = window.ss;
       const durationMs = props.notation.state.durationMs || videoPlayer.getDuration() * 1000;
       const nextTimeMs = (value / 100) * durationMs;
 
@@ -54,7 +53,7 @@ const enhance = compose (
     handleAfterChange: props => value => {
       const videoPlayer = props.video.state.player;
       const durationMs = props.notation.state.durationMs || videoPlayer.getDuration() * 1000;
-      const { maestro } = props.sync.state;
+      const { maestro } = window.ss;
 
       props.setIsScrubbing(false);
       props.setValue(value);
@@ -73,7 +72,7 @@ const enhance = compose (
     },
   }),
   withProps(props => {
-    const { rafLoop } = props.sync.state;
+    const { rafLoop } = window.ss;
     const name = 'Scrubber.handleAnimationLoop';
 
     return ({
