@@ -1,15 +1,13 @@
 import * as React from 'react';
 import { compose, withState, mapProps, lifecycle, withProps, withHandlers } from 'recompose';
-import { withNotation, withTab, withViewport, withSync } from 'enhancers';
+import { withNotation, withTab, withViewport } from 'enhancers';
 import { Tab } from 'services';
 
 const enhance = compose(
   withNotation,
   withTab,
   withViewport,
-  withSync,
   mapProps(props => {
-    const { maestro, rafLoop } = props.sync.state;
     const tab = props.tab.state.instance;
     const { setTab, resetTab } = props.tab.dispatch;
     const { vextabString } = props.notation.state;
@@ -21,8 +19,6 @@ const enhance = compose(
     );
 
     return {
-      maestro,
-      rafLoop,
       tab,
       vextabString,
       width,
@@ -35,7 +31,7 @@ const enhance = compose(
   withState('focusedNote', 'setFocusedNote', null),
   withHandlers({
     handleAnimationLoop: props => () => {
-      const { note } = props.maestro.snapshot.data;
+      const { note } = window.ss.maestro.snapshot.data;
       const { focusedNote } = props;
 
       if (focusedNote && focusedNote.renderer.currentStyle !== 'DEFAULT') {
@@ -56,14 +52,14 @@ const enhance = compose(
 
     return ({
       registerRaf: () => {
-        props.rafLoop.register({
+        window.ss.rafLoop.register({
           name,
           precedence: 4,
           onAnimationLoop: props.handleAnimationLoop
         });
       },
       unregisterRaf: () => {
-        props.rafLoop.unregister(name);
+        window.ss.rafLoop.unregister(name);
       }
     });
   }),
@@ -73,7 +69,7 @@ const enhance = compose(
 
       if (nextProps.shouldCreateTab) {
         const tab = new Tab(nextProps.vextabString, nextProps.width);
-        nextProps.maestro.tab = tab;
+        window.ss.maestro.tab = tab;
         nextProps.setTab(tab);
       }
 
@@ -83,7 +79,7 @@ const enhance = compose(
     },
     componentWillUnmount(): void {
       this.props.unregisterRaf();
-      this.props.maestro.tab = null;
+      window.ss.maestro.tab = null;
       this.props.resetTab();
     }
   })
