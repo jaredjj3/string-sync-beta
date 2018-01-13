@@ -1,5 +1,7 @@
 import { last } from 'lodash';
 
+// If the Loader has any tasks, then the LoadingMask component will be
+// shown. That's it.
 class Loader {
   static SHOW_FALLBACK_LINK_TIMEOUT_MS: number = 3000;
 
