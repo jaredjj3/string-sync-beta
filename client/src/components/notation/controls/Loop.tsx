@@ -11,12 +11,15 @@ const enhance = compose (
   withState('isScrubbing', 'setIsScrubbing', false),
   withState('wasActive', 'setWasActive', false),
   withProps(props => ({
+    getDurationMs: () => (
+      props.notation.state.durationMs ||
+      props.video.state.player.getDuration() * 1000
+    )
+  })),
+  withProps(props => ({
     seekToLoopStart: () => {
       const videoPlayer = props.video.state.player;
-      const durationMs = (
-        props.notation.state.durationMs ||
-        videoPlayer.getDuration() * 1000
-      );
+      const durationMs = props.getDurationMs();
 
       if (durationMs > 0) {
         const timeSecs = ((props.values[0] + 1) / 100) * (durationMs / 1000);
@@ -47,8 +50,8 @@ const enhance = compose (
       props.setValues(Object.assign([], values));
 
       const videoPlayer = props.video.state.player;
-      const currentTimeMs = videoPlayer.getCurrentTime() * 1000;
-      const durationMs = props.notation.state.durationMs || videoPlayer.getDuration() * 1000;
+      const { currentTimeMs } = window.ss.maestro;
+      const durationMs = props.getDurationMs();
       const nextFirstValueTimeMs = (values[0] / 100) * durationMs;
 
       const shouldPlayVideo = (
@@ -70,17 +73,15 @@ const enhance = compose (
       }
 
       const { currentTimeMs } = window.ss.maestro;
-      const durationMs = props.notation.state.durationMs || videoPlayer.getDuration() * 1000;
+      const durationMs = props.getDurationMs();
 
       if (durationMs > 0) {
         const currentValue = (currentTimeMs / durationMs) * 100;
         const shouldSeekToLoopStart = (
           currentValue === currentValue &&
-          !isBetween(currentValue, props.values[0] - 1, props.values[1] + 1)
+          !isBetween(currentValue, props.values[0] - 1, props.values[1] - 1)
         );
         if (shouldSeekToLoopStart) {
-          props.setWasActive(props.video.state.isActive);
-          props.setIsScrubbing(true);
           props.seekToLoopStart();
         }
       }

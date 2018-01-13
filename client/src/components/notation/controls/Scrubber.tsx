@@ -24,6 +24,7 @@ const enhance = compose (
       // Avoid NaN
       if (nextValue === nextValue) {
         props.setValue(nextValue);
+        props.setIsScrubbing(false);
       }
     },
     handleChange: props => value => {
