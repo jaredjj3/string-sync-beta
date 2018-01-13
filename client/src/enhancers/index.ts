@@ -3,7 +3,6 @@ export { default as withClassNames } from './withClassNames';
 export { default as withFeatures } from './withFeatures';
 export { default as withNotation } from './withNotation';
 export { default as withNotations } from './withNotations';
-export { default as withSync } from './withSync';
 export { default as withSession } from './withSession';
 export { default as withTab } from './withTab';
 export { default as withTags } from './withTags';
