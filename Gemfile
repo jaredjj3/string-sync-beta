@@ -20,7 +20,7 @@ gem "faker"
 
 group :development, :test do
   gem "byebug", platform: :mri
-  gem "rubocop"
+  gem "rubocop", "~> 0.52.1"
 end
 
 group :development do
