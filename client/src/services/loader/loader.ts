@@ -55,7 +55,7 @@ class Loader {
 
   private _hide(): Loader {
     if (this.isVisible) {
-      this.component.props.setVisibility(false);
+      this.component.props.hide();
     }
 
     this._disarmFallbackLink();

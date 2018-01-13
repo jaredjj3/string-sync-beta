@@ -6,12 +6,21 @@ import { LogoImage, Footer } from 'components';
 
 const enhance = compose(
   withState('isVisible', 'setVisibility', false),
+  withState('isClear', 'setClarity', false),
   withState('isFallbackLinkVisible', 'setFallbackLinkVisibility', false),
+  withHandlers({
+    hide: props => () => {
+      props.setClarity(true);
+      props.setVisibility(false);
+      window.setTimeout(() => props.setClarity(false), 250);
+    }
+  }),
   withProps(props => ({
     rootClassNames: classNames(
       'LoadingMask',
       {
-        'hidden': !props.isVisible
+        'clear': props.isClear && !props.isVisible,
+        'hidden': !props.isClear && !props.isVisible
       }
     ),
     message: props.isFallbackLinkVisible
