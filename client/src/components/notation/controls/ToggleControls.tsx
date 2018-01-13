@@ -26,6 +26,7 @@ const ToggleControls = ({ collapsed, maskClassNames, handleClick }) => (
     <Icon
       type="setting"
       onClick={handleClick}
+      className="ToggleControls__menuIcon"
     />
     <div className="NotationControlsMenuContainer">
       <div
