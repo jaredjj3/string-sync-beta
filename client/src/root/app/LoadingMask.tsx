@@ -1,12 +1,18 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { compose, withState, withProps, lifecycle } from 'recompose';
+import { compose, withState, withHandlers, withProps, lifecycle } from 'recompose';
 import * as classNames from 'classnames';
 import { LogoImage, Footer } from 'components';
 
 const enhance = compose(
   withState('isVisible', 'setVisibility', false),
   withState('isFallbackLinkVisible', 'setFallbackLinkVisibility', false),
+  withHandlers({
+    handleLibraryClick: props => event => {
+      event.preventDefault();
+      window.ss.loader.clear();
+    }
+  }),
   withProps(props => ({
     rootClassNames: classNames(
       'LoadingMask',
@@ -15,7 +21,7 @@ const enhance = compose(
       }
     ),
     message: props.isFallbackLinkVisible
-      ? <Link to="/" onClick={window.ss.loader.hide}>home</Link>
+      ? <Link to="/library" onClick={props.handleLibraryClick}>library</Link>
       : <span>loading</span>
   })),
   lifecycle({
@@ -23,7 +29,7 @@ const enhance = compose(
       window.ss.loader.component = this;
     },
     componentWillUnmount(): void {
-      window.ss.loader.reset();
+      window.ss.loader.component = null;
     }
   })
 );

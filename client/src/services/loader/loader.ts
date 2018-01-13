@@ -5,30 +5,57 @@ class Loader {
 
   component: any = null;
   setTimeoutId: number = null;
+  tasks: Set<string> = new Set();
 
   get isVisible(): boolean {
     return this.component.props.isVisible;
   }
 
-  show(theme: string): Loader {
-    if (!this.isVisible) {
-      this.component.props.setVisibility(true);
+  add(task: string): Set<string> {
+    if (this.tasks.has(task)) {
+      console.warn(`task '${task}' is already present in the loader`);
     }
 
-    if (this.setTimeoutId === null) {
-      this._armFallbackLink();
+    this.tasks.add(task);
+    this._show();
+
+    return this.tasks;
+  }
+
+  complete(task: string): Set<string> {
+    this.tasks.delete(task);
+
+    if (this.tasks.size === 0) {
+      this._hide();
+    }
+
+    return this.tasks;
+  }
+
+  clear(): Loader {
+    return this._hide();
+  }
+
+  private _show(): Loader {
+    if (!this.isVisible) {
+      this.component.props.setVisibility(true);
+
+      if (this.setTimeoutId === null) {
+        this._armFallbackLink();
+      }
     }
 
     return this;
   }
 
-  hide(): Loader {
+  private _hide(): Loader {
     if (this.isVisible) {
       this.component.props.setVisibility(false);
     }
 
     this._disarmFallbackLink();
     this._hideFallbackLink();
+    this.tasks.clear();
 
     return this;
   }

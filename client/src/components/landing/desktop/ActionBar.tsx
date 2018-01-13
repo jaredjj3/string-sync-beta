@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { branch, compose, shouldUpdate } from 'recompose';
+import { branch, renderNothing, compose, shouldUpdate } from 'recompose';
 import { withSession } from 'enhancers';
 
-const showIfLoggedIn = branch(
+const showIfNotLoggedIn = branch(
   ({ isLoggedIn }) => !isLoggedIn,
   i => i,
+  renderNothing
 );
 
 const enhance = compose(
@@ -15,7 +16,7 @@ const enhance = compose(
   ))
 );
 
-const LoginLinkListItem = showIfLoggedIn(() => (
+const LoginLinkListItem = showIfNotLoggedIn(() => (
   <li>
     <Link to="/login">
       login
