@@ -61,7 +61,8 @@ const enhance = compose(
     componentWillUnmount(): void {
       this.props.stopRafLoop();
       this.props.unregisterRaf();
-      this.props.maestro.reset();
+      this.props.sync.state.maestro.reset();
+      this.props.sync.state.rafLoop.reset();
     }
   })
 );

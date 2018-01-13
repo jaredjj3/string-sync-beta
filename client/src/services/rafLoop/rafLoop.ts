@@ -131,5 +131,4 @@ class RafLoop {
 
 const instance = new RafLoop();
 
-const createRafLoop = () => new RafLoop();
 export default instance;
