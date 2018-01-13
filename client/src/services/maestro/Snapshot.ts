@@ -15,7 +15,7 @@ class Snapshot {
   prev: Snapshot = null;
 
   private _createdAt: number = -1;
-  private _snapshotAt: number = -1; 
+  private _snapshotAt: number = -1;
 
   constructor(prev: Snapshot = null) {
     // Consumers of this class will not have a need to go back more than one
