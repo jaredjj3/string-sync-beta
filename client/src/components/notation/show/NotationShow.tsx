@@ -25,7 +25,8 @@ const enhance = compose(
   })),
   lifecycle({
     componentWillMount(): void {
-      window.ss.loader.add('foo');
+      window.ss.loader.add('initializeVideo');
+      window.setTimeout(window.ss.loader.clear, 6000);
     },
     componentDidMount(): void {
       // Update the body color so that the extra space in the Instagram
@@ -36,6 +37,7 @@ const enhance = compose(
     },
     componentWillUnmount(): void {
       this.props.setBodyColor('white');
+      window.ss.loader.clear();
     }
   })
 );

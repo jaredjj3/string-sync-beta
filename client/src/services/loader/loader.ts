@@ -13,7 +13,7 @@ class Loader {
     return this.component.props.isVisible;
   }
 
-  add(task: string): Set<string> {
+  add = (task: string): Set<string> => {
     if (this.tasks.has(task)) {
       console.warn(`task '${task}' is already present in the loader`);
     }
@@ -27,7 +27,7 @@ class Loader {
     return this.tasks;
   }
 
-  complete(task: string): Set<string> {
+  complete = (task: string): Set<string> => {
     this.tasks.delete(task);
 
     if (this.tasks.size === 0) {
@@ -37,7 +37,7 @@ class Loader {
     return this.tasks;
   }
 
-  clear(): Loader {
+  clear = (): Loader => {
     return this._hide();
   }
 
@@ -81,12 +81,12 @@ class Loader {
     return this;
   }
 
-  private _showFallbackLink = () => {
+  private _showFallbackLink(): void {
     this.component.props.setFallbackLinkVisibility(true);
     this.setTimeoutId = null;
   }
 
-  private _hideFallbackLink = () => {
+  private _hideFallbackLink(): void {
     this.component.props.setFallbackLinkVisibility(false);
   }
 }

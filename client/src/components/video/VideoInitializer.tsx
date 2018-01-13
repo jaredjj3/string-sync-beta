@@ -48,6 +48,7 @@ const enhance = compose (
 
       if (props.getIsVideoInitialized()) {
         props.unregisterRaf();
+
         player.pauseVideo();
 
         // preserve the muted state on mount
@@ -60,6 +61,7 @@ const enhance = compose (
         props.setIsVideoInitialized(true);
 
         window.ss.maestro.queueUpdate();
+        window.ss.loader.complete('initializeVideo');
       }
     }
   }),
