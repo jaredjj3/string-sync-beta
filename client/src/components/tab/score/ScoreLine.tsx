@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose, withState, withHandlers, mapProps, withProps, lifecycle } from 'recompose';
+import { compose, mapProps, withState, withHandlers, withProps, shouldUpdate, lifecycle } from 'recompose';
 import { ScoreLineRenderer } from 'services';
 import { withTab } from 'enhancers';
 import { Caret } from './';
@@ -14,7 +14,8 @@ const enhance = compose(
   mapProps(props => ({
     tab: props.tab.state.instance,
     line: props.line,
-    withCaret: props.withCaret
+    withCaret: props.withCaret,
+    emitTabUpdate: props.tab.dispatch.emitTabUpdate
   })),
   withState('canvas', 'setCanvas', null),
   withHandlers({
@@ -22,12 +23,13 @@ const enhance = compose(
       props.setCanvas(canvas);
     }
   }),
+  shouldUpdate((currProps, nextProps) => nextProps.tab && !nextProps.tab.error),
   lifecycle({
     componentDidUpdate(): void {
       const { line, canvas, tab } = this.props;
       const { maestro } = window.ss;
 
-      if (!canvas) {
+      if (!canvas || !tab) {
         return;
       }
 
@@ -36,13 +38,21 @@ const enhance = compose(
 
       // After rendering, the scoreLineRenderer should have an artist and will
       // have a stave for linking
-      scoreLineRenderer.render();
-      line.linkVexInstances(scoreLineRenderer.artist.staves[0]);
+      try {
+        scoreLineRenderer.setup().render();
+        line.linkVexInstances(scoreLineRenderer.artist.staves[0]);
 
-      // if this is the last ScoreLine rendered, populate the tickRanges on the tab
-      if (line.next === null && !tab.error) {
-        tab.hydrateNotes();
-        maestro.queueUpdate();
+        // if this is the last ScoreLine rendered, populate the tickRanges on the tab
+        if (line.next === null && !tab.error) {
+          tab.hydrateNotes();
+          maestro.queueUpdate();
+        }
+      } catch (error) {
+        tab.error = tab.error
+          ? `${tab.error}\n${error.message}`
+          : error.message;
+
+        this.props.emitTabUpdate();
       }
     }
   })

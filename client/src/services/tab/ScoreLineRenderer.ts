@@ -27,8 +27,18 @@ class ScoreLineRenderer implements Renderer  {
     this.canvas = canvas;
     this.width = width;
     this.height = height;
+  }
 
-    this._setup();
+  setup(): ScoreLineRenderer {
+    this.renderer = new Renderer(this.canvas, Renderer.Backends.CANVAS);
+    this.ctx = this.renderer.getContext();
+    this._resize();
+
+    this.artist = new Artist(10, 20, this.width - 20);
+    this.vextab = new Vextab(this.artist);
+    this.vextab.parse(this.vextabString);
+
+    return this;
   }
 
   render(): ScoreLineRenderer {
@@ -42,18 +52,6 @@ class ScoreLineRenderer implements Renderer  {
 
   clear(): ScoreLineRenderer {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    return this;
-  }
-
-  private _setup(): ScoreLineRenderer {
-    this.renderer = new Renderer(this.canvas, Renderer.Backends.CANVAS);
-    this.ctx = this.renderer.getContext();
-    this._resize();
-
-    this.artist = new Artist(10, 20, this.width - 20);
-    this.vextab = new Vextab(this.artist);
-    this.vextab.parse(this.vextabString);
-
     return this;
   }
 
