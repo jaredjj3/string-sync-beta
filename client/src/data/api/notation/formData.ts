@@ -41,7 +41,7 @@ const formData = (notation: FormNotation) => {
 
   if (tagIds && tagIds.length > 0) {
     tagIds.map(id => {
-      data.append(`notation[tag_ids][]`, JSON.stringify(id));
+      data.append(`notation[tag_ids][]`, id.toString());
     });
   }
 

@@ -41,6 +41,12 @@ const enhance = compose(
 
       try {
         await props.notation.dispatch.createNotation(createNotation);
+
+        window.notification.success({
+          message: 'Notation',
+          description: 'upload successful'
+        });
+
         props.setLoading(false);
       } catch (error) {
         window.notification.error({
@@ -56,7 +62,12 @@ const enhance = compose(
   withProps(props => ({
     afterValidate: (errors, notation) => {
       if (!errors) {
-        props.tryCreate(notation);
+        const createNotation = Object.assign(
+          {},
+          notation,
+          { thumbnailFile: props.thumbnailFile }
+        );
+        props.tryCreate(createNotation);
       }
     }
   })),
@@ -87,7 +98,15 @@ const enhance = compose(
   }),
   lifecycle({
     componentDidMount(): void {
+      this.props.notation.dispatch.resetNotation();
       this.props.tags.dispatch.fetchTags();
+    },
+    componentWillReceiveProps(nextProps: any): void {
+      const notationId = this.props.notation.state.id;
+
+      if (notationId !== -1) {
+        this.props.history.push(`/n/${notationId}/edit`);
+      }
     }
   })
 );
