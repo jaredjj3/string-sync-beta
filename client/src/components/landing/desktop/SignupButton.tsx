@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { compose, branch } from 'recompose';
+import { compose, branch, renderNothing } from 'recompose';
 import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 
 const enhance = compose (
   branch(
     ({ isLoggedIn }) => !isLoggedIn,
-    i => i
+    i => i,
+    renderNothing
   )
 )
 
