@@ -28,8 +28,9 @@ const enhance = compose(
         //
         // I am not proud of it. :(
         const scrollTop = currentLineNumber * SCORE_HEIGHT_PX;
-        window.$('#Score').scrollTop(scrollTop + 1);
-        window.$('#Score').scrollTop(scrollTop);
+        const scoreElement = window.$('#Score');
+        scoreElement.scrollTop(scrollTop + 1);
+        scoreElement.scrollTop(scrollTop);
 
         props.setFocusedLineNumber(currentLineNumber);
       }
