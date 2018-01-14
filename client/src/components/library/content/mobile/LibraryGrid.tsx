@@ -19,7 +19,13 @@ const getLibraryGridItemData = (notations) => (
 const LibraryGridItem = ({ data }) => (
   <div className="LibraryGridItem">
     <Link to={data.url}>
-      <img alt={data.text} src={data.thumbnail} />
+      <div className="LibraryGridItem__imgContainer">
+        <img
+          className="LibraryGridItem__imgContainer__img"
+          alt={data.text}
+          src={data.thumbnail}
+        />
+      </div>
     </Link>
   </div>
 );
