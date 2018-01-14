@@ -82,12 +82,17 @@ class Loader {
   }
 
   private _showFallbackLink(): void {
-    this.component.props.setFallbackLinkVisibility(true);
+    if (this.component) {
+      this.component.props.setFallbackLinkVisibility(true);
+    }
+
     this.setTimeoutId = null;
   }
 
   private _hideFallbackLink(): void {
-    this.component.props.setFallbackLinkVisibility(false);
+    if (this.component) {
+      this.component.props.setFallbackLinkVisibility(false);
+    }
   }
 }
 
