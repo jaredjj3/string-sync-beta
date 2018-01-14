@@ -17,7 +17,20 @@ const enhance = compose(
       const currentLineNumber = elvis(window.ss.maestro.snapshot.data.line, 'number');
 
       if (typeof currentLineNumber === 'number' && (currentLineNumber !== props.focusedLineNumber)) {
-        window.$('#Score').scrollTop(currentLineNumber * SCORE_HEIGHT_PX);
+        // FIXME: Go ahead, remove: window.$('#Score').scrollTop(scrollTo + 1);
+        // Test it on mobile. Explain it. I dare you.
+        //
+        // For some reason, when scrolling more than 200 - 300px on mobile, the canvas
+        // disappears until the first note is selected. It is suspected that this is an
+        // optimization implemented by the browser.
+        //
+        // I couldn't find out why this happens, but this is a hack around it.
+        //
+        // I am not proud of it. :(
+        const scrollTop = currentLineNumber * SCORE_HEIGHT_PX;
+        window.$('#Score').scrollTop(scrollTop + 1);
+        window.$('#Score').scrollTop(scrollTop);
+
         props.setFocusedLineNumber(currentLineNumber);
       }
     }
