@@ -23,10 +23,7 @@ const enhance = compose(
   })
 );
 
-const AppInner = enhance(styled.div.attrs({
-  id: 'App',
-  className: 'App'
-})``);
+const AppInner = enhance(styled.div``);
 const AppContent = styled.main``;
 const AppFunctionality = styled.div`
   display: none;
@@ -35,7 +32,7 @@ const AppFunctionality = styled.div`
 const App = ({ store }) => (
   <Provider store={store}>
     <BrowserRouter>
-      <AppInner>
+      <AppInner id="App" className="App">
         <LocaleProvider locale={enUS}>
           <AppContent>
             <AppFunctionality>

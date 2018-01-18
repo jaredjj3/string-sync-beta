@@ -18,23 +18,20 @@ const enhance = compose(
   })
 );
 
-const DesktopLandingWrapper = styled.div.attrs({
-  className: "Landing--desktop"
-})`
+const DesktopLandingWrapper = styled.div`
   width: 100%;
   margin-top: 20px;
   display: flex;
   justify-content: center;
   overflow-x: hidden;
 `;
-
 const DesktopLandingInner = styled.div`
   width: 100%;
   max-width: 980px;
 `;
 
 const DesktopLanding = () => (
-  <DesktopLandingWrapper>
+  <DesktopLandingWrapper className="Landing--desktop">
     <Gradient />
     <DesktopLandingInner>
       <ActionBar />
