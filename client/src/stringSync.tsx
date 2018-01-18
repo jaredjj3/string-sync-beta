@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Root } from 'root';
+import { App } from 'app';
 import { store } from 'data';
 import { maestro, rafLoop, loader } from 'services';
 
@@ -26,5 +26,5 @@ window.ss = {
 };
 
 document.addEventListener('DOMContentLoaded', (): void => {
-  ReactDOM.render(<Root store={store} />, document.getElementById('root'));
+  ReactDOM.render(<App store={store} />, document.getElementById('root'));
 });
