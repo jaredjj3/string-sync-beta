@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { compose, lifecycle } from 'recompose';
 import { withFeatures, withSession } from 'enhancers';
 import { Gradient, Footer } from 'components';
+import styled from 'styled-components';
 
 const enhance = compose(
   withFeatures,
@@ -17,16 +18,31 @@ const enhance = compose(
   })
 );
 
+const DesktopLandingWrapper = styled.div.attrs({
+  className: "Landing--desktop"
+})`
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  overflow-x: hidden;
+`;
+
+const DesktopLandingInner = styled.div`
+  width: 100%;
+  max-width: 980px;
+`;
+
 const DesktopLanding = () => (
-  <div className="Landing--desktop">
+  <DesktopLandingWrapper>
     <Gradient />
-    <div className="Landing--desktop__inner">
+    <DesktopLandingInner>
       <ActionBar />
       <Section1 />
       <Section2 />
       <Footer />
-    </div>
-  </div>
+    </DesktopLandingInner>
+  </DesktopLandingWrapper>
 );
 
 export default enhance(DesktopLanding);
