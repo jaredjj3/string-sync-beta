@@ -1,5 +1,3 @@
-import './_mobileNav.less';
-
 export { default as MobileNav } from './MobileNav';
 export { default as MobileNavCenter } from './MobileNavCenter';
 export { default as MobileNavLeft } from './MobileNavLeft';
