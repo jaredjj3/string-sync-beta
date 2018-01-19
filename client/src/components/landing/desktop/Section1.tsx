@@ -4,6 +4,7 @@ import { SignupButton } from './';
 import { Button } from 'antd';
 import { Link } from 'react-router-dom';
 import { withSession } from 'enhancers';
+import styled from 'styled-components';
 
 const enhance = compose(
   withSession,
@@ -15,12 +16,32 @@ const enhance = compose(
   ))
 );
 
+const DesktopLandingTitle = styled.h1`
+  font-size: 48px;
+  font-weight: 100;
+  margin-top: 48px;
+  text-align: center;
+`;
+const DesktopLandingActionBar = styled.div`
+  text-align: center;
+  margin-top: 7px;
+
+  button {
+    width: 196px;
+    height: 38px;
+  }
+
+  span {
+    margin: 0 10px;
+  }
+`;
+
 const Section1 = ({ isLoggedIn }) => (
   <section>
-    <h1 className="Landing--desktop__title">
+    <DesktopLandingTitle>
       Learn more. Think less.
-    </h1>
-    <div className="Landing--desktop__actionBar">
+    </DesktopLandingTitle>
+    <DesktopLandingActionBar>
       <span>
         <Button size="large" type="primary">
           <Link to="/library">
@@ -29,7 +50,7 @@ const Section1 = ({ isLoggedIn }) => (
         </Button>
       </span>
       <SignupButton isLoggedIn={isLoggedIn} />
-    </div>
+    </DesktopLandingActionBar>
   </section>
 );
 
