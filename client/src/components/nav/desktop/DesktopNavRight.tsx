@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { compose, withHandlers, withProps } from 'recompose';
 import { withSession } from 'enhancers';
 import { Menu, Icon } from 'antd';
+import styled from 'styled-components';
 
 const { Item, ItemGroup, SubMenu } = Menu;
 
@@ -38,11 +39,16 @@ const enhance = compose(
   })
 );
 
+const DesktopNavRightWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
 // The reason that this component has ternary hell is due to ant design's Menu
 // component forcing the children of Menu to be either a SubMenu component or
 // a Menu Item component. It's not that bad. Really.
 const DesktopNavRight = ({ handleMenuClick, logout, selectedKeys, session, isAdmin, isTeacher }) => (
-  <div className="Nav--desktop__right">
+  <DesktopNavRightWrapper className="Nav--desktop__right">
     <Menu
       className="Nav--desktop__right__menu"
       selectedKeys={selectedKeys}
@@ -105,7 +111,7 @@ const DesktopNavRight = ({ handleMenuClick, logout, selectedKeys, session, isAdm
             </Item>
       }
     </Menu>
-  </div>
+  </DesktopNavRightWrapper>
 );
 
 export default enhance(DesktopNavRight);

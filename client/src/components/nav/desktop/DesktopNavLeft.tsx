@@ -1,16 +1,26 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { LogoImage, LogoText } from 'components/logo';
+import { LogoImage, LogoText } from 'components';
+import styled from 'styled-components'
+
+const DesktopNavLeftWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+const DesktopNavLeftInner = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 const DesktopNavLeft = () => (
-  <div className="Nav--desktop__left">
+  <DesktopNavLeftWrapper className="Nav--desktop__left">
     <Link to="/">
-      <div className="Nav--desktop__left__inner">
+      <DesktopNavLeftInner>
         <LogoImage style={{ width: '24px' }} />
         <LogoText style={{ fontSize: '24px', marginLeft: '15px', color: 'black' }} />
-      </div>
+      </DesktopNavLeftInner>
     </Link>
-  </div>
+  </DesktopNavLeftWrapper>
 );
 
 export default DesktopNavLeft;
