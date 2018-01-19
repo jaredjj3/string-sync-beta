@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { compose, mapProps, withProps, shouldUpdate } from 'recompose';
-import * as classNames from 'classnames';
+import { compose, mapProps, shouldUpdate } from 'recompose';
 import { withTab } from 'enhancers';
 import { ScoreLine, CaretAdapter, ScrollManager } from './';
 import { Line } from 'services';
 import { hash } from 'ssUtil';
+import styled from 'styled-components';
 
 const enhance = compose(
   withTab,
@@ -13,16 +13,14 @@ const enhance = compose(
     withCaret: props.withCaret,
     allowOverflow: props.allowOverflow
   })),
-  withProps(props => ({
-    rootClassNames: classNames(
-      'Score',
-      {
-        'Score--noScroll': !props.allowOverflow
-      }
-    )
-  })),
   shouldUpdate((currProps, nextProps) => nextProps.tab && !nextProps.tab.error)
 );
+
+const ScoreWrapper = (styled.div as any)`
+  background: white;
+  height: 260px;
+  overflow: ${props => props.allowOverflow ? '' : 'hidden'}
+`;
 
 const ScoreLines = ({ tab, withCaret }) => {
   if (!tab) {
@@ -41,15 +39,15 @@ const ScoreLines = ({ tab, withCaret }) => {
   }
 };
 
-const Score = ({ rootClassNames, tab, withCaret }) => (
-  <div id="Score" className={rootClassNames}>
+const Score = ({ rootClassNames, tab, withCaret, allowOverflow }) => (
+  <ScoreWrapper id="Score" allowOverflow={allowOverflow}>
     {withCaret ? <CaretAdapter /> : null}
     <ScrollManager />
     <ScoreLines
       tab={tab}
       withCaret={withCaret}
     />
-  </div>
+  </ScoreWrapper>
 );
 
 export default enhance(Score);
