@@ -39,8 +39,8 @@ const App = ({ store }) => (
               <NotificationSystem />
               <ViewportManager />
               <UserProcessor />
-              <LoadingMask />
             </AppFunctionality>
+            <LoadingMask />
             <Routes />
           </AppContent>
         </LocaleProvider>

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { compose, withState, withHandlers, withProps, lifecycle } from 'recompose';
 import * as classNames from 'classnames';
 import { LogoImage, Footer } from 'components';
-import styled from 'styled-components';
 
 const enhance = compose(
   withState('isVisible', 'setVisibility', false),
