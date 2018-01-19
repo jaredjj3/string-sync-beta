@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { branch, renderNothing, compose, shouldUpdate } from 'recompose';
 import { withSession } from 'enhancers';
+import styled from 'styled-components';
 
 const showIfNotLoggedIn = branch(
   ({ isLoggedIn }) => !isLoggedIn,
@@ -16,6 +17,25 @@ const enhance = compose(
   ))
 );
 
+const ActionBarNav = styled.nav``;
+const ActionBarLinks = styled.ul`
+  list-style: none;
+  list-style-type: none;
+  padding-left: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+`;
+const ActionBarLinkItem = styled.li`
+  font-size: 14px;
+  font-weight: 200;
+  margin: 0 14px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 const LoginLinkListItem = showIfNotLoggedIn(() => (
   <li>
     <Link to="/login">
@@ -25,21 +45,21 @@ const LoginLinkListItem = showIfNotLoggedIn(() => (
 ));
 
 const ActionBar = ({ session }) => (
-  <nav className="Landing--desktop__altActionBar">
-    <ul className="AltActionBar__links">
-      <li>
+  <ActionBarNav>
+    <ActionBarLinks>
+      <ActionBarLinkItem>
         <Link to="/about/overview">
           about
         </Link>
-      </li>
-      <li>
+      </ActionBarLinkItem>
+      <ActionBarLinkItem>
         <Link to="/library">
           library
         </Link>
-      </li>
+      </ActionBarLinkItem>
       <LoginLinkListItem isLoggedIn={session.state.isLoggedIn} />
-    </ul>
-  </nav>
+    </ActionBarLinks>
+  </ActionBarNav>
 );
 
 export default enhance(ActionBar);
