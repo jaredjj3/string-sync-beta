@@ -2,6 +2,7 @@ import * as React from 'react';
 import Youtube from 'react-youtube';
 import { Link } from 'react-router-dom';
 import { Button } from 'antd';
+import styled from 'styled-components';
 
 const youtubeOptions = {
   playerVars: {
@@ -16,22 +17,46 @@ const youtubeOptions = {
   }
 };
 
+const VIDEO_HEIGHT_PX = 800;
+const BASE_WIDTH_PX = 16 * VIDEO_HEIGHT_PX / 9;
+
+const DesktopLandingConcept = styled.div`
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  iframe {
+    width: 100vw;
+    height: ${VIDEO_HEIGHT_PX}px;
+  }
+`;
+const DesktopLandingConceptLink = styled.div`
+  margin-top: 5px;
+  text-align: center;
+`;
+const OrDiv = styled.div`
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
+
 const Section2 = () => (
   <section>
-    <div className="Landing--desktop__concept">
+    <DesktopLandingConcept>
       <Youtube
         opts={youtubeOptions}
         videoId="aJS7OIFPUQc"
         onPlay={() => window.scrollTo(null, 92)}
       />
-      <div className="Landing--desktop__concept__link">
+      <DesktopLandingConceptLink>
         <Link to="/n/976">
           Learn <em>Serenading a glass of water in the dark</em>
         </Link>
-      </div>
-      <div style={{ marginTop: '10px', marginBottom: '10px' }}>
+      </DesktopLandingConceptLink>
+      <OrDiv>
         or
-      </div>
+      </OrDiv>
       <div>
         <Button type="primary">
           <Link to="/library">
@@ -39,7 +64,7 @@ const Section2 = () => (
           </Link>
         </Button>
       </div>
-    </div>
+    </DesktopLandingConcept>
   </section>
 );
 
