@@ -1,11 +1,8 @@
 import * as React from 'react';
-import { compose } from 'recompose';
-import { withClassNames } from 'enhancers';
+import styled from 'styled-components';
 
-const enhance = compose(
-  withClassNames(['Overlap'])
-);
+const Overlap = styled.div`
+  position: relative;
+`;
 
-const Overlap = (props) => <div {...props} />;
-
-export default enhance(Overlap);
+export default Overlap as any;

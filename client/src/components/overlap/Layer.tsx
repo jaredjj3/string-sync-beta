@@ -1,22 +1,12 @@
 import * as React from 'react';
-import { compose, mapProps } from 'recompose';
-import * as classNames from 'classnames';
-import { omit } from 'lodash';
+import styled from 'styled-components';
 
-const enhance = compose(
-  mapProps(props => {
-    const restProps = omit(props, ['className']);
-    const className = classNames(
-      'Layer',
-      props.className
-        ? props.className.split(/\s+/)
-        : null
-    );
+const Layer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+`;
 
-    return { ...restProps, className };
-  })
-);
-
-const Layer = (props) => <div {...props} />;
-
-export default enhance(Layer);
+export default Layer as any;
