@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 const DesktopNavLeftWrapper = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
 `;
 const DesktopNavLeftInner = styled.div`
   display: flex;

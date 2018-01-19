@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const DesktopNavWrapper = styled.div`
   font-weight: 200;
-  border-bottom: 1px solid #fcfcfc;
+  border-bottom: 1px solid lightgray;
   display: flex;
   justify-content: center;
   width: 100vw;
