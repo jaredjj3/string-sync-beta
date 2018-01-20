@@ -3,7 +3,7 @@ import { Row, Col } from 'antd';
 import { Loop, Scrubber, Play, ToggleControls } from './';
 import styled from 'styled-components';
 
-const NotationControlsWrapper = styled.div`
+const NotationControlsOuter = styled.div`
   margin-top: 15px;
 `;
 const NotationControlsContentAside = styled.div`
@@ -43,7 +43,7 @@ const ControlRow2 = () => (
 );
 
 const NotationControls = () => (
-  <NotationControlsWrapper className="NotationControls__content">
+  <NotationControlsOuter className="NotationControls__content">
     <Row type="flex" align="middle" justify="center">
       <Col span={2}>
       <Row
@@ -66,7 +66,7 @@ const NotationControls = () => (
         </Row>
       </Col>
     </Row>
-  </NotationControlsWrapper>
+  </NotationControlsOuter>
 );
 
 export default NotationControls;

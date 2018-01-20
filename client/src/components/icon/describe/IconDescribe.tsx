@@ -7,7 +7,7 @@ interface IconDescribeProps {
   description: string;
 }
 
-const IconDescribeWrapper = styled.span`
+const IconDescribeOuter = styled.span`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,10 +15,10 @@ const IconDescribeWrapper = styled.span`
 `;
 
 const IconDescribe = ({ type, description }: IconDescribeProps) => (
-  <IconDescribeWrapper className="IconDescribe">
+  <IconDescribeOuter className="IconDescribe">
     <Icon type={type} />
     <span>{description}</span>
-  </IconDescribeWrapper>
+  </IconDescribeOuter>
 );
 
 export default IconDescribe;

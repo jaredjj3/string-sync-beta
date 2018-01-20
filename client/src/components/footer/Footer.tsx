@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-const FooterWrapper = styled.div`
+const FooterOuter = styled.div`
   width: 100%;
 `;
 const FooterInner = styled.div`
@@ -14,7 +14,7 @@ const FooterInner = styled.div`
 `;
 
 const Footer = () => (
-  <FooterWrapper>
+  <FooterOuter>
     <FooterInner>
       <span>StringSync © 2017 Created by </span>
       <span>
@@ -23,7 +23,7 @@ const Footer = () => (
         </a>
       </span>
     </FooterInner>
-  </FooterWrapper>
+  </FooterOuter>
 );
 
 export default Footer;

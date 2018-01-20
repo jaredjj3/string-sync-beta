@@ -39,7 +39,7 @@ const enhance = compose(
   })
 );
 
-const DesktopNavRightWrapper = styled.div`
+const DesktopNavRightOuter = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
@@ -48,7 +48,7 @@ const DesktopNavRightWrapper = styled.div`
 // component forcing the children of Menu to be either a SubMenu component or
 // a Menu Item component. It's not that bad. Really.
 const DesktopNavRight = ({ handleMenuClick, logout, selectedKeys, session, isAdmin, isTeacher }) => (
-  <DesktopNavRightWrapper className="Nav--desktop__right">
+  <DesktopNavRightOuter className="Nav--desktop__right">
     <Menu
       className="Nav--desktop__right__menu"
       selectedKeys={selectedKeys}
@@ -111,7 +111,7 @@ const DesktopNavRight = ({ handleMenuClick, logout, selectedKeys, session, isAdm
             </Item>
       }
     </Menu>
-  </DesktopNavRightWrapper>
+  </DesktopNavRightOuter>
 );
 
 export default enhance(DesktopNavRight);

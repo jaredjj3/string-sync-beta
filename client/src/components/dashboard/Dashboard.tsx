@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-const DashboardWrapper = styled.div`
+const DashboardOuter = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
@@ -14,11 +14,11 @@ const DashboardInner = styled.div`
 
 
 const Dashboard = () => (
-  <DashboardWrapper>
+  <DashboardOuter>
     <DashboardInner>
       Dashboard
     </DashboardInner>
-  </DashboardWrapper>
+  </DashboardOuter>
 );
 
 export default Dashboard;

@@ -3,7 +3,7 @@ import { DesktopNavLeft, DesktopNavRight } from './';
 import { Row, Col } from 'antd';
 import styled from 'styled-components';
 
-const DesktopNavWrapper = styled.div`
+const DesktopNavOuter = styled.div`
   font-weight: 200;
   border-bottom: 1px solid lightgray;
   display: flex;
@@ -21,7 +21,7 @@ const DesktopNavInner = styled.div`
 `;
 
 const DesktopNav = () => (
-  <DesktopNavWrapper className="Nav--desktop">
+  <DesktopNavOuter className="Nav--desktop">
     <DesktopNavInner className="Nav--desktop__inner">
       <Row type="flex" justify="space-between" align="middle">
         <Col xs={0} sm={0} md={12} lg={12}>
@@ -32,7 +32,7 @@ const DesktopNav = () => (
         </Col>
       </Row>
     </DesktopNavInner>
-  </DesktopNavWrapper>
+  </DesktopNavOuter>
 );
 
 export default DesktopNav;

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { compose, mapProps, withState, withProps, lifecycle } from 'recompose';
 import { withFretboard } from 'enhancers';
 import * as classNames from 'classnames';
+import styled from 'styled-components';
 
 const enhance = compose(
   withFretboard,
@@ -43,6 +44,34 @@ const enhance = compose(
   })
 );
 
-const GuitarString = ({ rootClassNames }) => <div className={rootClassNames} />;
+const GuitarStringOuter = styled.div`
+  .GuitarString {
+    width: 100vw;
+    background: #aaa;
+    opacity: 0.4;
+  }
+
+  .GuitarString--hidden {
+    transition: all 200ms ease-in;
+  }
+
+  .GuitarString--thin {
+    height: 1px;
+  }
+
+  .GuitarString--thick {
+    height: 2px;
+  }
+
+  .GuitarString--pressed {
+    background: #fc354c;
+  }
+`;
+
+const GuitarString = ({ rootClassNames }) => (
+  <GuitarStringOuter>
+    <div className={rootClassNames}></div>
+  </GuitarStringOuter>
+);
 
 export default enhance(GuitarString);

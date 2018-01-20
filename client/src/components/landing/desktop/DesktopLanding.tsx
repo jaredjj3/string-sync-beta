@@ -18,7 +18,7 @@ const enhance = compose(
   })
 );
 
-const DesktopLandingWrapper = styled.div`
+const DesktopLandingOuter = styled.div`
   width: 100%;
   margin-top: 20px;
   display: flex;
@@ -31,7 +31,7 @@ const DesktopLandingInner = styled.div`
 `;
 
 const DesktopLanding = () => (
-  <DesktopLandingWrapper className="Landing--desktop">
+  <DesktopLandingOuter className="Landing--desktop">
     <Gradient />
     <DesktopLandingInner>
       <ActionBar />
@@ -39,7 +39,7 @@ const DesktopLanding = () => (
       <Section2 />
       <Footer />
     </DesktopLandingInner>
-  </DesktopLandingWrapper>
+  </DesktopLandingOuter>
 );
 
 export default enhance(DesktopLanding);

@@ -4,7 +4,7 @@ import { Overlap, Layer } from 'components';
 import { FretMarker } from './';
 import styled from 'styled-components';
 
-const FretWrapper = styled.div`
+const FretOuter = styled.div`
   .Fret {
     background: black;
     border-right: 1px solid rgba(211, 211, 211, 0.2);
@@ -36,7 +36,7 @@ const FretWrapper = styled.div`
 `;
 
 const Fret = ({ fret, dots }) => (
-  <FretWrapper>
+  <FretOuter>
     <Overlap className="Fret">
       <Layer className="Fret__fretMarkers" style={{ zIndex: '10' }}>
         {
@@ -55,7 +55,7 @@ const Fret = ({ fret, dots }) => (
         }
       </Layer>
     </Overlap>
-  </FretWrapper>
+  </FretOuter>
 );
 
 export default Fret;

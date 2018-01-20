@@ -14,7 +14,7 @@ const enhance = compose(
   })
 );
 
-const NotationControlsMenuWrapper = styled.div`
+const NotationControlsMenuOuter = styled.div`
   position: fixed;
   right: 0;
   top: 0;
@@ -41,13 +41,13 @@ const ToggleControls = ({ collapsed, handleClick }) => (
       onClick={handleClick}
       className="ToggleControls__menuIcon"
     />
-    <NotationControlsMenuWrapper>
+    <NotationControlsMenuOuter>
       <NotationControlsMenuMask
         onClick={handleClick}
         collapsed={collapsed}
       />
       <NotationControlsMenu collapsed={collapsed} />
-    </NotationControlsMenuWrapper>
+    </NotationControlsMenuOuter>
   </span>
 );
 

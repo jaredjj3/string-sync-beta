@@ -2,7 +2,7 @@ import * as React from 'react';
 import { GuitarString } from './'
 import styled from 'styled-components';
 
-const GuitarStringsWrapper = styled.div`
+const GuitarStringsOuter = styled.div`
   .GuitarStrings {
     position: absolute;
     top: 0;
@@ -16,7 +16,7 @@ const GuitarStringsWrapper = styled.div`
 const GuitarStringsWrapped = styled.div``;
 
 const GuitarStrings = () => (
-  <GuitarStringsWrapper>
+  <GuitarStringsOuter>
     <GuitarStringsWrapped className="GuitarStrings">
       {
         Array(6).fill(null).map((_, string) => (
@@ -27,7 +27,7 @@ const GuitarStrings = () => (
         ))
       }
     </GuitarStringsWrapped>
-  </GuitarStringsWrapper>
+  </GuitarStringsOuter>
 );
 
 export default GuitarStrings;

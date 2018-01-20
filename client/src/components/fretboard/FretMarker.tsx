@@ -52,7 +52,7 @@ const enhance = compose(
   })
 );
 
-const FretMarkerWrapper = styled.div`
+const FretMarkerOuter = styled.div`
   .FretMarker {
     display: flex;
     justify-content: center;
@@ -89,9 +89,9 @@ const FretMarkerWrapper = styled.div`
 `;
 
 const FretMarker = ({ rootClassNames }) => (
-  <FretMarkerWrapper>
+  <FretMarkerOuter>
     <div className={rootClassNames}></div>
-  </FretMarkerWrapper>
+  </FretMarkerOuter>
 );
 
 export default enhance(FretMarker);

@@ -3,7 +3,7 @@ import { NavBar } from 'antd-mobile';
 import { MobileNavLeft, MobileNavRight, MobileNavCenter } from './';
 import styled from 'styled-components';
 
-const NavWrapper = styled.div`
+const NavOuter = styled.div`
   position: fixed;
   bottom: 0;
   z-index: 10;
@@ -22,7 +22,7 @@ const NavWrapper = styled.div`
 `;
 
 const MobileNav = () => (
-  <NavWrapper className="Nav--mobile">
+  <NavOuter className="Nav--mobile">
     <NavBar
       mode="light"
       className="Nav--mobile__navBar"
@@ -31,7 +31,7 @@ const MobileNav = () => (
     >
       <MobileNavCenter />
     </NavBar>
-  </NavWrapper>
+  </NavOuter>
 );
 
 export default MobileNav;

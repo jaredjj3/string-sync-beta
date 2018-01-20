@@ -34,7 +34,7 @@ const enhance = compose(
   }))
 );
 
-const FretboardWrapper = styled.div`
+const FretboardOuter = styled.div`
   background: black;
   color: white;
 
@@ -81,7 +81,7 @@ const FretboardIndicators = () => {
 };
 
 const Fretboard = ({ rootClassNames, fretboard }) => (
-  <FretboardWrapper>
+  <FretboardOuter>
     <FretboardInner className={rootClassNames}>
       <FretboardAdapter />
       {
@@ -100,7 +100,7 @@ const Fretboard = ({ rootClassNames, fretboard }) => (
           : null
       }
     </FretboardInner>
-  </FretboardWrapper>
+  </FretboardOuter>
 );
 
 export default enhance(Fretboard);
