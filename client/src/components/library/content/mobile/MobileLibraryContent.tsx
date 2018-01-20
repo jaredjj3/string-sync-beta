@@ -4,6 +4,41 @@ import { withNotations } from 'enhancers';
 import { LogoImage, LogoText } from 'components';
 import { Affix } from 'antd';
 import LibraryGrid from './LibraryGrid';
+import styled from 'styled-components';
+
+const CONTENT_TITLE_HEIGHT_PX = 50;
+
+const MobileLibraryOuter = styled.div`
+  margin-bottom: 55px;
+
+  .Library--mobile__header__logo {
+    margin-top: 10px;
+  }
+
+  .Library--mobile__header {
+    width: 100%;
+    text-align: center;
+  }
+
+  .Library--mobile__tag {
+    background: white;
+    height: ${CONTENT_TITLE_HEIGHT_PX}px;
+    box-sizing: border-box;
+    content: '';
+  }
+
+  .Library--mobile__tag__title {
+    text-align: center;
+    z-index: 11;
+    background: white;
+    height: ${CONTENT_TITLE_HEIGHT_PX}px;
+    line-height: ${CONTENT_TITLE_HEIGHT_PX}px;
+    font-size: 16px;
+    font-weight: 100;
+    letter-spacing: 3px;
+    box-sizing: border-box;
+  }
+`;
 
 const ContentHeader = () => (
   <div className="Library--mobile--contentHeader">
@@ -37,13 +72,13 @@ const TagContent = ({ sortedTags, notationsByTag }) => (
 );
 
 const MobileLibraryContent = ({ sortedTags, notationsByTag }) => (
-  <div className="Library--mobile">
+  <MobileLibraryOuter>
     <ContentHeader />
     <TagContent
       sortedTags={sortedTags}
       notationsByTag={notationsByTag}
     />
-  </div>
+  </MobileLibraryOuter>
 );
 
 export default MobileLibraryContent;
