@@ -5,6 +5,7 @@ import { FretboardAdapter, Frets, GuitarStrings } from './';
 import { withViewport, withFretboard } from 'enhancers';
 import { Overlap, Layer } from 'components';
 import * as classNames from 'classnames';
+import styled from 'styled-components';
 
 const enhance = compose(
   withViewport,
@@ -33,6 +34,28 @@ const enhance = compose(
   }))
 );
 
+const FretboardWrapper = styled.div`
+  background: black;
+  color: white;
+
+  .Fretboard--desktop {
+    height: 185px;
+
+    .Fret, .GuitarStrings {
+      height: 164px;
+    }
+  }
+
+  .Fretboard--mobile {
+    height: 135px;
+  
+    .Fret, .GuitarStrings {
+      height: 114px;
+    }
+  }
+`;
+const FretboardInner = styled.div``;
+
 const FretboardIndicators = () => {
   const indicators = Frets.DOTS.map((dots, fret) => (
     dots > 0 || fret === 0 ? fret.toString() : null
@@ -54,24 +77,26 @@ const FretboardIndicators = () => {
 };
 
 const Fretboard = ({ rootClassNames, fretboard }) => (
-  <div className={rootClassNames}>
-    <FretboardAdapter />
-    {
-      fretboard
-        ? <div className="Fretboard__afterFretboardServiceMount">
-            <FretboardIndicators />
-            <Overlap>
-              <Layer>
-                <Frets />
-              </Layer>
-              <Layer>
-                <GuitarStrings />
-              </Layer>
-            </Overlap>
-          </div>
-        : null
-    }
-  </div>
+  <FretboardWrapper>
+    <FretboardInner className={rootClassNames}>
+      <FretboardAdapter />
+      {
+        fretboard
+          ? <div className="Fretboard__afterFretboardServiceMount">
+              <FretboardIndicators />
+              <Overlap>
+                <Layer>
+                  <Frets />
+                </Layer>
+                <Layer>
+                  <GuitarStrings />
+                </Layer>
+              </Overlap>
+            </div>
+          : null
+      }
+    </FretboardInner>
+  </FretboardWrapper>
 );
 
 export default enhance(Fretboard);
