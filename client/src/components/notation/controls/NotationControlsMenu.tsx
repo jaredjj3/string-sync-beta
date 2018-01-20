@@ -3,6 +3,7 @@ import { compose, withProps } from 'recompose';
 import { withRouter, Link } from 'react-router-dom';
 import { Menu, Icon, Switch } from 'antd';
 import { withSession, withNotation } from 'enhancers';
+import styled from 'styled-components';
 
 const { SubMenu, ItemGroup, Item } = Menu;
 
@@ -22,6 +23,17 @@ const enhance = compose (
     });
   })
 );
+
+const NotationControlsMenuWrapper = styled.div`
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 20;
+
+  .ant-menu-inline-collapsed {
+    width: 0;
+  }
+`;
 
 const NotationControlsMenu = ({ match, showEditItem, collapsed }) => (
   <Menu

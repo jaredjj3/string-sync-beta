@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { compose, withState, withProps, withHandlers } from 'recompose';
+import { compose, withState, withHandlers } from 'recompose';
 import { Icon } from 'antd';
 import NotationControlsMenu from './NotationControlsMenu';
 import * as classNames from 'classnames';
+import styled from 'styled-components';
 
 const enhance = compose(
   withState('collapsed', 'setCollapsed', true),
@@ -10,31 +11,43 @@ const enhance = compose(
     handleClick: props => event => {
       props.setCollapsed(!props.collapsed);
     }
-  }),
-  withProps(props => ({
-    maskClassNames: classNames(
-      'NotationControlsMenuMask',
-      {
-        'NotationControlsMenuMask--hidden': props.collapsed
-      }
-    )
-  }))
+  })
 );
 
-const ToggleControls = ({ collapsed, maskClassNames, handleClick }) => (
+const NotationControlsMenuWrapper = styled.div`
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 20;
+
+  .ant-menu-inline-collapsed {
+    width: 0;
+  }
+`;
+const NotationControlsMenuMask = (styled.div as any)`
+  background: black;
+  opacity: ${props => props.collapsed ? 0 : 0.65};
+  width: 100vw;
+  height: 100vh;
+  z-index: ${props => props.collapsed ? -1 : 19};;
+  display: ${props => props.collapsed ? 'none' : 'block'};
+  transition: opacity 200ms ease-in;
+`;
+
+const ToggleControls = ({ collapsed, handleClick }) => (
   <span className="ToggleControls">
     <Icon
       type="setting"
       onClick={handleClick}
       className="ToggleControls__menuIcon"
     />
-    <div className="NotationControlsMenuContainer">
-      <div
+    <NotationControlsMenuWrapper>
+      <NotationControlsMenuMask
         onClick={handleClick}
-        className={maskClassNames}
+        collapsed={collapsed}
       />
       <NotationControlsMenu collapsed={collapsed} />
-    </div>
+    </NotationControlsMenuWrapper>
   </span>
 );
 

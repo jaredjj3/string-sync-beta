@@ -1,6 +1,24 @@
 import * as React from 'react';
 import { Row, Col } from 'antd';
 import { Loop, Scrubber, Play, ToggleControls } from './';
+import styled from 'styled-components';
+
+const NotationControlsWrapper = styled.div`
+  margin-top: 15px;
+`;
+const NotationControlsContentAside = styled.div`
+  .Play, .Pause,
+  .ToggleControls__menuIcon {
+    padding: 15px;
+    font-size: 2.5em;
+    font-weight: 100;
+    cursor: pointer;
+  }
+
+  &:active {
+    text-shadow: 0 0 30px white;
+  }
+`;
 
 const ControlRow1 = () => (
   <Row
@@ -25,7 +43,7 @@ const ControlRow2 = () => (
 );
 
 const NotationControls = () => (
-  <div className="NotationControls__content">
+  <NotationControlsWrapper className="NotationControls__content">
     <Row type="flex" align="middle" justify="center">
       <Col span={2}>
       <Row
@@ -48,7 +66,7 @@ const NotationControls = () => (
         </Row>
       </Col>
     </Row>
-  </div>
+  </NotationControlsWrapper>
 );
 
 export default NotationControls;
