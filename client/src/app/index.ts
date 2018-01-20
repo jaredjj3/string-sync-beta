@@ -1,7 +1,6 @@
 // import order matters!
 import 'antd-mobile/dist/antd-mobile.less';
 import 'antd/dist/antd.less';
-import './_loadingMask.less';
 import 'styles/_form.less';
 import 'styles/_print.less';
 
