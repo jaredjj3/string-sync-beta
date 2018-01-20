@@ -2,6 +2,7 @@ import * as React from 'react';
 import { compose, mapProps, withState, lifecycle, withProps } from 'recompose';
 import { withFretboard, withViewport } from 'enhancers';
 import * as classNames from 'classnames';
+import styled from 'styled-components';
 
 const enhance = compose(
   withFretboard,
@@ -51,6 +52,46 @@ const enhance = compose(
   })
 );
 
-const FretMarker = ({ rootClassNames }) => <div className={rootClassNames} />;
+const FretMarkerWrapper = styled.div`
+  .FretMarker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+    margin: 3px 1px;
+    background-color: #B3FB66;
+
+    &.FretMarker--mobile {
+      width: 12px;
+      height: 12px;
+      font-size: 0;
+    }
+
+    &.FretMarker--pressed {
+      background-color: #B3FB66;
+      opacity: 1;
+    }
+
+    &.FretMarker--lit {
+      background-color: rgb(251, 246, 102);
+      opacity: 0.25;
+      box-shadow: 0 0 2px 1px rgb(251, 246, 102);
+    }
+
+    &.FretMarker--hidden {
+      opacity: 0;
+      transition: all 200ms ease-in;
+    }
+  }
+`;
+
+const FretMarker = ({ rootClassNames }) => (
+  <FretMarkerWrapper>
+    <div className={rootClassNames}></div>
+  </FretMarkerWrapper>
+);
 
 export default enhance(FretMarker);
