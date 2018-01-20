@@ -5,6 +5,7 @@ import { Gradient, Video, Tab, Fretboard, MaestroAdapter } from 'components';
 import { NotationShowBanner } from './';
 import { NotationControls } from 'components';
 import { toTick, toTimeMs } from 'ssUtil';
+import styled from 'styled-components';
 
 const enhance = compose(
   withNotation,
@@ -42,20 +43,42 @@ const enhance = compose(
   })
 );
 
+const NotationShowOuter = styled.div`
+  .NotationShow {
+    color: white;
+    overflow-x: hidden;
+
+    .Video {
+      background: black;
+      height: 30vh;
+      width: 100%;
+
+      iframe {
+        height: 100%;
+        width: 100%;
+        min-height: 30vh;
+      }
+    }
+  }
+`;
+const NotationShowInner = styled.div``
+
 const NotationShow = ({ isFetching, notation }) => (
-  <div className="NotationShow">
-    <Gradient />
-    <MaestroAdapter />
-    <NotationShowBanner
-      isFetching={isFetching}
-      songName={notation.state.songName}
-      transcriber={notation.state.transcriber}
-    />
-    <Video withInitializer />
-    <Fretboard />
-    <Tab withCaret />
-    <NotationControls />
-  </div>
+  <NotationShowOuter>
+    <NotationShowInner className="NotationShow">
+      <Gradient />
+      <MaestroAdapter />
+      <NotationShowBanner
+        isFetching={isFetching}
+        songName={notation.state.songName}
+        transcriber={notation.state.transcriber}
+      />
+      <Video withInitializer />
+      <Fretboard />
+      <Tab withCaret />
+      <NotationControls />
+      </NotationShowInner>
+  </NotationShowOuter>
 );
 
 export default enhance(NotationShow);

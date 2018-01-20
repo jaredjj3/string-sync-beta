@@ -3,6 +3,7 @@ import { compose, withProps } from 'recompose';
 import { Row, Col } from 'antd';
 import { Link } from 'react-router-dom';
 import { IconDescribe } from 'components';
+import styled from 'styled-components';
 
 const enhance = compose(
   withProps(props => ({
@@ -12,21 +13,35 @@ const enhance = compose(
   }))
 );
 
+const NotationShowBannerOuter = styled.div`
+  padding: 20px;
+
+  i {
+    font-size: 20px;
+  }
+`;
+const BannerTextOuter = styled.div`
+  text-align: center;
+  font-size: 16px;
+`;
+
 const NotationShowBanner = ({ bannerText }) => (
-  <div className="NotationShowBanner">
+  <NotationShowBannerOuter>
     <Row type="flex" align="middle" justify="center">
       <Col span={5}>
         <Link to="/library">
           <IconDescribe type="close" description="back" />
         </Link>
       </Col>
-      <Col className="NotationShowBanner__text" span={14}>
-        {bannerText}
+      <Col span={14}>
+        <BannerTextOuter>
+          {bannerText}
+        </BannerTextOuter>
       </Col>
       <Col span={5}>
       </Col>
     </Row>
-  </div>
+  </NotationShowBannerOuter>
 );
 
 export default enhance(NotationShowBanner);
