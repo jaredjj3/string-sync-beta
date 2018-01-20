@@ -20,6 +20,7 @@ const enhance = compose(
   }),
   withState('lit', 'setLit', false),
   withState('pressed', 'setPressed', false),
+  withState('justPressed', 'setJustPressed', false),
   withProps(props => ({
     rootClassNames: classNames(
       'FretMarker',
@@ -27,7 +28,8 @@ const enhance = compose(
         'FretMarker--lit': props.lit && !props.pressed,
         'FretMarker--pressed': props.pressed,
         'FretMarker--hidden': !props.lit && !props.pressed,
-        'FretMarker--mobile': props.viewportType === 'MOBILE'
+        'FretMarker--justPressed': props.pressed && props.justPressed,
+        'FretMarker--mobile': props.viewportType === 'MOBILE',
       }
     )
   })),
@@ -84,6 +86,10 @@ const FretMarkerOuter = styled.div`
     &.FretMarker--hidden {
       opacity: 0;
       transition: all 200ms ease-in;
+    }
+
+    &.FretMarker--justPressed {
+      border: 2px solid rgba(0, 0, 0, 0.5);
     }
   }
 `;
