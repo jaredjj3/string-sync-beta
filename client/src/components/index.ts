@@ -1,3 +1,4 @@
+export * from './overlap';
 export * from './about';
 export * from './dashboard';
 export * from './footer';
@@ -10,7 +11,6 @@ export * from './logo';
 export * from './maestro';
 export * from './nav';
 export * from './notation';
-export * from './overlap';
 export * from './session';
 export * from './tab';
 export * from './user';
