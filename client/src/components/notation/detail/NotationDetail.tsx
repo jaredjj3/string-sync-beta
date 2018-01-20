@@ -1,12 +1,17 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Tag, Card } from 'antd';
+import styled from 'styled-components';
 
 const { Meta } = Card;
 
 interface NotationDetailProps {
   notation: Notation | PresentationalNotation;
 }
+
+const NotationDetailTagsOuter = styled.div`
+  margin-top: 5px;
+`;
 
 const Tags = ({ notation }) => (
   notation.tags.map(tag => <Tag key={`tag-${tag}-${notation.id}`}>{tag}</Tag>)
@@ -17,9 +22,9 @@ const MetaDescription = ({ notation }) => (
     <div className="NotationDetail__metaDescription__transcriber">
       {notation.transcriber.username}
     </div>
-    <div className="NotationDetail__metaDescription__tags">
+    <NotationDetailTagsOuter>
       <Tags notation={notation} />
-    </div>
+    </NotationDetailTagsOuter>
   </div>
 );
 
