@@ -63,7 +63,7 @@ const FretMarkerOuter = styled.div`
     width: 20px;
     height: 20px;
     font-size: 10px;
-    margin: 3px 1px;
+    margin: 3.5px 1px;
     background-color: #B3FB66;
 
     &.FretMarker--mobile {
