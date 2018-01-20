@@ -1,5 +1,3 @@
-import './_notationControls.less';
-
 export { default as Loop } from './Loop';
 export { default as NotationControls } from './NotationControls';
 export { default as NotationControlsMenu } from './NotationControlsMenu';

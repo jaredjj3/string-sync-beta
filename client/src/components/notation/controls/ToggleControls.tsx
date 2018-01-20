@@ -14,7 +14,7 @@ const enhance = compose(
   })
 );
 
-const NotationControlsMenuOuter = styled.div`
+const NotationControlsMenuOuter = (styled.div as any)`
   position: fixed;
   right: 0;
   top: 0;
@@ -23,16 +23,18 @@ const NotationControlsMenuOuter = styled.div`
   .ant-menu-inline-collapsed {
     width: 0;
   }
+
+  .NotationControlsMenuMask {
+    background: black;
+    opacity: ${props => props.collapsed ? 0 : 0.65};
+    width: 100vw;
+    height: 100vh;
+    z-index: ${props => props.collapsed ? -1 : 19};;
+    display: ${props => props.collapsed ? 'none' : 'block'};
+    transition: opacity 200ms ease-in;
+  }
 `;
-const NotationControlsMenuMask = (styled.div as any)`
-  background: black;
-  opacity: ${props => props.collapsed ? 0 : 0.65};
-  width: 100vw;
-  height: 100vh;
-  z-index: ${props => props.collapsed ? -1 : 19};;
-  display: ${props => props.collapsed ? 'none' : 'block'};
-  transition: opacity 200ms ease-in;
-`;
+const NotationControlsMenuMask = (styled.div as any)``;
 
 const ToggleControls = ({ collapsed, handleClick }) => (
   <span className="ToggleControls">
@@ -41,10 +43,10 @@ const ToggleControls = ({ collapsed, handleClick }) => (
       onClick={handleClick}
       className="ToggleControls__menuIcon"
     />
-    <NotationControlsMenuOuter>
+    <NotationControlsMenuOuter collapsed={collapsed}>
       <NotationControlsMenuMask
+        className="NotationControlsMenuMask"
         onClick={handleClick}
-        collapsed={collapsed}
       />
       <NotationControlsMenu collapsed={collapsed} />
     </NotationControlsMenuOuter>

@@ -5,18 +5,34 @@ import styled from 'styled-components';
 
 const NotationControlsOuter = styled.div`
   margin-top: 15px;
+
+  .VideoScrubber, .Loop {
+  .ant-slider-handle {
+      border-color: #fc354c;
+      margin-left: -18px;
+      margin-top: -11px;
+      width: 25px;
+      height: 25px;
+    }
+  }
 `;
-const NotationControlsContentAside = styled.div`
+const NotationControlsContentAsideRow = styled(Row)`
   .Play, .Pause,
   .ToggleControls__menuIcon {
     padding: 15px;
     font-size: 2.5em;
     font-weight: 100;
     cursor: pointer;
+
+    &:active {
+      text-shadow: 0 0 30px white;
+    }
   }
 
-  &:active {
-    text-shadow: 0 0 30px white;
+  & > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;
 
@@ -46,24 +62,18 @@ const NotationControls = () => (
   <NotationControlsOuter className="NotationControls__content">
     <Row type="flex" align="middle" justify="center">
       <Col span={2}>
-      <Row
-        className="NotationControls__content--aside"
-        type="flex" align="middle" justify="end"
-      >
+        <NotationControlsContentAsideRow type="flex" align="middle" justify="end">
           <Play />
-        </Row>
+        </NotationControlsContentAsideRow>
       </Col>
       <Col span={16}>
         <ControlRow1 />
         <ControlRow2 />
       </Col>
       <Col span={2}>
-        <Row
-          className="NotationControls__content--aside"
-          type="flex" align="middle" justify="start"
-          >
+        <NotationControlsContentAsideRow type="flex" align="middle" justify="start">
           <ToggleControls />
-        </Row>
+        </NotationControlsContentAsideRow>
       </Col>
     </Row>
   </NotationControlsOuter>
