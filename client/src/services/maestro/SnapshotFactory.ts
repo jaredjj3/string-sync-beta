@@ -65,8 +65,11 @@ class SnapshotFactory {
     if (note) {
       press = note.getGuitarPos();
 
-      const delta = tick - note.tickRange.start;
-      if (delta < 4800) {
+      // the justPress state should only last for 20% of the note duration
+      const { start, stop } = note.tickRange;
+      const delta = stop - start;
+      const justPressUntilTick = start + (delta * 0.2);
+      if (tick < justPressUntilTick) {
         justPress = note.getGuitarPos();
       }
 

@@ -89,7 +89,7 @@ const FretMarkerOuter = styled.div`
     }
 
     &.FretMarker--justPressed {
-      border: 2px solid rgba(0, 0, 0, 0.5);
+      border: 2px solid rgba(0, 0, 0, 0.75);
     }
   }
 `;

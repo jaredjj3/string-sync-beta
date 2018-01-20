@@ -33,6 +33,16 @@ class FretMarker {
     this.props.setPressed(false);
     return this;
   }
+
+  justPress(): FretMarker {
+    this.props.setJustPressed(true);
+    return this;
+  }
+
+  unJustPress(): FretMarker {
+    this.props.setJustPressed(false);
+    return this;
+  }
 }
 
 export default FretMarker;

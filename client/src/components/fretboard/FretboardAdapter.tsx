@@ -11,7 +11,8 @@ const enhance = compose(
       const { data } = window.ss.maestro.snapshot;
       const light = isEmpty(data.light) ? [] : data.light;
       const press = isEmpty(data.press) ? [] : data.press;
-      props.fretboard.state.instance.update(light, press);
+      const justPress = isEmpty(data.justPress) ? [] : data.justPress;
+      props.fretboard.state.instance.update(light, press, justPress);
     }
   }),
   withProps(props => {

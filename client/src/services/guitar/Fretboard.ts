@@ -24,13 +24,16 @@ class Fretboard {
   tuning: Tuning = Tuning.get('standard');
   lit: Set<FretboardComponent> = new Set();
   pressed: Set<FretboardComponent> = new Set();
+  justPressed: Set<FretMarker> = new Set();
 
-  update(lightPositions: Array<any>, pressPositions: Array<any>): Fretboard {
+  update(lightPositions: Array<any>, pressPositions: Array<any>, justPressPositions: Array<any>): Fretboard {
     const lightComps = this.mapComponents(lightPositions, true);
     const pressComps = this.mapComponents(pressPositions, false);
+    const justPressComps = this.mapComponents(justPressPositions, true) as Array<FretMarker>;
 
     const lit = new Set();
     const pressed = new Set();
+    const justPressed = new Set();
 
     lightComps.forEach(comp => {
       comp.light();
@@ -42,15 +45,23 @@ class Fretboard {
       pressed.add(comp);
     });
 
+    justPressComps.forEach(comp => {
+      comp.justPress();
+      justPressed.add(comp);
+    })
+
     // Unlight the components not newly pressed nor lit.
     const shouldUnlight = Array.from(this.lit).filter(comp => !lit.has(comp));
     const shouldUnpress = Array.from(this.pressed).filter(comp => !pressed.has(comp));
+    const shouldUnjustPress = Array.from(this.justPressed).filter(comp => !justPressed.has(comp));
 
     shouldUnlight.forEach(comp => comp.unlight());
     shouldUnpress.forEach(comp => comp.unpress());
+    shouldUnjustPress.forEach(comp => comp.unJustPress());
 
     this.lit = lit;
     this.pressed = pressed;
+    this.justPressed = justPressed;
 
     return this;
   }
