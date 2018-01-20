@@ -2,6 +2,7 @@ import * as React from 'react';
 import { compose, withHandlers, withProps } from 'recompose';
 import { Input, Alert } from 'antd';
 import { withTab, withNotation } from 'enhancers';
+import styled from 'styled-components';
 
 const { TextArea } = Input;
 
@@ -24,6 +25,14 @@ const enhance = compose(
   })
 );
 
+const VextabStringEditorOuter = styled.div`
+  opacity: 1;
+
+  & > div {
+    margin-bottom: 20px;
+  }
+`;
+
 const ParseError = ({ parseError }) => {
   if (parseError) {
     return (
@@ -45,7 +54,7 @@ const ParseError = ({ parseError }) => {
 }
 
 const VextabStringEditor = ({ getParseError, notation, handleChange }) => (
-  <div className="VextabStringEditor">
+  <VextabStringEditorOuter>
     <ParseError parseError={getParseError()} />
     <TextArea
       placeholder="Write Vextab here..."
@@ -53,7 +62,7 @@ const VextabStringEditor = ({ getParseError, notation, handleChange }) => (
       autosize={{ minRows: 5, maxRows: 10 }}
       onChange={handleChange}
     />
-  </div>
+  </VextabStringEditorOuter>
 );
 
 export default enhance(VextabStringEditor);

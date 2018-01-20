@@ -4,6 +4,7 @@ import { compose, withProps, lifecycle } from 'recompose';
 import { Gradient, MaestroAdapter, Video, Nav, Fretboard, Tab } from 'components';
 import { withNotation } from 'enhancers';
 import { NotationEditor } from './';
+import styled from 'styled-components';
 
 const enhance = compose(
   withNotation,
@@ -15,8 +16,12 @@ const enhance = compose(
   })
 );
 
+const NotationEditOuter = styled.div`
+  background: black;
+`;
+
 const NotationEdit = () => (
-  <div className="NotationEdit">
+  <NotationEditOuter>
     <Gradient />
     <Nav />
     <MaestroAdapter />
@@ -27,7 +32,7 @@ const NotationEdit = () => (
       withCaret
       allowOverflow
     />
-  </div>
+  </NotationEditOuter>
 );
 
 export default enhance(NotationEdit);
