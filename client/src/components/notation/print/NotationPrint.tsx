@@ -4,6 +4,7 @@ import { compose, withProps, lifecycle } from 'recompose';
 import { withNotation, textWhileLoading } from 'enhancers';
 import { Gradient, Tab, IconDescribe } from 'components';
 import { Row } from 'antd';
+import styled from 'styled-components';
 
 const enhance = compose(
   withNotation,
@@ -18,6 +19,20 @@ const enhance = compose(
     }
   })
 );
+
+const NotationPrintOuter = styled.div`
+  margin: 50px;
+
+  .NotationPrint__header {
+    i {
+      font-size: 20px;
+    }
+
+    .IconDescribe {
+      margin-bottom: 50px;
+    }
+  }
+`;
 
 const NotationPrintHeader = ({ isLoading, notation }) => (
   <div className="NotationPrint__header">
@@ -44,7 +59,7 @@ const NotationPrintHeader = ({ isLoading, notation }) => (
 );
 
 const NotationPrint = ({ isLoading, notation }) => (
-  <div className="NotationPrint">
+  <NotationPrintOuter>
     <NotationPrintHeader
       isLoading={isLoading}
       notation={notation.state}
@@ -53,7 +68,7 @@ const NotationPrint = ({ isLoading, notation }) => (
       allowOverflow
       overrideWidth={900}
     />
-  </div>
+  </NotationPrintOuter>
 );
 
 export default enhance(NotationPrint);
