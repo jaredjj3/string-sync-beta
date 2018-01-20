@@ -5,6 +5,7 @@ declare interface SnapshotData {
   measure: any;
   note: any;
   light: Array<any>;
+  justPress: Array<any>;
   press: Array<any>;
   interpolator: any;
 }

@@ -8,6 +8,7 @@ class Snapshot {
     measure: null,
     note: null,
     light: [],
+    justPress: [],
     press: [],
     interpolator: () => 0
   };

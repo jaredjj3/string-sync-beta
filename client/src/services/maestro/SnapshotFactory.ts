@@ -9,7 +9,7 @@ class SnapshotFactory {
     const snapshot = new Snapshot(prevSnapshot || null);
 
     const { line, measure, note } = SnapshotFactory._getCurrentTabElements(tab, tick);
-    const { light, press } = SnapshotFactory._getGuitarPositionsByState(note);
+    const { light, press, justPress } = SnapshotFactory._getGuitarPositionsByState(note);
     const interpolator = SnapshotFactory._getInterpolator(note);
 
     snapshot.setData({
@@ -19,6 +19,7 @@ class SnapshotFactory {
       measure,
       note,
       light,
+      justPress,
       press,
       interpolator
     });
@@ -59,6 +60,7 @@ class SnapshotFactory {
   private static _getGuitarPositionsByState(note: Note): any {
     let light = null;
     let press = null;
+    let justPress = null;
 
     if (note) {
       press = note.getGuitarPos();
@@ -68,7 +70,8 @@ class SnapshotFactory {
 
     return {
       light,
-      press
+      press,
+      justPress
     }
   }
 
