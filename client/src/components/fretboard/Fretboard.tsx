@@ -38,6 +38,10 @@ const FretboardWrapper = styled.div`
   background: black;
   color: white;
 
+  &&& .ant-col-2 .Fret:first-child {
+    border-right: 3px solid rgba(211, 211, 211, 0.2);
+  }
+
   .Fretboard--desktop {
     height: 185px;
 
