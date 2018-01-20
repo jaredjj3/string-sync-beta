@@ -30,7 +30,7 @@ const NotationShowBanner = ({ bannerText }) => (
     <Row type="flex" align="middle" justify="center">
       <Col span={5}>
         <Link to="/library">
-          <IconDescribe type="close" description="back" />
+          <IconDescribe type="close" description="close" />
         </Link>
       </Col>
       <Col span={14}>

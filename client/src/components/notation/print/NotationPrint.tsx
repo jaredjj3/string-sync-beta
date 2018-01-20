@@ -41,7 +41,7 @@ const NotationPrintHeader = ({ isLoading, notation }) => (
       <Row type="flex" justify="start">
         <Link to={`/n/${notation.id}`}>
           <IconDescribe
-            type="close"
+            type="arrow-left"
             description="back"
           />
         </Link>
