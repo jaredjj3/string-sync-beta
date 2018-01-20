@@ -2,6 +2,7 @@ import * as React from 'react';
 import { compose, setStatic } from 'recompose';
 import { Fret } from './';
 import { Row, Col } from 'antd';
+import styled from 'styled-components';
 
 const DOTS: Array<number> = [
   0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0,
@@ -18,8 +19,14 @@ const enhance = compose(
   setStatic('MOBILE_DOTS', MOBILE_DOTS)
 );
 
+const FretsWrapper = styled.div`
+  .ant-row-flex {
+    flex-flow: row;
+  }
+`;
+
 const Frets = () => (
-  <div className="Frets">
+  <FretsWrapper>
     <Row type="flex">
       {
         DOTS.map((dots, fret) => (
@@ -32,7 +39,7 @@ const Frets = () => (
         ))
       }
     </Row>
-  </div>
+  </FretsWrapper>
 );
 
 export default enhance(Frets);
