@@ -6,8 +6,6 @@ import styled from 'styled-components';
 const NotationControlsOuter = styled.div`
   width: 100%;
   background: black;
-  position: fixed;
-  bottom: 0;
   z-index: 22;
   color: white;
   padding: 15px 0;
