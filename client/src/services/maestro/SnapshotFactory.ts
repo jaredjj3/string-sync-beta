@@ -85,7 +85,7 @@ class SnapshotFactory {
     let light = null;
 
     // TODO: Consider factoring in octaves for these calculations.
-    if (showMoreNotes) {
+    if (note && showMoreNotes) {
       const noteNames = flatMap(note.measure.notes, measureNote => (
         measureNote.staveNote.keys.map(noteNameWithOctave => (
           noteNameWithOctave.split('/')[0].toUpperCase()
