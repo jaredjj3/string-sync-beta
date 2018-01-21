@@ -85,19 +85,21 @@ class SnapshotFactory {
     let light = null;
 
     // TODO: Consider factoring in octaves for these calculations.
-    if (note && showMoreNotes) {
-      const noteNames = flatMap(note.measure.notes, measureNote => (
-        measureNote.staveNote.keys.map(noteNameWithOctave => (
-          noteNameWithOctave.split('/')[0].toUpperCase()
-        ))
-      ));
-      const lightNotes = uniq(noteNames).filter(noteName => noteName !== 'R');
-      light = flatMap(lightNotes, lightNote => tuning.getGuitarPositions(lightNote));
-    } else {
-      light = flatMap(note.measure.notes, note => note.getGuitarPos());
-      light = uniqWith(light, isEqual);
+    if (note) {
+      if (showMoreNotes) {
+        const noteNames = flatMap(note.measure.notes, measureNote => (
+          measureNote.staveNote.keys.map(noteNameWithOctave => (
+            noteNameWithOctave.split('/')[0].toUpperCase()
+          ))
+        ));
+        const lightNotes = uniq(noteNames).filter(noteName => noteName !== 'R');
+        light = flatMap(lightNotes, lightNote => tuning.getGuitarPositions(lightNote));
+      } else {
+        light = flatMap(note.measure.notes, note => note.getGuitarPos());
+        light = uniqWith(light, isEqual);
+      }  
     }
-
+  
     return light;
   }
 
