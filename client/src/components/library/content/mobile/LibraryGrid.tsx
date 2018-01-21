@@ -22,7 +22,6 @@ const LibraryGridOuter = styled.div`
 
   .am-grid-null-item {
     background: #efefef !important;
-    border: none !important;
   }
 
   .am-grid-null-item:after {
@@ -31,11 +30,11 @@ const LibraryGridOuter = styled.div`
 
   .am-grid-item-content {
     background: #efefef;
-    border: 1px solid white;
   }
 
   .am-grid-item-content .LibraryGridItem {
     border-left: 1px solid white;
+    border-top: 1px solid white;
   }
 `;
 const LibraryGridItemOuter = styled.div`
@@ -64,7 +63,7 @@ const getLibraryGridItemData = (notations) => (
 );
 
 const LibraryGridItem = ({ data }) => (
-  <LibraryGridItemOuter>
+  <LibraryGridItemOuter className="LibraryGridItem">
     <Link to={data.url}>
       <div className="LibraryGridItem__imgContainer">
         <img
