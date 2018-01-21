@@ -65,7 +65,12 @@ class SnapshotFactory {
     if (note) {
       press = note.getGuitarPos();
 
-      if (tick < (note.tickRange.start + 750)) {
+      const { tickRange } = note;
+      const threshold = Math.min(...[
+        tickRange.start + 250,
+        tickRange.start + ((tickRange.stop - tickRange.start) * 0.50)
+      ]);
+      if (tick < threshold) {
         justPress = note.getGuitarPos();
       }
 
