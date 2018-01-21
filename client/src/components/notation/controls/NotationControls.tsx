@@ -4,7 +4,13 @@ import { Loop, Scrubber, Play, ToggleControls } from './';
 import styled from 'styled-components';
 
 const NotationControlsOuter = styled.div`
-  margin-top: 15px;
+  width: 100%;
+  background: black;
+  position: fixed;
+  bottom: 0;
+  z-index: 22;
+  color: white;
+  padding: 15px 0;
 
   .VideoScrubber, .Loop {
   .ant-slider-handle {

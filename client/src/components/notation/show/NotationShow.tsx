@@ -19,9 +19,6 @@ const enhance = compose(
         await props.notation.dispatch.fetchNotation(notationId);
         props.setIsFetching(false);
       }
-    },
-    setBodyColor: backgroundColor => {
-      window.$('body').css('background-color', backgroundColor);
     }
   })),
   lifecycle({
@@ -30,14 +27,9 @@ const enhance = compose(
       window.setTimeout(window.ss.loader.clear, 6000);
     },
     componentDidMount(): void {
-      // Update the body color so that the extra space in the Instagram
-      // browser is consistent with the bottom object, which in this case is
-      // the NotationShowControls component.
-      this.props.setBodyColor('black');
       this.props.maybeFetchNotation();
     },
     componentWillUnmount(): void {
-      this.props.setBodyColor('white');
       window.ss.loader.clear();
     }
   })
