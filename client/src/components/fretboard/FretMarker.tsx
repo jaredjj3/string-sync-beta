@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { compose, mapProps, withState, lifecycle, withProps } from 'recompose';
+import { compose, mapProps, withState, shouldUpdate, lifecycle, withProps } from 'recompose';
 import { withFretboard, withViewport } from 'enhancers';
 import * as classNames from 'classnames';
 import styled from 'styled-components';
+import { isEqual } from 'lodash';
 
 const enhance = compose(
   withFretboard,
@@ -21,6 +22,7 @@ const enhance = compose(
   withState('lit', 'setLit', false),
   withState('pressed', 'setPressed', false),
   withState('justPressed', 'setJustPressed', false),
+  shouldUpdate((currProps, nextProps) => !isEqual(currProps, nextProps)),
   withProps(props => ({
     rootClassNames: classNames(
       'FretMarker',
