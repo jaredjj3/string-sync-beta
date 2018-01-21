@@ -88,9 +88,10 @@ class SnapshotFactory {
     if (note) {
       if (showMoreNotes) {
         const noteNames = flatMap(note.measure.notes, measureNote => (
-          measureNote.staveNote.keys.map(noteNameWithOctave => (
-            noteNameWithOctave.split('/')[0].toUpperCase()
-          ))
+          measureNote.staveNote.keys.map(noteNameWithOctave => {
+            const noteName = noteNameWithOctave.split('/')[0];
+            return noteName.charAt(0).toUpperCase() + noteName.slice(1);
+          })
         ));
         const lightNotes = uniq(noteNames).filter(noteName => noteName !== 'R');
         light = flatMap(lightNotes, lightNote => tuning.getGuitarPositions(lightNote));
