@@ -31,6 +31,7 @@ const LibraryGridOuter = styled.div`
 
   .am-grid-item-content {
     background: #efefef;
+    border: 1px solid white;
   }
 
   .am-grid-item-content .LibraryGridItem {
