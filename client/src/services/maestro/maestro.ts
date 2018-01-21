@@ -19,6 +19,7 @@ class Maestro {
 
   isActive: boolean = false;
   updateQueued: boolean = false;
+  showAllMeasureNotes: boolean = false;
 
   private _snapshot: Snapshot = new Snapshot();
 
@@ -62,8 +63,10 @@ class Maestro {
       this._snapshot = SnapshotFactory.create(
         this._snapshot,
         this.tab,
+        this.fretboard.tuning,
         this.offsetTick,
-        this.offsetTimeMs
+        this.offsetTimeMs,
+        this.showAllMeasureNotes
       );
       this.updateQueued = false;
     }

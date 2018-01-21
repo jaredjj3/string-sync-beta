@@ -1,15 +1,16 @@
 import { Snapshot } from './';
-import { Tab, Line, Measure, Note } from 'services';
-import { flatMap, uniqWith, isEqual } from 'lodash';
+import { Tab, Tuning, Line, Measure, Note } from 'services';
+import { flatMap, uniqWith, uniq, isEqual } from 'lodash';
 import { Flow } from 'vexflow';
-import { isBetween, interpolator } from 'ssUtil';
+import { isBetween, interpolator, elvis } from 'ssUtil';
 
 class SnapshotFactory {
-  static create(prevSnapshot: Snapshot, tab: Tab, tick: number, timeMs: number): Snapshot {
+  static create(prevSnapshot: Snapshot, tab: Tab, tuning: Tuning, tick: number, timeMs: number, showAllMeasureNotes: boolean): Snapshot {
     const snapshot = new Snapshot(prevSnapshot || null);
 
     const { line, measure, note } = SnapshotFactory._getCurrentTabElements(tab, tick);
-    const { light, press, justPress } = SnapshotFactory._getGuitarPositionsByState(note, tick);
+    const { press, justPress } = SnapshotFactory._getPressPositions(note, tick)
+    const light = SnapshotFactory._getLightPositions(note, press, tuning, showAllMeasureNotes);
     const interpolator = SnapshotFactory._getInterpolator(note);
 
     snapshot.setData({
@@ -57,8 +58,7 @@ class SnapshotFactory {
     }
   }
 
-  private static _getGuitarPositionsByState(note: Note, tick: number): any {
-    let light = null;
+  private static _getPressPositions(note: Note, tick: number): any {
     let press = null;
     let justPress = null;
 
@@ -73,16 +73,32 @@ class SnapshotFactory {
       if (tick < threshold) {
         justPress = note.getGuitarPos();
       }
+    }
 
+    return {
+      press,
+      justPress
+    }
+  }
+
+  private static _getLightPositions(note: Note, pressedPositions: any, tuning: Tuning, showAllMeasureNotes: boolean): any {
+    let light = null;
+
+    // TODO: Consider factoring in octaves for these calculations.
+    if (showAllMeasureNotes) {
+      const noteNames = flatMap(note.measure.notes, measureNote => (
+        measureNote.staveNote.keys.map(noteNameWithOctave => (
+          noteNameWithOctave.split('/')[0].toUpperCase()
+        ))
+      ));
+      const lightNotes = uniq(noteNames).filter(noteName => noteName !== 'R');
+      light = flatMap(lightNotes, lightNote => tuning.getGuitarPositions(lightNote));
+    } else {
       light = flatMap(note.measure.notes, note => note.getGuitarPos());
       light = uniqWith(light, isEqual);
     }
 
-    return {
-      light,
-      press,
-      justPress
-    }
+    return light;
   }
 
   private static _getInterpolator(note: Note): any {

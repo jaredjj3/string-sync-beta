@@ -36,17 +36,26 @@ class Fretboard {
     const justPressed = new Set();
 
     lightComps.forEach(comp => {
-      comp.light();
+      if (!this.lit.has(comp)) {
+        comp.light();
+      }
+
       lit.add(comp);
     });
 
     pressComps.forEach(comp => {
-      comp.press();
+      if (!this.pressed.has(comp)) {
+        comp.press();
+      }
+
       pressed.add(comp);
     });
 
     justPressComps.forEach(comp => {
-      comp.justPress();
+      if (!this.justPressed.has(comp)) {
+        comp.justPress();
+      }
+
       justPressed.add(comp);
     })
 
