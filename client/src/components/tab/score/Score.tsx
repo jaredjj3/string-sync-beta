@@ -19,7 +19,8 @@ const enhance = compose(
 const ScoreOuter = (styled.div as any)`
   background: white;
   height: 260px;
-  overflow: ${props => props.allowOverflow ? '' : 'hidden'}
+  overflow: ${props => props.allowOverflow ? '' : 'hidden'};
+  padding-bottom: 100px;
 `;
 
 const ScoreLines = ({ tab, withCaret }) => {

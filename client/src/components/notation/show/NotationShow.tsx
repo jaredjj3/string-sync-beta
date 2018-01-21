@@ -21,15 +21,22 @@ const enhance = compose(
       }
     }
   })),
+  withProps(props => ({
+    setBodyColor: color => {
+      window.$('body').css({ background: color })
+    }
+  })),
   lifecycle({
     componentWillMount(): void {
       window.ss.loader.add('initializeVideo');
       window.setTimeout(window.ss.loader.clear, 6000);
     },
     componentDidMount(): void {
+      this.props.setBodyColor('black');
       this.props.maybeFetchNotation();
     },
     componentWillUnmount(): void {
+      this.props.setBodyColor('white');
       window.ss.loader.clear();
     }
   })
