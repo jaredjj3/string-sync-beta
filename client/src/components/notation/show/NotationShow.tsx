@@ -63,7 +63,7 @@ const NotationShow = ({ isFetching, notation }) => (
       <NotationShowBanner
         isFetching={isFetching}
         songName={notation.state.songName}
-        transcriber={notation.state.transcriber}
+        artistName={notation.state.artistName}
       />
       <Video withInitializer />
       <Fretboard />

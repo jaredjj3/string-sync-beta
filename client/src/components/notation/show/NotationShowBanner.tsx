@@ -9,7 +9,7 @@ const enhance = compose(
   withProps(props => ({
     bannerText: props.isFetching
       ? 'Loading...'
-      : `${props.songName} by ${props.transcriber.username}`
+      : `${props.songName} by ${props.artistName}`
   }))
 );
 
