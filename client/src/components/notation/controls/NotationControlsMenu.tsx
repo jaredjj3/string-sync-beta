@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose, withProps } from 'recompose';
+import { compose, withProps, withState, withHandlers } from 'recompose';
 import { withRouter, Link } from 'react-router-dom';
 import { Menu, Icon, Switch } from 'antd';
 import { withSession, withNotation } from 'enhancers';
@@ -11,6 +11,14 @@ const enhance = compose (
   withRouter,
   withSession,
   withNotation,
+  withState('moreNotesChecked', 'setMoreNotesChecked', false),
+  withHandlers({
+    handleMoreNotesSwitchChange: props => checked => {
+      props.setMoreNotesChecked(checked);
+      window.ss.maestro.showMoreNotes = checked;
+      window.ss.maestro.queueUpdate();
+    }
+  }),
   withProps(props => {
     const { currentUser } = props.session.state;
     const { transcriber } = props.notation.state;
@@ -44,18 +52,37 @@ const NotationControlsMenuOuter = styled.div`
     width: 0;
   }
 
-  li.ant-menu-item:first-child {
-    margin-top: 15px;
-  }
-
   li.ant-menu-item {
     font-size: 20px;
+    font-weight: 100;
+  }
+
+  div.ant-menu-item-group-title {
+    font-size: 24px;
+    font-weight: 100;
+
+    &:first-child {
+      margin-top: 20px;
+    }
   }
 `;
+const MoreNotesSwitchContainer = styled.div`
+  .ant-switch {
+    background: #aaa;
 
-const NotationControlsMenu = ({ match, showEditItem, collapsed }) => (
+    &.ant-switch-checked {
+      background: #fc354c;
+    }
+  }
+`;
+const MoreNotesDescription = styled.span`
+  margin-left: 10px;
+`;
+
+const NotationControlsMenu = ({ match, moreNotesChecked, showEditItem, collapsed, handleMoreNotesSwitchChange }) => (
   <NotationControlsMenuOuter>
     <Menu
+      selectable={false}
       defaultSelectedKeys={[]}
       defaultOpenKeys={[]}
       mode="inline"
@@ -63,22 +90,35 @@ const NotationControlsMenu = ({ match, showEditItem, collapsed }) => (
       inlineCollapsed={collapsed}
       onClick={() => null}
     >
-      <Item key="print">
-        <Link to={`/n/${match.params.id}/print`}>
-          <Icon type="printer" />
-          <span>print</span>
-        </Link>
-      </Item>
-      {
-        showEditItem
-          ? <Item>
-              <Link to={`/n/${match.params.id}/edit`}>
-                <Icon type="edit" />
-                <span>edit</span>
-              </Link>
-            </Item>
-          : null
-      }
+      <ItemGroup title="notation">
+        <Item key="print">
+          <Link to={`/n/${match.params.id}/print`}>
+            <Icon type="printer" />
+            <span>print</span>
+          </Link>
+        </Item>
+        {
+          showEditItem
+            ? <Item>
+                <Link to={`/n/${match.params.id}/edit`}>
+                  <Icon type="edit" />
+                  <span>edit</span>
+                </Link>
+              </Item>
+            : null
+        }
+      </ItemGroup>
+      <ItemGroup title="player">
+        <Item key="more-notes">
+          <MoreNotesSwitchContainer>
+            <Switch
+              checked={moreNotesChecked}
+              onChange={handleMoreNotesSwitchChange}
+            />
+            <MoreNotesDescription>more notes</MoreNotesDescription>
+          </MoreNotesSwitchContainer>
+        </Item>
+      </ItemGroup>
     </Menu>
   </NotationControlsMenuOuter>
 );

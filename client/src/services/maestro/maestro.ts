@@ -19,7 +19,7 @@ class Maestro {
 
   isActive: boolean = false;
   updateQueued: boolean = false;
-  showAllMeasureNotes: boolean = false;
+  showMoreNotes: boolean = false;
 
   private _snapshot: Snapshot = new Snapshot();
 
@@ -66,7 +66,7 @@ class Maestro {
         this.fretboard.tuning,
         this.offsetTick,
         this.offsetTimeMs,
-        this.showAllMeasureNotes
+        this.showMoreNotes
       );
       this.updateQueued = false;
     }

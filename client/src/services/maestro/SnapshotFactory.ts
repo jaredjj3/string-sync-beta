@@ -5,12 +5,12 @@ import { Flow } from 'vexflow';
 import { isBetween, interpolator, elvis } from 'ssUtil';
 
 class SnapshotFactory {
-  static create(prevSnapshot: Snapshot, tab: Tab, tuning: Tuning, tick: number, timeMs: number, showAllMeasureNotes: boolean): Snapshot {
+  static create(prevSnapshot: Snapshot, tab: Tab, tuning: Tuning, tick: number, timeMs: number, showMoreNotes: boolean): Snapshot {
     const snapshot = new Snapshot(prevSnapshot || null);
 
     const { line, measure, note } = SnapshotFactory._getCurrentTabElements(tab, tick);
     const { press, justPress } = SnapshotFactory._getPressPositions(note, tick)
-    const light = SnapshotFactory._getLightPositions(note, press, tuning, showAllMeasureNotes);
+    const light = SnapshotFactory._getLightPositions(note, press, tuning, showMoreNotes);
     const interpolator = SnapshotFactory._getInterpolator(note);
 
     snapshot.setData({
@@ -81,11 +81,11 @@ class SnapshotFactory {
     }
   }
 
-  private static _getLightPositions(note: Note, pressedPositions: any, tuning: Tuning, showAllMeasureNotes: boolean): any {
+  private static _getLightPositions(note: Note, pressedPositions: any, tuning: Tuning, showMoreNotes: boolean): any {
     let light = null;
 
     // TODO: Consider factoring in octaves for these calculations.
-    if (showAllMeasureNotes) {
+    if (showMoreNotes) {
       const noteNames = flatMap(note.measure.notes, measureNote => (
         measureNote.staveNote.keys.map(noteNameWithOctave => (
           noteNameWithOctave.split('/')[0].toUpperCase()
