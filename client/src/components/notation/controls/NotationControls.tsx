@@ -23,6 +23,7 @@ const NotationControlsContentAsideRow = styled(Row)`
     font-size: 2.5em;
     font-weight: 100;
     cursor: pointer;
+    z-index: 20;
 
     &:active {
       text-shadow: 0 0 30px white;
