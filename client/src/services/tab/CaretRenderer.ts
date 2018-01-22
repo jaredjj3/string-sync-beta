@@ -1,5 +1,4 @@
-import Tab from './Tab';
-import Line from './Line';
+import { Tab, Line } from 'services';
 
 class CaretRenderer implements Renderer {
   static CARET_THICKNESS_PX: number = 2;
@@ -10,7 +9,7 @@ class CaretRenderer implements Renderer {
   ctx: CanvasRenderingContext2D = null;
   width: number = 0;
   height: number = 0;
-  posX: number = 0;
+  posX: Array<number> = [0];
 
   constructor(line: Line, canvas: HTMLCanvasElement, width: number, height: number) {
     this.line = line;
@@ -52,8 +51,8 @@ class CaretRenderer implements Renderer {
     return this;
   }
 
-  private _renderCaret(): CaretRenderer {
-    const x = this.posX;
+  protected _renderCaret(): CaretRenderer {
+    const x = this.posX[0];
     const y = 0;
 
     if (x > 0) {

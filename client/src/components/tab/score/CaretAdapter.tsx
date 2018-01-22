@@ -17,7 +17,7 @@ const enhance = compose(
   }),
   withProps(props => {
     const { rafLoop } = window.ss;
-    const name = 'CaretManager.handleAnimationLoop';
+    const name = 'CaretAdapter.handleAnimationLoop';
 
     return ({
       registerRaf: () => {

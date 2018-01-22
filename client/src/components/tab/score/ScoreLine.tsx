@@ -2,7 +2,7 @@ import * as React from 'react';
 import { compose, mapProps, withState, withHandlers, withProps, shouldUpdate, lifecycle } from 'recompose';
 import { ScoreLineRenderer } from 'services';
 import { withTab } from 'enhancers';
-import { Caret } from './';
+import { Caret, LoopCarets } from './';
 import { Overlap, Layer } from 'components';
 import { elvis } from 'ssUtil';
 import { isEqual } from 'lodash';
@@ -66,6 +66,9 @@ const ScoreLine = ({ line, withCaret, handleCanvasRef }) => (
       </Layer>
       <Layer style={{ zIndex: '11' }}>
         {withCaret ? <Caret line={line} /> : null}
+      </Layer>
+      <Layer style={{ zIndex: '12' }}>
+        {withCaret ? <LoopCarets line={line} /> : null} 
       </Layer>
     </Overlap>
   </div>
