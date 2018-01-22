@@ -10,7 +10,7 @@ const enhance = compose(
 
       if (caretRenderer) {
         const { interpolator, tick } = snapshot.data;
-        caretRenderer.posX = interpolator(tick);
+        caretRenderer.posX[0] = interpolator(tick);
         caretRenderer.render();
       }
     }
