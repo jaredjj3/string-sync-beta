@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose, withProps, withState, withHandlers } from 'recompose';
+import { compose, withProps, withState, withHandlers, lifecycle } from 'recompose';
 import { withRouter, Link } from 'react-router-dom';
 import { Menu, Icon, Switch } from 'antd';
 import { withSession, withNotation } from 'enhancers';
@@ -13,7 +13,14 @@ const enhance = compose (
   withNotation,
   withState('moreNotesChecked', 'setMoreNotesChecked', false),
   withHandlers({
-    handleMoreNotesSwitchChange: props => checked => {
+    handleMoreNotesToggle: props => event => {
+      // Allow the user to click the switch directly or
+      // the menu item container
+      if (event.hasOwnProperty('stopPropagation')) {
+        event.stopPropagation();
+      }
+
+      const checked = !props.moreNotesChecked;
       props.setMoreNotesChecked(checked);
       window.ss.maestro.showMoreNotes = checked;
       window.ss.maestro.queueUpdate();
@@ -29,6 +36,11 @@ const enhance = compose (
         currentUser.id === transcriber.id
       )
     });
+  }),
+  lifecycle({
+    componentDidMount(): void {
+      window.ss.maestro.showMoreNotes = false;
+    }
   })
 );
 
@@ -79,7 +91,7 @@ const MoreNotesDescription = styled.span`
   margin-left: 10px;
 `;
 
-const NotationControlsMenu = ({ match, moreNotesChecked, showEditItem, collapsed, handleMoreNotesSwitchChange }) => (
+const NotationControlsMenu = ({ match, moreNotesChecked, showEditItem, collapsed, handleMoreNotesToggle }) => (
   <NotationControlsMenuOuter>
     <Menu
       selectable={false}
@@ -110,10 +122,10 @@ const NotationControlsMenu = ({ match, moreNotesChecked, showEditItem, collapsed
       </ItemGroup>
       <ItemGroup title="player">
         <Item key="more-notes">
-          <MoreNotesSwitchContainer>
+          <MoreNotesSwitchContainer onClick={handleMoreNotesToggle}>
             <Switch
               checked={moreNotesChecked}
-              onChange={handleMoreNotesSwitchChange}
+              onChange={handleMoreNotesToggle}
             />
             <MoreNotesDescription>more notes</MoreNotesDescription>
           </MoreNotesSwitchContainer>
