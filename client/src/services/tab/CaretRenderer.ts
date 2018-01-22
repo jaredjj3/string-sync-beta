@@ -52,16 +52,17 @@ class CaretRenderer implements Renderer {
   }
 
   protected _renderCaret(): CaretRenderer {
-    const x = this.posX[0];
     const y = 0;
-
-    if (x > 0) {
-      this.ctx.beginPath();
-      this.ctx.moveTo(x, y);
-      this.ctx.lineTo(x, y + this.height);
-      this.ctx.stroke();
-      this.ctx.closePath();
-    }
+  
+    this.posX.forEach(x => {
+      if (x > 0) {
+        this.ctx.beginPath();
+        this.ctx.moveTo(x, y);
+        this.ctx.lineTo(x, y + this.height);
+        this.ctx.stroke();
+        this.ctx.closePath();
+      }
+    })
 
     return this;
   }
