@@ -26,7 +26,7 @@ const enhance = compose (
       const { currentTimeMs, isActive } = window.ss.maestro;
       const shouldSeekToLoopStart = (
         isActive &&
-        !isBetween(currentTimeMs, props.valuesMs[0], props.valuesMs[1])
+        !isBetween(currentTimeMs, props.valuesMs[0] - 1000, props.valuesMs[1]) // add timeMs padding to first value
       );
 
       if (shouldSeekToLoopStart) {

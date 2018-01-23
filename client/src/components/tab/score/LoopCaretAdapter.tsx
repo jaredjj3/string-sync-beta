@@ -7,37 +7,36 @@ const enhance = compose(
   withVideo,
   withHandlers({
     handleAnimationLoop: props => () => {
-      const { loopData, loopTick, line } = window.ss.maestro.snapshot.data;
+      // const { loopData, loopTick, line } = window.ss.maestro.snapshot.data;
+      //
+      // // Reset the renderers posX attribute
+      // window.ss.maestro.tab.lines.forEach((line, ndx) => {
+      //   if (line.loopCaretRenderer) {
+      //     line.loopCaretRenderer.posX = [];
+      //   }
+      // });
 
-      // Reset the renderers posX attribute
-      loopData.forEach((data, ndx) => {
-        const renderer = elvis(data, 'line.loopCaretRenderer');
-        if (renderer) {
-          renderer.posX = [];
-        }
-      });
+      // // set the renderers posX attribute, then render each
+      // loopData.forEach((data, ndx) => {
+      //   const { line, interpolator } = data;
+      //   if (!line || !interpolator) {
+      //     return;
+      //   }
 
-      // set the renderers posX attribute, then render each
-      loopData.forEach((data, ndx) => {
-        const { line, interpolator } = data;
-        if (!line || !interpolator) {
-          return;
-        }
+      //   const renderer = line.loopCaretRenderer;
+      //   const tick = loopTick[ndx];
+      //   const range = line.getTickRange();
+      //   if (isBetween(tick, range.start, range.stop)) {
+      //     renderer.posX.push(interpolator(tick));
+      //   }
 
-        const renderer = line.loopCaretRenderer;
-        const tick = loopTick[ndx];
-        const range = line.getTickRange();
-        if (isBetween(tick, range.start, range.stop)) {
-          renderer.posX.push(interpolator(tick));
-        }
+      //   renderer.clear();
+      // });
 
-        renderer.clear();
-      });
-
-      // only render the current line from the snapshot data
-      if (line && line.loopCaretRenderer) {
-        line.loopCaretRenderer.render();
-      }
+      // // only render the current line from the snapshot data
+      // if (line && line.loopCaretRenderer) {
+      //   line.loopCaretRenderer.render();
+      // }
     }
   }),
   withProps(props => {
