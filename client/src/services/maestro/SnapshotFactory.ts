@@ -4,14 +4,35 @@ import { flatMap, uniqWith, uniq, isEqual } from 'lodash';
 import { Flow } from 'vexflow';
 import { isBetween, interpolator, elvis } from 'ssUtil';
 
+interface SnapshotFactoryAttributes {
+  prevSnapshot: Snapshot,
+  tab: Tab,
+  tuning: Tuning,
+  tick: number,
+  timeMs: number,
+  showMoreNotes: boolean,
+  loopTick: Array<number>
+}
+
 class SnapshotFactory {
-  static create(prevSnapshot: Snapshot, tab: Tab, tuning: Tuning, tick: number, timeMs: number, showMoreNotes: boolean): Snapshot {
+  static create(attrs: SnapshotFactoryAttributes): Snapshot {
+    const {
+      prevSnapshot,
+      tab,
+      tuning,
+      tick,
+      timeMs,
+      showMoreNotes,
+      loopTick
+    } = attrs;
+
     const snapshot = new Snapshot(prevSnapshot || null);
 
     const { line, measure, note } = SnapshotFactory._getCurrentTabElements(tab, tick);
     const { press, justPress } = SnapshotFactory._getPressPositions(note, tick)
     const light = SnapshotFactory._getLightPositions(note, press, tuning, showMoreNotes);
     const interpolator = SnapshotFactory._getInterpolator(note);
+    const loopData = SnapshotFactory._getLoopData(loopTick, tab);
 
     snapshot.setData({
       tick,
@@ -22,7 +43,9 @@ class SnapshotFactory {
       light,
       justPress,
       press,
-      interpolator
+      interpolator,
+      loopData,
+      loopTick
     });
 
     return snapshot;
@@ -123,6 +146,18 @@ class SnapshotFactory {
     };
 
     return interpolator(point1, point2);
+  }
+
+  private static _getLoopData(loopTick: Array<number>, tab: Tab): any {
+    return loopTick.map(tick => {
+      const { line, note } = SnapshotFactory._getCurrentTabElements(tab, tick);
+      const interpolator = SnapshotFactory._getInterpolator(note);
+
+      return {
+        line,
+        interpolator
+      }
+    });
   }
 }
 

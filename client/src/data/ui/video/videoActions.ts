@@ -10,11 +10,6 @@ export const setPlayerState = playerState => ({
   playerState
 });
 
-export const setLoop = (loop: [number, number]) => ({
-  type: constants.SET_LOOP,
-  loop
-});
-
 export const resetVideo = () => ({
   type: constants.RESET_VIDEO
 });

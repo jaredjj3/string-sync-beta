@@ -8,7 +8,6 @@ const mapStateToProps = ({ video }) => ({
 const mapDispatchToProps = dispatch => ({
   setPlayer: player => dispatch(actions.setPlayer(player)),
   setPlayerState: playerState => dispatch(actions.setPlayerState(playerState)),
-  setLoop: loop => dispatch(actions.setLoop(loop)),
   resetVideo: () => dispatch(actions.resetVideo()),
 });
 

@@ -52,7 +52,6 @@ declare namespace Store {
     player: VideoPlayer;
     playerState: string;
     isActive: boolean;
-    loop: Array<number>;
   }
 
   interface Fretboard {

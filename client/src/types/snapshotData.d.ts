@@ -8,4 +8,6 @@ declare interface SnapshotData {
   justPress: Array<any>;
   press: Array<any>;
   interpolator: any;
+  loopData: Array<any>;
+  loopTick: Array<number>;
 }

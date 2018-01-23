@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, mapProps, shouldUpdate } from 'recompose';
 import { withTab } from 'enhancers';
-import { ScoreLine, CaretAdapter, ScrollManager } from './';
+import { ScoreLine, CaretAdapter, LoopCaretAdapter, ScrollManager } from './';
 import { Line } from 'services';
 import { hash } from 'ssUtil';
 import styled from 'styled-components';
@@ -43,6 +43,7 @@ const ScoreLines = ({ tab, withCaret }) => {
 const Score = ({ rootClassNames, tab, withCaret, allowOverflow }) => (
   <ScoreOuter id="Score" allowOverflow={allowOverflow}>
     {withCaret ? <CaretAdapter /> : null}
+    {withCaret ? <LoopCaretAdapter /> : null}
     <ScrollManager />
     <ScoreLines
       tab={tab}

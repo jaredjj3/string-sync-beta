@@ -16,6 +16,7 @@ class Maestro {
   currentTimeMs: number = 0;
   bpm: number = 0;
   deadTimeMs: number = 0;
+  loopMs: Array<number> = [0, Number.MAX_SAFE_INTEGER];
 
   isActive: boolean = false;
   updateQueued: boolean = false;
@@ -60,14 +61,15 @@ class Maestro {
 
   update(): Snapshot {
     if (this._shouldUpdate()) {
-      this._snapshot = SnapshotFactory.create(
-        this._snapshot,
-        this.tab,
-        this.fretboard.tuning,
-        this.offsetTick,
-        this.offsetTimeMs,
-        this.showMoreNotes
-      );
+      this._snapshot = SnapshotFactory.create({
+        prevSnapshot: this._snapshot,
+        tab: this.tab,
+        tuning: this.fretboard.tuning,
+        tick: this.offsetTick,
+        timeMs: this.offsetTimeMs,
+        showMoreNotes: this.showMoreNotes,
+        loopTick: this.loopMs.map(timeMs => toTick(timeMs, this.tpm)),
+      });
       this.updateQueued = false;
     }
 

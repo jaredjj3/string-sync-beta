@@ -13,7 +13,7 @@ const enhance = compose (
   withProps(props => ({
     getDurationMs: () => (
       props.notation.state.durationMs ||
-      props.video.state.player.getDuration() * 1000
+      (props.video.state.player && props.video.state.player.getDuration() * 1000)
     )
   })),
   withProps(props => ({
@@ -22,7 +22,7 @@ const enhance = compose (
       const durationMs = props.getDurationMs();
 
       if (durationMs > 0) {
-        const timeSecs = ((props.values[0] + 1) / 100) * (durationMs / 1000);
+        const timeSecs = ((props.values[0]) / 100) * (durationMs / 1000);
         videoPlayer.pauseVideo();
         videoPlayer.seekTo(timeSecs, true);
         window.setTimeout(() => videoPlayer.playVideo(), 500);
@@ -52,11 +52,11 @@ const enhance = compose (
       const videoPlayer = props.video.state.player;
       const { currentTimeMs } = window.ss.maestro;
       const durationMs = props.getDurationMs();
-      const nextFirstValueTimeMs = (values[0] / 100) * durationMs;
-
+      const valuesTimeMs = values.map(value => (value / 100) * durationMs);
+      
       const shouldPlayVideo = (
         props.wasActive &&
-        (currentTimeMs >= nextFirstValueTimeMs)
+        (currentTimeMs >= valuesTimeMs[0])
       );
 
       if (shouldPlayVideo) {
@@ -79,7 +79,7 @@ const enhance = compose (
         const currentValue = (currentTimeMs / durationMs) * 100;
         const shouldSeekToLoopStart = (
           currentValue === currentValue &&
-          !isBetween(currentValue, props.values[0] - 1, props.values[1] - 1)
+          !isBetween(currentValue, props.values[0], props.values[1])
         );
         if (shouldSeekToLoopStart) {
           props.seekToLoopStart();
@@ -107,6 +107,13 @@ const enhance = compose (
   lifecycle({
     componentDidMount(): void {
       this.props.registerRaf();
+    },
+    componentWillReceiveProps(nextProps: any): void {
+      const durationMs = nextProps.getDurationMs();
+      const nextAdjValues = [nextProps.values[0], nextProps.values[1]];
+      const valuesTimeMs = nextAdjValues.map(value => (value / 100) * durationMs);
+      window.ss.maestro.loopMs = valuesTimeMs;
+      window.ss.maestro.queueUpdate();
     },
     componentWillUnmount(): void {
       this.props.unregisterRaf();

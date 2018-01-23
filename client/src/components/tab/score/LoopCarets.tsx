@@ -26,7 +26,7 @@ const enhance = compose(
 );
 
 const LoopIndicators = ({ handleCanvasRef }) => (
-  <div className="LoopIndicators">
+  <div className="LoopCarets">
     <canvas ref={handleCanvasRef} />
   </div>
 );
