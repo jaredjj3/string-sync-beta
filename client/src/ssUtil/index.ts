@@ -8,5 +8,3 @@ export { default as isBetween } from './isBetween';
 export { default as isLoggedIn } from './isLoggedIn';
 export { default as isVideoActive } from './isVideoActive';
 export { default as mapKeysDeep } from './mapKeysDeep';
-export { default as toTick } from './toTick';
-export { default as toTimeMs } from './toTimeMs';
