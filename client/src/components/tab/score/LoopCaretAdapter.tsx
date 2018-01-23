@@ -1,25 +1,41 @@
 import * as React from 'react';
 import { compose, withState, withProps, withHandlers, lifecycle } from 'recompose';
 import { withVideo } from 'enhancers';
+import { elvis, isBetween } from 'ssUtil';
 
 const enhance = compose(
   withVideo,
   withHandlers({
     handleAnimationLoop: props => () => {
-      const { snapshot } = window.ss.maestro;
-      const { loopTick } = snapshot.data;
-      snapshot.data.loopData.forEach((loopDatum, ndx) => {
-        if (!loopDatum) {
+      const { loopData, loopTick, line } = window.ss.maestro.snapshot.data;
+
+      // Reset the renderers posX attribute
+      loopData.forEach((data, ndx) => {
+        const renderer = elvis(data, 'line.loopCaretRenderer');
+        if (renderer) {
+          renderer.posX = [];
+        }
+      });
+
+      // set the renderers posX attribute, then render each
+      loopData.forEach((data, ndx) => {
+        const { line, interpolator } = data;
+        if (!line || !interpolator) {
           return;
         }
 
-        const { line, interpolator } = loopDatum;
-
-        if (line && line.loopCaretRenderer) {
-          line.loopCaretRenderer.posX[ndx] = interpolator(loopTick[ndx]);
-          line.loopCaretRenderer.render();
+        const renderer = line.loopCaretRenderer;
+        const tick = loopTick[ndx];
+        const range = line.getTickRange();
+        if (isBetween(tick, range.start, range.stop)) {
+          renderer.posX.push(interpolator(tick));
         }
       });
+
+      // only render the current line from the snapshot data
+      if (line && line.loopCaretRenderer) {
+        line.loopCaretRenderer.render();
+      }
     }
   }),
   withProps(props => {

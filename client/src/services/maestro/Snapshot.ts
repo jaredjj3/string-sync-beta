@@ -1,6 +1,10 @@
 import { Line, Measure, Note } from 'services';
 
 const getDefaultInterpolator = () => () => 0;
+const getDefaultLoopDatum = () => ({
+  line: null,
+  interpolator: getDefaultInterpolator()
+});
 
 class Snapshot {
   data: SnapshotData = {
@@ -12,7 +16,7 @@ class Snapshot {
     light: [],
     justPress: [],
     press: [],
-    loopData: [null, null],
+    loopData: [getDefaultLoopDatum(), getDefaultLoopDatum()],
     interpolator: getDefaultInterpolator(),
     loopTick: [0, 60000]
   };

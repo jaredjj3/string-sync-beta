@@ -10,12 +10,14 @@ class CaretRenderer implements Renderer {
   width: number = 0;
   height: number = 0;
   posX: Array<number> = [0];
+  strokeStyle: string = '';
 
-  constructor(line: Line, canvas: HTMLCanvasElement, width: number, height: number) {
+  constructor(line: Line, canvas: HTMLCanvasElement, width: number, height: number, strokeStyle: string) {
     this.line = line;
     this.canvas = canvas;
     this.width = width;
     this.height = height;
+    this.strokeStyle = strokeStyle;
 
     this.ctx = canvas.getContext('2d');
 
@@ -39,7 +41,7 @@ class CaretRenderer implements Renderer {
     canvas.style.height = height + 'px';
 
     this.ctx.scale(ratio, ratio);
-    this.ctx.strokeStyle = '#FC354C';
+    this.ctx.strokeStyle = this.strokeStyle;
     this.ctx.lineWidth = CaretRenderer.CARET_THICKNESS_PX;
     this.ctx.globalAlpha = CaretRenderer.CARET_ALPHA;
 

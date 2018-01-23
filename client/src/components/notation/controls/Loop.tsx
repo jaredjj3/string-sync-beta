@@ -9,82 +9,50 @@ const enhance = compose (
   withNotation,
   withState('values', 'setValues', [0, 100]),
   withState('isScrubbing', 'setIsScrubbing', false),
-  withState('wasActive', 'setWasActive', false),
   withProps(props => ({
-    getDurationMs: () => (
-      props.notation.state.durationMs ||
-      (props.video.state.player && props.video.state.player.getDuration() * 1000)
-    )
+    valuesMs: props.values.map(value => (value / 100) * props.notation.state.durationMs)
   })),
-  withProps(props => ({
-    seekToLoopStart: () => {
-      const videoPlayer = props.video.state.player;
-      const durationMs = props.getDurationMs();
-
-      if (durationMs > 0) {
-        const timeSecs = ((props.values[0]) / 100) * (durationMs / 1000);
-        videoPlayer.pauseVideo();
-        videoPlayer.seekTo(timeSecs, true);
-        window.setTimeout(() => videoPlayer.playVideo(), 500);
-      }
-    }
+  withProps(({ valuesMs, notation }) => ({
+    adjustedValuesMs: valuesMs.map(value => value - notation.state.deadTimeMs)
   })),
   withHandlers({
-    handleChange: props => values => {
-      if (props.video.state.isActive && !props.isScrubbing) {
-        props.setWasActive(true);
+    handleAnimationLoop: props => dt => {
+      const video = props.video.state;
+
+      if (!video.player || props.isScrubbing) {
+        return;
       }
+
+      const { currentTimeMs, isActive } = window.ss.maestro;
+      const shouldSeekToLoopStart = (
+        isActive &&
+        !isBetween(currentTimeMs, props.valuesMs[0], props.valuesMs[1])
+      );
+
+      if (shouldSeekToLoopStart) {
+        video.player.pauseVideo();
+        video.player.seekTo(props.valuesMs[0] / 1000);
+        window.setTimeout(() => video.player.playVideo(), 500);
+      }
+    }
+  }),
+  withHandlers({
+    handleChange: props => values => {
+      const video = props.video.state;
 
       if (!props.isScrubbing) {
         props.setIsScrubbing(true);
       }
 
-      if (props.video.state.playerState === 'PLAYING') {
-        props.video.state.player.pauseVideo();
+      if (video.playerState === 'PLAYING') {
+        video.player.pauseVideo();
       }
 
-      props.setValues(Object.assign([], values));
+      props.setValues(values);
     },
     handleAfterChange: props => values => {
       props.setIsScrubbing(false);
-      props.setValues(Object.assign([], values));
-
-      const videoPlayer = props.video.state.player;
-      const { currentTimeMs } = window.ss.maestro;
-      const durationMs = props.getDurationMs();
-      const valuesTimeMs = values.map(value => (value / 100) * durationMs);
-      
-      const shouldPlayVideo = (
-        props.wasActive &&
-        (currentTimeMs >= valuesTimeMs[0])
-      );
-
-      if (shouldPlayVideo) {
-        props.video.state.player.playVideo();
-      }
-
-      props.setWasActive(false);
-    },
-    handleAnimationLoop: props => dt => {
-      const videoPlayer = props.video.state.player;
-
-      if (!videoPlayer || props.isScrubbing) {
-        return;
-      }
-
-      const { currentTimeMs } = window.ss.maestro;
-      const durationMs = props.getDurationMs();
-
-      if (durationMs > 0) {
-        const currentValue = (currentTimeMs / durationMs) * 100;
-        const shouldSeekToLoopStart = (
-          currentValue === currentValue &&
-          !isBetween(currentValue, props.values[0], props.values[1])
-        );
-        if (shouldSeekToLoopStart) {
-          props.seekToLoopStart();
-        }
-      }
+      props.setValues(values);
     }
   }),
   withProps(props => {
@@ -109,10 +77,7 @@ const enhance = compose (
       this.props.registerRaf();
     },
     componentWillReceiveProps(nextProps: any): void {
-      const durationMs = nextProps.getDurationMs();
-      const nextAdjValues = [nextProps.values[0], nextProps.values[1]];
-      const valuesTimeMs = nextAdjValues.map(value => (value / 100) * durationMs);
-      window.ss.maestro.loopMs = valuesTimeMs;
+      window.ss.maestro.loopMs = nextProps.adjustedValuesMs;
       window.ss.maestro.queueUpdate();
     },
     componentWillUnmount(): void {

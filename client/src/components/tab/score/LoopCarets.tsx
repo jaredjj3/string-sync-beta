@@ -19,7 +19,7 @@ const enhance = compose(
         return;
       }
 
-      const loopCaretRenderer = new CaretRenderer(line, canvas, line.width, CARET_HEIGHT_PX);
+      const loopCaretRenderer = new CaretRenderer(line, canvas, line.width, CARET_HEIGHT_PX, '#4286f4');
       line.loopCaretRenderer = loopCaretRenderer;
     }
   })

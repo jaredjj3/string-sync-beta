@@ -19,7 +19,7 @@ const enhance = compose(
         return;
       }
 
-      const caretRenderer = new CaretRenderer(line, canvas, line.width, CARET_HEIGHT_PX);
+      const caretRenderer = new CaretRenderer(line, canvas, line.width, CARET_HEIGHT_PX, '#fc354c');
       line.caretRenderer = caretRenderer;
     }
   })
