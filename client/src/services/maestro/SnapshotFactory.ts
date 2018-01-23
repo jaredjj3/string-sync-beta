@@ -1,5 +1,5 @@
 import { Snapshot } from './';
-import { Tab, Tuning, Line, Measure, Note } from 'services';
+import { Tab, Tuning, Line, Measure, Note, TimeKeeper } from 'services';
 import { flatMap, uniqWith, uniq, isEqual } from 'lodash';
 import { Flow } from 'vexflow';
 import { isBetween, interpolator, elvis } from 'ssUtil';
@@ -11,7 +11,7 @@ interface SnapshotFactoryAttributes {
   tick: number,
   timeMs: number,
   showMoreNotes: boolean,
-  loopTick: Array<number>
+  loopTimeKeepers: Array<TimeKeeper>
 }
 
 class SnapshotFactory {
@@ -23,16 +23,15 @@ class SnapshotFactory {
       tick,
       timeMs,
       showMoreNotes,
-      loopTick
+      loopTimeKeepers
     } = attrs;
-
     const snapshot = new Snapshot(prevSnapshot || null);
 
     const { line, measure, note } = SnapshotFactory._getCurrentTabElements(tab, tick);
     const { press, justPress } = SnapshotFactory._getPressPositions(note, tick)
     const light = SnapshotFactory._getLightPositions(note, press, tuning, showMoreNotes);
     const interpolator = SnapshotFactory._getInterpolator(note);
-    const loopData = SnapshotFactory._getLoopData(loopTick, tab);
+    const loopData = SnapshotFactory._getLoopData(loopTimeKeepers.map(tk => tk.tick), tab);
 
     snapshot.setData({
       tick,
@@ -45,7 +44,7 @@ class SnapshotFactory {
       press,
       interpolator,
       loopData,
-      loopTick
+      loopTimeKeepers
     });
 
     return snapshot;

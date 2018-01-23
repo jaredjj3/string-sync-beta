@@ -49,7 +49,7 @@ const enhance = compose(
       const { maestro } = window.ss;
       const { bpm, deadTimeMs } = nextProps.notation.state;
       maestro.bpm = bpm;
-      maestro.deadTimeMs = deadTimeMs;
+      maestro.deadTimeMs = -deadTimeMs;
     },
     componentWillUnmount(): void {
       const { rafLoop, maestro } = window.ss;

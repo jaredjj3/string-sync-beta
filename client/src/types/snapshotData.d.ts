@@ -9,5 +9,5 @@ declare interface SnapshotData {
   press: Array<any>;
   interpolator: any;
   loopData: Array<any>;
-  loopTick: Array<number>;
+  loopTimeKeepers: Array<any>;
 }

@@ -1,7 +1,6 @@
 import { Flow } from 'vexflow';
-import { toTick } from 'ssUtil';
 import { Snapshot, SnapshotFactory } from './';
-import { Tab, Fretboard } from 'services';
+import { Tab, Fretboard, TimeKeeper } from 'services';
 
 // The purpose of this service is to coordinate a video player's state (i.e. isActive and
 // current time states) with DOM elements or other services. Its role is distinct from the
@@ -12,17 +11,41 @@ import { Tab, Fretboard } from 'services';
 class Maestro {
   tab: Tab = null;
   fretboard: Fretboard = null;
-
-  currentTimeMs: number = 0;
-  bpm: number = 0;
-  deadTimeMs: number = 0;
-  loopMs: Array<number> = [0, Number.MAX_SAFE_INTEGER];
-
   isActive: boolean = false;
   updateQueued: boolean = false;
   showMoreNotes: boolean = false;
 
+  maestroTimeKeeper: TimeKeeper = null;
+  loopTimeKeepers: Array<TimeKeeper> = [];
+  
+  private _bpm: number = 0;
+  private _currentTimeMs: number = 0;
+  private _deadTimeMs: number = 0;
   private _snapshot: Snapshot = new Snapshot();
+
+  set bpm(bpm: number) {
+    this._bpm = bpm;
+    this.maestroTimeKeeper = new TimeKeeper(this.tpm);
+    this._syncMaestroTimeKeeper();
+  }
+
+  set currentTimeMs(currentTimeMs: number) {
+    this._currentTimeMs = currentTimeMs;
+    this._syncMaestroTimeKeeper();
+  }
+
+  set deadTimeMs(deadTimeMs: number) {
+    this._deadTimeMs = deadTimeMs;
+    this._syncMaestroTimeKeeper();
+  }
+
+  get bpm(): number {
+    return this._bpm;
+  }
+
+  get currentTimeMs(): number {
+    return this._currentTimeMs;
+  }
 
   get snapshot(): Snapshot {
     return this._snapshot;
@@ -32,28 +55,27 @@ class Maestro {
     return this.bpm * (Flow.RESOLUTION / 4);
   }
 
-  get currentTick(): number {
-    const tick = toTick(this.currentTimeMs, this.tpm);
-    return tick !== tick ? 0 : tick; // guard against NaN
-  }
-
   get offsetTimeMs(): number {
-    return this.currentTimeMs - this.deadTimeMs;
+    return this.maestroTimeKeeper.timeMs;
   }
 
   get offsetTick(): number {
-    const offset = toTick(this.deadTimeMs, this.tpm);
-    return offset !== offset ? 0 : this.currentTick - offset; // guard against NaN
+    return this.maestroTimeKeeper.tick;
   }
 
   reset(): Maestro {
     this.tab = null;
     this.fretboard = null;
-    this.currentTimeMs = 0;
-    this.bpm = 0;
-    this.deadTimeMs = 0;
     this.isActive = false;
     this.updateQueued = false;
+    this.showMoreNotes = false;
+
+    this.maestroTimeKeeper = null;
+    this.loopTimeKeepers = [];
+
+    this.bpm = 0;
+    this.currentTimeMs = 0;
+    this.deadTimeMs = 0;
     this._snapshot = new Snapshot();
 
     return this;
@@ -68,7 +90,7 @@ class Maestro {
         tick: this.offsetTick,
         timeMs: this.offsetTimeMs,
         showMoreNotes: this.showMoreNotes,
-        loopTick: this.loopMs.map(timeMs => toTick(timeMs, this.tpm)),
+        loopTimeKeepers: this.loopTimeKeepers
       });
       this.updateQueued = false;
     }
@@ -79,6 +101,11 @@ class Maestro {
   queueUpdate(): Maestro {
     this.updateQueued = true;
     return this;
+  }
+
+  private _syncMaestroTimeKeeper(): TimeKeeper {
+    this.maestroTimeKeeper.timeMs = this.currentTimeMs + this.deadTimeMs;
+    return this.maestroTimeKeeper;
   }
 
   private _shouldUpdate(): boolean {

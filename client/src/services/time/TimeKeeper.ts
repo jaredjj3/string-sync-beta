@@ -1,26 +1,18 @@
 type Convertor = (n: number) => number;
 
-interface ValueConvertors {
-  toValue: Convertor;
-  toTimeMs: Convertor;
-}
-
 // The purpose of this service is to provide an interface that is easy to convert between
 // time and another form of it. Each conversion is based on time in ms.
 class TimeKeeper {
   tpm: number;
   toValue: Convertor = (timeMs: number) => timeMs;
   toTimeMs: Convertor = (value: number) => value;
-
+  
   private _timeMs: number = 0;
 
-  constructor(tpm: number, valueConvertors?: ValueConvertors) {
+  constructor(tpm: number, toValue?: Convertor, toTimeMs?: Convertor) {
     this.tpm = tpm;
-
-    if (valueConvertors) {
-      this.toTimeMs = valueConvertors.toTimeMs;
-      this.toValue = valueConvertors.toValue;
-    }
+    this.toTimeMs = toTimeMs || this.toTimeMs;
+    this.toValue = toValue || this.toValue;
   }
 
   set timeMs(timeMs: number) {
@@ -50,6 +42,7 @@ class TimeKeeper {
   get tick(): number {
     return this.tpm * ((this.timeMs / 1000) / 60);
   }
+
   get value(): number {
     return this.toValue(this.timeMs);
   }
