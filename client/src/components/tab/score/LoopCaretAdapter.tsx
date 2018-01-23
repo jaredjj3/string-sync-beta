@@ -30,6 +30,8 @@ const enhance = compose(
         if (isBetween(tick, range.start, range.stop)) {
           renderer.posX.push(interpolator(tick));
         }
+
+        renderer.clear();
       });
 
       // only render the current line from the snapshot data
