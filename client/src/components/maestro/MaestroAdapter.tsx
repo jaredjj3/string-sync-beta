@@ -14,7 +14,7 @@ const enhance = compose(
       const { player, isActive } = props.video.state;
 
       if (player) {
-        maestro.currentTimeMs = player.getCurrentTime() * 1000;
+        maestro.timeKeeper.timeS = player.getCurrentTime();
       }
 
       // update will not do anything if maestro.isActive === false

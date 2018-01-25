@@ -15,7 +15,7 @@ class Maestro {
   updateQueued: boolean = false;
   showMoreNotes: boolean = false;
 
-  maestroTimeKeeper: TimeKeeper = null;
+  timeKeeper: TimeKeeper = null;
   loopTimeKeepers: Array<TimeKeeper> = [];
   
   private _bpm: number = 0;
@@ -25,7 +25,7 @@ class Maestro {
 
   set bpm(bpm: number) {
     this._bpm = bpm;
-    this.maestroTimeKeeper = new TimeKeeper(this.tpm);
+    this.timeKeeper = new TimeKeeper(this.tpm);
     this._syncMaestroTimeKeeper();
   }
 
@@ -56,11 +56,11 @@ class Maestro {
   }
 
   get offsetTimeMs(): number {
-    return this.maestroTimeKeeper.timeMs;
+    return this.timeKeeper.timeMs;
   }
 
   get offsetTick(): number {
-    return this.maestroTimeKeeper.tick;
+    return this.timeKeeper.tick;
   }
 
   reset(): Maestro {
@@ -70,7 +70,7 @@ class Maestro {
     this.updateQueued = false;
     this.showMoreNotes = false;
 
-    this.maestroTimeKeeper = null;
+    this.timeKeeper = null;
     this.loopTimeKeepers = [];
 
     this.bpm = 0;
@@ -104,8 +104,8 @@ class Maestro {
   }
 
   private _syncMaestroTimeKeeper(): TimeKeeper {
-    this.maestroTimeKeeper.timeMs = this.currentTimeMs + this.deadTimeMs;
-    return this.maestroTimeKeeper;
+    this.timeKeeper.timeMs = this.currentTimeMs + this.deadTimeMs;
+    return this.timeKeeper;
   }
 
   private _shouldUpdate(): boolean {
