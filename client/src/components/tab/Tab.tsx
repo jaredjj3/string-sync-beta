@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TabAdapter, Score } from './';
+import { TabController, Score } from './';
 import { Overlap, Layer } from 'components';
 
 interface TabProps {
@@ -10,7 +10,7 @@ interface TabProps {
 
 const Tab = ({ allowOverflow, overrideWidth, withCaret }: TabProps) => (
   <div className="Tab">
-    <TabAdapter
+    <TabController
       isDynamic={Boolean(withCaret)}
       overrideWidth={overrideWidth}
     />

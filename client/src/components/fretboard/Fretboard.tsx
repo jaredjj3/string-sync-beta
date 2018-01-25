@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, mapProps, withProps, shouldUpdate } from 'recompose';
 import { Row, Col } from 'antd';
-import { FretboardAdapter, Frets, GuitarStrings } from './';
+import { FretboardController, Frets, GuitarStrings } from './';
 import { withViewport, withFretboard } from 'enhancers';
 import { Overlap, Layer } from 'components';
 import * as classNames from 'classnames';
@@ -83,7 +83,7 @@ const FretboardIndicators = () => {
 const Fretboard = ({ rootClassNames, fretboard }) => (
   <FretboardOuter>
     <FretboardInner className={rootClassNames}>
-      <FretboardAdapter />
+      <FretboardController />
       {
         fretboard
           ? <div className="Fretboard__afterFretboardServiceMount">

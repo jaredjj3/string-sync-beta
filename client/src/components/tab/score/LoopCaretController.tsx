@@ -41,7 +41,7 @@ const enhance = compose(
   }),
   withProps(props => {
     const { rafLoop } = window.ss;
-    const name = 'LoopCaretAdapter.handleAnimationLoop';
+    const name = 'LoopCaretController.handleAnimationLoop';
 
     return ({
       registerRaf: () => {
@@ -66,6 +66,6 @@ const enhance = compose(
   })
 );
 
-const LoopCaretAdapter = () => null;
+const LoopCaretController = () => null;
 
-export default enhance(LoopCaretAdapter);
+export default enhance(LoopCaretController);

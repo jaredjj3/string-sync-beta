@@ -86,6 +86,6 @@ const enhance = compose(
   })
 );
 
-const TabAdapter = () => null;
+const TabController = () => null;
 
-export default enhance(TabAdapter);
+export default enhance(TabController);

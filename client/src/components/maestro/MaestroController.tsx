@@ -61,6 +61,6 @@ const enhance = compose(
   })
 );
 
-const MaestroAdapter = () => null;
+const MaestroController = () => null;
 
-export default enhance(MaestroAdapter);
+export default enhance(MaestroController);

@@ -1,1 +1,1 @@
-export { default as MaestroAdapter } from './MaestroAdapter';
+export { default as MaestroController } from './MaestroController';

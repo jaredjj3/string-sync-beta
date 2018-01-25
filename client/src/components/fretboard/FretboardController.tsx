@@ -47,6 +47,6 @@ const enhance = compose(
   })
 );
 
-const FretboardAdapter = () => null;
+const FretboardController = () => null;
 
-export default enhance(FretboardAdapter);
+export default enhance(FretboardController);

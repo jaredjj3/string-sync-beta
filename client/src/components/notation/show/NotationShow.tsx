@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, withState, withProps, lifecycle } from 'recompose';
 import { withNotation } from 'enhancers';
-import { Gradient, Video, Tab, Fretboard, MaestroAdapter } from 'components';
+import { Gradient, Video, Tab, Fretboard, MaestroController } from 'components';
 import { NotationShowBanner } from './';
 import { NotationControls } from 'components';
 import { toTick, toTimeMs } from 'ssUtil';
@@ -66,7 +66,7 @@ const NotationShow = ({ isFetching, notation }) => (
   <NotationShowOuter>
     <NotationShowInner className="NotationShow">
       <Gradient />
-      <MaestroAdapter />
+      <MaestroController />
       <NotationShowBanner
         isFetching={isFetching}
         songName={notation.state.songName}
