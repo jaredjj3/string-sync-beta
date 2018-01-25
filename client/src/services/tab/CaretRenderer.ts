@@ -11,6 +11,7 @@ class CaretRenderer implements Renderer {
   height: number = 0;
   posX: Array<number> = [0];
   strokeStyle: string = '';
+  isRendered: boolean = false;
 
   constructor(line: Line, canvas: HTMLCanvasElement, width: number, height: number, strokeStyle: string) {
     this.line = line;
@@ -27,6 +28,7 @@ class CaretRenderer implements Renderer {
   render(): CaretRenderer {
     this.clear();
     this._renderCaret();
+    this.isRendered = true;
     return this;
   }
 
@@ -50,6 +52,7 @@ class CaretRenderer implements Renderer {
 
   clear(): CaretRenderer {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.isRendered = false;
     return this;
   }
 

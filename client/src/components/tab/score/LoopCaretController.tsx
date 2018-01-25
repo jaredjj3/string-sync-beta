@@ -7,36 +7,41 @@ const enhance = compose(
   withVideo,
   withHandlers({
     handleAnimationLoop: props => () => {
-      // const { loopData, loopTick, line } = window.ss.maestro.snapshot.data;
-      //
-      // // Reset the renderers posX attribute
-      // window.ss.maestro.tab.lines.forEach((line, ndx) => {
-      //   if (line.loopCaretRenderer) {
-      //     line.loopCaretRenderer.posX = [];
-      //   }
-      // });
+      const { tab, snapshot } = window.ss.maestro;
 
-      // // set the renderers posX attribute, then render each
-      // loopData.forEach((data, ndx) => {
-      //   const { line, interpolator } = data;
-      //   if (!line || !interpolator) {
-      //     return;
-      //   }
+      if (!tab || !snapshot) {
+        return;
+      }
 
-      //   const renderer = line.loopCaretRenderer;
-      //   const tick = loopTick[ndx];
-      //   const range = line.getTickRange();
-      //   if (isBetween(tick, range.start, range.stop)) {
-      //     renderer.posX.push(interpolator(tick));
-      //   }
+      // Clear all lines
+      tab.lines.forEach(line => {
+        const renderer = line.loopCaretRenderer;
+        if (renderer) {
+          renderer.posX = [];
 
-      //   renderer.clear();
-      // });
+          if (renderer.isRendered) {
+            renderer.clear();
+          }
+        }
+      });
 
-      // // only render the current line from the snapshot data
-      // if (line && line.loopCaretRenderer) {
-      //   line.loopCaretRenderer.render();
-      // }
+      // set the renderers posX attribute, then render each
+      snapshot.data.loopData.forEach((data, ndx) => {
+        const { line, interpolator } = data;
+        if (!line || !interpolator) {
+          return;
+        }
+
+        const renderer = line.loopCaretRenderer;
+        const tick = snapshot.data.loopTick[ndx];
+        const range = line.getTickRange();
+
+        if (isBetween(tick, range.start, range.stop)) {
+          renderer.posX.push(interpolator(tick))
+        }
+
+        renderer.render();
+      });
     }
   }),
   withProps(props => {

@@ -18,6 +18,7 @@ class Line {
   linker: Linker = null;
   scoreLineRenderer: ScoreLineRenderer = null;
   caretRenderer: CaretRenderer = null;
+  loopCaretRenderer: CaretRenderer = null;
 
   constructor(measures: Array<Measure>, number: number, width: number, targetNumMeasures: number) {
     this.measures = measures;
