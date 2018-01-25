@@ -26,7 +26,7 @@ const enhance = compose(
         const changedNdx = changed.indexOf(true);
 
         if (changedNdx > -1) {
-          currentLineNumber = snapshot.data.loopData[changedNdx].line.number;
+          currentLineNumber = elvis(snapshot.data.loopData[changedNdx].line, 'number');
         }
       }
 
