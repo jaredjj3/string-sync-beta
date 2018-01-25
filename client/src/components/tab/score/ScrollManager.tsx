@@ -14,7 +14,21 @@ const enhance = compose(
   })),
   withHandlers({
     handleAnimationLoop: props => () => {
-      const currentLineNumber = elvis(window.ss.maestro.snapshot.data.line, 'number');
+      const { snapshot } = window.ss.maestro;
+      const prevSnapshot = snapshot.prev;
+
+      let currentLineNumber = elvis(snapshot.data.line, 'number');
+      // Determine if we need to look into the loopTicks
+      if (prevSnapshot) {
+        const prevLoopTicks = prevSnapshot.data.loopTick;
+        const currLoopTicks = snapshot.data.loopTick;
+        const changed = currLoopTicks.map((tick, ndx) => prevLoopTicks[ndx] !== tick);
+        const changedNdx = changed.indexOf(true);
+
+        if (changedNdx > -1) {
+          currentLineNumber = snapshot.data.loopData[changedNdx].line.number;
+        }
+      }
 
       if (typeof currentLineNumber === 'number' && (currentLineNumber !== props.focusedLineNumber)) {
         // FIXME: Go ahead, remove: window.$('#Score').scrollTop(scrollTo + 1);

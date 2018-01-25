@@ -16,7 +16,7 @@ class Maestro {
   currentTimeMs: number = 0;
   bpm: number = 0;
   deadTimeMs: number = 0;
-  loopMs: Array<number> = [0, Number.MAX_SAFE_INTEGER];
+  loopMs: Array<number> = [];
 
   isActive: boolean = false;
   updateQueued: boolean = false;

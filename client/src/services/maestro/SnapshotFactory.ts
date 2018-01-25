@@ -148,8 +148,8 @@ class SnapshotFactory {
     return interpolator(point1, point2);
   }
 
-  private static _getLoopData(loopTick: Array<number>, tab: Tab): any {
-    return loopTick.map(tick => {
+  private static _getLoopData(loopTick: Array<number>, tab: Tab): any { 
+    return loopTick.sort().map(tick => {
       const { line, note } = SnapshotFactory._getCurrentTabElements(tab, tick);
       const interpolator = SnapshotFactory._getInterpolator(note);
 
