@@ -32,7 +32,7 @@ const enhance = compose(
       window.setTimeout(window.ss.loader.clear, 6000);
     },
     componentDidMount(): void {
-      this.props.setBodyColor('black');
+      this.props.setBodyColor('#282828');
       this.props.maybeFetchNotation();
     },
     componentWillUnmount(): void {
