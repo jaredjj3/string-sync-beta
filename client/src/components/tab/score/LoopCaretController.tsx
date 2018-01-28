@@ -13,7 +13,7 @@ const enhance = compose(
         return;
       }
 
-      const loopLineNumbers = snapshot.data.loopData.map(data => elvis(data.line, 'number'));
+      const loopLineNumbers = snapshot.data.loopData.map(data => elvis(data.line, 'number')).sort();
 
       // Clear all lines and set loopLineNumbers attributes
       tab.lines.forEach(line => {

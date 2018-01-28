@@ -1,8 +1,9 @@
 import { Tab, Line } from 'services';
+import { last } from 'lodash';
 
 class LoopCaretRenderer implements Renderer {
   static CARET_THICKNESS_PX: number = 2;
-  static CARET_ALPHA: number = 0.25;
+  static CARET_ALPHA: number = 0.1;
 
   line: Line = null;
   canvas: HTMLCanvasElement = null;
@@ -12,7 +13,7 @@ class LoopCaretRenderer implements Renderer {
   posX: Array<number> = [0];
   strokeStyle: string = '';
   isRendered: boolean = false;
-  loopLineNumber: Array<number> = [];
+  loopLineNumbers: Array<number> = [];
 
   constructor(line: Line, canvas: HTMLCanvasElement, width: number, height: number, strokeStyle: string) {
     this.line = line;
@@ -60,6 +61,9 @@ class LoopCaretRenderer implements Renderer {
 
   protected _renderCaret(): LoopCaretRenderer {
     const y = 0;
+
+    this.ctx.save();
+    this.ctx.globalAlpha = 1;
   
     if (this.posX.length > 0) {
       this.posX.forEach(x => {
@@ -73,10 +77,44 @@ class LoopCaretRenderer implements Renderer {
       })
     }
 
-    const x0 = this.posX[0] || 0;
-    const x1 = this.posX[1] || this.canvas.width;
-    this.ctx.rect(x0, 0, x1 - x0, this.canvas.height);
-    this.ctx.fill();
+    this.ctx.restore();
+
+    this._fillBetweenLoopCarets();
+
+    return this;
+  }
+
+  private _fillBetweenLoopCarets(): LoopCaretRenderer {
+    const startLineNumber = this.loopLineNumbers[0];
+    const stopLineNumber = this.loopLineNumbers[1];
+
+    let x0 = 0;
+    let x1 = this.canvas.width;
+    let shouldFill = true;
+
+    // handle startLineNumber
+    if (startLineNumber < this.line.number) {
+      x0 = 0;
+    } else if (startLineNumber === this.line.number) {
+      x0 = this.posX[0]
+    } else if (startLineNumber > this.line.number) {
+      shouldFill = false;
+    }
+
+    // handle stopLineNumber
+    if (stopLineNumber < this.line.number) {
+      shouldFill = false;
+    } else if (stopLineNumber === this.line.number) {
+      x1 = last(this.posX) - x0;
+    } else if (stopLineNumber > this.line.number) {
+      x1 = this.canvas.width - x0;
+    }
+
+    // render
+    if (shouldFill && x1 === x1 && x0 === x0) { // guard against NaN
+      this.ctx.rect(x0, 0, x1, this.canvas.height);
+      this.ctx.fill();
+    }
 
     return this;
   }
