@@ -63,7 +63,7 @@ class LoopCaretRenderer implements Renderer {
     const y = 0;
 
     this.ctx.save();
-    this.ctx.globalAlpha = 1;
+    this.ctx.globalAlpha = 0.5;
   
     if (this.posX.length > 0) {
       this.posX.forEach(x => {
