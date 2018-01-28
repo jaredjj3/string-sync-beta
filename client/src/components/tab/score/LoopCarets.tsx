@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose, withState, withHandlers, lifecycle } from 'recompose';
-import { CaretRenderer } from 'services';
+import { LoopCaretRenderer } from 'services';
 
 const CARET_HEIGHT_PX = 228;
 
@@ -19,7 +19,7 @@ const enhance = compose(
         return;
       }
 
-      const loopCaretRenderer = new CaretRenderer(line, canvas, line.width, CARET_HEIGHT_PX, '#4286f4');
+      const loopCaretRenderer = new LoopCaretRenderer(line, canvas, line.width, CARET_HEIGHT_PX, '#4286f4');
       line.loopCaretRenderer = loopCaretRenderer;
     }
   })

@@ -13,11 +13,14 @@ const enhance = compose(
         return;
       }
 
-      // Clear all lines
+      const loopLineNumbers = snapshot.data.loopData.map(data => elvis(data.line, 'number'));
+
+      // Clear all lines and set loopLineNumbers attributes
       tab.lines.forEach(line => {
         const renderer = line.loopCaretRenderer;
         if (renderer) {
           renderer.posX = [];
+          renderer.loopLineNumbers = loopLineNumbers;
 
           if (renderer.isRendered) {
             renderer.clear();
@@ -39,8 +42,13 @@ const enhance = compose(
         if (isBetween(tick, range.start, range.stop)) {
           renderer.posX.push(interpolator(tick))
         }
+      });
 
-        renderer.render();
+      // render each of the line's loopRenderers if scrubbing
+      tab.lines.forEach(({ loopCaretRenderer }) => {
+        if (loopCaretRenderer) {
+          loopCaretRenderer.render();
+        }
       });
     }
   }),
