@@ -5,9 +5,9 @@ import styled from 'styled-components';
 
 const NotationControlsOuter = styled.div`
   width: 100%;
-  background: black;
   z-index: 22;
-  color: white;
+  background: #282828;
+  color: lightgray;
   padding: 15px 0;
 
   .VideoScrubber, .Loop {
