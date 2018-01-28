@@ -45,11 +45,13 @@ const enhance = compose(
       });
 
       // render each of the line's loopRenderers if scrubbing
-      tab.lines.forEach(({ loopCaretRenderer }) => {
-        if (loopCaretRenderer) {
-          loopCaretRenderer.render();
-        }
-      });
+      if (snapshot.data.isLoopScrubbing) {
+        tab.lines.forEach(({ loopCaretRenderer }) => {
+          if (loopCaretRenderer) {
+            loopCaretRenderer.render();
+          }
+        });
+      }
     }
   }),
   withProps(props => {

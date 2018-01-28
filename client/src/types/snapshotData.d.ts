@@ -10,4 +10,5 @@ declare interface SnapshotData {
   interpolator: any;
   loopData: Array<any>;
   loopTick: Array<number>;
+  isLoopScrubbing: boolean;
 }

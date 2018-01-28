@@ -18,7 +18,8 @@ class Snapshot {
     press: [],
     loopData: [getDefaultLoopDatum(), getDefaultLoopDatum()],
     interpolator: getDefaultInterpolator(),
-    loopTick: [0, 60000]
+    loopTick: [0, 60000],
+    isLoopScrubbing: false
   };
 
   prev: Snapshot = null;

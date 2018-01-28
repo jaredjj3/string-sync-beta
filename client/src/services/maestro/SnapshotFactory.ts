@@ -33,6 +33,7 @@ class SnapshotFactory {
     const light = SnapshotFactory._getLightPositions(note, press, tuning, showMoreNotes);
     const interpolator = SnapshotFactory._getInterpolator(note);
     const loopData = SnapshotFactory._getLoopData(loopTick, tab);
+    const isLoopScrubbing = Boolean(prevSnapshot && !isEqual(prevSnapshot.data.loopTick, loopTick));
 
     snapshot.setData({
       tick,
@@ -45,7 +46,8 @@ class SnapshotFactory {
       press,
       interpolator,
       loopData,
-      loopTick
+      loopTick,
+      isLoopScrubbing
     });
 
     return snapshot;

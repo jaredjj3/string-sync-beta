@@ -19,7 +19,7 @@ const enhance = compose(
 
       let currentLineNumber = elvis(snapshot.data.line, 'number');
       // Determine if we need to look into the loopTicks
-      if (prevSnapshot) {
+      if (snapshot.data.isLoopScrubbing) {
         const prevLoopTicks = prevSnapshot.data.loopTick;
         const currLoopTicks = snapshot.data.loopTick;
         const changed = currLoopTicks.map((tick, ndx) => prevLoopTicks[ndx] !== tick);
