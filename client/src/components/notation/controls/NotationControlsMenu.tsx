@@ -12,6 +12,7 @@ const enhance = compose (
   withSession,
   withNotation,
   withState('moreNotesChecked', 'setMoreNotesChecked', false),
+  withState('showLoopChecked', 'setShowLoopChecked', false),
   withHandlers({
     handleMoreNotesToggle: props => event => {
       // Allow the user to click the switch directly or
@@ -23,6 +24,16 @@ const enhance = compose (
       const checked = !props.moreNotesChecked;
       props.setMoreNotesChecked(checked);
       window.ss.maestro.showMoreNotes = checked;
+      window.ss.maestro.queueUpdate();
+    },
+    handleShowLoopToggle: props => event => {
+      if (event.hasOwnProperty('stopPropagation')) {
+        event.stopPropagation();
+      }
+
+      const checked = !props.showLoopChecked;
+      props.setShowLoopChecked(checked);
+      window.ss.maestro.showLoop = checked;
       window.ss.maestro.queueUpdate();
     }
   }),
@@ -39,7 +50,9 @@ const enhance = compose (
   }),
   lifecycle({
     componentDidMount(): void {
-      window.ss.maestro.showMoreNotes = false;
+      const { maestro } = window.ss;
+      maestro.showMoreNotes = false;
+      maestro.showLoop = false;
     }
   })
 );
@@ -78,7 +91,7 @@ const NotationControlsMenuOuter = styled.div`
     }
   }
 `;
-const MoreNotesSwitchContainer = styled.div`
+const SwitchContainer = styled.div`
   .ant-switch {
     background: #aaa;
 
@@ -87,11 +100,19 @@ const MoreNotesSwitchContainer = styled.div`
     }
   }
 `;
-const MoreNotesDescription = styled.span`
+const SwitchDesc = styled.span`
   margin-left: 10px;
 `;
 
-const NotationControlsMenu = ({ match, moreNotesChecked, showEditItem, collapsed, handleMoreNotesToggle }) => (
+const NotationControlsMenu = ({
+  match,
+  moreNotesChecked,
+  showLoopChecked,
+  showEditItem,
+  collapsed,
+  handleMoreNotesToggle,
+  handleShowLoopToggle
+}) => (
   <NotationControlsMenuOuter>
     <Menu
       selectable={false}
@@ -122,13 +143,22 @@ const NotationControlsMenu = ({ match, moreNotesChecked, showEditItem, collapsed
       </ItemGroup>
       <ItemGroup title="player">
         <Item key="more-notes">
-          <MoreNotesSwitchContainer onClick={handleMoreNotesToggle}>
+          <SwitchContainer onClick={handleMoreNotesToggle}>
             <Switch
               checked={moreNotesChecked}
               onChange={handleMoreNotesToggle}
             />
-            <MoreNotesDescription>more notes</MoreNotesDescription>
-          </MoreNotesSwitchContainer>
+            <SwitchDesc>more notes</SwitchDesc>
+          </SwitchContainer>
+        </Item>
+        <Item key="show-loop">
+          <SwitchContainer onClick={handleShowLoopToggle}>
+            <Switch
+              checked={showLoopChecked}
+              onChange={handleShowLoopToggle}
+            />
+            <SwitchDesc>show loop</SwitchDesc>
+          </SwitchContainer>
         </Item>
       </ItemGroup>
     </Menu>

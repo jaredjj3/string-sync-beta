@@ -93,7 +93,7 @@ const Loop = ({ video, values, handleChange, handleAfterChange }) => (
       disabled={video.state.player === null}
       min={0}
       max={100}
-      step={0.01}
+      step={0.001}
       defaultValue={[0, 100]}
       value={values}
       tipFormatter={null}

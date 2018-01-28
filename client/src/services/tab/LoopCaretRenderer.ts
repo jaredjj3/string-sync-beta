@@ -3,7 +3,7 @@ import { last } from 'lodash';
 
 class LoopCaretRenderer implements Renderer {
   static CARET_THICKNESS_PX: number = 2;
-  static CARET_ALPHA: number = 0.1;
+  static CARET_ALPHA: number = 0.075;
 
   line: Line = null;
   canvas: HTMLCanvasElement = null;
