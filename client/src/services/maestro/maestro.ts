@@ -21,6 +21,7 @@ class Maestro {
   isActive: boolean = false;
   updateQueued: boolean = false;
   showMoreNotes: boolean = false;
+  showLoop: boolean = false;
 
   private _snapshot: Snapshot = new Snapshot();
 
@@ -55,6 +56,7 @@ class Maestro {
     this.isActive = false;
     this.updateQueued = false;
     this._snapshot = new Snapshot();
+    this.showLoop = false;
 
     return this;
   }
