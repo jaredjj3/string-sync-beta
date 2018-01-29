@@ -58,7 +58,11 @@ const FretboardOuter = styled.div`
     }
   }
 `;
-const FretboardInner = styled.div``;
+const FretboardInner = styled.div`
+  .Fret__indicator {
+    background: black;
+  }
+`;
 
 const FretboardIndicators = () => {
   const indicators = Frets.DOTS.map((dots, fret) => (

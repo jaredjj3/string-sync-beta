@@ -16,6 +16,7 @@ const enhance = compose(
 const NotationShowBannerOuter = styled.div`
   padding: 20px;
   background: black;
+  z-index: 11;
 
   i {
     font-size: 20px;

@@ -7,7 +7,7 @@ const NotationControlsOuter = styled.div`
   width: 100%;
   z-index: 22;
   background: #282828;
-  color: lightgray;
+  color: white;
   padding: 15px 0;
 
   .VideoScrubber, .Loop {

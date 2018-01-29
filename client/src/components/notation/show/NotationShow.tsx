@@ -2,7 +2,7 @@ import * as React from 'react';
 import { compose, withState, withProps, lifecycle } from 'recompose';
 import { withNotation } from 'enhancers';
 import { Gradient, Video, Tab, Fretboard, MaestroController } from 'components';
-import { NotationShowBanner } from './';
+import { NotationShowBanner, NotationShowVideo } from './';
 import { NotationControls } from 'components';
 import { toTick, toTimeMs } from 'ssUtil';
 import styled from 'styled-components';
@@ -46,18 +46,6 @@ const NotationShowOuter = styled.div`
   .NotationShow {
     color: white;
     overflow-x: hidden;
-
-    .Video {
-      background: black;
-      height: 30vh;
-      width: 100%;
-
-      iframe {
-        height: 100%;
-        width: 100%;
-        min-height: 30vh;
-      }
-    }
   }
 `;
 const NotationShowInner = styled.div``
@@ -72,7 +60,7 @@ const NotationShow = ({ isFetching, notation }) => (
         songName={notation.state.songName}
         artistName={notation.state.artistName}
       />
-      <Video withInitializer />
+      <NotationShowVideo />
       <Fretboard />
       <Tab withCaret />
       <NotationControls />
