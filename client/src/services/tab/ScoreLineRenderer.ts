@@ -34,7 +34,7 @@ class ScoreLineRenderer implements Renderer  {
     this.ctx = this.renderer.getContext();
     this._resize();
 
-    this.artist = new Artist(10, 20, this.width - 20);
+    this.artist = new Artist(10, 20, this.width - 10);
     this.vextab = new Vextab(this.artist);
     this.vextab.parse(this.vextabString);
 
