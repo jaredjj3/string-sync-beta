@@ -64,7 +64,7 @@ const NotationShow = ({ isFetching, notation }) => (
       <Fretboard />
       <Tab withCaret />
       <NotationControls />
-      </NotationShowInner>
+    </NotationShowInner>
   </NotationShowOuter>
 );
 

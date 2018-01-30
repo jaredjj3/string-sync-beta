@@ -32,14 +32,13 @@ const enhance = compose(
   withHandlers({
     handleAnimationLoop: props => () => {
       const { note } = window.ss.maestro.snapshot.data;
-      const { isActive } = window.ss.maestro;
       const { focusedNote } = props;
 
       if (focusedNote && focusedNote.renderer.currentStyle !== 'DEFAULT') {
         focusedNote.renderer.setStyle('DEFAULT').redraw();
       }
 
-      if (isActive && note && note.renderer.currentStyle !== 'ACTIVE') {
+      if (note && note.renderer.currentStyle !== 'ACTIVE') {
         note.renderer.setStyle('ACTIVE').redraw();
       }
 
