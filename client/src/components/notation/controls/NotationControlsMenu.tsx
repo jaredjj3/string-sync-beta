@@ -2,7 +2,8 @@ import * as React from 'react';
 import { compose, withProps, withState, withHandlers, lifecycle } from 'recompose';
 import { withRouter, Link } from 'react-router-dom';
 import { Menu, Icon, Switch } from 'antd';
-import { withSession, withNotation } from 'enhancers';
+import { Switch as MobileSwitch } from 'antd-mobile';
+import { withSession, withNotation, withViewport } from 'enhancers';
 import styled from 'styled-components';
 
 const { SubMenu, ItemGroup, Item } = Menu;
@@ -11,6 +12,7 @@ const enhance = compose (
   withRouter,
   withSession,
   withNotation,
+  withViewport,
   withState('moreNotesChecked', 'setMoreNotesChecked', false),
   withState('showLoopChecked', 'setShowLoopChecked', false),
   withHandlers({
@@ -37,6 +39,9 @@ const enhance = compose (
       window.ss.maestro.queueUpdate();
     }
   }),
+  withProps(props => ({
+    isMobile: props.viewport.state.type === 'MOBILE'
+  })),
   withProps(props => {
     const { currentUser } = props.session.state;
     const { transcriber } = props.notation.state;
@@ -110,6 +115,7 @@ const NotationControlsMenu = ({
   showLoopChecked,
   showEditItem,
   collapsed,
+  isMobile,
   handleMoreNotesToggle,
   handleShowLoopToggle
 }) => (
@@ -144,19 +150,29 @@ const NotationControlsMenu = ({
       <ItemGroup title="player">
         <Item key="more-notes">
           <SwitchContainer onClick={handleMoreNotesToggle}>
-            <Switch
-              checked={moreNotesChecked}
-              onChange={handleMoreNotesToggle}
-            />
+            {
+              isMobile
+                ? <MobileSwitch
+                    checked={moreNotesChecked}
+                    onChange={handleMoreNotesToggle}
+                    color="#fc354c"
+                  />
+                : <Switch checked={moreNotesChecked} onChange={handleMoreNotesToggle} />
+            }
             <SwitchDesc>more notes</SwitchDesc>
           </SwitchContainer>
         </Item>
         <Item key="show-loop">
           <SwitchContainer onClick={handleShowLoopToggle}>
-            <Switch
-              checked={showLoopChecked}
-              onChange={handleShowLoopToggle}
-            />
+            {
+              isMobile
+                ? <MobileSwitch
+                    checked={showLoopChecked}
+                    onChange={handleShowLoopToggle}
+                    color="#fc354c"
+                  />
+                : <Switch checked={showLoopChecked} onChange={handleShowLoopToggle} />
+            }
             <SwitchDesc>show loop</SwitchDesc>
           </SwitchContainer>
         </Item>
