@@ -59,6 +59,7 @@ const Video = ({ video, withInitializer, youtubeVideoId, handleReady, handleStat
   <div className="Video">
     {withInitializer ? <VideoInitializer /> : null}
     <Youtube
+      id="Video__youtubePlayer"
       className="Video__youtubePlayer"
       opts={youtubeOptions}
       videoId={youtubeVideoId}
