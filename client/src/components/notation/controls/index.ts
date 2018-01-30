@@ -4,3 +4,4 @@ export { default as NotationControlsMenu } from './NotationControlsMenu';
 export { default as Play } from './Play';
 export { default as Scrubber } from './Scrubber';
 export { default as ToggleControls } from './ToggleControls';
+export { default as PlayBack } from './Playback';
