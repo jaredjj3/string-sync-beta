@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { compose, lifecycle } from 'recompose';
 import { Provider } from 'react-redux';
-import { withRouter, BrowserRouter } from 'react-router-dom';
+import { withRouter, BrowserRouter, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import enUS from 'antd/lib/locale-provider/en_US.js';
 import { LocaleProvider } from 'antd';
-import { NotificationSystem, Routes, ViewportManager, UserProcessor, LoadingMask } from './';
+import { 
+  NotificationSystem, Routes, ViewportManager, UserProcessor,
+  LoadingMask, BetaNotifier
+} from './';
 
 const scrollToTop = (): void => {
   window.scrollTo(null, 0);
@@ -39,6 +42,7 @@ const App = ({ store }) => (
               <NotificationSystem />
               <ViewportManager />
               <UserProcessor />
+              <BetaNotifier />
             </AppFunctionality>
             <LoadingMask />
             <Routes />

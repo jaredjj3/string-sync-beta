@@ -10,3 +10,4 @@ export { default as NotificationSystem } from './NotificationSystem';
 export { default as Routes } from './Routes';
 export { default as UserProcessor } from './UserProcessor';
 export { default as ViewportManager } from './ViewportManager';
+export { default as BetaNotifier } from './BetaNotifier';
