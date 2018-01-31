@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const OverviewOuter = styled.div`
 `;
 const OverviewInner = styled.div`
-  max-width: 500px;
+  max-width: 576px;
   margin: 0 auto;
 `;
 const OverviewHeader = styled.h1`

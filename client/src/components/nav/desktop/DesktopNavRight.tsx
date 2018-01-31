@@ -69,10 +69,6 @@ const DesktopNavRight = ({ handleMenuClick, logout, selectedKeys, session, isAdm
             <Icon type="contacts" />
             <span>contact</span>
           </Item>
-          <Item key="/about/social">
-            <Icon type="usergroup-add" />
-            <span>social</span>
-          </Item>
         </ItemGroup>
       </SubMenu>
       <Item key="/library">
