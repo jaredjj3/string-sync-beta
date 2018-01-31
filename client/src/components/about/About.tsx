@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Link } from 'react-router-dom';
 import { LogoImage, Gradient, Nav, Footer } from 'components';
 import { Overview, Contact, Roadmap, Social } from './';
 import styled from 'styled-components';
@@ -25,10 +25,12 @@ const About = ({ match }) => (
     <Gradient />
     <Nav />
     <AboutInner>
-      <LogoOuter>
-        <LogoImage style={{ width: '200px' }} />
-        <p>We like to be transparent.</p>
-      </LogoOuter>
+      <Link to="/library">
+        <LogoOuter>
+          <LogoImage style={{ width: '200px' }} />
+          <p>We like to be transparent.</p>
+        </LogoOuter>
+      </Link>
       <Switch>
         <Route path={`${match.url}/overview`} component={Overview} />
         <Route path={`${match.url}/contact`} component={Contact} />

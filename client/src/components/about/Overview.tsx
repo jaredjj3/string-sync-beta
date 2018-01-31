@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const OverviewOuter = styled.div`
 `;
@@ -38,7 +39,7 @@ const Overview = () => (
             We genuinely want to help you. If you're a student, we will <em>always</em> ensure there will be
             new free content regularly. If you're a teacher, we will <em>always</em> provide you the support
             you need for you and your students to thrive. If we're not meeting your needs, 
-            <a href="mailto:stringsynced@gmail.com"> please reach out to us</a>.
+            <Link to="/about/contact"> please reach out to us</Link>.
           </Paragraph>
         </Article>
         <Article>
@@ -51,8 +52,8 @@ const Overview = () => (
         <Article>
           <Header>HEAR, SEE, AND PLAY</Header>
           <Paragraph>
-            We purposely stray away from traditional teaching methods - we think they're inefficient and outdated.
-            The goal of this app is to help you hear something and play it. That's it.
+            Think about it. Traditional guitar teaching methods are a bit inefficient. The goal of
+            this app is to help you hear something and play it. That's it.
           </Paragraph>
         </Article>
       </Articles>
