@@ -11,8 +11,8 @@ const enhance = compose(
         message: 'StringSync BETA',
         description:
           <div>
-            <div>updated at January 31:</div>
-            <small>styled the notation player</small>
+            <div>updated at January 31</div>
+            <small>restyled the notation player</small>
           </div>
       });
     }
