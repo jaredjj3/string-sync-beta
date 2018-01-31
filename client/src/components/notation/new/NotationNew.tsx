@@ -102,7 +102,7 @@ const enhance = compose(
       this.props.tags.dispatch.fetchTags();
     },
     componentWillReceiveProps(nextProps: any): void {
-      const notationId = this.props.notation.state.id;
+      const notationId = nextProps.notation.state.id;
 
       if (notationId !== -1) {
         this.props.history.push(`/n/${notationId}/edit`);
