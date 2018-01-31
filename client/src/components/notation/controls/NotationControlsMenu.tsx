@@ -3,7 +3,8 @@ import { compose, withProps, withState, withHandlers, lifecycle } from 'recompos
 import { withRouter, Link } from 'react-router-dom';
 import { Menu, Icon, Switch } from 'antd';
 import { Switch as MobileSwitch } from 'antd-mobile';
-import { withSession, withNotation, withViewport, withVideo } from 'enhancers';
+import { withSession, withNotation, withViewport } from 'enhancers';
+import { Playback } from './';
 import styled from 'styled-components';
 
 const { SubMenu, ItemGroup, Item } = Menu;
@@ -13,7 +14,6 @@ const enhance = compose (
   withSession,
   withNotation,
   withViewport,
-  withVideo,
   withState('moreNotesChecked', 'setMoreNotesChecked', false),
   withState('showLoopChecked', 'setShowLoopChecked', false),
   withHandlers({
@@ -178,7 +178,7 @@ const NotationControlsMenu = ({
           </SwitchContainer>
         </Item>
         <Item>
-          playback rate
+          <Playback />
         </Item>
       </ItemGroup>
     </Menu>
