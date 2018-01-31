@@ -6,6 +6,8 @@ const RoadmapOuter = styled.div`
 `;
 const RoadmapHeader = styled.h1`
   text-align: center;
+  font-weight: 100;
+  letter-spacing: 3px;
 `;
 const Lists = styled.div`
   margin: 50px;

@@ -12,7 +12,12 @@ const enhance = compose(
         description:
           <div>
             <div>updated at January 31</div>
-            <small>restyled the notation player</small>
+            <div>
+              <small>- restyled the notation player</small>
+            </div>
+            <div>
+              <small>- updated the desktop about sections</small>
+            </div>
           </div>
       });
     }
