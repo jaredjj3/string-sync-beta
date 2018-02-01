@@ -35,6 +35,17 @@ const NotationEditOuter = styled.div`
   }
 `;
 const NotationEditInner = styled.div``;
+const TabOuter = styled.div`
+  #Score .ScoreLine:last-child {
+    margin-bottom: 500px;
+  }
+`;
+const NotationControlsOuter = styled.div`
+  position: fixed;
+  bottom: 0;
+  z-index: 22;
+  width: 100%;
+`;
 
 const NotationEdit = () => (
   <NotationEditOuter>
@@ -45,11 +56,15 @@ const NotationEdit = () => (
       <Video withInitializer />
       <Fretboard />
       <NotationEditor />
-      <Tab
-        withCaret
-        allowOverflow
-      />
-      <NotationControls />
+      <TabOuter>
+        <Tab
+          withCaret
+          allowOverflow
+        />
+      </TabOuter>
+      <NotationControlsOuter>
+        <NotationControls />
+      </NotationControlsOuter>
     </NotationEditInner>
   </NotationEditOuter>
 );
