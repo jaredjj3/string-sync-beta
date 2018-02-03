@@ -35,9 +35,9 @@ const Roadmap = () => (
       <ListOuter>
       <Header>TO DO</Header>
         <List>
-          <ListItem>refactor notation menu code</ListItem>
+          <ListItem>keyboard bindings</ListItem>
           <ListItem>instagram exporter</ListItem>
-          <ListItem>cleanup highlighted note rendering</ListItem>
+          <ListItem>cleanup note rendering</ListItem>
           <ListItem>enhance scale awareness</ListItem>
           <ListItem>scale suggestions</ListItem>
           <ListItem>ear training</ListItem>
@@ -48,14 +48,15 @@ const Roadmap = () => (
         <Header>DOING</Header>
         <List>
           <ListItem>add more content</ListItem>
-          <ListItem>enhance note data binding</ListItem>
-          <ListItem>grace notes</ListItem>
+          <ListItem>cleanup code</ListItem>
         </List>
       </ListOuter>
       <ListOuter>
         <Header>DONE</Header>
         <List>
           <ListItem>restyle the notation player</ListItem>
+          <ListItem>enhance note data binding</ListItem>
+          <ListItem>grace notes</ListItem>
         </List>
       </ListOuter>
     </Lists>
