@@ -1,3 +1,4 @@
+import { Flow } from 'vexflow'; 
 import Measure from './Measure';
 import NoteRenderer from './NoteRenderer';
 
@@ -66,7 +67,18 @@ class Note {
   }
 
   getGuitarPos(): Array<GuitarPosition> {
-    const guitarPositions = this.tabNote.positions || [];
+    let guitarPositions = this.tabNote.positions || [];
+
+    if (this.tabNote.modifiers.length > 0) {
+      this.tabNote.modifiers.forEach(mod => {
+        if (mod instanceof Flow.GraceNoteGroup) {
+          mod.grace_notes.forEach(graceTabNote => {
+            guitarPositions = guitarPositions.concat(graceTabNote.positions);
+          });
+        }
+      });
+    }
+
     return guitarPositions.map(position => ({
       fret: parseInt(position.fret, 10),
       string: parseInt(position.str, 10) - 1
