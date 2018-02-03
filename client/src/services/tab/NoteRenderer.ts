@@ -1,3 +1,4 @@
+import { Flow } from 'vexflow';
 import Note from './Note';
 
 type NoteStyles = 'DEFAULT' | 'ACTIVE';
@@ -40,18 +41,28 @@ class NoteRenderer {
 
       if (tabNote) {
         tabNote.setStyle(style);
+
+        tabNote.modifiers.forEach(mod => {
+          if (mod instanceof Flow.GraceNoteGroup) {
+            mod.grace_notes.forEach(graceTabNote => graceTabNote.setStyle(style));
+          }
+        });
       }
 
       if (staveNote) {
         staveNote.setStyle(style);
         staveNote.setLedgerLineStyle(style);
         staveNote.setFlagStyle(style);
-      }
 
-      if (graceNote) {
-        staveNote.setStyle(style);
-        staveNote.setLedgerLineStyle(style);
-        staveNote.setFlagStyle(style);
+        staveNote.modifiers.forEach(mod => {
+          if (mod instanceof Flow.GraceNoteGroup) {
+            mod.grace_notes.forEach(graceNote => {
+              graceNote.setStyle(style);
+              graceNote.setLedgerLineStyle(style);
+              graceNote.setFlagStyle(style);
+            });
+          }
+        });
       }
     }
 
@@ -71,8 +82,22 @@ class NoteRenderer {
     staveNote.drawNoteHeads();
     staveNote.drawLedgerLines();
 
+    staveNote.modifiers.forEach(mod => {
+      if (mod instanceof Flow.GraceNoteGroup) {
+        mod.grace_notes.forEach(graceNote => {
+          graceNote.drawNoteHeads();
+          graceNote.drawLedgerLines();
+        });
+      }
+    });
+
     if (typeof tabNote.drawPositions === 'function') {
       tabNote.drawPositions();
+      tabNote.modifiers.forEach(mod => {
+        if (mod instanceof Flow.GraceNoteGroup) {
+          mod.grace_notes.forEach(graceTabNote => graceTabNote.drawPositions());
+        }
+      });
     }
 
     ctx.restore();
