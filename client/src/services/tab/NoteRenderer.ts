@@ -36,11 +36,23 @@ class NoteRenderer {
     }
 
     if (style) {
-      const { tabNote, staveNote } = this.note;
-      tabNote.setStyle(style);
-      staveNote.setStyle(style);
-      staveNote.setLedgerLineStyle(style);
-      staveNote.setFlagStyle(style);
+      const { tabNote, staveNote, graceNote } = this.note;
+
+      if (tabNote) {
+        tabNote.setStyle(style);
+      }
+
+      if (staveNote) {
+        staveNote.setStyle(style);
+        staveNote.setLedgerLineStyle(style);
+        staveNote.setFlagStyle(style);
+      }
+
+      if (graceNote) {
+        staveNote.setStyle(style);
+        staveNote.setLedgerLineStyle(style);
+        staveNote.setFlagStyle(style);
+      }
     }
 
     return this;

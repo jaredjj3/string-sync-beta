@@ -36,11 +36,8 @@ const enhance = compose(
       const scoreLineRenderer = new ScoreLineRenderer(line, canvas, line.width, SCORE_LINE_HEIGHT_PX);
       line.scoreLineRenderer = scoreLineRenderer;
 
-      // After rendering, the scoreLineRenderer should have an artist and will
-      // have a stave for linking
       try {
         scoreLineRenderer.setup().render();
-        line.linkVexInstances(scoreLineRenderer.artist.staves[0]);
 
         // if this is the last ScoreLine rendered, populate the tickRanges on the tab
         if (line.next === null && !tab.error) {

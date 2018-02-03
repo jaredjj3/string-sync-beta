@@ -7,6 +7,7 @@ class Note {
   next: Note = null;
   tabNote: any = null;
   staveNote: any = null;
+  graceNote: any = null;
   measure: Measure = null;
   renderer: NoteRenderer = null;
 
