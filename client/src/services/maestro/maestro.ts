@@ -25,8 +25,7 @@ class Maestro {
   // options
   options: Maestro.Options = {
     showMoreNotes: false,
-    showLoop: false,
-    playbackSpeed: 1
+    showLoop: false
   }
 
   private _snapshot: Snapshot = new Snapshot();
