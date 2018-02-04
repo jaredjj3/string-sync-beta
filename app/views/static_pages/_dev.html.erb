@@ -1,0 +1,9 @@
+<script src="/assets/vendor.bundle.js"></script>
+<script src="/assets/bundle.js"></script>
+<script>
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+</script>

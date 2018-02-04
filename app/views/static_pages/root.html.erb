@@ -1,13 +1,2 @@
-<%- if Rails.env.development? %>
-  <script src="/assets/vendor.bundle.js"></script>
-  <script src="/assets/bundle.js"></script>
-  <script>
-    $.ajaxSetup({
-      headers: {
-        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-      }
-    });
-  </script>
-<%- end %>
-
+<%= render("static_pages/dev") if Rails.env.development? %>
 <div id="root"></div>
