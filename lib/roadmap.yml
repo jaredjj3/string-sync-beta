@@ -1,0 +1,20 @@
+notification:
+  updated_at: 2018-02-04
+  messages:
+
+todo:
+  - "keyboard bindings"
+  - "instagram exporter"
+  - "cleanup note renderer"
+  - "scale suggestions"
+  - "ear training"
+  - "music visualizer"
+
+doing:
+  - "add more content"
+  - "fix how grace notes light"
+
+done:
+  - "restyle notation player"
+  - "enhance note data binding"
+  - "ability to render grace notes"
