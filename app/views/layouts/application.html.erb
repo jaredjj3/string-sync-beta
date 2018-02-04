@@ -2,18 +2,8 @@
 <html>
   <head>
     <title>StringSync</title>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-110850092-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'UA-110850092-1');
-    </script>
-    <script id="bootstrap-current-user" type="text/javascript">
-      window.currentUser = <%= render("api/v1/users/show.json.jbuilder", user: (logged_in? ? current_user : User.new)).html_safe %>
-    </script>
+    <%= render("head/google_analytics") %>
+    <%= render("head/window") %>
 
     <%= csrf_meta_tags %>
 
@@ -21,29 +11,6 @@
     <%= javascript_include_tag 'application' %>
 
     <meta name="viewport" content="user-scalable=no,initial-scale=1,maximum-scale=1" />
-
-    <script>
-      window.assets = {
-        logo: {
-          png: "<%= image_url("logo/logo.png") %>",
-          svg: "<%= image_url("logo/logo.svg") %>"
-        },
-        mascot: {
-          guitar: {
-            png: "<%= image_url("mascot/guitar.png") %>",
-            svg: "<%= image_url("mascot/guitar.svg") %>"
-          },
-          search: {
-            png: "<%= image_url("mascot/search.png") %>",
-            svg: "<%= image_url("mascot/search.svg") %>"
-          },
-          sleep: {
-            png: "<%= image_url("mascot/sleep.png") %>",
-            svg: "<%= image_url("mascot/sleep.svg") %>"
-          }
-        }
-      };
-    </script>
   </head>
 
   <body>
