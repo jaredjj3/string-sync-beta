@@ -26,7 +26,7 @@ const enhance = compose (
 
       const checked = !props.moreNotesChecked;
       props.setMoreNotesChecked(checked);
-      window.ss.maestro.showMoreNotes = checked;
+      window.ss.maestro.options.showMoreNotes = checked;
       window.ss.maestro.queueUpdate();
     },
     handleShowLoopToggle: props => event => {
@@ -36,7 +36,7 @@ const enhance = compose (
 
       const checked = !props.showLoopChecked;
       props.setShowLoopChecked(checked);
-      window.ss.maestro.showLoop = checked;
+      window.ss.maestro.options.showLoop = checked;
       window.ss.maestro.queueUpdate();
     }
   }),
@@ -57,8 +57,8 @@ const enhance = compose (
   lifecycle({
     componentDidMount(): void {
       const { maestro } = window.ss;
-      maestro.showMoreNotes = false;
-      maestro.showLoop = false;
+      maestro.options.showMoreNotes = false;
+      maestro.options.showLoop = false;
     }
   })
 );

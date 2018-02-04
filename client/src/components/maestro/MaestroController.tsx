@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { compose, withProps, withHandlers, lifecycle } from 'recompose';
 import { withVideo, withNotation } from 'enhancers';
+import { Maestro } from 'services';
 
 // The purpose of this component is to wrap the Maestro service
 // in a react wrapper, so that it can respond to changes in redux
@@ -56,7 +57,7 @@ const enhance = compose(
       this.props.unregisterRaf();
       rafLoop.stop();
       rafLoop.reset();
-      maestro.reset();
+      window.ss.maestro = new Maestro();
     }
   })
 );

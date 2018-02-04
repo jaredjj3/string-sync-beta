@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { App } from 'app';
 import { store } from 'data';
-import { maestro, rafLoop, loader } from 'services';
+import { Maestro, rafLoop, loader } from 'services';
 
 declare global {
   interface Window {
@@ -20,7 +20,7 @@ declare global {
 }
 
 window.ss = {
-  maestro,
+  maestro: new Maestro(),
   rafLoop,
   loader
 };

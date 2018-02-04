@@ -46,7 +46,7 @@ const enhance = compose(
 
       // render each of the line's loopRenderers if scrubbing and the maestro
       // does not require the loop to be force shown
-      if (window.ss.maestro.showLoop || snapshot.data.isLoopScrubbing) {
+      if (window.ss.maestro.options.showLoop || snapshot.data.isLoopScrubbing) {
         tab.lines.forEach(({ loopCaretRenderer }) => {
           if (loopCaretRenderer) {
             loopCaretRenderer.render();

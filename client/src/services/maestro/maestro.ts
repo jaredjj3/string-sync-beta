@@ -10,18 +10,24 @@ import { Tab, Fretboard } from 'services';
 // attribute. Maestro will apply the deadTimeMs to the currentTimeMs when executing each
 // plan in the plans object.
 class Maestro {
+  // refs
   tab: Tab = null;
   fretboard: Fretboard = null;
 
+  // state
   currentTimeMs: number = 0;
   bpm: number = 0;
   deadTimeMs: number = 0;
   loopMs: Array<number> = [];
-
   isActive: boolean = false;
   updateQueued: boolean = false;
-  showMoreNotes: boolean = false;
-  showLoop: boolean = false;
+
+  // options
+  options: Maestro.Options = {
+    showMoreNotes: false,
+    showLoop: false,
+    playbackSpeed: 1
+  }
 
   private _snapshot: Snapshot = new Snapshot();
 
@@ -47,30 +53,16 @@ class Maestro {
     return offset !== offset ? 0 : this.currentTick - offset; // guard against NaN
   }
 
-  reset(): Maestro {
-    this.tab = null;
-    this.fretboard = null;
-    this.currentTimeMs = 0;
-    this.bpm = 0;
-    this.deadTimeMs = 0;
-    this.isActive = false;
-    this.updateQueued = false;
-    this._snapshot = new Snapshot();
-    this.showLoop = false;
-
-    return this;
-  }
-
   update(): Snapshot {
     if (this._shouldUpdate()) {
       this._snapshot = SnapshotFactory.create({
-        prevSnapshot: this._snapshot,
-        tab: this.tab,
-        tuning: this.fretboard.tuning,
-        tick: this.offsetTick,
-        timeMs: this.offsetTimeMs,
-        showMoreNotes: this.showMoreNotes,
-        loopTick: this.loopMs.map(timeMs => toTick(timeMs, this.tpm)),
+        prevSnapshot:  this._snapshot,
+        tab:           this.tab,
+        tuning:        this.fretboard.tuning,
+        tick:          this.offsetTick,
+        timeMs:        this.offsetTimeMs,
+        showMoreNotes: this.options.showMoreNotes,
+        loopTick:      this.loopMs.map(timeMs => toTick(timeMs, this.tpm)),
       });
       this.updateQueued = false;
     }
@@ -94,6 +86,4 @@ class Maestro {
   }
 }
 
-const instance = new Maestro();
-
-export default instance;
+export default Maestro;
