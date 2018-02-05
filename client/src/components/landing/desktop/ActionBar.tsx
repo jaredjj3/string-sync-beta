@@ -34,14 +34,18 @@ const ActionBarLinkItem = styled.li`
   &:hover {
     text-decoration: underline;
   }
+
+  &:last-child {
+    margin-right: 0;
+  }
 `;
 
 const LoginLinkListItem = showIfNotLoggedIn(() => (
-  <li>
+  <ActionBarLinkItem>
     <Link to="/login">
       login
     </Link>
-  </li>
+  </ActionBarLinkItem>
 ));
 
 const ActionBar = ({ session }) => (
