@@ -151,8 +151,9 @@ class Tab {
         measure.notes.forEach(note => {
           const absTick = totalTicks.clone();
           note.tickRange.start = absTick.add(totalMeasureTicks).simplify().value();
-
-          if (note.getType() === 'note') {
+          if (note.staveNote.getCategory() === 'gracenotes') {
+            totalMeasureTicks.add(256, 1);
+          } else if (note.getType() === 'note') {
             const noteTicks = note.getTicks();
             totalMeasureTicks.add(noteTicks.numerator, noteTicks.denominator);
           }

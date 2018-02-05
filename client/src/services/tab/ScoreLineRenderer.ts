@@ -70,6 +70,7 @@ class ScoreLineRenderer implements Renderer  {
 
   private _renderTab(): ScoreLineRenderer {
     const stave = this.artist.staves[0];
+
     stave.tab_notes.forEach((tabNote, ndx) => {
       const staveNote = stave.note_notes[ndx];
       const jsonModifiers = [];

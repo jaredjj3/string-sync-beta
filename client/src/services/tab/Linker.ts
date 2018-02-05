@@ -1,5 +1,6 @@
 import { Line, Measure, Note } from 'services';
 import { flatMap, groupBy, merge, last } from 'lodash';
+import { Flow } from 'vexflow';
 
 interface BarNoteChunk {
   barNote: any;
@@ -114,13 +115,32 @@ class Linker {
       chunk.staveNotes.forEach((staveNote, noteIndex) => {
         const tabNote = chunk.tabNotes[noteIndex];
 
-        const note = new Note(measure, tabNote, staveNote);
-        const prev = last(notes) || null;
+        const graceNotes = flatMap(
+          staveNote.modifiers.filter(mod => mod instanceof Flow.GraceNoteGroup),
+          note => note.grace_notes
+        );
 
-        notes.push(note);
+        const graceTabNotes = flatMap(
+          tabNote.modifiers.filter(mod => mod instanceof Flow.GraceNoteGroup),
+          note => note.grace_notes
+        );
+
+        const noteSpecs = graceNotes.map((graceNote, ndx) => ({
+          measure,
+          tabNote: graceTabNotes[ndx],
+          staveNote: graceNote
+        }));
+        noteSpecs.push({ measure, tabNote, staveNote });
+
+        noteSpecs.forEach(({ measure, tabNote, staveNote }) => {
+          const note = new Note(measure, tabNote, staveNote);
+          const prev = last(notes) || null;
+          notes.push(note);
+        })
       });
 
       measure.notes = notes;
+
     });
 
     // if on the last line

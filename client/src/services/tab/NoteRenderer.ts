@@ -37,32 +37,16 @@ class NoteRenderer {
     }
 
     if (style) {
-      const { tabNote, staveNote, graceNote } = this.note;
+      const { tabNote, staveNote } = this.note;
 
       if (tabNote) {
         tabNote.setStyle(style);
-
-        tabNote.modifiers.forEach(mod => {
-          if (mod instanceof Flow.GraceNoteGroup) {
-            mod.grace_notes.forEach(graceTabNote => graceTabNote.setStyle(style));
-          }
-        });
       }
 
       if (staveNote) {
         staveNote.setStyle(style);
         staveNote.setLedgerLineStyle(style);
         staveNote.setFlagStyle(style);
-
-        staveNote.modifiers.forEach(mod => {
-          if (mod instanceof Flow.GraceNoteGroup) {
-            mod.grace_notes.forEach(graceNote => {
-              graceNote.setStyle(style);
-              graceNote.setLedgerLineStyle(style);
-              graceNote.setFlagStyle(style);
-            });
-          }
-        });
       }
     }
 
@@ -82,22 +66,8 @@ class NoteRenderer {
     staveNote.drawNoteHeads();
     staveNote.drawLedgerLines();
 
-    staveNote.modifiers.forEach(mod => {
-      if (mod instanceof Flow.GraceNoteGroup) {
-        mod.grace_notes.forEach(graceNote => {
-          graceNote.drawNoteHeads();
-          graceNote.drawLedgerLines();
-        });
-      }
-    });
-
     if (typeof tabNote.drawPositions === 'function') {
       tabNote.drawPositions();
-      tabNote.modifiers.forEach(mod => {
-        if (mod instanceof Flow.GraceNoteGroup) {
-          mod.grace_notes.forEach(graceTabNote => graceTabNote.drawPositions());
-        }
-      });
     }
 
     ctx.restore();
