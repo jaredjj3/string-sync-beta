@@ -24,6 +24,10 @@ class Note {
     this.renderer = new NoteRenderer(this).setStyle('DEFAULT');
   }
 
+  isGraceNote(): boolean {
+    return this.staveNote.getCategory() === 'gracenotes';
+  }
+
   setPrev(prev: Note): Note {
     this.prev = prev;
 

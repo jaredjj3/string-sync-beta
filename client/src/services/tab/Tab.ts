@@ -151,11 +151,15 @@ class Tab {
         measure.notes.forEach(note => {
           const absTick = totalTicks.clone();
           note.tickRange.start = absTick.add(totalMeasureTicks).simplify().value();
-          if (note.staveNote.getCategory() === 'gracenotes') {
-            totalMeasureTicks.add(256, 1);
+          if (note.isGraceNote()) {
+            totalMeasureTicks.add(512, 1);
           } else if (note.getType() === 'note') {
             const noteTicks = note.getTicks();
-            totalMeasureTicks.add(noteTicks.numerator, noteTicks.denominator);
+            let numerator = noteTicks.numerator;
+            if (note.prev && note.prev.isGraceNote()) {
+              numerator -= 512;
+            }
+            totalMeasureTicks.add(numerator, noteTicks.denominator);
           }
         });
 
