@@ -35,6 +35,7 @@ const Roadmap = () => (
       <ListOuter>
       <Header>TO DO</Header>
         <List>
+          <ListItem>direct note annotations</ListItem>
           <ListItem>keyboard bindings</ListItem>
           <ListItem>instagram exporter</ListItem>
           <ListItem>cleanup note rendering</ListItem>
