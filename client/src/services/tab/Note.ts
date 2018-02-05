@@ -1,6 +1,6 @@
 import { Flow } from 'vexflow'; 
-import Measure from './Measure';
-import NoteRenderer from './NoteRenderer';
+import { NoteRenderer } from 'services';
+import { Measure } from './';
 
 class Note {
   number: number = 0;

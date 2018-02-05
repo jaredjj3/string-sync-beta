@@ -1,5 +1,5 @@
 import { Flow } from 'vexflow';
-import Note from './Note';
+import { Note } from 'services';
 
 type NoteStyles = 'DEFAULT' | 'ACTIVE';
 

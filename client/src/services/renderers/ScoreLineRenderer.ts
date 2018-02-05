@@ -38,6 +38,7 @@ class ScoreLineRenderer implements Renderer  {
     this.artist = new Artist(10, 20, this.width - 10);
     this.vextab = new Vextab(this.artist);
     this.vextab.parse(this.vextabString);
+    this._afterSetup();
 
     return this;
   }
@@ -53,6 +54,12 @@ class ScoreLineRenderer implements Renderer  {
 
   clear(): ScoreLineRenderer {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    return this;
+  }
+
+  private _afterSetup(): ScoreLineRenderer {
+    
+
     return this;
   }
 
