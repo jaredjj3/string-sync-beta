@@ -23,8 +23,8 @@ class DirectiveExtractor {
 
   static createDirective(modifier: any, refs: any): Directive {
     // FIXME: Overly complicated logic to hack JSON since Vextab handles commas differently
-    const directiveString = modifier.text.split('=')[1].replace(/\;/g, ',');
-    return new Directive(directiveString, refs);
+    const directiveStruct = JSON.parse(modifier.text.split('=')[1].replace(/\;/g, ','));
+    return new Directive(directiveStruct, refs);
   }
 
   constructor(stave: any) {
@@ -35,23 +35,18 @@ class DirectiveExtractor {
   // member variable. This function mutates the Vexflow stave object once. Subsequent
   // calls return the cached result.
   extract(): Array<Directive> {
-    if (this.didExtraction) {
-      return this.directives;
+    if (!this.didExtraction) {
+      this.stave.tab_notes.forEach((tabNote, ndx) => {
+        const staveNote = this.stave.note_notes[ndx];
+        this._doExtraction(tabNote, staveNote);
+      });
     }
 
-    for (let ndx of this.stave.tab_notes) {
-      const tabNote = this.stave.tab_notes[ndx];
-      const staveNote = this.stave.note_notes[ndx];
-      this._doExtraction(tabNote, staveNote);
-    }
-
-    this.didExtraction = true;
     return this.directives;
   }
 
   private _doExtraction(tabNote, staveNote): void {
-    const [directiveMods, nonDirectiveMods] = DirectiveExtractor.
-      partitionModifiers(tabNote.modifiers);
+    const [directiveMods, nonDirectiveMods] = DirectiveExtractor.partitionModifiers(tabNote.modifiers);
 
     // MUTATION!
     // Effectively removes all of the rawDirectives from a given tabNote's modifiers
@@ -68,6 +63,8 @@ class DirectiveExtractor {
       const directive = DirectiveExtractor.createDirective(mod, refs);
       this.directives.push(directive);
     });
+
+    this.didExtraction = true;
   }
 }
 
