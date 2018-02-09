@@ -1,5 +1,5 @@
 import { Flow } from 'vexflow';
-import { Artist, Vextab, Measure, Line } from 'services';
+import { Artist, Vextab, Measure, Line, Tab } from 'services';
 import { startsWith } from 'lodash';
 import { DirectiveExtractor } from 'services';
 
@@ -32,7 +32,7 @@ class ScoreLineRenderer implements Renderer  {
     this.height = height;
   }
 
-  setup(): ScoreLineRenderer {
+  setup(tab: Tab): ScoreLineRenderer {
     // Create a renderer and resize it
     this.renderer = new Renderer(this.canvas, Renderer.Backends.CANVAS);
     this.ctx = this.renderer.getContext();
@@ -45,10 +45,12 @@ class ScoreLineRenderer implements Renderer  {
     
     // Execute directives, then link staveNotes and tabNotes to the Tab service
     const stave = this.artist.staves[0];
-    this.directiveExtractor = new DirectiveExtractor(stave);
+    this.directiveExtractor = new DirectiveExtractor(stave, tab);
     const directives = this.directiveExtractor.extract();
-    directives.forEach(directive => directive.exec());
-    this.line.linkVexInstances(stave);
+
+    directives.forEach(directive => directive.exec('PREPROCESS'));
+    this.line.linkVexInstances(stave); // make a new array
+    directives.forEach(directive => directive.exec('POSTPROCESS'));
 
     return this;
   }

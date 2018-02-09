@@ -12,11 +12,12 @@ class DirectiveObject {
   refs: Directive.Refs;
   type: string;
   handler: DirectiveHandler = null;
-  didExec: boolean = false;
 
   constructor(struct: Directive.Structs, refs: Directive.Refs) {
     this.struct = struct;
     this.refs = refs;
+
+    this.handler = new DirectiveHandler(this);
 
     if (!this.struct.type) {
       throw new Error('a directive struct must have a type');
@@ -25,18 +26,11 @@ class DirectiveObject {
     }
   }
 
-  exec(): boolean {
-    try {
-      if (this.didExec) {
-        throw new Error('a directive can only exec once');
-      }
-      this.handler = new DirectiveHandler(this);
-      this.didExec = this.handler.exec();
-    } catch (error) {
-      console.error(error);
-    }
-
-    return this.didExec;
+  exec(handlerBehavior: Directive.HandlerBehaviors): boolean {
+    this.handler.behavior = handlerBehavior;
+    const didExec = this.handler.exec();
+    this.handler.behavior = 'PASSIVE';
+    return didExec;
   }
 }
 

@@ -37,7 +37,7 @@ const enhance = compose(
       line.scoreLineRenderer = scoreLineRenderer;
 
       try {
-        scoreLineRenderer.setup().render();
+        scoreLineRenderer.setup(tab).render();
 
         // if this is the last ScoreLine rendered, populate the tickRanges on the tab
         if (line.next === null && !tab.error) {

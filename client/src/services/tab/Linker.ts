@@ -134,6 +134,15 @@ class Linker {
 
         noteSpecs.forEach(({ measure, tabNote, staveNote }) => {
           const note = new Note(measure, tabNote, staveNote);
+
+          if (tabNote.directives) {
+            tabNote.directives.forEach(dir => {
+              dir.refs.note = note;
+              dir.refs.measure = measure;
+              dir.refs.line = measure.line;
+            });
+          }
+
           const prev = last(notes) || null;
           notes.push(note);
         })

@@ -1,6 +1,6 @@
-import { Artist, Measure, Note } from 'services';
+import { Artist, Measure, Note, DirectiveObject } from 'services';
 import Linker from './Linker';
-import { ScoreLineRenderer, CaretRenderer } from 'services';
+import { ScoreLineRenderer, CaretRenderer, Tab } from 'services';
 import { last } from 'lodash';
 
 class Line {

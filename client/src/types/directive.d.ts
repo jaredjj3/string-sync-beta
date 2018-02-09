@@ -1,15 +1,16 @@
 declare namespace Directive {
   type Types = 'GRACE_NOTE';
-
+  type HandlerBehaviors = 'PASSIVE' | 'PREPROCESS' | 'POSTPROCESS';
   type Structs = GraceNoteStruct;
 
   interface Refs {
     staveNote: any;
     tabNote: any;
+    tab: any;
+    stave: any;
     measure?: any;
     line?: any;
     note?: any;
-    tab?: any;
   }
 
   interface BaseStruct {
