@@ -1,4 +1,4 @@
-import { Directive } from './';
+import { DirectiveObject } from './';
 import { startsWith, partition } from 'lodash';
 
 // This class is constructed with a Vexflow stave object and then gets extract() 
@@ -6,7 +6,7 @@ import { startsWith, partition } from 'lodash';
 // from its notes' modifiers and creating Directive objects from them.
 class DirectiveExtractor {
   stave: any = null;
-  directives: Array<Directive> = [];
+  directives: Array<DirectiveObject> = [];
   didExtraction: boolean = false;
 
   // The argument is a single modifier from a vexflow tabNote or staveNote that has a
@@ -21,10 +21,10 @@ class DirectiveExtractor {
     return partition(modifiers, DirectiveExtractor.isDirective);
   }
 
-  static createDirective(modifier: any, refs: any): Directive {
+  static createDirective(modifier: any, refs: any): DirectiveObject {
     // FIXME: Overly complicated logic to hack JSON since Vextab handles commas differently
     const directiveStruct = JSON.parse(modifier.text.split('=')[1].replace(/\;/g, ','));
-    return new Directive(directiveStruct, refs);
+    return new DirectiveObject(directiveStruct, refs);
   }
 
   constructor(stave: any) {
@@ -34,7 +34,7 @@ class DirectiveExtractor {
   // The primary method used to mutate a Vexflow stave object and set the directives
   // member variable. This function mutates the Vexflow stave object once. Subsequent
   // calls return the cached result.
-  extract(): Array<Directive> {
+  extract(): Array<DirectiveObject> {
     if (!this.didExtraction) {
       this.stave.tab_notes.forEach((tabNote, ndx) => {
         const staveNote = this.stave.note_notes[ndx];

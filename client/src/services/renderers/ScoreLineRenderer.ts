@@ -1,6 +1,7 @@
 import { Flow } from 'vexflow';
 import { Artist, Vextab, Measure, Line } from 'services';
 import { startsWith } from 'lodash';
+import { DirectiveExtractor } from 'services';
 
 const { Renderer } = Flow; // backend renderer
 
@@ -21,6 +22,7 @@ class ScoreLineRenderer implements Renderer  {
   vextab: any = null;
   vextabString: string = '';
   line: Line = null;
+  directiveExtractor: DirectiveExtractor = null;
 
   constructor(line: Line, canvas: HTMLCanvasElement, width: number, height: number) {
     this.line = line;
@@ -31,14 +33,22 @@ class ScoreLineRenderer implements Renderer  {
   }
 
   setup(): ScoreLineRenderer {
+    // Create a renderer and resize it
     this.renderer = new Renderer(this.canvas, Renderer.Backends.CANVAS);
     this.ctx = this.renderer.getContext();
     this._resize();
 
+    // Vextab parsing pattern
     this.artist = new Artist(10, 20, this.width - 10);
     this.vextab = new Vextab(this.artist);
     this.vextab.parse(this.vextabString);
-    this._afterSetup();
+    
+    // Execute directives, then link staveNotes and tabNotes to the Tab service
+    const stave = this.artist.staves[0];
+    this.directiveExtractor = new DirectiveExtractor(stave);
+    const directives = this.directiveExtractor.extract();
+    directives.forEach(directive => directive.exec());
+    this.line.linkVexInstances(stave);
 
     return this;
   }
@@ -57,12 +67,6 @@ class ScoreLineRenderer implements Renderer  {
     return this;
   }
 
-  private _afterSetup(): ScoreLineRenderer {
-    
-
-    return this;
-  }
-
   private _resize(): ScoreLineRenderer {
     const { canvas, width, height } = this;
     const ratio = window.devicePixelRatio || 1;
@@ -76,64 +80,7 @@ class ScoreLineRenderer implements Renderer  {
   }
 
   private _renderTab(): ScoreLineRenderer {
-    const stave = this.artist.staves[0];
-
-    stave.tab_notes.forEach((tabNote, ndx) => {
-      const staveNote = stave.note_notes[ndx];
-      const jsonModifiers = [];
-      const restModifiers = [];
-
-      tabNote.modifiers.forEach(mod => {
-        if (startsWith(mod.text, 'JSON=')) {
-          // FIXME: Overly complicated logic to hack JSON into this scoreLineRenderer
-          const json = mod.text.split('=')[1].replace(/\;/g, ',');
-          jsonModifiers.push(JSON.parse(json));
-        } else {
-          restModifiers.push(mod);
-        }
-      });
-
-      tabNote.modifiers = restModifiers;
-
-      jsonModifiers.forEach(mod => {
-        switch (mod.directive) {
-          case 'GRACE_NOTE':
-            // handle tabNote
-            const graceTabNote = new Flow.GraceTabNote({
-              positions: mod.positions || [],
-              duration: mod.duration || '8'
-            });
-            const graceTabNoteGroup = new Flow.GraceNoteGroup([graceTabNote])
-
-            tabNote.addModifier(graceTabNoteGroup);
-            graceTabNote.context = tabNote.context;
-            graceTabNote.tickContext = tabNote.getTickContext();
-
-            // handle staveNote
-            // TODO: Use the Tuning wrapper
-            const tuning = new Flow.Tuning();
-            const keys = graceTabNote.positions.map(({ str, fret }) => (
-              tuning.getNoteForFret(fret, str)
-            ));
-            const graceNote = new Flow.GraceNote({ keys, duration: '8', slash: true });
-            const slur = typeof mod.slur === 'undefined' ? false : mod.slur;
-            const graceNoteGroup = new Flow.GraceNoteGroup([graceNote], slur);
-
-            staveNote.addModifier(0, graceNoteGroup);
-            graceNote.context = staveNote.context;
-            graceNote.tickContext = staveNote.getTickContext();
-
-            break;
-          default:
-            throw new Error(`'${mod.directive}' is not a handled directive`)
-        }
-      });
-    });
-
     this.artist.render(this.renderer);
-
-    this.line.linkVexInstances(stave);
-
     return this;
   }
 
