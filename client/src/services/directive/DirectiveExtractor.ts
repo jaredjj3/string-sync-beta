@@ -6,8 +6,11 @@ import { Tab, Fretboard } from 'services';
 // called upon it. This mutates the stave object by excluding directive strings
 // from its notes' modifiers and creating Directive objects from them.
 class DirectiveExtractor {
+  // refs
   stave: any = null;
   tab: Tab = null;
+  fretboard: Fretboard = null;
+
   directives: Array<DirectiveObject> = [];
   didExtraction: boolean = false;
 
@@ -23,9 +26,10 @@ class DirectiveExtractor {
     return partition(modifiers, DirectiveExtractor.isDirective);
   }
 
-  constructor(stave: any, tab: Tab) {
+  constructor(stave: any, tab: Tab, fretboard: Fretboard) {
     this.stave = stave;
     this.tab = tab;
+    this.fretboard = fretboard;
   }
 
   // The primary method used to mutate a Vexflow stave object and set the directives
@@ -55,7 +59,8 @@ class DirectiveExtractor {
       tabNote,
       staveNote,
       tab: this.tab,
-      stave: this.stave
+      stave: this.stave,
+      fretboard: this.fretboard
     };
 
     // Create a directive from the directiveMods and push it onto the directives member

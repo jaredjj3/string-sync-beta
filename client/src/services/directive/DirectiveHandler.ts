@@ -42,7 +42,7 @@ class DirectiveHandler {
 
   private _handleGraceNote(): void {
     const { positions, duration, slur } = this.directive.struct;
-    const { tabNote, staveNote } = this.directive.refs;
+    const { tabNote, staveNote, fretboard } = this.directive.refs;
     const _duration = duration || '8';
 
     // Create graceTabNoteGroup
@@ -55,10 +55,10 @@ class DirectiveHandler {
     graceTabNote.tickContext = tabNote.getTickContext();
 
     // Create graceNoteGroup
-    const tuning = new Flow.Tuning();
-    const keys = graceTabNote.positions.map(pos => tuning.getNoteForFret(pos.fret, pos.str));
+    const { tuning } = fretboard;
+    const keys = graceTabNote.positions.map(pos => tuning.vexflowTuning.getNoteForFret(pos.fret, pos.str));
     const { fret, str } = graceTabNote.positions[0];
-    const stemDirection = tuning.getValueForFret(fret, str) >= 59 ? -1 : 1; // B/5
+    const stemDirection = tuning.vexflowTuning.getValueForFret(fret, str) >= 59 ? -1 : 1; // B/5
     const graceNote = new Flow.GraceNote({
       keys,
       duration: _duration,

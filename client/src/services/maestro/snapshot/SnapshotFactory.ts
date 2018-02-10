@@ -1,6 +1,6 @@
 import { Snapshot } from './';
 import { Tab, Tuning, Line, Measure, Note } from 'services';
-import { flatMap, uniqWith, uniq, isEqual } from 'lodash';
+import { flatMap, uniqWith, uniq, isEqual, startsWith } from 'lodash';
 import { Flow } from 'vexflow';
 import { isBetween, interpolator, elvis } from 'ssUtil';
 
@@ -109,16 +109,10 @@ class SnapshotFactory {
   private static _getLightPositions(note: Note, pressedPositions: any, tuning: Tuning, showMoreNotes: boolean): any {
     let light = null;
 
-    // TODO: Consider factoring in octaves for these calculations.
     if (note) {
       if (showMoreNotes) {
-        const noteNames = flatMap(note.measure.notes, measureNote => (
-          measureNote.staveNote.keys.map(noteNameWithOctave => {
-            const noteName = noteNameWithOctave.split('/')[0];
-            return noteName.charAt(0).toUpperCase() + noteName.slice(1);
-          })
-        ));
-        const lightNotes = uniq(noteNames).filter(noteName => noteName !== 'R');
+        const noteNames = flatMap(note.measure.notes, measureNote => measureNote.staveNote.keys);
+        const lightNotes = uniq(noteNames).filter(noteName => !startsWith(noteName.toUpperCase(), 'R'));
         light = flatMap(lightNotes, lightNote => tuning.getGuitarPositions(lightNote));
       } else {
         light = flatMap(note.measure.notes, note => note.getGuitarPos());

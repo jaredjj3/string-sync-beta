@@ -24,6 +24,7 @@ const enhance = compose(
     }
   }),
   shouldUpdate((currProps, nextProps) => nextProps.tab && !nextProps.tab.error),
+
   lifecycle({
     componentDidUpdate(): void {
       const { line, canvas, tab } = this.props;
@@ -37,7 +38,7 @@ const enhance = compose(
       line.scoreLineRenderer = scoreLineRenderer;
 
       try {
-        scoreLineRenderer.setup(tab).render();
+        scoreLineRenderer.setup(tab, window.ss.maestro.fretboard).render();
 
         // if this is the last ScoreLine rendered, populate the tickRanges on the tab
         if (line.next === null && !tab.error) {

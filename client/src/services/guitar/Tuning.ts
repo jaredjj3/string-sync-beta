@@ -1,6 +1,7 @@
 import * as constants from './guitarConstants';
-import { uniq } from 'lodash';
+import { uniq, startsWith } from 'lodash';
 import { TUNING_BASE_NOTES_BY_TUNING_NAME } from './guitarConstants';
+import { Flow } from 'vexflow';
 
 const DOTS_LENGTH = 23;
 
@@ -23,6 +24,7 @@ class Tuning {
 
   baseNotes: Array<string> = [];
   notes: Array<Array<string>> = getEmptyNotes();
+  vexflowTuning: Flow.Tuning = null;
 
   static get(tuningName: string): Tuning {
     const baseNotes = constants.TUNING_BASE_NOTES_BY_TUNING_NAME[tuningName];
@@ -38,6 +40,7 @@ class Tuning {
 
   constructor(baseNotes: Array<string>) {
     this.baseNotes = baseNotes;
+    this.vexflowTuning = new Flow.Tuning(baseNotes.join(","));
 
     this.setup();
   }
@@ -45,7 +48,7 @@ class Tuning {
   setup(): Tuning {
     this.notes = this.notes.map((stringNotes, string) => (
       stringNotes.map((_note, fret) => (
-        this._noteAt(string, fret)
+        this.vexflowTuning.getNoteForFret(fret, string + 1)
       ))
     ));
 
@@ -56,33 +59,25 @@ class Tuning {
     return this.notes[pos.string][pos.fret];
   }
 
-  getGuitarPositions(note: string): Array<GuitarPosition> {
-    if (!Tuning.VALID_NOTES.has(note)) {
-      throw new TypeError(`expected note '${note}' to be in ${constants.VALID_NOTES.join(',')}`);
-    }
-
-    const altNote = Tuning.ALT_FLAT_NOTE_NAMES[note] || Tuning.ALT_SHARP_NOTE_NAMES[note] || null;
+  getGuitarPositions(note: string, sameOctave = false): Array<GuitarPosition> {
     const guitarPositions: Array<GuitarPosition> = [];
 
     this.notes.forEach((stringNotes, string) => {
       stringNotes.forEach((_note, fret) => {
-        if (note === _note || (altNote && altNote === _note)) {
+        const srcNote = note.toUpperCase();
+        const dstNote = _note.toUpperCase();
+        
+        const shouldAddNote = sameOctave
+            ? srcNote === dstNote
+            : startsWith(dstNote, srcNote.split("/")[0]);
+
+        if (shouldAddNote) {
           guitarPositions.push({ string, fret });
         }
       });
     });
 
     return guitarPositions;
-  }
-
-  // Only should be used for setup(). Consumers of the tuning class should
-  // use getNote()
-  private _noteAt(string: number, fret: number): string {
-    const { NOTES } = Tuning;
-    const startNote = this.baseNotes[string];
-    const startIndex = NOTES.indexOf(startNote);
-
-    return NOTES[(startIndex + fret) % NOTES.length];
   }
 }
 

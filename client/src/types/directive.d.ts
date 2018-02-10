@@ -8,6 +8,7 @@ declare namespace Directive {
     tabNote: any;
     tab: any;
     stave: any;
+    fretboard?: any;
     measure?: any;
     line?: any;
     note?: any;

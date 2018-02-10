@@ -45,7 +45,7 @@ export const VALID_NOTES: Array<any> = [
 ];
 
 export const TUNING_BASE_NOTES_BY_TUNING_NAME: any = {
-  'standard': ['E', 'B', 'G', 'D', 'A', 'E'],
-  'dropd'   : ['E', 'B', 'G', 'D', 'A', 'D'],
-  'dadgad'  : ['D', 'A', 'G', 'D', 'A', 'D']
+  'standard': ['E/5', 'B/4', 'G/4', 'D/4', 'A/3', 'E/3'],
+  'dropd'   : ['E/5', 'B/4', 'G/4', 'D/4', 'A/3', 'D/3'],
+  'dadgad'  : ['D/5', 'A/4', 'G/4', 'D/4', 'A/3', 'D/3']
 };
