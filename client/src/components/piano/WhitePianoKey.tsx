@@ -14,16 +14,13 @@ const WhitePianoKeyOuter = styled.div`
     border-right: 1px solid black;
   }
 
-  .PianoKey--lit {
-    background: #ffeff1;
-  }
-
   .PianoKey--pressed {
     background: #fc354c;
   }
 
-  .PianoKey--justPressed {
-    background: #eb2b41;
+  &.PianoKey--justPressed {
+    background: #fc354c;
+    transition: background ease-in 10ms;
   }
 `;
 const WhitePianoKeyInner = styled.div`
@@ -33,6 +30,7 @@ const WhitePianoKeyInner = styled.div`
   border-top: 1px solid black;
   border-left: 1px solid black;
   border-bottom: 1px solid black;
+  transition: background ease-in 100ms;
   background: white;
   display: flex;
   justify-content: center;
