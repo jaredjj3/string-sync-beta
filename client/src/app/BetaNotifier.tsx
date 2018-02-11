@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 import { hash } from 'ssUtil';
 
-const UPDATED_AT = 'February 8';
+const UPDATED_AT = 'February 11';
 
 const enhance = compose(
   withHandlers({
@@ -25,7 +25,7 @@ const enhance = compose(
             <div>
               <div>updated at {UPDATED_AT}</div>
               <div>
-                <small>clean up code</small>
+                <small>add virtual piano (not toggleable yet)</small>
               </div>
             </div>
         });

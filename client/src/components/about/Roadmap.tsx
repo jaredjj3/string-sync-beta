@@ -49,12 +49,12 @@ const Roadmap = () => (
         <Header>DOING</Header>
         <List>
           <ListItem>add more content</ListItem>
-          <ListItem>cleanup code</ListItem>
         </List>
       </ListOuter>
       <ListOuter>
         <Header>DONE</Header>
         <List>
+          <ListItem>create virtual keyboard</ListItem>
           <ListItem>restyle the notation player</ListItem>
           <ListItem>enhance note data binding</ListItem>
           <ListItem>grace notes</ListItem>
