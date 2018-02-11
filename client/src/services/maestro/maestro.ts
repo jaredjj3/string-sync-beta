@@ -12,7 +12,7 @@ import { Tab, Fretboard } from 'services';
 class Maestro {
   // refs
   tab: Tab = null;
-  fretboard: Fretboard = null;
+  fretboard: Fretboard = new Fretboard();
 
   // state
   currentTimeMs: number = 0;

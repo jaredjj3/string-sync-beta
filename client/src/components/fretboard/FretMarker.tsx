@@ -1,24 +1,12 @@
 import * as React from 'react';
-import { compose, mapProps, withState, shouldUpdate, lifecycle, withProps } from 'recompose';
-import { withFretboard, withViewport } from 'enhancers';
+import { compose, withState, shouldUpdate, lifecycle, withProps } from 'recompose';
+import { withViewport } from 'enhancers';
 import * as classNames from 'classnames';
 import styled from 'styled-components';
 import { isEqual } from 'lodash';
 
 const enhance = compose(
-  withFretboard,
   withViewport,
-  mapProps(props => {
-    const viewportType = props.viewport.state.type;
-    const fretboard = props.fretboard.state.instance;
-
-    return {
-      fretboard,
-      viewportType,
-      string: props.string,
-      fret: props.fret
-    };
-  }),
   withState('lit', 'setLit', false),
   withState('pressed', 'setPressed', false),
   withState('justPressed', 'setJustPressed', false),
@@ -31,17 +19,18 @@ const enhance = compose(
         'FretMarker--pressed': props.pressed,
         'FretMarker--hidden': !props.lit && !props.pressed,
         'FretMarker--justPressed': props.pressed && props.justPressed,
-        'FretMarker--mobile': props.viewportType === 'MOBILE',
+        'FretMarker--mobile': props.viewport.state.type === 'MOBILE',
       }
     )
   })),
   lifecycle({
     componentDidMount(): void {
-      const { fretboard, string, fret } = this.props;
-      fretboard.addFretMarker(string, fret, this.props);
+      const { string, fret } = this.props;
+      window.ss.maestro.fretboard.addFretMarker(string, fret, this.props);
     },
     componentWillReceiveProps(nextProps: any): void {
-      const { fretboard, string, fret } = nextProps;
+      const { string, fret } = nextProps;
+      const { fretboard } = window.ss.maestro;
       const marker = fretboard.selectFretMarker(string, fret);
 
       // Ensure that a marker is present on the latest fretboard object.
@@ -50,8 +39,8 @@ const enhance = compose(
       }
     },
     componentWillUnmount(): void {
-      const { fretboard, string, fret } = this.props;
-      fretboard.removeFretMarker(string, fret);
+      const { string, fret } = this.props;
+      window.ss.maestro.fretboard.removeFretMarker(string, fret);
     }
   })
 );

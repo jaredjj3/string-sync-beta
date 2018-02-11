@@ -1,18 +1,16 @@
 import * as React from 'react';
 import { compose, lifecycle, withProps, withHandlers } from 'recompose';
 import { Fretboard } from 'services';
-import { withFretboard } from 'enhancers';
 import { isEmpty } from 'lodash';
 
 const enhance = compose(
-  withFretboard,
   withHandlers({
     handleAnimationLoop: props => () => {
-      const { data } = window.ss.maestro.snapshot;
-      const light = isEmpty(data.light) ? [] : data.light;
-      const press = isEmpty(data.press) ? [] : data.press;
-      const justPress = isEmpty(data.justPress) ? [] : data.justPress;
-      props.fretboard.state.instance.update(light, press, justPress);
+      const { snapshot, fretboard } = window.ss.maestro;
+      const light = isEmpty(snapshot.data.light) ? [] : snapshot.data.light;
+      const press = isEmpty(snapshot.data.press) ? [] : snapshot.data.press;
+      const justPress = isEmpty(snapshot.data.justPress) ? [] : snapshot.data.justPress;
+      fretboard.update(light, press, justPress);
     }
   }),
   withProps(props => {
@@ -34,14 +32,11 @@ const enhance = compose(
   }),
   lifecycle({
     componentDidMount(): void {
-      const fretboard = new Fretboard();
-      this.props.fretboard.dispatch.setFretboard(fretboard);
-      window.ss.maestro.fretboard = fretboard;
+      window.ss.maestro.fretboard = new Fretboard();
       this.props.registerRaf();
     },
     componentWillUnmount(): void {
-      this.props.fretboard.dispatch.resetFretboard();
-      window.ss.maestro.fretboard = null;
+      window.ss.maestro.fretboard = new Fretboard();
       this.props.unregisterRaf();
     }
   })

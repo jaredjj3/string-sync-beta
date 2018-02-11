@@ -53,9 +53,4 @@ declare namespace Store {
     playerState: string;
     isActive: boolean;
   }
-
-  interface Fretboard {
-    instance: any;
-    updatedAt: number;
-  }
 }

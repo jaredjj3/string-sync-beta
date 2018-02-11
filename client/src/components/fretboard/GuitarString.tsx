@@ -1,15 +1,9 @@
 import * as React from 'react';
-import { compose, mapProps, withState, withProps, lifecycle } from 'recompose';
-import { withFretboard } from 'enhancers';
+import { compose, withState, withProps, lifecycle } from 'recompose';
 import * as classNames from 'classnames';
 import styled from 'styled-components';
 
 const enhance = compose(
-  withFretboard,
-  mapProps(props => ({
-    fretboard: props.fretboard.state.instance,
-    string: props.string
-  })),
   withState('lit', 'setLit', false),
   withState('pressed', 'setPressed', false),
   withProps(props => ({
@@ -26,11 +20,12 @@ const enhance = compose(
   })),
   lifecycle({
     componentDidMount(): void {
-      const { fretboard, string } = this.props;
-      fretboard.addGuitarString(string, this.props);
+      const { string } = this.props;
+      window.ss.maestro.fretboard.addGuitarString(string, this.props);
     },
     componentWillReceiveProps(nextProps: any): void {
-      const { fretboard, string } = nextProps;
+      const { string } = nextProps;
+      const { fretboard } = window.ss.maestro;
       const guitarString = fretboard.selectGuitarString(string);
 
       if (guitarString === null) {
@@ -38,8 +33,8 @@ const enhance = compose(
       }
     },
     componentWillUnmount(): void {
-      const { fretboard, string } = this.props;
-      fretboard.removeGuitarString(string, this.props);
+      const { string } = this.props;
+      window.ss.maestro.fretboard.removeGuitarString(string, this.props);
     }
   })
 );

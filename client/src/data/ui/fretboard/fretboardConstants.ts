@@ -1,2 +1,0 @@
-export const SET_FRETBOARD = 'SET_FRETBOARD';
-export const RESET_FRETBOARD = 'RESET_FRETBOARD';

@@ -1,34 +1,20 @@
 import * as React from 'react';
-import { compose, mapProps, withProps, shouldUpdate } from 'recompose';
+import { compose, withProps, mapProps, shouldUpdate } from 'recompose';
 import { Row, Col } from 'antd';
 import { FretboardController, Frets, GuitarStrings } from './';
-import { withViewport, withFretboard } from 'enhancers';
+import { withViewport } from 'enhancers';
 import { Overlap, Layer } from 'components';
 import * as classNames from 'classnames';
 import styled from 'styled-components';
 
 const enhance = compose(
   withViewport,
-  withFretboard,
-  mapProps(props => {
-    const viewportType = props.viewport.state.type;
-    const fretboard = props.fretboard.state.instance;
-
-    return {
-      viewportType,
-      fretboard
-    }
-  }),
-  shouldUpdate((currProps, nextProps) => (
-    currProps.viewportType !== nextProps.viewportType ||
-    currProps.fretboard !== nextProps.fretboard
-  )),
   withProps(props => ({
     rootClassNames: classNames(
       'Fretboard',
       {
-        'Fretboard--mobile': props.viewportType === 'MOBILE',
-        'Fretboard--desktop': props.viewportType === 'DESKTOP'
+        'Fretboard--mobile': props.viewport.state.type === 'MOBILE',
+        'Fretboard--desktop': props.viewport.state.type === 'DESKTOP'
       }
     )
   }))
@@ -84,25 +70,19 @@ const FretboardIndicators = () => {
   );
 };
 
-const Fretboard = ({ rootClassNames, fretboard }) => (
+const Fretboard = ({ rootClassNames }) => (
   <FretboardOuter>
     <FretboardInner className={rootClassNames}>
       <FretboardController />
-      {
-        fretboard
-          ? <div className="Fretboard__afterFretboardServiceMount">
-              <FretboardIndicators />
-              <Overlap>
-                <Layer>
-                  <Frets />
-                </Layer>
-                <Layer>
-                  <GuitarStrings />
-                </Layer>
-              </Overlap>
-            </div>
-          : null
-      }
+      <FretboardIndicators />
+      <Overlap>
+        <Layer>
+          <Frets />
+        </Layer>
+        <Layer>
+          <GuitarStrings />
+        </Layer>
+      </Overlap>
     </FretboardInner>
   </FretboardOuter>
 );
