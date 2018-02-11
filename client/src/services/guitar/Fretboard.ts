@@ -21,7 +21,6 @@ type FretboardComponent = FretMarker | GuitarString;
 class Fretboard {
   fretMarkers: Array<Array<FretMarker>> = getEmptyFretMarkers();
   guitarStrings: Array<GuitarString> = getEmptyStrings();
-  tuning: Tuning = Tuning.get('standard');
   lit: Set<FretboardComponent> = new Set();
   pressed: Set<FretboardComponent> = new Set();
   justPressed: Set<FretMarker> = new Set();

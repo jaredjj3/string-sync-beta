@@ -1,6 +1,6 @@
 import { DirectiveObject } from './';
 import { startsWith, partition } from 'lodash';
-import { Tab, Fretboard } from 'services';
+import { Tab, Fretboard, Maestro } from 'services';
 
 // This class is constructed with a Vexflow stave object and then gets extract() 
 // called upon it. This mutates the stave object by excluding directive strings
@@ -8,8 +8,7 @@ import { Tab, Fretboard } from 'services';
 class DirectiveExtractor {
   // refs
   stave: any = null;
-  tab: Tab = null;
-  fretboard: Fretboard = null;
+  maestro: Maestro = null;
 
   directives: Array<DirectiveObject> = [];
   didExtraction: boolean = false;
@@ -26,10 +25,9 @@ class DirectiveExtractor {
     return partition(modifiers, DirectiveExtractor.isDirective);
   }
 
-  constructor(stave: any, tab: Tab, fretboard: Fretboard) {
+  constructor(stave: any, maestro: Maestro) {
     this.stave = stave;
-    this.tab = tab;
-    this.fretboard = fretboard;
+    this.maestro = maestro;
   }
 
   // The primary method used to mutate a Vexflow stave object and set the directives
@@ -58,9 +56,8 @@ class DirectiveExtractor {
     const refs = {
       tabNote,
       staveNote,
-      tab: this.tab,
       stave: this.stave,
-      fretboard: this.fretboard
+      maestro: this.maestro
     };
 
     // Create a directive from the directiveMods and push it onto the directives member

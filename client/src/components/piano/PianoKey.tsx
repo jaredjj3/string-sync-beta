@@ -23,7 +23,12 @@ const enhance = compose(
   })),
   lifecycle({
     componentDidMount(): void {
-      
+      const { note } = this.props;
+      window.ss.maestro.piano.addPianoKey(note, this.props);
+    },
+    componentWillUnmount(): void {
+      const { note } = this.props;
+      window.ss.maestro.piano.removePianoKey(note);
     }
   }),
   branch(

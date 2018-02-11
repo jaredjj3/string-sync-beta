@@ -1,12 +1,12 @@
 import { PianoKey } from './';
 
-class Pianoman {
+class Piano {
   pianoKeysByNote: any = {};
   lit: Set<PianoKey> = new Set();
   pressed: Set<PianoKey> = new Set();
   justPressed: Set<PianoKey> = new Set();
 
-  update(lightNotes: Array<string>, pressNotes: Array<string>, justPressNotes: Array<string>): Pianoman {
+  update(lightNotes: Array<string>, pressNotes: Array<string>, justPressNotes: Array<string>): Piano {
     const lightKeys = lightNotes.map(note => this.pianoKeysByNote[note.toUpperCase()]);
     const pressKeys = pressNotes.map(note => this.pianoKeysByNote[note.toUpperCase()]);
     const justPressKeys = justPressNotes.map(note => this.pianoKeysByNote[note.toUpperCase()]);
@@ -16,6 +16,10 @@ class Pianoman {
     const justPressed = new Set();
 
     lightKeys.forEach(key => {
+      if (!key) {
+        return;
+      }
+
       if (!this.lit.has(key)) {
         key.light();
       }
@@ -24,6 +28,10 @@ class Pianoman {
     });
 
     pressKeys.forEach(key => {
+      if (!key) {
+        return;
+      }
+
       if (!this.pressed.has(key)) {
         key.press();
       }
@@ -32,6 +40,10 @@ class Pianoman {
     });
 
     justPressKeys.forEach(key => {
+      if (!key) {
+        return;
+      }
+
       if (!this.justPressed.has(key)) {
         key.justPress();
       }
@@ -70,4 +82,4 @@ class Pianoman {
   }
 }
 
-export default Pianoman;
+export default Piano;

@@ -1,21 +1,24 @@
 import * as React from 'react';
 import { compose, lifecycle, withProps, withHandlers } from 'recompose';
-import { Fretboard } from 'services';
+import { Piano } from 'services';
 import { isEmpty } from 'lodash';
 
 const enhance = compose(
   withHandlers({
     handleAnimationLoop: props => () => {
-      const { snapshot, fretboard } = window.ss.maestro;
-      const light = isEmpty(snapshot.data.light) ? [] : snapshot.data.light;
-      const press = isEmpty(snapshot.data.press) ? [] : snapshot.data.press;
-      const justPress = isEmpty(snapshot.data.justPress) ? [] : snapshot.data.justPress;
-      fretboard.update(light, press, justPress);
+      const { snapshot, piano, tuning } = window.ss.maestro;
+      const { light, press, justPress } = snapshot.data;
+
+      const lightKeys = isEmpty(light) ? [] : light.map(pos => tuning.getNote(pos));
+      const pressKeys = isEmpty(press) ? [] : press.map(pos => tuning.getNote(pos));
+      const justPressKeys = isEmpty(justPress) ? [] : justPress.map(pos => tuning.getNote(pos));
+      
+      piano.update(lightKeys, pressKeys, justPressKeys);
     }
   }),
   withProps(props => {
     const { rafLoop } = window.ss;
-    const name = 'FretboardController.handleAnimationLoop';
+    const name = 'PianoController.handleAnimationLoop';
 
     return ({
       registerRaf: () => {
@@ -32,16 +35,16 @@ const enhance = compose(
   }),
   lifecycle({
     componentDidMount(): void {
-      window.ss.maestro.fretboard = new Fretboard();
+      window.ss.maestro.piano = new Piano();
       this.props.registerRaf();
     },
     componentWillUnmount(): void {
-      window.ss.maestro.fretboard = new Fretboard();
+      window.ss.maestro.piano = new Piano();
       this.props.unregisterRaf();
     }
   })
 );
 
-const FretboardController = () => null;
+const PianoController = () => null;
 
-export default enhance(FretboardController);
+export default enhance(PianoController);

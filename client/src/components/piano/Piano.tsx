@@ -1,11 +1,6 @@
 import * as React from 'react';
-import { compose } from 'recompose';
-import { PianoKeys } from './';
+import { PianoKeys, PianoController } from './';
 import styled from 'styled-components';
-
-const enhance = compose(
-
-);
 
 const PianoOuter = styled.div`
   color: black;
@@ -16,9 +11,10 @@ const PianoInner = styled.div`
 const Piano = () => (
   <PianoOuter className="Piano">
     <PianoInner>
+      <PianoController />
       <PianoKeys />
     </PianoInner>
   </PianoOuter>
 );
 
-export default enhance(Piano);
+export default Piano;

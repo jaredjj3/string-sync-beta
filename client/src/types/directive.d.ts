@@ -6,9 +6,8 @@ declare namespace Directive {
   interface Refs {
     staveNote: any;
     tabNote: any;
-    tab: any;
     stave: any;
-    fretboard?: any;
+    maestro: any;
     measure?: any;
     line?: any;
     note?: any;

@@ -34,11 +34,13 @@ const enhance = compose(
         return;
       }
 
-      const scoreLineRenderer = new ScoreLineRenderer(line, canvas, line.width, SCORE_LINE_HEIGHT_PX);
+      const scoreLineRenderer = new ScoreLineRenderer(
+        line, canvas, line.width, SCORE_LINE_HEIGHT_PX
+      );
       line.scoreLineRenderer = scoreLineRenderer;
 
       try {
-        scoreLineRenderer.setup(tab, window.ss.maestro.fretboard).render();
+        scoreLineRenderer.setup(window.ss.maestro).render();
 
         // if this is the last ScoreLine rendered, populate the tickRanges on the tab
         if (line.next === null && !tab.error) {

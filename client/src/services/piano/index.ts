@@ -1,2 +1,2 @@
-export { default as Pianoman } from './Pianoman';
+export { default as Piano } from './Piano';
 export { default as PianoKey } from './PianoKey';
