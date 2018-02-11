@@ -13,7 +13,7 @@ class FretMarker {
     this.unpress().unlight();
     return this;
   }
-
+ 
   unlight(): FretMarker {
     this.props.setLit(false);
     return this;

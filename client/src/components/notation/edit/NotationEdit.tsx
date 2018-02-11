@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose, withProps, lifecycle } from 'recompose';
-import { Gradient, MaestroController, Video, Nav, Fretboard, Tab, NotationControls } from 'components';
+import {
+  Gradient, MaestroController, Video, Nav,
+  Fretboard, Tab, NotationControls, Piano
+} from 'components';
 import { withNotation } from 'enhancers';
 import { NotationEditor } from './';
 import styled from 'styled-components';
@@ -55,12 +58,10 @@ const NotationEdit = () => (
       <MaestroController />
       <Video withInitializer />
       <Fretboard />
+      <Piano />
       <NotationEditor />
       <TabOuter>
-        <Tab
-          withCaret
-          allowOverflow
-        />
+        <Tab withCaret allowOverflow />
       </TabOuter>
       <NotationControlsOuter>
         <NotationControls />
