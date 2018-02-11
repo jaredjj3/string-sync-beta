@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, lifecycle, withProps, withHandlers } from 'recompose';
 import { Piano } from 'services';
-import { isEmpty } from 'lodash';
+import { isEmpty, compact } from 'lodash';
 
 const enhance = compose(
   withHandlers({
@@ -9,9 +9,9 @@ const enhance = compose(
       const { snapshot, piano, tuning } = window.ss.maestro;
       const { light, press, justPress } = snapshot.data;
 
-      const lightKeys = isEmpty(light) ? [] : light.map(pos => tuning.getNote(pos));
-      const pressKeys = isEmpty(press) ? [] : press.map(pos => tuning.getNote(pos));
-      const justPressKeys = isEmpty(justPress) ? [] : justPress.map(pos => tuning.getNote(pos));
+      const lightKeys = isEmpty(light) ? [] : compact(light.map(pos => tuning.getNote(pos)));
+      const pressKeys = isEmpty(press) ? [] : compact(press.map(pos => tuning.getNote(pos)));
+      const justPressKeys = isEmpty(justPress) ? [] : compact(justPress.map(pos => tuning.getNote(pos)));
       
       piano.update(lightKeys, pressKeys, justPressKeys);
     }
