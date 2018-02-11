@@ -22,6 +22,7 @@ const PianoKeysInner = styled.div`
   flex-direction: row;
   justify-content: center;
   overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
 `;
 
 const PianoKeys = () => {
