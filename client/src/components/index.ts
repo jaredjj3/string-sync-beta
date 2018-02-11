@@ -16,4 +16,4 @@ export * from './tab';
 export * from './user';
 export * from './video';
 export * from './instagram';
-export * from './keyboard';
+export * from './piano';
