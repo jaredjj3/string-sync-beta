@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, withState, withProps, lifecycle } from 'recompose';
 import { withNotation } from 'enhancers';
-import { Gradient, Video, Tab, Fretboard, MaestroController } from 'components';
+import { Gradient, Video, Tab, Fretboard, MaestroController, Piano } from 'components';
 import { NotationShowBanner, NotationShowVideo } from './';
 import { NotationControls } from 'components';
 import { toTick, toTimeMs } from 'ssUtil';
@@ -62,6 +62,7 @@ const NotationShow = ({ isFetching, notation }) => (
       />
       <NotationShowVideo />
       <Fretboard />
+      <Piano />
       <Tab withCaret />
       <NotationControls />
     </NotationShowInner>
