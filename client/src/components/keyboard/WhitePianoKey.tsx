@@ -34,11 +34,19 @@ const WhitePianoKeyInner = styled.div`
   border-left: 1px solid black;
   border-bottom: 1px solid black;
   background: white;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+`;
+const MiddleC = styled.div`
+  margin-bottom: 3px;
+  font-size: 10px;
 `;
 
 const WhitePianoKey = ({ note, rootClassNames }) => (
   <WhitePianoKeyOuter>
     <WhitePianoKeyInner className={rootClassNames}>
+      {note === 'C/4' ? <MiddleC>C</MiddleC> : null}
     </WhitePianoKeyInner>
   </WhitePianoKeyOuter>
 );
