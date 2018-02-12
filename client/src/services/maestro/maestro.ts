@@ -30,6 +30,9 @@ class Maestro {
     showLoop: false
   }
 
+  // react props
+  fretboardProps: any = null;
+
   private _snapshot: Snapshot = new Snapshot();
 
   get snapshot(): Snapshot {

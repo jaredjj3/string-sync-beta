@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose, withProps, mapProps, shouldUpdate } from 'recompose';
+import { compose, withState, withProps, lifecycle, branch, renderNothing } from 'recompose';
 import { Row, Col } from 'antd';
 import { FretboardController, Frets, GuitarStrings } from './';
 import { withViewport } from 'enhancers';
@@ -9,6 +9,7 @@ import styled from 'styled-components';
 
 const enhance = compose(
   withViewport,
+  withState('isVisible', 'setVisibility', true),
   withProps(props => ({
     rootClassNames: classNames(
       'Fretboard',
@@ -17,7 +18,20 @@ const enhance = compose(
         'Fretboard--desktop': props.viewport.state.type === 'DESKTOP'
       }
     )
-  }))
+  })),
+  lifecycle({
+    componentDidMount(): void {
+      window.ss.maestro.fretboardProps = this.props;
+    },
+    componentWillUnmount(): void {
+      window.ss.maestro.fretboardProps = null;
+    }
+  }),
+  branch(
+    props => props.isVisible,
+    i => i,
+    renderNothing
+  ),
 );
 
 const FretboardOuter = styled.div`
