@@ -5,13 +5,11 @@ import styled from 'styled-components';
 
 const NotationControlsOuter = styled.div`
   width: 100%;
-  z-index: 22;
+  z-index: 30;
   background: black;
   color: white;
   padding: 10px 0;
-  position: fixed;
-  bottom: 0;
-  height: 100px;
+  height: 125px;
 
   .VideoScrubber, .Loop {
   .ant-slider-handle {

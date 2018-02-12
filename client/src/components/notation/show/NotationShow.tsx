@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { compose, withState, withProps, lifecycle } from 'recompose';
-import { Link } from 'react-router-dom';
 import { withNotation } from 'enhancers';
 import { Gradient, Video, Tab, Fretboard, MaestroController, Piano } from 'components';
 import { NotationShowBanner, NotationShowVideo } from './';
@@ -49,16 +48,6 @@ const NotationShowOuter = styled.div`
   }
 `;
 const NotationShowInner = styled.div``;
-const Spacer = styled.div`
-  height: 150px;
-  background: white;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-`;
-const Back = styled.span`
-  margin-top: 10px;
-`;
 
 const NotationShow = ({ isFetching, notation }) => (
   <NotationShowOuter>
@@ -74,13 +63,6 @@ const NotationShow = ({ isFetching, notation }) => (
       <Fretboard />
       <Piano />
       <Tab withCaret />
-      <Spacer>
-        <Back>
-          <Link to="/library">
-            back
-          </Link>
-        </Back>
-      </Spacer>
       <NotationControls />
     </NotationShowInner>
   </NotationShowOuter>

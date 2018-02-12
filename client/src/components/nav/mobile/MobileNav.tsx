@@ -10,6 +10,8 @@ const NavOuter = styled.div`
   background: white;
   width: 100%;
   border-top: 1px solid lightgray;
+  max-height: 75px;
+  height: 75px;
 
   i {
     font-size: 24px;

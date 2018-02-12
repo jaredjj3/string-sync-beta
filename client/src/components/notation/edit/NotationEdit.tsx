@@ -46,6 +46,12 @@ const TabOuter = styled.div`
     margin-bottom: 500px;
   }
 `;
+const NotationControlsOuter = styled.div`
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  z-index: 22;
+`;
 
 const NotationEdit = () => (
   <NotationEditOuter>
@@ -60,7 +66,9 @@ const NotationEdit = () => (
       <TabOuter>
         <Tab withCaret allowOverflow />
       </TabOuter>
-      <NotationControls />
+      <NotationControlsOuter>
+        <NotationControls />
+      </NotationControlsOuter>
     </NotationEditInner>
   </NotationEditOuter>
 );
