@@ -16,6 +16,8 @@ const enhance = compose (
   withViewport,
   withState('moreNotesChecked', 'setMoreNotesChecked', false),
   withState('showLoopChecked', 'setShowLoopChecked', false),
+  withState('fretboardChecked', 'setFretboardChecked', true),
+  withState('pianoChecked', 'setPianoChecked', false),
   withHandlers({
     handleMoreNotesToggle: props => event => {
       // Allow the user to click the switch directly or
@@ -38,6 +40,24 @@ const enhance = compose (
       props.setShowLoopChecked(checked);
       window.ss.maestro.options.showLoop = checked;
       window.ss.maestro.queueUpdate();
+    },
+    handleFretboardToggle: props => event => {
+      if (event.hasOwnProperty('stopPropagation')) {
+        event.stopPropagation();
+      }
+
+      const checked = !props.fretboardChecked;
+      props.setFretboardChecked(checked);
+      window.ss.maestro.fretboardProps.setVisibility(checked);
+    },
+    handlePianoToggle: props => event => {
+      if (event.hasOwnProperty('stopPropagation')) {
+        event.stopPropagation();
+      }
+
+      const checked = !props.pianoChecked;
+      props.setPianoChecked(checked);
+      window.ss.maestro.pianoProps.setVisibility(checked);
     }
   }),
   withProps(props => ({
@@ -59,6 +79,9 @@ const enhance = compose (
       const { maestro } = window.ss;
       maestro.options.showMoreNotes = false;
       maestro.options.showLoop = false;
+
+      this.props.setFretboardChecked(Boolean(window.ss.maestro.fretboardProps.isVisible));
+      this.props.setPianoChecked(Boolean(window.ss.maestro.pianoProps.isVisible));
     }
   })
 );
@@ -114,11 +137,15 @@ const NotationControlsMenu = ({
   match,
   moreNotesChecked,
   showLoopChecked,
+  fretboardChecked,
+  pianoChecked,
   showEditItem,
   collapsed,
   isMobile,
   handleMoreNotesToggle,
-  handleShowLoopToggle
+  handleShowLoopToggle,
+  handleFretboardToggle,
+  handlePianoToggle
 }) => (
   <NotationControlsMenuOuter>
     <Menu
@@ -148,32 +175,30 @@ const NotationControlsMenu = ({
             : null
         }
       </ItemGroup>
+      <ItemGroup title="visuals">
+        <Item key="fretboard">
+          <SwitchContainer onClick={handleFretboardToggle}>
+            <Switch checked={fretboardChecked} onChange={handleFretboardToggle} />
+            <SwitchDesc>fretboard</SwitchDesc>
+          </SwitchContainer>
+        </Item>
+        <Item key="piano">
+          <SwitchContainer onClick={handlePianoToggle}>
+            <Switch checked={pianoChecked} onChange={handlePianoToggle} />
+            <SwitchDesc>piano</SwitchDesc>
+          </SwitchContainer>
+        </Item>
+      </ItemGroup>
       <ItemGroup title="player">
         <Item key="more-notes">
           <SwitchContainer onClick={handleMoreNotesToggle}>
-            {
-              isMobile
-                ? <MobileSwitch
-                    checked={moreNotesChecked}
-                    onChange={handleMoreNotesToggle}
-                    color="#fc354c"
-                  />
-                : <Switch checked={moreNotesChecked} onChange={handleMoreNotesToggle} />
-            }
+            <Switch checked={moreNotesChecked} onChange={handleMoreNotesToggle} />
             <SwitchDesc>more notes</SwitchDesc>
           </SwitchContainer>
         </Item>
         <Item key="show-loop">
           <SwitchContainer onClick={handleShowLoopToggle}>
-            {
-              isMobile
-                ? <MobileSwitch
-                    checked={showLoopChecked}
-                    onChange={handleShowLoopToggle}
-                    color="#fc354c"
-                  />
-                : <Switch checked={showLoopChecked} onChange={handleShowLoopToggle} />
-            }
+            <Switch checked={showLoopChecked} onChange={handleShowLoopToggle} />
             <SwitchDesc>show loop</SwitchDesc>
           </SwitchContainer>
         </Item>
