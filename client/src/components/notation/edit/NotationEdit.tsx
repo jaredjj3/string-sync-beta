@@ -15,6 +15,9 @@ const enhance = compose(
     componentDidMount(): void {
       const notationId = this.props.match.params.id;
       this.props.notation.dispatch.fetchNotation(notationId);
+    },
+    componentWillUnmount(): void {
+      this.props.notation.dispatch.resetNotation();
     }
   })
 );

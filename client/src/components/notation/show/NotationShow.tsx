@@ -11,14 +11,11 @@ const enhance = compose(
   withNotation,
   withState('isFetching', 'setIsFetching', false),
   withProps(props => ({
-    maybeFetchNotation: async () => {
+    fetchNotation: async () => {
       const notationId = props.match.params.id;
-
-      if (props.notation.state.id !== notationId) {
-        props.setIsFetching(true);
-        await props.notation.dispatch.fetchNotation(notationId);
-        props.setIsFetching(false);
-      }
+      props.setIsFetching(true);
+      await props.notation.dispatch.fetchNotation(notationId);
+      props.setIsFetching(false);
     }
   })),
   withProps(props => ({
@@ -33,10 +30,11 @@ const enhance = compose(
     },
     componentDidMount(): void {
       this.props.setBodyColor('black');
-      this.props.maybeFetchNotation();
+      this.props.fetchNotation();
     },
     componentWillUnmount(): void {
       this.props.setBodyColor('white');
+      this.props.notation.dispatch.resetNotation();
       window.ss.loader.clear();
     }
   })
