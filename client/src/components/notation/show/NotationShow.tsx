@@ -16,6 +16,7 @@ const enhance = compose(
       const notationId = props.match.params.id;
       props.setIsFetching(true);
       await props.notation.dispatch.fetchNotation(notationId);
+      window.ss.loader.clear();
       props.setIsFetching(false);
     }
   })),
@@ -27,7 +28,7 @@ const enhance = compose(
   lifecycle({
     componentWillMount(): void {
       this.props.setBodyColor('black');
-      window.ss.loader.add('initializeVideo');
+      window.ss.loader.add('fetchNotation');
       window.setTimeout(window.ss.loader.clear, 6000);
     },
     componentDidMount(): void {

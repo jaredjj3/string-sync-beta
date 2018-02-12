@@ -57,7 +57,7 @@ const NotationShowVideo = ({ notation }) => (
       <Layer style={{ zIndex: 12 }}>
         <VideoOuter>
           <VideoInner>
-            <Video withInitializer />
+            <Video />
           </VideoInner>
         </VideoOuter>
       </Layer>
