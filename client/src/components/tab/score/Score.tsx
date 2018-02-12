@@ -20,7 +20,7 @@ const ScoreOuter = (styled.div as any)`
   background: white;
   height: 260px;
   overflow: ${props => props.allowOverflow ? '' : 'hidden'};
-  padding-bottom: 100px;
+  padding-bottom: 250px;
 `;
 
 const ScoreLines = ({ tab, withCaret }) => {

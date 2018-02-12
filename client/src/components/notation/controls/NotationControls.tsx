@@ -8,7 +8,10 @@ const NotationControlsOuter = styled.div`
   z-index: 22;
   background: black;
   color: white;
-  padding: 15px 0;
+  padding: 10px 0;
+  position: fixed;
+  bottom: 0;
+  height: 100px;
 
   .VideoScrubber, .Loop {
   .ant-slider-handle {
