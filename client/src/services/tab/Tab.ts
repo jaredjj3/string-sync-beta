@@ -70,8 +70,14 @@ class Tab {
     );
 
     lines.forEach((line, ndx) => {
+      // Create a linked list of lines
       const prev = lines[ndx - 1] || null;
       line.setPrev(prev);
+
+      // Set line references on each of its measures
+      line.measures.forEach(measure => {
+        measure.line = line;
+      });
     });
 
     return this.lines = lines;

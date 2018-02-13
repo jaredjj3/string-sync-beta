@@ -60,15 +60,24 @@ class Maestro {
 
   update(): Snapshot {
     if (this._shouldUpdate()) {
-      this._snapshot = SnapshotFactory.create({
-        prevSnapshot:  this._snapshot,
-        tab:           this.tab,
-        tuning:        this.tuning,
-        tick:          this.offsetTick,
-        timeMs:        this.offsetTimeMs,
-        showMoreNotes: this.options.showMoreNotes,
-        loopTick:      this.loopMs.map(timeMs => toTick(timeMs, this.tpm)),
-      });
+      const refs = {
+        prevSnapshot: this._snapshot,
+        tab: this.tab,
+        tuning: this.tuning
+      };
+
+      const timeData = {
+        tick: this.offsetTick,
+        timeMs: this.offsetTimeMs,
+        loopTick: this.loopMs.map(timeMs => toTick(timeMs, this.tpm))
+      };
+
+      const options = {
+        showMoreNotes: this.options.showMoreNotes
+      };
+
+      const factory = new SnapshotFactory(refs, timeData, options);
+      this._snapshot = factory.create();
       this.updateQueued = false;
     }
 

@@ -4,71 +4,55 @@ import { flatMap, uniqWith, uniq, isEqual, startsWith } from 'lodash';
 import { Flow } from 'vexflow';
 import { isBetween, interpolator, elvis } from 'ssUtil';
 
-interface SnapshotFactoryAttributes {
-  prevSnapshot: Snapshot,
-  tab: Tab,
-  tuning: Tuning,
-  tick: number,
-  timeMs: number,
-  showMoreNotes: boolean,
-  loopTick: Array<number>
+interface SFRefs {
+  prevSnapshot: any;
+  tab: any;
+  tuning: any;
+}
+
+interface SFTimeData {
+  tick: number;
+  timeMs: number;
+  loopTick: Array<number>;
+}
+
+interface SFOptions {
+  showMoreNotes: boolean;
 }
 
 class SnapshotFactory {
-  static create(attrs: SnapshotFactoryAttributes): Snapshot {
-    const {
-      prevSnapshot,
-      tab,
-      tuning,
-      tick,
-      timeMs,
-      showMoreNotes,
-      loopTick
-    } = attrs;
+  // attrs set from the constructor
+  prevSnapshot: Snapshot;
+  tab: Tab;
+  tick: number;
+  timeMs: number;
+  loopTick: Array<number>;
+  showMoreNotes: boolean;
+  tuning: Tuning;
 
-    const snapshot = new Snapshot(prevSnapshot || null);
+  // computed attrs
+  line: Line;
+  measure: Measure;
+  note: Note;
+  light: Array<any>;
+  justPress: Array<any>;
+  press: Array<any>;
+  interpolator: Function;
+  loopData: any;
+  isLoopScrubbing: boolean;
 
-    const { line, measure, note } = SnapshotFactory._getCurrentTabElements(tab, tick);
-    const { press, justPress } = SnapshotFactory._getPressPositions(note, tick)
-    const light = SnapshotFactory._getLightPositions(note, press, tuning, showMoreNotes);
-    const interpolator = SnapshotFactory._getInterpolator(note);
-    const loopData = SnapshotFactory._getLoopData(loopTick, tab);
-    const isLoopScrubbing = Boolean(prevSnapshot && !isEqual(prevSnapshot.data.loopTick, loopTick));
+  static getCurrentNote(tab: Tab, tick: number): Note {
+    let currentNote = null;
 
-    snapshot.setData({
-      tick,
-      timeMs,
-      line,
-      measure,
-      note,
-      light,
-      justPress,
-      press,
-      interpolator,
-      loopData,
-      loopTick,
-      isLoopScrubbing
-    });
-
-    return snapshot;
-  }
-
-  private static _getCurrentTabElements(tab: Tab, tick: number): any {
-    let line = null;
-    let measure = null;
-    let note = null;
-
-    tab.lines.forEach(_line => {
-      const lineTickRange = _line.getTickRange();
+    tab.lines.forEach(line => {
+      const lineTickRange = line.getTickRange();
       if (isBetween(tick, lineTickRange.start, lineTickRange.stop)) {
-        line = _line;
-        _line.measures.forEach(_measure => {
-          const measureTickRange = _measure.getTickRange();
+        line.measures.forEach(measure => {
+          const measureTickRange = measure.getTickRange();
           if (isBetween(tick, measureTickRange.start, measureTickRange.stop)) {
-            measure = _measure;
-            _measure.notes.forEach(_note => {
-              if (isBetween(tick, _note.tickRange.start, _note.tickRange.stop)) {
-                note = _note;
+            measure.notes.forEach(note => {
+              if (isBetween(tick, note.tickRange.start, note.tickRange.stop)) {
+                currentNote = note;
               }
             });
           }
@@ -76,54 +60,10 @@ class SnapshotFactory {
       }
     });
 
-    return {
-      line,
-      measure,
-      note
-    }
+    return currentNote;
   }
 
-  private static _getPressPositions(note: Note, tick: number): any {
-    let press = null;
-    let justPress = null;
-
-    if (note) {
-      press = note.getGuitarPos();
-
-      const { tickRange } = note;
-      const threshold = Math.min(...[
-        tickRange.start + 250,
-        tickRange.start + ((tickRange.stop - tickRange.start) * 0.50)
-      ]);
-      if (tick < threshold) {
-        justPress = note.getGuitarPos();
-      }
-    }
-
-    return {
-      press,
-      justPress
-    }
-  }
-
-  private static _getLightPositions(note: Note, pressedPositions: any, tuning: Tuning, showMoreNotes: boolean): any {
-    let light = null;
-
-    if (note) {
-      if (showMoreNotes) {
-        const noteNames = flatMap(note.measure.notes, measureNote => measureNote.staveNote.keys);
-        const lightNotes = uniq(noteNames).filter(noteName => !startsWith(noteName.toUpperCase(), 'R'));
-        light = flatMap(lightNotes, lightNote => tuning.getGuitarPositions(lightNote));
-      } else {
-        light = flatMap(note.measure.notes, note => note.getGuitarPos());
-        light = uniqWith(light, isEqual);
-      }  
-    }
-  
-    return light;
-  }
-
-  private static _getInterpolator(note: Note): any {
+  static getNoteInterpolator(note: Note): Function {
     if (!note) {
       return interpolator({ x: 0, y: 0 }, { x: 0, y: 0 });
     }
@@ -144,16 +84,106 @@ class SnapshotFactory {
     return interpolator(point1, point2);
   }
 
-  private static _getLoopData(loopTick: Array<number>, tab: Tab): any { 
-    return loopTick.sort().map(tick => {
-      const { line, note } = SnapshotFactory._getCurrentTabElements(tab, tick);
-      const interpolator = SnapshotFactory._getInterpolator(note);
+  constructor(refs: SFRefs, timeData: SFTimeData, options: SFOptions) {
+    this.prevSnapshot = refs.prevSnapshot;
+    this.tab = refs.tab;
+    this.tuning = refs.tuning;
+    
+    this.tick     = timeData.tick;
+    this.timeMs   = timeData.timeMs;
+    this.loopTick = timeData.loopTick;
 
-      return {
-        line,
-        interpolator
+    this.showMoreNotes = options.showMoreNotes;
+  }
+
+  create(): Snapshot {
+    const snapshot = new Snapshot(this.prevSnapshot || null);
+    snapshot.setData(this._getSnapshotData());
+    return snapshot;
+  }
+
+  private _getSnapshotData(): any {
+    this._doSnapshot();
+
+    return {
+      tick:            this.tick,
+      timeMs:          this.timeMs,
+      line:            this.line,
+      measure:         this.measure,
+      note:            this.note,
+      light:           this.light,
+      justPress:       this.justPress,
+      press:           this.press,
+      interpolator:    this.interpolator,
+      loopData:        this.loopData,
+      loopTick:        this.loopTick,
+      isLoopScrubbing: this.isLoopScrubbing
+    };
+  }
+
+  private _doSnapshot(): void {
+    this._snapshotTabElements();
+    this._snapshotPressPositions();
+    this._snapshotLightPositions();
+    this._snapshotInterpolator();
+    this._snapshotLoopData();
+    this._snapshotIsLoopScrubbing();
+  }
+
+  private _snapshotTabElements(): void {
+    this.note = SnapshotFactory.getCurrentNote(this.tab, this.tick);
+    this.measure = this.note.measure;
+    this.line = this.measure.line;
+  }
+
+  private _snapshotPressPositions(): void {
+    if (this.note) {
+      this.press = this.note.getGuitarPos();
+
+      // Compute a threshold that would be considered for "justPressed" positions
+      const { tickRange } = this.note;
+      const threshold = Math.min(...[
+        tickRange.start + 250,
+        tickRange.start + ((tickRange.stop - tickRange.start) * 0.50)
+      ]);
+
+      if (this.tick < threshold) {
+        this.justPress = this.note.getGuitarPos();
       }
+    }
+  }
+
+  private _snapshotLightPositions(): void {
+    if (this.note) {
+      if (this.showMoreNotes) {
+        const noteNames = flatMap(this.note.measure.notes, measureNote => measureNote.staveNote.keys);
+        const lightNotes = uniq(noteNames).filter(noteName => !startsWith(noteName.toUpperCase(), 'R'));
+        this.light = flatMap(lightNotes, lightNote => this.tuning.getGuitarPositions(lightNote));
+      } else {
+        this.light = flatMap(this.note.measure.notes, note => note.getGuitarPos());
+        this.light = uniqWith(this.light, isEqual);
+      }  
+    }
+  }
+
+  private _snapshotInterpolator(): void {
+    this.interpolator = SnapshotFactory.getNoteInterpolator(this.note);
+  }
+
+  private _snapshotLoopData(): void {
+    this.loopData = this.loopTick.sort().map(tick => {
+      const note = SnapshotFactory.getCurrentNote(this.tab, tick);
+      return {
+        line: note.measure.line,
+        interpolator: SnapshotFactory.getNoteInterpolator(note)
+      };
     });
+  }
+
+  private _snapshotIsLoopScrubbing(): void {
+    this.isLoopScrubbing = Boolean(
+      this.prevSnapshot && !isEqual(this.prevSnapshot.data.loopTick, this.loopTick)
+    );
   }
 }
 

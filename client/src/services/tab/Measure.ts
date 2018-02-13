@@ -1,4 +1,4 @@
-import Note from './Note';
+import { Note, Line } from './';
 
 interface MeasureSpec {
   vextabString: string;
@@ -17,6 +17,7 @@ class Measure {
   prev: Measure = null;
   next: Measure = null;
   barNote: any = null;
+  line: Line = null;
 
   constructor(spec: MeasureSpec) {
     this.vextabString = spec.vextabString;
