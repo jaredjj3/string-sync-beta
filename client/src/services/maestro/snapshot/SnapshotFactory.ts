@@ -174,7 +174,7 @@ class SnapshotFactory {
     this.loopData = this.loopTick.sort().map(tick => {
       const note = SnapshotFactory.getCurrentNote(this.tab, tick);
       return {
-        line: note.measure.line,
+        line: get(note, 'measure.line', null),
         interpolator: SnapshotFactory.getNoteInterpolator(note)
       };
     });
