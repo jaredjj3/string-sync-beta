@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, withProps, withState, withHandlers, lifecycle } from 'recompose';
 import { withRouter, Link } from 'react-router-dom';
-import { Menu, Icon, Switch } from 'antd';
+import { Menu, Icon, Checkbox } from 'antd';
 import { Switch as MobileSwitch } from 'antd-mobile';
 import { withSession, withNotation, withViewport } from 'enhancers';
 import { Playback } from './';
@@ -90,7 +90,7 @@ const NotationControlsMenuOuter = styled.div`
   position: fixed;
   right: 0;
   top: 0;
-  z-index: 20;
+  z-index: 30;
 
   > * {
     max-width: 200px;
@@ -155,7 +155,6 @@ const NotationControlsMenu = ({
       mode="inline"
       theme="dark"
       inlineCollapsed={collapsed}
-      onClick={() => null}
     >
       <ItemGroup title="notation">
         <Item key="print">
@@ -178,13 +177,13 @@ const NotationControlsMenu = ({
       <ItemGroup title="visuals">
         <Item key="fretboard">
           <SwitchContainer onClick={handleFretboardToggle}>
-            <Switch checked={fretboardChecked} onChange={handleFretboardToggle} />
+            <Checkbox checked={fretboardChecked} onChange={handleFretboardToggle} />
             <SwitchDesc>fretboard</SwitchDesc>
           </SwitchContainer>
         </Item>
         <Item key="piano">
           <SwitchContainer onClick={handlePianoToggle}>
-            <Switch checked={pianoChecked} onChange={handlePianoToggle} />
+            <Checkbox checked={pianoChecked} onChange={handlePianoToggle} />
             <SwitchDesc>piano</SwitchDesc>
           </SwitchContainer>
         </Item>
@@ -192,13 +191,13 @@ const NotationControlsMenu = ({
       <ItemGroup title="player">
         <Item key="more-notes">
           <SwitchContainer onClick={handleMoreNotesToggle}>
-            <Switch checked={moreNotesChecked} onChange={handleMoreNotesToggle} />
+            <Checkbox checked={moreNotesChecked} onChange={handleMoreNotesToggle} />
             <SwitchDesc>more notes</SwitchDesc>
           </SwitchContainer>
         </Item>
         <Item key="show-loop">
           <SwitchContainer onClick={handleShowLoopToggle}>
-            <Switch checked={showLoopChecked} onChange={handleShowLoopToggle} />
+            <Checkbox checked={showLoopChecked} onChange={handleShowLoopToggle} />
             <SwitchDesc>show loop</SwitchDesc>
           </SwitchContainer>
         </Item>
