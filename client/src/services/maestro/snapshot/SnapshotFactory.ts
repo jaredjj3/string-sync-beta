@@ -1,6 +1,6 @@
 import { Snapshot } from './';
 import { Tab, Tuning, Line, Measure, Note } from 'services';
-import { flatMap, uniqWith, uniq, isEqual, startsWith } from 'lodash';
+import { flatMap, uniqWith, uniq, isEqual, startsWith, get } from 'lodash';
 import { Flow } from 'vexflow';
 import { isBetween, interpolator, elvis } from 'ssUtil';
 
@@ -132,8 +132,8 @@ class SnapshotFactory {
 
   private _snapshotTabElements(): void {
     this.note = SnapshotFactory.getCurrentNote(this.tab, this.tick);
-    this.measure = this.note.measure;
-    this.line = this.measure.line;
+    this.measure = get(this.note, 'measure', null);
+    this.line = get(this.measure, 'line', null);
   }
 
   private _snapshotPressPositions(): void {
