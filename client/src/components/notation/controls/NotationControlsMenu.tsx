@@ -20,44 +20,43 @@ const enhance = compose (
   withState('pianoChecked', 'setPianoChecked', false),
   withHandlers({
     handleMoreNotesToggle: props => event => {
-      // Allow the user to click the switch directly or
-      // the menu item container
-      if (event.hasOwnProperty('stopPropagation')) {
-        event.stopPropagation();
-      }
-
       const checked = !props.moreNotesChecked;
       props.setMoreNotesChecked(checked);
       window.ss.maestro.options.showMoreNotes = checked;
       window.ss.maestro.queueUpdate();
     },
     handleShowLoopToggle: props => event => {
-      if (event.hasOwnProperty('stopPropagation')) {
-        event.stopPropagation();
-      }
-
       const checked = !props.showLoopChecked;
       props.setShowLoopChecked(checked);
       window.ss.maestro.options.showLoop = checked;
       window.ss.maestro.queueUpdate();
     },
     handleFretboardToggle: props => event => {
-      if (event.hasOwnProperty('stopPropagation')) {
-        event.stopPropagation();
-      }
-
       const checked = !props.fretboardChecked;
       props.setFretboardChecked(checked);
       window.ss.maestro.fretboardProps.setVisibility(checked);
     },
     handlePianoToggle: props => event => {
-      if (event.hasOwnProperty('stopPropagation')) {
-        event.stopPropagation();
-      }
-
       const checked = !props.pianoChecked;
       props.setPianoChecked(checked);
       window.ss.maestro.pianoProps.setVisibility(checked);
+    }
+  }),
+  withProps(props => ({
+    handlers: {
+      moreNotes: props.handleMoreNotesToggle,
+      showLoop: props.handleShowLoopToggle,
+      fretboard: props.handleFretboardToggle,
+      piano: props.handlePianoToggle
+    }
+  })),
+  withHandlers({
+    handleMenuItemClick: props => event => {
+      const handler = props.handlers[event.key];
+      
+      if (typeof handler === 'function') {
+        handler(event);
+      }
     }
   }),
   withProps(props => ({
@@ -120,16 +119,9 @@ const NotationControlsMenuOuter = styled.div`
     }
   }
 `;
-const SwitchContainer = styled.div`
-  .ant-switch {
-    background: #aaa;
-
-    &.ant-switch-checked {
-      background: #fc354c;
-    }
-  }
+const CheckOuter = styled.div`
 `;
-const SwitchDesc = styled.span`
+const CheckDescription = styled.span`
   margin-left: 10px;
 `;
 
@@ -142,10 +134,7 @@ const NotationControlsMenu = ({
   showEditItem,
   collapsed,
   isMobile,
-  handleMoreNotesToggle,
-  handleShowLoopToggle,
-  handleFretboardToggle,
-  handlePianoToggle
+  handleMenuItemClick
 }) => (
   <NotationControlsMenuOuter>
     <Menu
@@ -154,6 +143,7 @@ const NotationControlsMenu = ({
       defaultOpenKeys={[]}
       mode="inline"
       theme="dark"
+      onClick={handleMenuItemClick}
       inlineCollapsed={collapsed}
     >
       <ItemGroup title="notation">
@@ -176,30 +166,30 @@ const NotationControlsMenu = ({
       </ItemGroup>
       <ItemGroup title="visuals">
         <Item key="fretboard">
-          <SwitchContainer onClick={handleFretboardToggle}>
-            <Checkbox checked={fretboardChecked} onChange={handleFretboardToggle} />
-            <SwitchDesc>fretboard</SwitchDesc>
-          </SwitchContainer>
+          <CheckOuter>
+            <Checkbox checked={fretboardChecked} />
+            <CheckDescription>fretboard</CheckDescription>
+          </CheckOuter>
         </Item>
         <Item key="piano">
-          <SwitchContainer onClick={handlePianoToggle}>
-            <Checkbox checked={pianoChecked} onChange={handlePianoToggle} />
-            <SwitchDesc>piano</SwitchDesc>
-          </SwitchContainer>
+          <CheckOuter>
+            <Checkbox checked={pianoChecked} />
+            <CheckDescription>piano</CheckDescription>
+          </CheckOuter>
         </Item>
       </ItemGroup>
       <ItemGroup title="player">
-        <Item key="more-notes">
-          <SwitchContainer onClick={handleMoreNotesToggle}>
-            <Checkbox checked={moreNotesChecked} onChange={handleMoreNotesToggle} />
-            <SwitchDesc>more notes</SwitchDesc>
-          </SwitchContainer>
+        <Item key="moreNotes">
+          <CheckOuter>
+            <Checkbox checked={moreNotesChecked} />
+            <CheckDescription>more notes</CheckDescription>
+          </CheckOuter>
         </Item>
-        <Item key="show-loop">
-          <SwitchContainer onClick={handleShowLoopToggle}>
-            <Checkbox checked={showLoopChecked} onChange={handleShowLoopToggle} />
-            <SwitchDesc>show loop</SwitchDesc>
-          </SwitchContainer>
+        <Item key="showLoop">
+          <CheckOuter>
+            <Checkbox checked={showLoopChecked} />
+            <CheckDescription>show loop</CheckDescription>
+          </CheckOuter>
         </Item>
         <Item>
           <Playback />
