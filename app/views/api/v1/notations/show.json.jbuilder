@@ -1,4 +1,5 @@
 json.id               @notation.id
+json.createdAt        @notation.created_at.to_date.to_s(:long)
 json.song_name        @notation.song_name
 json.artist_name      @notation.artist_name
 json.thumbnail_url    @notation.thumbnail.url
