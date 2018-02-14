@@ -86,37 +86,11 @@ const enhance = compose (
 );
 
 const NotationControlsMenuOuter = styled.div`
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: 30;
+  z-index: 51;
 
   > * {
-    max-width: 200px;
-    height: 100vh;
-    position: fixed;
-    right: 0;
-    top: 0;
-    z-index: 20;
+    min-width: 200px;
     background: black;
-  }
-
-  .ant-menu-inline-collapsed {
-    width: 0;
-  }
-
-  li.ant-menu-item {
-    font-size: 20px;
-    font-weight: 100;
-  }
-
-  div.ant-menu-item-group-title {
-    font-size: 24px;
-    font-weight: 100;
-
-    &:first-child {
-      margin-top: 20px;
-    }
   }
 `;
 const CheckOuter = styled.div`
@@ -166,30 +140,22 @@ const NotationControlsMenu = ({
       </ItemGroup>
       <ItemGroup title="visuals">
         <Item key="fretboard">
-          <CheckOuter>
-            <Checkbox checked={fretboardChecked} />
-            <CheckDescription>fretboard</CheckDescription>
-          </CheckOuter>
+          <Checkbox checked={fretboardChecked} />
+          <CheckDescription>fretboard</CheckDescription>
         </Item>
         <Item key="piano">
-          <CheckOuter>
-            <Checkbox checked={pianoChecked} />
-            <CheckDescription>piano</CheckDescription>
-          </CheckOuter>
+          <Checkbox checked={pianoChecked} />
+          <CheckDescription>piano</CheckDescription>
         </Item>
       </ItemGroup>
       <ItemGroup title="player">
         <Item key="moreNotes">
-          <CheckOuter>
-            <Checkbox checked={moreNotesChecked} />
-            <CheckDescription>more notes</CheckDescription>
-          </CheckOuter>
+          <Checkbox checked={moreNotesChecked} />
+          <CheckDescription>more notes</CheckDescription>
         </Item>
         <Item key="showLoop">
-          <CheckOuter>
-            <Checkbox checked={showLoopChecked} />
-            <CheckDescription>show loop</CheckDescription>
-          </CheckOuter>
+          <Checkbox checked={showLoopChecked} />
+          <CheckDescription>show loop</CheckDescription>
         </Item>
         <Item>
           <Playback />

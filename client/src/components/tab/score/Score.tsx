@@ -16,11 +16,8 @@ const enhance = compose(
   shouldUpdate((currProps, nextProps) => nextProps.tab && !nextProps.tab.error)
 );
 
-const ScoreOuter = (styled.div as any)`
+const ScoreOuter = styled.div`
   background: white;
-  height: 260px;
-  overflow: ${props => props.allowOverflow ? '' : 'hidden'};
-  padding-bottom: 250px;
 `;
 
 const ScoreLines = ({ tab, withCaret }) => {
@@ -41,7 +38,7 @@ const ScoreLines = ({ tab, withCaret }) => {
 };
 
 const Score = ({ rootClassNames, tab, withCaret, allowOverflow }) => (
-  <ScoreOuter id="Score" allowOverflow={allowOverflow}>
+  <ScoreOuter id="Score">
     {withCaret ? <CaretController /> : null}
     {withCaret ? <LoopCaretController /> : null}
     <ScrollManager />

@@ -13,6 +13,10 @@ const NavOuter = styled.div`
   max-height: 75px;
   height: 75px;
 
+  .Nav--mobile__navBar {
+    background: white;
+  }
+
   i {
     font-size: 24px;
     padding: 5px;

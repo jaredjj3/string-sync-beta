@@ -64,7 +64,7 @@ const NotationEdit = () => (
       <Piano />
       <NotationEditor />
       <TabOuter>
-        <Tab withCaret allowOverflow />
+        <Tab withCaret />
       </TabOuter>
       <NotationControlsOuter>
         <NotationControls />

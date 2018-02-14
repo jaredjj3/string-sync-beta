@@ -2,6 +2,7 @@ import { getNullUser } from 'ssUtil';
 
 const getDefaultState = () => ({
   id: -1,
+  createdAt: 'Janurary 01, 1900',
   songName: '',
   durationMs: 0,
   deadTimeMs: 0,

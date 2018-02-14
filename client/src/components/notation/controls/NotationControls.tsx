@@ -21,7 +21,7 @@ const NotationControlsOuter = styled.div`
     }
   }
 `;
-const NotationControlsContentAsideRow = styled(Row)`
+const Aside = styled(Row)`
   .Play, .Pause,
   .ToggleControls__menuIcon {
     padding: 15px;
@@ -68,18 +68,18 @@ const NotationControls = () => (
   <NotationControlsOuter className="NotationControls__content">
     <Row type="flex" align="middle" justify="center">
       <Col span={2}>
-        <NotationControlsContentAsideRow type="flex" align="middle" justify="end">
+        <Aside type="flex" align="middle" justify="end">
           <Play />
-        </NotationControlsContentAsideRow>
+        </Aside>
       </Col>
       <Col span={16}>
         <ControlRow1 />
         <ControlRow2 />
       </Col>
       <Col span={2}>
-        <NotationControlsContentAsideRow type="flex" align="middle" justify="start">
+        <Aside type="flex" align="middle" justify="start">
           <ToggleControls />
-        </NotationControlsContentAsideRow>
+        </Aside>
       </Col>
     </Row>
   </NotationControlsOuter>

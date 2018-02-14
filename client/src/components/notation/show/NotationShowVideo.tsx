@@ -4,19 +4,21 @@ import { Video, Overlap, Layer } from 'components';
 import styled from 'styled-components';
 import { withNotation } from 'enhancers';
 
+const HEIGHT_PX = 250;
+
 const enhance = compose(
   withNotation
 );
 
 const NotationShowVideoOuter = styled.div`
   background: black;
-  height: 30vh;
+  height: ${HEIGHT_PX}px;
   width: 100%;
   min-height: 200px;
   overflow: hidden;
 
   iframe {
-    height: 30vh;
+    height: ${HEIGHT_PX}px;
     width: 100%;
     min-height: 200px;
   }
@@ -30,7 +32,7 @@ const NotationShowBackground = styled.img`
 `;
 const NotationShowBackgroundMask = styled.div`
   width: 100%;
-  height: 30vh;
+  height: ${HEIGHT_PX}px;
   min-height: 200px;
   background: black;
   opacity: 0.75;
@@ -39,7 +41,7 @@ const VideoOuter = styled.div`
 `;
 const VideoInner = styled.div`
   max-width: 53.333333333vh;
-  height: 30vh;
+  height: ${HEIGHT_PX}px;
   min-width: 200px;
   min-height: 200px;
   margin: 0 auto;

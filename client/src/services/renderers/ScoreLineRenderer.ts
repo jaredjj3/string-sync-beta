@@ -39,7 +39,7 @@ class ScoreLineRenderer implements Renderer  {
     this._resize();
 
     // Vextab parsing pattern
-    this.artist = new Artist(10, 20, this.width - 10);
+    this.artist = new Artist(10, 20, this.width - 20);
     this.vextab = new Vextab(this.artist);
     this.vextab.parse(this.vextabString);
     

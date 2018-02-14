@@ -60,14 +60,8 @@ const NotationPrintHeader = ({ isLoading, notation }) => (
 
 const NotationPrint = ({ isLoading, notation }) => (
   <NotationPrintOuter>
-    <NotationPrintHeader
-      isLoading={isLoading}
-      notation={notation.state}
-    />
-    <Tab
-      allowOverflow
-      overrideWidth={900}
-    />
+    <NotationPrintHeader isLoading={isLoading} notation={notation.state} />
+    <Tab overrideWidth={900} />
   </NotationPrintOuter>
 );
 
