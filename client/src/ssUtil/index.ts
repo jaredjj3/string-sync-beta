@@ -1,5 +1,4 @@
 export { default as camelCaseObjKeys } from './camelCaseObjKeys';
-export { default as elvis } from './elvis';
 export { default as getNullUser } from './getNullUser';
 export { default as getViewport } from './getViewport';
 export { default as hash } from './hash';

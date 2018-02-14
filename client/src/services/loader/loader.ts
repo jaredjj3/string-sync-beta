@@ -1,5 +1,4 @@
-import { last } from 'lodash';
-import { elvis } from 'ssUtil';
+import { last, get } from 'lodash';
 
 // If the Loader has any tasks, then the LoadingMask component will be
 // shown. That's it.
@@ -11,7 +10,7 @@ class Loader {
   tasks: Set<string> = new Set();
 
   get isVisible(): boolean {
-    return Boolean(elvis(this.component, 'props.isVisible'));
+    return Boolean(get(this.component, 'props.isVisible', null));
   }
 
   add = (task: string): Set<string> => {

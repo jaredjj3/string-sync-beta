@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { compose, withState, withProps, withHandlers, lifecycle } from 'recompose';
-import { elvis } from 'ssUtil';
+import { get } from 'lodash';
 
 const enhance = compose(
   withHandlers({
     handleAnimationLoop: props => () => {
       const { snapshot } = window.ss.maestro;
-      const caretRenderer = elvis(snapshot.data.line, 'caretRenderer');
+      const caretRenderer = get(snapshot.data.line, 'caretRenderer', null);
 
       if (caretRenderer) {
         const { interpolator, tick } = snapshot.data;

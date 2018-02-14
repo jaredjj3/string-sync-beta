@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { compose, withState, withProps, withHandlers, lifecycle } from 'recompose';
 import { withVideo } from 'enhancers';
-import { elvis, isBetween } from 'ssUtil';
+import { isBetween } from 'ssUtil';
+import { get } from 'lodash';
 
 const enhance = compose(
   withVideo,
@@ -13,7 +14,7 @@ const enhance = compose(
         return;
       }
 
-      const loopLineNumbers = snapshot.data.loopData.map(data => elvis(data.line, 'number')).sort();
+      const loopLineNumbers = snapshot.data.loopData.map(data => get(data.line, 'number', null)).sort();
 
       // Clear all lines and set loopLineNumbers attributes
       tab.lines.forEach(line => {

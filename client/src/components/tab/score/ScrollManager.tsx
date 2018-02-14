@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, withState, withProps, withHandlers, lifecycle } from 'recompose';
 import { currentId } from 'async_hooks';
-import { elvis } from 'ssUtil';
+import { get } from 'lodash';
 
 const SCORE_HEIGHT_PX = 260;
 
@@ -17,7 +17,7 @@ const enhance = compose(
       const { snapshot } = window.ss.maestro;
       const prevSnapshot = snapshot.prev;
 
-      let currentLineNumber = elvis(snapshot.data.line, 'number');
+      let currentLineNumber = get(snapshot.data.line, 'number', null);
       // Determine if we need to look into the loopTicks
       if (snapshot.data.isLoopScrubbing) {
         const prevLoopTicks = prevSnapshot.data.loopTick;
@@ -26,7 +26,7 @@ const enhance = compose(
         const changedNdx = changed.indexOf(true);
 
         if (changedNdx > -1) {
-          currentLineNumber = elvis(snapshot.data.loopData[changedNdx].line, 'number');
+          currentLineNumber = get(snapshot.data.loopData[changedNdx].line, 'number', null);
         }
       }
 

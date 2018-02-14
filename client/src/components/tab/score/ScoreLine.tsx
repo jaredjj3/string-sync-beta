@@ -4,7 +4,6 @@ import { ScoreLineRenderer } from 'services';
 import { withTab } from 'enhancers';
 import { Caret, LoopCarets } from './';
 import { Overlap, Layer } from 'components';
-import { elvis } from 'ssUtil';
 import { isEqual } from 'lodash';
 
 const SCORE_LINE_HEIGHT_PX = 260;
