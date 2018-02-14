@@ -5,8 +5,15 @@ import { get } from 'lodash';
 const enhance = compose(
   withHandlers({
     handleAnimationLoop: props => () => {
-      const { snapshot } = window.ss.maestro;
+      const { snapshot, tab } = window.ss.maestro;
       const caretRenderer = get(snapshot.data.line, 'caretRenderer', null);
+      const lines = get(tab, 'lines', []);
+
+      lines.forEach(({ caretRenderer }) => {
+        if (caretRenderer && caretRenderer.isRendered) {
+          caretRenderer.clear();
+        }
+      });
 
       if (caretRenderer) {
         const { interpolator, tick } = snapshot.data;
