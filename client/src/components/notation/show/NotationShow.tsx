@@ -72,7 +72,8 @@ const NotationShow = ({ isFetching, notation, viewport }) => (
       <Fretboard />
       <Piano />
     </Top>
-    <Middle>
+    <Middle id="TabScroller"
+    >
       <Tab withCaret />
       <Footer />
     </Middle>

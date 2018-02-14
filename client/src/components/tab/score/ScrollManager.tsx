@@ -42,7 +42,7 @@ const enhance = compose(
         //
         // I am not proud of it. :(
         const scrollTop = currentLineNumber * SCORE_HEIGHT_PX;
-        const scoreElement = window.$('#Score');
+        const scoreElement = window.$('#TabScroller');
         scoreElement.scrollTop(scrollTop + 1);
         scoreElement.scrollTop(scrollTop);
 
