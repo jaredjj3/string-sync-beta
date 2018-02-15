@@ -16,10 +16,6 @@ interface SFTimeData {
   loopTick: Array<number>;
 }
 
-interface SFOptions {
-  showMoreNotes: boolean;
-}
-
 class SnapshotFactory {
   // attrs set from the constructor
   prevSnapshot: Snapshot;
@@ -84,7 +80,7 @@ class SnapshotFactory {
     return interpolator(point1, point2);
   }
 
-  constructor(refs: SFRefs, timeData: SFTimeData, options: SFOptions) {
+  constructor(refs: SFRefs, timeData: SFTimeData, options: Maestro.Options) {
     this.prevSnapshot = refs.prevSnapshot;
     this.tab = refs.tab;
     this.tuning = refs.tuning;

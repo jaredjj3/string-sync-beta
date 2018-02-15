@@ -27,7 +27,8 @@ class Maestro {
   // options
   options: Maestro.Options = {
     showMoreNotes: false,
-    showLoop: false
+    showLoop: false,
+    autoScroll: true
   }
 
   // react props
@@ -72,9 +73,7 @@ class Maestro {
         loopTick: this.loopMs.map(timeMs => toTick(timeMs, this.tpm))
       };
 
-      const options = {
-        showMoreNotes: this.options.showMoreNotes
-      };
+      const options = Object.assign({}, this.options);
 
       const factory = new SnapshotFactory(refs, timeData, options);
       this._snapshot = factory.create();
