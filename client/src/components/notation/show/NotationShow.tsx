@@ -3,8 +3,11 @@ import { compose, withState, withProps, lifecycle } from 'recompose';
 import { withNotation } from 'enhancers';
 import { toTick, toTimeMs } from 'ssUtil';
 import styled from 'styled-components';
-import { NotationShowBanner, NotationShowVideo, NotationShowTab } from './';
-import { Gradient, Fretboard, MaestroController, Piano, NotationControls } from 'components';
+import { NotationShowBanner, NotationShowVideo } from './';
+import {
+  Gradient, Fretboard, MaestroController,
+  Piano, NotationControls, Tab, Footer
+} from 'components';
 
 const enhance = compose(
   withNotation,
@@ -42,6 +45,11 @@ const NotationShowOuter = styled.section`
 const Top = styled.header`
   margin-top: 1px;
 `;
+const Middle = styled.div`
+  flex: 2;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+`;
 const Bottom = styled.footer`
   position: fixed;
   bottom: 0;
@@ -64,7 +72,10 @@ const NotationShow = ({ isFetching, notation, viewport, setAutoScroll, handleTab
       <Fretboard />
       <Piano />
     </Top>
-    <NotationShowTab />
+    <Middle id="TabScroller">
+      <Tab withCaret />
+      <Footer />
+    </Middle>
     <Bottom>
       <NotationControls />
     </Bottom>
