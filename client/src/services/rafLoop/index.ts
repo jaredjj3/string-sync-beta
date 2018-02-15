@@ -1,1 +1,1 @@
-export { default as rafLoop } from './rafLoop';
+export { default as RafLoop } from './RafLoop';

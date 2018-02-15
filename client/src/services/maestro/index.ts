@@ -1,2 +1,2 @@
 export * from './snapshot';
-export { default as Maestro } from './maestro';
+export { default as Maestro } from './Maestro';

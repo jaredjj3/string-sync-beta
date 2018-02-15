@@ -21,7 +21,7 @@ class Loader {
     this.tasks.add(task);
 
     if (this.component) {
-      this._show();
+      this.show();
     }
 
     return this.tasks;
@@ -41,7 +41,7 @@ class Loader {
     return this._hide();
   }
 
-  private _show(): Loader {
+  show = (): Loader => {
     if (!this.isVisible) {
       this.component.props.setVisibility(true);
 
@@ -96,6 +96,4 @@ class Loader {
   }
 }
 
-const instance = new Loader();
-
-export default instance;
+export default Loader;

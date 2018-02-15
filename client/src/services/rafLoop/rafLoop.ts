@@ -129,6 +129,4 @@ class RafLoop {
   }
 }
 
-const instance = new RafLoop();
-
-export default instance;
+export default RafLoop;

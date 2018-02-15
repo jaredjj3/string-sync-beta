@@ -34,7 +34,7 @@ const enhance = compose(
     },
     componentWillUnmount(): void {
       const { string } = this.props;
-      window.ss.maestro.fretboard.removeGuitarString(string, this.props);
+      window.ss.maestro.fretboard.removeGuitarString(string);
     }
   })
 );

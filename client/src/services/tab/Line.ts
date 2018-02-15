@@ -1,6 +1,6 @@
 import { Artist, Measure, Note, DirectiveObject } from 'services';
 import Linker from './Linker';
-import { ScoreLineRenderer, CaretRenderer, Tab } from 'services';
+import { ScoreLineRenderer, LoopCaretRenderer, CaretRenderer, Tab } from 'services';
 import { last } from 'lodash';
 
 class Line {
@@ -18,7 +18,7 @@ class Line {
   linker: Linker = null;
   scoreLineRenderer: ScoreLineRenderer = null;
   caretRenderer: CaretRenderer = null;
-  loopCaretRenderer: CaretRenderer = null;
+  loopCaretRenderer: LoopCaretRenderer = null;
 
   constructor(measures: Array<Measure>, number: number, width: number, targetNumMeasures: number) {
     this.measures = measures;

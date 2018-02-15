@@ -35,7 +35,7 @@ const enhance = compose(
       loader.component = this;
       
       if (loader.tasks.size > 0) {
-        loader._show();
+        loader.show();
       } 
     },
     componentWillUnmount(): void {
