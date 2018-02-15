@@ -34,6 +34,7 @@ class Maestro {
   // react props
   fretboardProps: any = null;
   pianoProps: any = null;
+  notationShowTabProps: any = null;
 
   private _snapshot: Snapshot = new Snapshot();
 
