@@ -1,4 +1,4 @@
 declare interface GuitarPosition {
   fret: number,
-  string: number
+  str: number
 }

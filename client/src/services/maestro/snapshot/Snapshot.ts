@@ -1,26 +1,25 @@
-import { Line, Measure, Note } from 'services';
-
-const getDefaultInterpolator = () => () => 0;
-const getDefaultLoopDatum = () => ({
-  line: null,
-  interpolator: getDefaultInterpolator()
-});
-
 class Snapshot {
   data: SnapshotData = {
-    tick: -1,
-    timeMs: -1,
-    line: null,
-    measure: null,
-    note: null,
-    light: [],
-    justPress: [],
-    press: [],
-    loopData: [getDefaultLoopDatum(), getDefaultLoopDatum()],
-    interpolator: getDefaultInterpolator(),
-    loopTick: [0, 60000],
-    isLoopScrubbing: false
-  };
+    maestro: {
+      tick: -1,
+      timeMs: -1
+    },
+    tab: {
+      line: null,
+      measure: null,
+      note: null
+    },
+    fretboard: {
+      lightGuitarPositions: [],
+      justPressGuitarPositions: [],
+      pressGuitarPositions: []
+    },
+    loop: {
+      notes: null,
+      tickRange: [0, 60000],
+      isScrubbing: false
+    }
+  }
 
   prev: Snapshot = null;
 
@@ -40,9 +39,20 @@ class Snapshot {
   }
 
   setData(data: SnapshotData): SnapshotData {
-    this.data = Object.assign({}, this.data, data);
+    const maestro = Object.freeze(Object.assign({}, this.data.maestro, data.maestro));
+    const tab = Object.freeze(Object.assign({}, this.data.tab, data.tab));
+    const fretboard = Object.freeze(Object.assign({}, this.data.fretboard, data.fretboard));
+    const loop = Object.freeze(Object.assign({}, this.data.loop, data.loop));
+
+    this.data = Object.freeze({
+      maestro,
+      tab,
+      fretboard,
+      loop
+    });
+
     this._snapshotAt = Date.now();
-    Object.freeze(this.data);
+
     return this.data;
   }
 }

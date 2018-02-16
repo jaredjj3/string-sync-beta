@@ -14,40 +14,40 @@ const enhance = compose(
   })),
   withHandlers({
     handleAnimationLoop: props => () => {
-      const { snapshot } = window.ss.maestro;
-      const prevSnapshot = snapshot.prev;
+      // const { snapshot } = window.ss.maestro;
+      // const prevSnapshot = snapshot.prev;
 
-      let currentLineNumber = get(snapshot.data.line, 'number', null);
-      // Determine if we need to look into the loopTicks
-      if (snapshot.data.isLoopScrubbing) {
-        const prevLoopTicks = prevSnapshot.data.loopTick;
-        const currLoopTicks = snapshot.data.loopTick;
-        const changed = currLoopTicks.map((tick, ndx) => prevLoopTicks[ndx] !== tick);
-        const changedNdx = changed.indexOf(true);
+      // let currentLineNumber = get(snapshot.data.tab, 'line.number', null);
+      // // Determine if we need to look into the loopTicks
+      // if (snapshot.data.isLoopScrubbing) {
+      //   const prevLoopTicks = prevSnapshot.data.loopTick;
+      //   const currLoopTicks = snapshot.data.loopTick;
+      //   const changed = currLoopTicks.map((tick, ndx) => prevLoopTicks[ndx] !== tick);
+      //   const changedNdx = changed.indexOf(true);
 
-        if (changedNdx > -1) {
-          currentLineNumber = get(snapshot.data.loopData[changedNdx].line, 'number', null);
-        }
-      }
+      //   if (changedNdx > -1) {
+      //     currentLineNumber = get(snapshot.data.loopData[changedNdx].line, 'number', null);
+      //   }
+      // }
 
-      if (typeof currentLineNumber === 'number' && (currentLineNumber !== props.focusedLineNumber)) {
-        // FIXME: Go ahead, remove: window.$('#Score').scrollTop(scrollTo + 1);
-        // Test it on mobile. Explain it. I dare you.
-        //
-        // For some reason, when scrolling more than 200 - 300px on mobile, the canvas
-        // disappears until the first note is selected. It is suspected that this is an
-        // optimization implemented by the browser.
-        //
-        // I couldn't find out why this happens, but this is a hack around it.
-        //
-        // I am not proud of it. :(
-        const scrollTop = currentLineNumber * SCORE_HEIGHT_PX;
-        const scoreElement = window.$('#TabScroller');
-        scoreElement.scrollTop(scrollTop + 1);
-        scoreElement.scrollTop(scrollTop);
+      // if (typeof currentLineNumber === 'number' && (currentLineNumber !== props.focusedLineNumber)) {
+      //   // FIXME: Go ahead, remove: window.$('#Score').scrollTop(scrollTo + 1);
+      //   // Test it on mobile. Explain it. I dare you.
+      //   //
+      //   // For some reason, when scrolling more than 200 - 300px on mobile, the canvas
+      //   // disappears until the first note is selected. It is suspected that this is an
+      //   // optimization implemented by the browser.
+      //   //
+      //   // I couldn't find out why this happens, but this is a hack around it.
+      //   //
+      //   // I am not proud of it. :(
+      //   const scrollTop = currentLineNumber * SCORE_HEIGHT_PX;
+      //   const scoreElement = window.$('#TabScroller');
+      //   scoreElement.scrollTop(scrollTop + 1);
+      //   scoreElement.scrollTop(scrollTop);
 
-        props.setFocusedLineNumber(currentLineNumber);
-      }
+      //   props.setFocusedLineNumber(currentLineNumber);
+      // }
     }
   }),
   withProps(props => {

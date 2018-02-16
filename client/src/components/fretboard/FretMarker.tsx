@@ -25,22 +25,22 @@ const enhance = compose(
   })),
   lifecycle({
     componentDidMount(): void {
-      const { string, fret } = this.props;
-      window.ss.maestro.fretboard.addFretMarker(string, fret, this.props);
+      const { str, fret } = this.props;
+      window.ss.maestro.fretboard.addFretMarker(str, fret, this.props);
     },
     componentWillReceiveProps(nextProps: any): void {
-      const { string, fret } = nextProps;
+      const { str, fret } = nextProps;
       const { fretboard } = window.ss.maestro;
-      const marker = fretboard.selectFretMarker(string, fret);
+      const marker = fretboard.selectFretMarker(str, fret);
 
       // Ensure that a marker is present on the latest fretboard object.
       if (marker === null) {
-        fretboard.addFretMarker(string, fret, this.props);
+        fretboard.addFretMarker(str, fret, this.props);
       }
     },
     componentWillUnmount(): void {
-      const { string, fret } = this.props;
-      window.ss.maestro.fretboard.removeFretMarker(string, fret);
+      const { str, fret } = this.props;
+      window.ss.maestro.fretboard.removeFretMarker(str, fret);
     }
   })
 );

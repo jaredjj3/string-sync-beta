@@ -7,11 +7,11 @@ const enhance = compose(
   withHandlers({
     handleAnimationLoop: props => () => {
       const { snapshot, piano, tuning } = window.ss.maestro;
-      const { light, press, justPress } = snapshot.data;
+      const { lightGuitarPositions, pressGuitarPositions, justPressGuitarPositions } = snapshot.data.fretboard;
 
-      const lightKeys = isEmpty(light) ? [] : compact(light.map(pos => tuning.getNote(pos)));
-      const pressKeys = isEmpty(press) ? [] : compact(press.map(pos => tuning.getNote(pos)));
-      const justPressKeys = isEmpty(justPress) ? [] : compact(justPress.map(pos => tuning.getNote(pos)));
+      const lightKeys = compact(lightGuitarPositions.map(pos => tuning.getNote(pos)));
+      const pressKeys = compact(pressGuitarPositions.map(pos => tuning.getNote(pos)));
+      const justPressKeys = compact(justPressGuitarPositions.map(pos => tuning.getNote(pos)));
       
       piano.update(lightKeys, pressKeys, justPressKeys);
     }

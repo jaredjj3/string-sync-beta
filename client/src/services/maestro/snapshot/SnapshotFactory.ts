@@ -26,16 +26,11 @@ class SnapshotFactory {
   showMoreNotes: boolean;
   tuning: Tuning;
 
-  // computed attrs
-  line: Line;
-  measure: Measure;
-  note: Note;
-  light: Array<any>;
-  justPress: Array<any>;
-  press: Array<any>;
-  interpolator: Function;
-  loopData: any;
-  isLoopScrubbing: boolean;
+  // computed data
+  maestroData: MaestroData;
+  tabData: TabData;
+  fretboardData: FretboardData;
+  loopData: LoopData;
 
   static getCurrentNote(tab: Tab, tick: number): Note {
     let currentNote = null;
@@ -57,27 +52,6 @@ class SnapshotFactory {
     });
 
     return currentNote;
-  }
-
-  static getNoteInterpolator(note: Note): Function {
-    if (!note) {
-      return interpolator({ x: 0, y: 0 }, { x: 0, y: 0 });
-    }
-
-    const posRange = note.getPosXRange();
-    const { tickRange } = note;
-
-    const point1 = {
-      x: tickRange.start,
-      y: posRange.start
-    };
-
-    const point2 = {
-      x: tickRange.stop,
-      y: posRange.start > posRange.stop ? note.staveNote.stave.width : posRange.stop
-    };
-
-    return interpolator(point1, point2);
   }
 
   constructor(refs: SFRefs, timeData: SFTimeData, options: Maestro.Options) {
@@ -102,84 +76,99 @@ class SnapshotFactory {
     this._doSnapshot();
 
     return {
-      tick:            this.tick,
-      timeMs:          this.timeMs,
-      line:            this.line,
-      measure:         this.measure,
-      note:            this.note,
-      light:           this.light,
-      justPress:       this.justPress,
-      press:           this.press,
-      interpolator:    this.interpolator,
-      loopData:        this.loopData,
-      loopTick:        this.loopTick,
-      isLoopScrubbing: this.isLoopScrubbing
-    };
+      maestro: this.maestroData,
+      tab: this.tabData,
+      fretboard: this.fretboardData,
+      loop: this.loopData
+    }
   }
 
   private _doSnapshot(): void {
-    this._snapshotTabElements();
-    this._snapshotPressPositions();
-    this._snapshotLightPositions();
-    this._snapshotInterpolator();
+    this._snapshotMaestroData();
+    this._snapshotTabData();
+    this._snapshotFretboardData();
     this._snapshotLoopData();
-    this._snapshotIsLoopScrubbing();
   }
 
-  private _snapshotTabElements(): void {
-    this.note = SnapshotFactory.getCurrentNote(this.tab, this.tick);
-    this.measure = get(this.note, 'measure', null);
-    this.line = get(this.measure, 'line', null);
+  private _snapshotMaestroData(): void {
+    this.maestroData = {
+      tick: this.tick,
+      timeMs: this.timeMs
+    };
   }
 
-  private _snapshotPressPositions(): void {
-    if (this.note) {
-      this.press = this.note.getGuitarPos();
+  private _snapshotTabData(): void {
+    const note = SnapshotFactory.getCurrentNote(this.tab, this.tick);
+    const measure = get(note, 'measure', null);
+    const line = get(measure, 'line', null);
+
+    this.tabData = {
+      note,
+      measure,
+      line
+    };
+  }
+
+  private _snapshotFretboardData(): void {
+    let press: Array<GuitarPosition> = [];
+    let justPress: Array<GuitarPosition> = [];
+    let light: Array<GuitarPosition> = [];
+    const { note } = this.tabData;
+
+    if (note) {
+      // Compute press notes
+      press = note.getGuitarPos();
 
       // Compute a threshold that would be considered for "justPressed" positions
-      const { tickRange } = this.note;
+      const { tickRange } = note;
       const threshold = Math.min(...[
         tickRange.start + 250,
         tickRange.start + ((tickRange.stop - tickRange.start) * 0.50)
       ]);
 
-      if (this.tick < threshold) {
-        this.justPress = this.note.getGuitarPos();
+      if (this.maestroData.tick < threshold) {
+        justPress = note.getGuitarPos();
       }
     }
-  }
 
-  private _snapshotLightPositions(): void {
-    if (this.note) {
+    // Compute light notes
+    if (note) {
       if (this.showMoreNotes) {
-        const noteNames = flatMap(this.note.measure.notes, measureNote => measureNote.staveNote.keys);
+        const noteNames = flatMap(note.measure.notes, measureNote => measureNote.staveNote.keys);
         const lightNotes = uniq(noteNames).filter(noteName => !startsWith(noteName.toUpperCase(), 'R'));
-        this.light = flatMap(lightNotes, lightNote => this.tuning.getGuitarPositions(lightNote));
+        light = flatMap(lightNotes, lightNote => this.tuning.getGuitarPositions(lightNote));
       } else {
-        this.light = flatMap(this.note.measure.notes, note => note.getGuitarPos());
-        this.light = uniqWith(this.light, isEqual);
+        light = flatMap(note.measure.notes, note => note.getGuitarPos());
+        light = uniqWith(light, isEqual);
       }  
     }
-  }
 
-  private _snapshotInterpolator(): void {
-    this.interpolator = SnapshotFactory.getNoteInterpolator(this.note);
+    this.fretboardData = {
+      lightGuitarPositions: light,
+      justPressGuitarPositions: justPress,
+      pressGuitarPositions: press
+    };
   }
 
   private _snapshotLoopData(): void {
-    this.loopData = this.loopTick.sort().map(tick => {
-      const note = SnapshotFactory.getCurrentNote(this.tab, tick);
-      return {
-        line: get(note, 'measure.line', null),
-        interpolator: SnapshotFactory.getNoteInterpolator(note)
-      };
-    });
-  }
+    const tickRange = this.loopTick;
 
-  private _snapshotIsLoopScrubbing(): void {
-    this.isLoopScrubbing = Boolean(
-      this.prevSnapshot && !isEqual(this.prevSnapshot.data.loopTick, this.loopTick)
+    // Compute notes
+    const notes = tickRange.sort().map(tick => (
+      SnapshotFactory.getCurrentNote(this.tab, tick)
+    ));
+
+    // Compute isScrubbing
+    const prevTickRange = get(this.prevSnapshot, 'data.loop.tickRange');
+    const isScrubbing = Boolean(
+      this.prevSnapshot && !isEqual(prevTickRange, tickRange)
     );
+
+    this.loopData = {
+      notes,
+      tickRange,
+      isScrubbing
+    };
   }
 }
 

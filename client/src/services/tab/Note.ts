@@ -1,6 +1,7 @@
 import { Flow } from 'vexflow'; 
 import { NoteRenderer } from 'services';
 import { Measure } from './';
+import { interpolator } from 'ssUtil';
 
 class Note {
   number: number = 0;
@@ -10,6 +11,7 @@ class Note {
   staveNote: any = null;
   measure: Measure = null;
   renderer: NoteRenderer = null;
+  interpolator: Function = null;
 
   tickRange: NumRange = {
     start: 0,
@@ -41,6 +43,18 @@ class Note {
   setNext(next: Note): Note {
     next.setPrev(this);
     return next;
+  }
+
+  computeInterpolator(): Function {
+    const posRange = this.getPosXRange();
+    const { tickRange } = this;
+
+    this.interpolator = interpolator(
+      { x: tickRange.start, y: posRange.start },
+      { x: tickRange.stop, y: posRange.start > posRange.stop ? this.staveNote.stave.width : posRange.stop }
+    );
+
+    return this.interpolator;
   }
 
   // Returns a Vexflow fraction
@@ -84,7 +98,7 @@ class Note {
 
     return guitarPositions.map(position => ({
       fret: parseInt(position.fret, 10),
-      string: parseInt(position.str, 10) - 1
+      str: parseInt(position.str, 10) - 1
     }))
   }
 }

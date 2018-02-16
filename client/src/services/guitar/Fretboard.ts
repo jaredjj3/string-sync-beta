@@ -75,44 +75,44 @@ class Fretboard {
   }
 
   mapComponents(positions: Array<GuitarPosition>, markersOnly: boolean): Array<FretboardComponent> {
-    const markers = positions.map(pos => this.selectFretMarker(pos.string, pos.fret));
+    const markers = positions.map(pos => this.selectFretMarker(pos.str, pos.fret));
 
     if (markersOnly) {
       return markers; 
     } else {
-      const strings = positions.map(pos => this.selectGuitarString(pos.string));
-      return uniq(strings).concat(markers);
+      const strs = positions.map(pos => this.selectGuitarString(pos.str));
+      return uniq(strs).concat(markers);
     }
   }
 
-  addFretMarker(string: number, fret: number, markerProps: any): FretMarker {
-    const fretMarker = new FretMarker(string, fret, markerProps);
-    this.fretMarkers[string][fret] = fretMarker;
+  addFretMarker(str: number, fret: number, markerProps: any): FretMarker {
+    const fretMarker = new FretMarker(str, fret, markerProps);
+    this.fretMarkers[str][fret] = fretMarker;
     return fretMarker;
   }
 
-  removeFretMarker(string: number, fret: number): Array<Array<FretMarker>> {
-    this.fretMarkers[string][fret] = null;
+  removeFretMarker(str: number, fret: number): Array<Array<FretMarker>> {
+    this.fretMarkers[str][fret] = null;
     return this.fretMarkers;
   }
 
-  selectFretMarker(string: number, fret: number): FretMarker {
-    return this.fretMarkers[string][fret];
+  selectFretMarker(str: number, fret: number): FretMarker {
+    return this.fretMarkers[str][fret];
   }
 
-  addGuitarString(string: number, stringProps: any): GuitarString {
-    const stringObj = new GuitarString(string, stringProps);
-    this.guitarStrings[string] = stringObj;
-    return stringObj;
+  addGuitarString(str: number, strProps: any): GuitarString {
+    const strObj = new GuitarString(str, strProps);
+    this.guitarStrings[str] = strObj;
+    return strObj;
   }
 
-  removeGuitarString(string: number): Array<GuitarString> {
-    this.guitarStrings[string] = null;
+  removeGuitarString(str: number): Array<GuitarString> {
+    this.guitarStrings[str] = null;
     return this.guitarStrings;
   }
 
-  selectGuitarString(string: number): any {
-    return this.guitarStrings[string];
+  selectGuitarString(str: number): any {
+    return this.guitarStrings[str];
   }
 }
 

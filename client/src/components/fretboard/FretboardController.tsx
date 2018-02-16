@@ -7,10 +7,8 @@ const enhance = compose(
   withHandlers({
     handleAnimationLoop: props => () => {
       const { snapshot, fretboard } = window.ss.maestro;
-      const light = isEmpty(snapshot.data.light) ? [] : snapshot.data.light;
-      const press = isEmpty(snapshot.data.press) ? [] : snapshot.data.press;
-      const justPress = isEmpty(snapshot.data.justPress) ? [] : snapshot.data.justPress;
-      fretboard.update(light, press, justPress);
+      const { lightGuitarPositions, pressGuitarPositions, justPressGuitarPositions } = snapshot.data.fretboard;
+      fretboard.update(lightGuitarPositions, pressGuitarPositions, justPressGuitarPositions);
     }
   }),
   withProps(props => {

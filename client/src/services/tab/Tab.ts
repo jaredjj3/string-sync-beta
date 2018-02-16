@@ -45,6 +45,7 @@ class Tab {
   hydrateNotes(): void {
     this._setNoteTickStarts();
     this._setNoteTickStops();
+    this._computeNoteInterpolators();
   }
 
   private _setup(): boolean {
@@ -196,6 +197,18 @@ class Tab {
     if (lastNote) {
       lastNote.tickRange.stop = Number.MAX_SAFE_INTEGER;
     }
+
+    return this;
+  }
+
+  private _computeNoteInterpolators(): Tab {
+    this.lines.forEach(line => {
+      line.measures.forEach(measure => {
+        measure.notes.forEach(note => {
+          note.computeInterpolator();
+        });
+      });
+    });
 
     return this;
   }

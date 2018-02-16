@@ -40,9 +40,9 @@ const Fret = ({ fret, dots }) => (
     <Overlap className="Fret">
       <Layer className="Fret__fretMarkers" style={{ zIndex: '10' }}>
         {
-          Array(6).fill(null).map((_, string) => (
-            <Row type="flex" justify="center" key={`marker-${string}-${fret}`}>
-              <FretMarker string={string} fret={fret} />
+          Array(6).fill(null).map((_, str) => (
+            <Row type="flex" justify="center" key={`marker-${str}-${fret}`}>
+              <FretMarker str={str} fret={fret} />
             </Row>
           ))
         }

@@ -6,7 +6,7 @@ const enhance = compose(
   withHandlers({
     handleAnimationLoop: props => () => {
       const { snapshot, tab } = window.ss.maestro;
-      const caretRenderer = get(snapshot.data.line, 'caretRenderer', null);
+      const caretRenderer = get(snapshot.data.tab.line, 'caretRenderer', null);
       const lines = get(tab, 'lines', []);
 
       lines.forEach(({ caretRenderer }) => {
@@ -16,8 +16,13 @@ const enhance = compose(
       });
 
       if (caretRenderer) {
-        const { interpolator, tick } = snapshot.data;
-        caretRenderer.posX[0] = interpolator(tick);
+        const { interpolator } = snapshot.data.tab.note;
+        const { tick } = snapshot.data.maestro;
+
+        if (interpolator) {
+          caretRenderer.posX[0] = interpolator(tick);
+        }
+
         caretRenderer.render();
       }
     }

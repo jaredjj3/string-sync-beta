@@ -56,13 +56,13 @@ class Tuning {
   }
 
   getNote(pos: GuitarPosition): string {
-    return this.notes[pos.string][pos.fret];
+    return this.notes[pos.str][pos.fret];
   }
 
   getGuitarPositions(note: string, sameOctave = false): Array<GuitarPosition> {
     const guitarPositions: Array<GuitarPosition> = [];
 
-    this.notes.forEach((stringNotes, string) => {
+    this.notes.forEach((stringNotes, str) => {
       stringNotes.forEach((_note, fret) => {
         const srcNote = note.toUpperCase();
         const dstNote = _note.toUpperCase();
@@ -72,7 +72,7 @@ class Tuning {
             : startsWith(dstNote, srcNote.split("/")[0]);
 
         if (shouldAddNote) {
-          guitarPositions.push({ string, fret });
+          guitarPositions.push({ str, fret });
         }
       });
     });

@@ -31,7 +31,7 @@ const enhance = compose(
   withState('focusedNote', 'setFocusedNote', null),
   withHandlers({
     handleAnimationLoop: props => () => {
-      const { note } = window.ss.maestro.snapshot.data;
+      const { note } = window.ss.maestro.snapshot.data.tab;
       const { focusedNote } = props;
 
       if (focusedNote && focusedNote.renderer.currentStyle !== 'DEFAULT') {

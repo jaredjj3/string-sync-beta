@@ -14,7 +14,9 @@ const enhance = compose(
         return;
       }
 
-      const loopLineNumbers = snapshot.data.loopData.map(data => get(data.line, 'number', null)).sort();
+      const loopLineNumbers = snapshot.data.loop.notes.
+        map(note => get(note, 'number.measure.line', null)).
+        sort()
 
       // Clear all lines and set loopLineNumbers attributes
       tab.lines.forEach(line => {
@@ -30,14 +32,15 @@ const enhance = compose(
       });
 
       // set the renderers posX attribute, then render each
-      snapshot.data.loopData.forEach((data, ndx) => {
-        const { line, interpolator } = data;
-        if (!line || !interpolator) {
+      snapshot.data.loop.notes.forEach((note, ndx) => {
+        const { interpolator } = note;
+        if (!interpolator) {
           return;
         }
 
+        const { line } = note.measure;
         const renderer = line.loopCaretRenderer;
-        const tick = snapshot.data.loopTick[ndx];
+        const tick = snapshot.data.loop.tickRange[ndx];
         const range = line.getTickRange();
 
         if (isBetween(tick, range.start, range.stop)) {
@@ -47,7 +50,7 @@ const enhance = compose(
 
       // render each of the line's loopRenderers if scrubbing and the maestro
       // does not require the loop to be force shown
-      if (window.ss.maestro.options.showLoop || snapshot.data.isLoopScrubbing) {
+      if (window.ss.maestro.options.showLoop || snapshot.data.loop.isScrubbing) {
         tab.lines.forEach(({ loopCaretRenderer }) => {
           if (loopCaretRenderer) {
             loopCaretRenderer.render();
