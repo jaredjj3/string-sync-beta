@@ -15,8 +15,9 @@ class Snapshot {
       pressGuitarPositions: []
     },
     loop: {
-      notes: null,
+      notes: [null, null],
       tickRange: [0, 60000],
+      changed: [false, false],
       isScrubbing: false
     }
   }

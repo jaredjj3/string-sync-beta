@@ -164,8 +164,12 @@ class SnapshotFactory {
       this.prevSnapshot && !isEqual(prevTickRange, tickRange)
     );
 
+    // Compute changed array
+    const changed = tickRange.map((tick, ndx) => prevTickRange[ndx] !== tick);
+
     this.loopData = {
       notes,
+      changed,
       tickRange,
       isScrubbing
     };

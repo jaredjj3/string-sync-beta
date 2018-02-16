@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, mapProps, shouldUpdate } from 'recompose';
 import { withTab } from 'enhancers';
-import { ScoreLine, CaretController, LoopCaretController, ScrollManager } from './';
+import { ScoreLine, CaretController, LoopCaretController } from './';
 import { Line } from 'services';
 import { hash } from 'ssUtil';
 import styled from 'styled-components';
@@ -17,6 +17,15 @@ const enhance = compose(
 );
 
 const ScoreOuter = styled.div`
+  background: white;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+`;
+const Spacer = styled.div`
+  height: 260px;
+  width: 100%;
   background: white;
 `;
 
@@ -41,11 +50,9 @@ const Score = ({ rootClassNames, tab, withCaret, allowOverflow }) => (
   <ScoreOuter id="Score">
     {withCaret ? <CaretController /> : null}
     {withCaret ? <LoopCaretController /> : null}
-    <ScrollManager />
-    <ScoreLines
-      tab={tab}
-      withCaret={withCaret}
-    />
+    <Spacer />
+    <ScoreLines tab={tab} withCaret={withCaret} />
+    <Spacer />
   </ScoreOuter>
 );
 

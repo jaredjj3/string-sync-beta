@@ -2,12 +2,10 @@ import * as React from 'react';
 import { compose, withState, withProps, lifecycle } from 'recompose';
 import { withNotation } from 'enhancers';
 import { toTick, toTimeMs } from 'ssUtil';
-import styled from 'styled-components';
 import { NotationShowBanner, NotationShowVideo } from './';
-import {
-  Gradient, Fretboard, MaestroController,
-  Piano, NotationControls, Tab, Footer
-} from 'components';
+import { Gradient, Fretboard, MaestroController, Piano, NotationControls, Tab, Footer } from 'components';
+import { Affix } from 'antd';
+import styled from 'styled-components';
 
 const enhance = compose(
   withNotation,
@@ -25,6 +23,7 @@ const enhance = compose(
     componentWillMount(): void {
       window.ss.loader.add('fetchNotation');
       window.setTimeout(window.ss.loader.clear, 3000);
+      window.$('body').css({ background: 'black' });
     },
     componentDidMount(): void {
       this.props.fetchNotation();
@@ -32,6 +31,7 @@ const enhance = compose(
     componentWillUnmount(): void {
       this.props.notation.dispatch.resetNotation();
       window.ss.loader.clear();
+      window.$('body').css({ background: 'white' });
     }
   })
 );
@@ -39,26 +39,33 @@ const enhance = compose(
 const NotationShowOuter = styled.section`
   display: flex;
   flex-flow: column;
-  height: calc(100vh - 125px);
+  /* overflow: hidden; */
   overflow-x: hidden;
+  height: calc(100vh - 125px);
 `;
 const Top = styled.header`
   margin-top: 1px;
+
+  .ant-affix {
+    z-index: 25;
+  }
 `;
 const Middle = styled.div`
   flex: 2;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
+  background: white;
+  min-height: 100vh;
+  height: 100%;
 `;
 const Bottom = styled.footer`
   position: fixed;
   bottom: 0;
   width: 100%;
-  z-index: 20;
+  z-index: 30;
 `;
 
 const NotationShow = ({ isFetching, notation, viewport, setAutoScroll, handleTabContainerScroll }) => (
-  <NotationShowOuter>
+  <NotationShowOuter id="NotationShow">
     <Gradient />
     <Top>
       <MaestroController />
@@ -69,12 +76,16 @@ const NotationShow = ({ isFetching, notation, viewport, setAutoScroll, handleTab
         createdAt={notation.state.createdAt}
       />
       <NotationShowVideo />
-      <Fretboard />
-      <Piano />
+      <Affix
+        target={() => document.getElementById('NotationShow')}
+        offsetTop={2}
+      >
+        <Fretboard />
+        <Piano />
+      </Affix>
     </Top>
-    <Middle id="TabScroller">
+    <Middle>
       <Tab withCaret />
-      <Footer />
     </Middle>
     <Bottom>
       <NotationControls />

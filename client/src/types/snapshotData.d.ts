@@ -17,6 +17,7 @@ declare interface FretboardData {
 
 declare interface LoopData {
   notes: Array<any>;
+  changed: Array<boolean>;
   tickRange: Array<number>;
   isScrubbing: boolean;
 }

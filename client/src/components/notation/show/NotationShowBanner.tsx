@@ -18,7 +18,6 @@ const NotationShowBannerOuter = styled.div`
   background: black;
   z-index: 11;
   color: white;
-  font-weight: 100;
 `;
 const Lines = styled.div`
   display: flex;
@@ -49,7 +48,7 @@ const NotationShowBanner = ({ bannerText, createdAt }) => (
       <Col span={4}>
         <Link to="/library">
           <IconContainer>
-            <Icon type="close" />
+            <Icon type="arrow-left" />
           </IconContainer>
         </Link>
       </Col>
