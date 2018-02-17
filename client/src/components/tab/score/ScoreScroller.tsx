@@ -6,7 +6,6 @@ import { withVideo } from 'enhancers';
 
 const enhance = compose(
   withVideo,
-  withState('auto', 'setAuto', true),
   withState('focusedLineNumber', 'setFocusedLineNumber', 0),
   withState('scrollOffset', 'setScrollOffset', 0),
   withHandlers({
@@ -54,9 +53,7 @@ const enhance = compose(
       this.props.registerRaf();
     },
     componentDidUpdate(): void {
-      if (this.props.auto) {
-        this.props.scrollToFocusedLine();
-      }
+      this.props.scrollToFocusedLine();
     },
     componentWillUnmount(): void {
       this.props.unregisterRaf();
