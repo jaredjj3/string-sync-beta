@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const NotationControlsOuter = styled.div`
   width: 100%;
-  z-index: 30;
+  z-index: 25;
   background: black;
   color: white;
   padding: 10px 0;

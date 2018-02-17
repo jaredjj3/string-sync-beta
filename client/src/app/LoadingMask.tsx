@@ -54,7 +54,7 @@ const LoadingMaskOuter = styled.div`
     right: 0;
     width: 100%;
     height: 100%;
-    z-index: 50;
+    z-index: 100;
     background: white;
     display: flex;
     flex-direction: column;
