@@ -16,7 +16,6 @@ const enhance = compose(
 
 const TabOuter = styled.div`
   min-height: 520px;
-  height: 100%;
 `;
 
 const Tab = ({ overrideWidth, withCaret }: TabProps) => (

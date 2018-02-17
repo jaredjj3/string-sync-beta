@@ -18,8 +18,8 @@ const enhance = compose(
 
 const ScoreOuter = styled.div`
   background: white;
-  height: 100%;
   overflow-y: scroll;
+  height: 100vh;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 `;
