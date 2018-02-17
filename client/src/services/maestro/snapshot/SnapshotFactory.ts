@@ -180,12 +180,10 @@ class SnapshotFactory {
 
   private _snapshotFocusedData(): void {
     const changedLoopNdx = this.loopData.changed.indexOf(true)
-    const line = changedLoopNdx > -1
-      ? this.loopData.notes[changedLoopNdx].measure.line
-      : this.tabData.line
+    const line = get(this.loopData.notes[changedLoopNdx], 'measure.line')
 
     this.focusedData = {
-      line
+      line: line || this.tabData.line
     }
   }
 }

@@ -15,8 +15,7 @@ const enhance = compose(
       }
 
       const loopLineNumbers = snapshot.data.loop.notes.
-        map(note => get(note, 'number.measure.line', null)).
-        sort()
+        map(note => get(note, 'measure.line.number', null))
 
       // Clear all lines and set loopLineNumbers attributes
       tab.lines.forEach(line => {
@@ -33,11 +32,11 @@ const enhance = compose(
 
       // set the renderers posX attribute, then render each
       snapshot.data.loop.notes.forEach((note, ndx) => {
-        const { interpolator } = note;
-        if (!interpolator) {
+        if (!note) {
           return;
         }
 
+        const { interpolator } = note;
         const { line } = note.measure;
         const renderer = line.loopCaretRenderer;
         const tick = snapshot.data.loop.tickRange[ndx];
