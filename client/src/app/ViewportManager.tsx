@@ -12,24 +12,25 @@ const shouldUpdateViewport = (currViewport: Viewport, nextViewport: Viewport): b
   );
 };
 
-let maybeSetViewport = ({ viewport }) => event => {
+let maybeSetViewport = ({ viewport }) => throttle(event => {
   const currViewport = viewport.state;
   const nextViewport = getViewport();
   if (shouldUpdateViewport(currViewport, nextViewport)) {
     viewport.dispatch.setViewport(nextViewport);
   }
-};
+}, 30);
 
-maybeSetViewport = throttle(maybeSetViewport, 30);
+let throttledFunc = null;
 
 const enhance = compose(
   withViewport,
   lifecycle({
     componentDidMount(): void {
-      add(window, 'resize', maybeSetViewport(this.props));
+      throttledFunc = maybeSetViewport(this.props);
+      add(window, 'resize', throttledFunc);
     },
     componentWillUnmount(): void {
-      remove(window, 'resize', maybeSetViewport(this.props));
+      remove(window, 'resize', throttledFunc);
     }
   })
 );
