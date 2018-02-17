@@ -2,8 +2,10 @@ import * as React from 'react';
 import { compose, withState, withProps, withHandlers, lifecycle } from 'recompose';
 import { scroller } from 'react-scroll';
 import { get } from 'lodash';
+import { withVideo } from 'enhancers';
 
 const enhance = compose(
+  withVideo,
   withState('auto', 'setAuto', true),
   withState('focusedLineNumber', 'setFocusedLineNumber', 0),
   withState('scrollOffset', 'setScrollOffset', 0),
@@ -38,7 +40,6 @@ const enhance = compose(
       if (typeof props.focusedLineNumber === 'number') {
         const target = `score-line-${props.focusedLineNumber}`;
         scroller.scrollTo(target, {
-          activeClass: 'active',
           duration: 200,
           smooth: true,
           containerId: 'Score',
