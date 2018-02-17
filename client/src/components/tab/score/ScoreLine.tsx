@@ -5,6 +5,7 @@ import { withTab } from 'enhancers';
 import { Caret, LoopCarets } from './';
 import { Overlap, Layer } from 'components';
 import { isEqual } from 'lodash';
+import { Element as ScrollElement } from 'react-scroll';
 
 const SCORE_LINE_HEIGHT_PX = 260;
 
@@ -59,6 +60,7 @@ const enhance = compose(
 
 const ScoreLine = ({ line, withCaret, handleCanvasRef }) => (
   <div className="ScoreLine">
+    <ScrollElement name={`score-line-${line.number}`} />
     <Overlap style={{ height: SCORE_LINE_HEIGHT_PX }}>
       <Layer style={{ zIndex: '10' }}>
         <canvas ref={handleCanvasRef} />

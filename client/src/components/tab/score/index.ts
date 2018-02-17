@@ -4,3 +4,5 @@ export { default as Score } from './Score';
 export { default as ScoreLine } from './ScoreLine';
 export { default as LoopCarets } from './LoopCarets';
 export { default as LoopCaretController } from './LoopCaretController';
+export { default as ScoreScroller } from './ScoreScroller';
+ 

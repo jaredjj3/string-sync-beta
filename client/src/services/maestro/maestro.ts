@@ -35,6 +35,7 @@ class Maestro {
   fretboardProps: any = null;
   pianoProps: any = null;
   notationShowTabProps: any = null;
+  scoreScrollerProps: any = null;
 
   private _snapshot: Snapshot = new Snapshot();
 

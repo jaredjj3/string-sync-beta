@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose, withState, withProps, lifecycle } from 'recompose';
+import { compose, withState, withProps, withHandlers, lifecycle } from 'recompose';
 import { withNotation } from 'enhancers';
 import { toTick, toTimeMs } from 'ssUtil';
 import { NotationShowBanner, NotationShowVideo, NotationShowScroller } from './';
@@ -8,6 +8,7 @@ import { Affix } from 'antd';
 import { Element as ScrollElement, scroller } from 'react-scroll';
 import styled from 'styled-components';
 import * as classNames from 'classnames';
+import { findDOMNode } from 'react-dom';
 
 const enhance = compose(
   withNotation,
@@ -21,6 +22,25 @@ const enhance = compose(
       props.setIsFetching(false);
     }
   })),
+  withHandlers(() => {
+    let affixed = null;
+
+    return ({
+      handleAffixRef: props => ref => {
+        affixed = ref;
+      },
+      getAffixedHeight: props => () => {
+        const node = findDOMNode(affixed) as any;
+        return node ? (node.offsetHeight + 2) || 0 : 0;
+      }
+    });
+  }),
+  withHandlers({
+    handleAffixChange: props => affixed => {
+      const scrollOffset = Math.max(affixed ? props.getAffixedHeight() : 0, 0);
+      window.ss.maestro.scoreScrollerProps.setScrollOffset(-scrollOffset);
+    }
+  }),
   lifecycle({
     componentWillMount(): void {
       window.ss.loader.add('fetchNotation');
@@ -51,6 +71,8 @@ const Top = styled.header`
     z-index: 25;
   }
 `;
+const Affixed = styled.div`
+`;
 const Middle = styled.div`
   flex: 2;
   background: white;
@@ -61,7 +83,7 @@ const Bottom = styled.footer`
   width: 100%;
 `;
 
-const NotationShow = ({ isFetching, notation, viewport, scrollButtonClassNames, handleScrollerClick }) => (
+const NotationShow = ({ isFetching, notation, viewport, handleAffixRef, handleAffixChange }) => (
   <NotationShowOuter id="NotationShow">
     <Gradient />
     <Top>
@@ -78,9 +100,12 @@ const NotationShow = ({ isFetching, notation, viewport, scrollButtonClassNames, 
       <Affix
         target={() => document.getElementById('NotationShow')}
         offsetTop={2}
+        onChange={handleAffixChange}
       >
-        <Fretboard />
-        <Piano />
+        <Affixed ref={handleAffixRef}>
+          <Fretboard />
+          <Piano />
+        </Affixed>
       </Affix>
     </Top>
     <Middle>
