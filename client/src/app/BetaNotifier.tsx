@@ -25,7 +25,7 @@ const enhance = compose(
             <div>
               <div>updated at {UPDATED_AT}</div>
               <div>
-                <small>overhauled the notation-video pages</small>
+                <small>significantly improved the notation-video pages :)</small>
               </div>
             </div>
         });

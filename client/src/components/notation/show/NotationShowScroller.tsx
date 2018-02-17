@@ -76,7 +76,6 @@ const ScrollerInner = styled.span`
   top: 20px;
   right: 20px;
   z-index: 30;
-  animation: transform 200ms ease-in;
 
   button {
     opacity: 0.5;

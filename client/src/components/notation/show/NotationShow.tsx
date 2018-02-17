@@ -1,10 +1,11 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import { compose, withState, withProps, withHandlers, lifecycle, shouldUpdate } from 'recompose';
 import { withNotation } from 'enhancers';
 import { toTick, toTimeMs } from 'ssUtil';
 import { NotationShowBanner, NotationShowVideo, NotationShowScroller } from './';
-import { Gradient, Fretboard, MaestroController, Piano, NotationControls, Tab, Footer } from 'components';
-import { Affix } from 'antd';
+import Library, { Gradient, Fretboard, MaestroController, Piano, NotationControls, Tab, Footer } from 'components';
+import { Affix, Button } from 'antd';
 import { Element as ScrollElement, scroller } from 'react-scroll';
 import styled from 'styled-components';
 import * as classNames from 'classnames';
@@ -96,6 +97,20 @@ const Bottom = styled.footer`
   width: 100%;
   z-index: 28;
 `;
+const LibraryLinkContainer = styled.span`
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 30;
+
+  button {
+    opacity: 0.5;
+  }
+
+  button:hover {
+    opacity: 1;
+  }
+`;
 
 const NotationShow = ({ isFetching, notation, viewport, handleAffixChange }) => (
   <NotationShowOuter id="NotationShow">
@@ -104,12 +119,15 @@ const NotationShow = ({ isFetching, notation, viewport, handleAffixChange }) => 
       <ScrollElement name="NotationShow__top" />
       <MaestroController />
       <NotationShowScroller />
-      <NotationShowBanner
-        isFetching={isFetching}
-        songName={notation.state.songName}
-        artistName={notation.state.artistName}
-        createdAt={notation.state.createdAt}
-      />
+      <LibraryLinkContainer>
+        <Link to="/library">
+          <Button
+            shape="circle"
+            icon="arrow-left"
+            type="primary"
+          />
+        </Link>
+      </LibraryLinkContainer>
       <NotationShowVideo />
       <Affix
         target={() => document.getElementById('NotationShow')}

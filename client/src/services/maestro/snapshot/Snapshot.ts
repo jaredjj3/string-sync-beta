@@ -16,7 +16,7 @@ class Snapshot {
     },
     loop: {
       notes: [null, null],
-      tickRange: [0, 60000],
+      tickRange: [0, 0],
       changed: [false, false],
       isScrubbing: false
     },

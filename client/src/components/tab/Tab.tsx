@@ -8,6 +8,7 @@ import { isEqual } from 'lodash';
 interface TabProps {
   overrideWidth?: number;
   withCaret?: boolean;
+  
 }
 
 const enhance = compose(
