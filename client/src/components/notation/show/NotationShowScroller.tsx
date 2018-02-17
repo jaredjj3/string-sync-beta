@@ -57,7 +57,8 @@ const enhance = compose(
   }),
   withProps(props => ({
     scrollButtonClassNames: classNames({
-      'ScrollerButton--upsideDown': props.isScrolledDown
+      'ScrollerButton--upsideDown': props.isScrolledDown,
+      'ScrollerButton--tutorial': !props.isTutorialComplete
     })
   })),
   lifecycle({
@@ -75,18 +76,23 @@ const ScrollerInner = styled.span`
   top: 20px;
   right: 20px;
   z-index: 30;
+  animation: transform 200ms ease-in;
 
   button {
     opacity: 0.5;
   }
 
-  button:active,
   button:hover {
     opacity: 1;
   }
 
-  .ScrollerButton--upsideDown {
+  button.ScrollerButton--upsideDown {
     transform: rotate(180deg);
+  }
+
+  button.ScrollerButton--tutorial {
+    opacity: 1;
+    box-shadow: 0px 0px 15px #fff;
   }
 `;
 const ScrollerMask = styled.div`

@@ -36,15 +36,13 @@ const enhance = compose(
   }),
   withProps(props => ({
     scrollToFocusedLine: () => {
-      if (typeof props.focusedLineNumber === 'number') {
-        const target = `score-line-${props.focusedLineNumber}`;
-        scroller.scrollTo(target, {
-          duration: 200,
-          smooth: true,
-          containerId: 'Score',
-          offset: props.scrollOffset - 20
-        });
-      }
+      scroller.scrollTo(`score-line-${props.focusedLineNumber}`, {
+        duration: 200,
+        smooth: true,
+        containerId: 'Score',
+        offset: props.scrollOffset - 20,
+        ignoreCancelEvents: true
+      });
     }
   })),
   lifecycle({

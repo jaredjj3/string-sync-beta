@@ -94,7 +94,7 @@ const Bottom = styled.footer`
   position: fixed;
   bottom: 0;
   width: 100%;
-  z-index: 30;
+  z-index: 28;
 `;
 
 const NotationShow = ({ isFetching, notation, viewport, handleAffixChange }) => (

@@ -55,7 +55,6 @@ const Score = ({ rootClassNames, tab, withCaret, allowOverflow }) => (
     <ScoreScroller />
     <Spacer />
     <Spacer />
-    <Spacer />
     <ScoreLines tab={tab} withCaret={withCaret} />
     <Spacer />
     <Spacer />

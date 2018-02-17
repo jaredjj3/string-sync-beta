@@ -18,6 +18,7 @@ const NotationShowBannerOuter = styled.div`
   background: black;
   z-index: 11;
   color: white;
+  text-align: center;
 `;
 const Lines = styled.div`
   display: flex;
