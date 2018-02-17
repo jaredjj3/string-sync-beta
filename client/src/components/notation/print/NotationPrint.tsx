@@ -47,21 +47,26 @@ const NotationPrintHeader = ({ isLoading, notation }) => (
         </Link>
       </Row>
     </div>
-    {
+    {/*
       isLoading
         ? null
         : <div className="NotationPrint__title">
             <h3>{`${notation.songName} by ${notation.artistName}`}</h3>
             <p>{`transcribed by @${notation.transcriber.username}`}</p>
           </div>
-    }
+    */}
   </div>
 );
 
 const NotationPrint = ({ isLoading, notation }) => (
   <NotationPrintOuter>
     <NotationPrintHeader isLoading={isLoading} notation={notation.state} />
-    <Tab overrideWidth={900} />
+    {/*<Tab overrideWidth={900} />*/}
+    <h1>Sorry, I'm fixing this feature.</h1>
+    <br/>
+    <p>
+      Feel free to yell at me <a href="http://instagram.com/jaredplaysguitar">here</a>.
+    </p>
   </NotationPrintOuter>
 );
 
