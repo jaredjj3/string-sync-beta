@@ -10,7 +10,7 @@ const enhance = compose(
   withNotation
 );
 
-const NotationShowVideoOuter = styled.div`
+const Outer = styled.div`
   background: black;
   height: ${HEIGHT_PX}px;
   width: 100%;
@@ -48,7 +48,7 @@ const VideoInner = styled.div`
 `;
 
 const NotationShowVideo = ({ notation }) => (
-  <NotationShowVideoOuter className="NotationShowVideo">
+  <Outer className="NotationShowVideo">
     <Overlap>
       <Layer style={{ zIndex: 10 }}>
         <NotationShowBackground alt={notation.state.songName} src={notation.state.thumbnailUrl} />
@@ -64,7 +64,7 @@ const NotationShowVideo = ({ notation }) => (
         </VideoOuter>
       </Layer>
     </Overlap>
-  </NotationShowVideoOuter>
+  </Outer>
 );
 
 export default enhance(NotationShowVideo);

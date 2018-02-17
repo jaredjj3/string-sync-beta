@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose, withState, withProps, withHandlers, lifecycle } from 'recompose';
+import { compose, withState, withProps, withHandlers, lifecycle, shouldUpdate } from 'recompose';
 import { withNotation } from 'enhancers';
 import { toTick, toTimeMs } from 'ssUtil';
 import { NotationShowBanner, NotationShowVideo, NotationShowScroller } from './';
@@ -9,10 +9,12 @@ import { Element as ScrollElement, scroller } from 'react-scroll';
 import styled from 'styled-components';
 import * as classNames from 'classnames';
 import { findDOMNode } from 'react-dom';
+import { isEqual } from 'lodash';
 
 const enhance = compose(
   withNotation,
   withState('isFetching', 'setIsFetching', false),
+  withState('affixed', 'setAffixed', false),
   withProps(props => ({
     fetchNotation: async () => {
       const notationId = props.match.params.id;
@@ -37,8 +39,20 @@ const enhance = compose(
   }),
   withHandlers({
     handleAffixChange: props => affixed => {
+      if (props.affixed !== affixed) {
+        props.setAffixed(affixed);
+      }
+
       const scrollOffset = Math.max(affixed ? props.getAffixedHeight() : 0, 0);
       window.ss.maestro.scoreScrollerProps.setScrollOffset(-scrollOffset);
+    }
+  }),
+  withHandlers({
+    updateAffix: props => () => {
+      // FIXME: The piano component has to fully show before this returns
+      // the correct height. Fix this so this does not rely on the DOM change
+      // finishing.
+      window.setTimeout(() => props.handleAffixChange(props.affixed), 1500);
     }
   }),
   lifecycle({
@@ -49,13 +63,19 @@ const enhance = compose(
     },
     componentDidMount(): void {
       this.props.fetchNotation();
+      window.ss.maestro.notationShowProps = this.props;
     },
     componentWillUnmount(): void {
       this.props.notation.dispatch.resetNotation();
       window.ss.loader.clear();
       window.$('body').css({ background: 'white' });
+      window.ss.maestro.notationShowProps = null;
     }
-  })
+  }),
+  shouldUpdate((props, nextProps) => (
+    !isEqual(props.notation, nextProps.notation)) ||
+    props.isFetching !== nextProps.isFetching
+  )
 );
 
 const NotationShowOuter = styled.section`
@@ -81,6 +101,7 @@ const Bottom = styled.footer`
   position: fixed;
   bottom: 0;
   width: 100%;
+  z-index: 30;
 `;
 
 const NotationShow = ({ isFetching, notation, viewport, handleAffixRef, handleAffixChange }) => (

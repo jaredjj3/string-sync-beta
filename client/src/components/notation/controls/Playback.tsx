@@ -62,32 +62,40 @@ const enhance = compose(
   )
 );
 
-const PlaybackOuter = styled.div`
+const Outer = styled.div`
   position: fixed;
 `;
 const PlaybackHeader = styled.div`
 `;
-const PlaybackSliderOuter = styled.div`
+const PlaybackControlOuter = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
 `;
 const PlaybackControl = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 5px;
+
+  &&& i {
+    margin: 0;
+    padding: 0;
+  }
 `;
 const PlaybackValue = styled.div`
   margin: 0 10px;
 `;
 
 const Playback = ({ playbackRate, handleNextClick, handlePrevClick }) => (
-  <PlaybackOuter>
+  <Outer>
     <PlaybackHeader>
       playback
     </PlaybackHeader>
-    <PlaybackSliderOuter>
-      <PlaybackControl>
-        <Icon type="minus" onClick={handlePrevClick} />
+    <PlaybackControlOuter>
+      <PlaybackControl onClick={handlePrevClick}>
+        <Icon type="minus" />
       </PlaybackControl>
       <PlaybackValue>
         {`${playbackRate * 100}%`}
@@ -95,8 +103,8 @@ const Playback = ({ playbackRate, handleNextClick, handlePrevClick }) => (
       <PlaybackControl onClick={handleNextClick}>
         <Icon type="plus" />
       </PlaybackControl>
-    </PlaybackSliderOuter>
-  </PlaybackOuter>
+    </PlaybackControlOuter>
+  </Outer>
 );
 
 export default enhance(Playback);

@@ -3,9 +3,9 @@ import { Row, Col } from 'antd';
 import { Loop, Scrubber, Play, ToggleControls } from './';
 import styled from 'styled-components';
 
-const NotationControlsOuter = styled.div`
+const Outer = styled.div`
   width: 100%;
-  z-index: 25;
+  z-index: 28;
   background: black;
   color: white;
   padding: 10px 0;
@@ -28,7 +28,6 @@ const Aside = styled(Row)`
     font-size: 2.5em;
     font-weight: 100;
     cursor: pointer;
-    z-index: 20;
 
     &:active {
       text-shadow: 0 0 30px white;
@@ -40,6 +39,9 @@ const Aside = styled(Row)`
     align-items: center;
     justify-content: center;
   }
+`;
+const Inner = styled.div`
+
 `;
 
 const ControlRow1 = () => (
@@ -65,24 +67,26 @@ const ControlRow2 = () => (
 );
 
 const NotationControls = () => (
-  <NotationControlsOuter className="NotationControls__content">
-    <Row type="flex" align="middle" justify="center">
-      <Col span={2}>
-        <Aside type="flex" align="middle" justify="end">
-          <Play />
-        </Aside>
-      </Col>
-      <Col span={16}>
-        <ControlRow1 />
-        <ControlRow2 />
-      </Col>
-      <Col span={2}>
-        <Aside type="flex" align="middle" justify="start">
-          <ToggleControls />
-        </Aside>
-      </Col>
-    </Row>
-  </NotationControlsOuter>
+  <Outer className="NotationControls__content">
+    <Inner>
+      <Row type="flex" align="middle" justify="center">
+        <Col span={2}>
+          <Aside type="flex" align="middle" justify="end">
+            <Play />
+          </Aside>
+        </Col>
+        <Col span={16}>
+          <ControlRow1 />
+          <ControlRow2 />
+        </Col>
+        <Col span={2}>
+          <Aside type="flex" align="middle" justify="start">
+            <ToggleControls />
+          </Aside>
+        </Col>
+      </Row>
+    </Inner>
+  </Outer>
 );
 
 export default NotationControls;
