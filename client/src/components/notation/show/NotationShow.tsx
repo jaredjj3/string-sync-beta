@@ -24,19 +24,12 @@ const enhance = compose(
       props.setIsFetching(false);
     }
   })),
-  withHandlers(() => {
-    let affixed = null;
-
-    return ({
-      handleAffixRef: props => ref => {
-        affixed = ref;
-      },
-      getAffixedHeight: props => () => {
-        const node = findDOMNode(affixed) as any;
-        return node ? (node.offsetHeight + 2) || 0 : 0;
-      }
-    });
-  }),
+  withProps(props => ({
+    getAffixedHeight: () => {
+      const node = document.getElementById('ScoreAffix');
+      return node ? (node.offsetHeight + 2) || 0 : 0;
+    }
+  })),
   withHandlers({
     handleAffixChange: props => affixed => {
       if (props.affixed !== affixed) {
@@ -104,7 +97,7 @@ const Bottom = styled.footer`
   z-index: 30;
 `;
 
-const NotationShow = ({ isFetching, notation, viewport, handleAffixRef, handleAffixChange }) => (
+const NotationShow = ({ isFetching, notation, viewport, handleAffixChange }) => (
   <NotationShowOuter id="NotationShow">
     <Gradient />
     <Top>
@@ -123,7 +116,7 @@ const NotationShow = ({ isFetching, notation, viewport, handleAffixRef, handleAf
         offsetTop={2}
         onChange={handleAffixChange}
       >
-        <Affixed ref={handleAffixRef}>
+        <Affixed id="ScoreAffix">
           <Fretboard />
           <Piano />
         </Affixed>

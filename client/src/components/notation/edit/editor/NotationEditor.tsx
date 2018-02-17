@@ -33,6 +33,8 @@ const NotationEditorControlRow1Outer = styled.div`
     margin-right: 20px;
   }
 `;
+const Affixed = styled.div`
+`;
 
 const NotationEditor = ({ getAffixTarget }) => (
   <NotationEditorOuter>
@@ -40,14 +42,16 @@ const NotationEditor = ({ getAffixTarget }) => (
       target={getAffixTarget}
       offsetTop={10}
     >
-      <NotationEditorControlRow1Outer>
-        <Save />
-        <DeadTime />
-        <Bpm />
-      </NotationEditorControlRow1Outer>
-      <div className="NotationEditor__controlRow2">
-        <VextabStringEditor />
-      </div>
+      <Affixed id="ScoreAffix">
+        <NotationEditorControlRow1Outer>
+          <Save />
+          <DeadTime />
+          <Bpm />
+        </NotationEditorControlRow1Outer>
+        <div className="NotationEditor__controlRow2">
+          <VextabStringEditor />
+        </div>
+      </Affixed>
     </Affix>
   </NotationEditorOuter>
 );
