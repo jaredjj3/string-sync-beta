@@ -22,9 +22,14 @@ declare interface LoopData {
   isScrubbing: boolean;
 }
 
+declare interface FocusedData {
+  line: any;
+}
+
 declare interface SnapshotData {
   maestro: MaestroData;
   tab: TabData;
   fretboard: FretboardData;
   loop: LoopData;
+  focused: FocusedData;
 }

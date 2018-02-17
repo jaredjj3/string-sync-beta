@@ -19,6 +19,9 @@ class Snapshot {
       tickRange: [0, 60000],
       changed: [false, false],
       isScrubbing: false
+    },
+    focused: {
+      line: null
     }
   }
 
@@ -44,12 +47,14 @@ class Snapshot {
     const tab = Object.freeze(Object.assign({}, this.data.tab, data.tab));
     const fretboard = Object.freeze(Object.assign({}, this.data.fretboard, data.fretboard));
     const loop = Object.freeze(Object.assign({}, this.data.loop, data.loop));
+    const focused = Object.freeze(Object.assign({}, this.data.focused, data.focused));
 
     this.data = Object.freeze({
       maestro,
       tab,
       fretboard,
-      loop
+      loop,
+      focused
     });
 
     this._snapshotAt = Date.now();

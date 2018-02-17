@@ -31,6 +31,7 @@ class SnapshotFactory {
   tabData: TabData;
   fretboardData: FretboardData;
   loopData: LoopData;
+  focusedData: FocusedData;
 
   static getCurrentNote(tab: Tab, tick: number): Note {
     let currentNote = null;
@@ -79,7 +80,8 @@ class SnapshotFactory {
       maestro: this.maestroData,
       tab: this.tabData,
       fretboard: this.fretboardData,
-      loop: this.loopData
+      loop: this.loopData,
+      focused: this.focusedData
     }
   }
 
@@ -88,6 +90,7 @@ class SnapshotFactory {
     this._snapshotTabData();
     this._snapshotFretboardData();
     this._snapshotLoopData();
+    this._snapshotFocusedData();
   }
 
   private _snapshotMaestroData(): void {
@@ -165,7 +168,7 @@ class SnapshotFactory {
     );
 
     // Compute changed array
-    const changed = tickRange.map((tick, ndx) => prevTickRange[ndx] !== tick);
+    const changed = tickRange.sort().map((tick, ndx) => prevTickRange[ndx] !== tick);
 
     this.loopData = {
       notes,
@@ -173,6 +176,17 @@ class SnapshotFactory {
       tickRange,
       isScrubbing
     };
+  }
+
+  private _snapshotFocusedData(): void {
+    const changedLoopNdx = this.loopData.changed.indexOf(true)
+    const line = changedLoopNdx > -1
+      ? this.loopData.notes[changedLoopNdx].measure.line
+      : this.tabData.line
+
+    this.focusedData = {
+      line
+    }
   }
 }
 

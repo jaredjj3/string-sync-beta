@@ -10,7 +10,7 @@ const enhance = compose(
   withState('scrollOffset', 'setScrollOffset', 0),
   withHandlers({
     handleAnimationLoop: props => () => {
-      const lineNumber = get(window.ss.maestro.snapshot.data, 'tab.line.number');
+      const lineNumber = get(window.ss.maestro.snapshot.data, 'focused.line.number');
 
       if (typeof lineNumber === 'number' && lineNumber !== props.focusedLineNumber) {
         props.setFocusedLineNumber(lineNumber);
