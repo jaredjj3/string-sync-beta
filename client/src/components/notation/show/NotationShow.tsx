@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { compose, withState, withProps, withHandlers, lifecycle, shouldUpdate } from 'recompose';
 import { withNotation } from 'enhancers';
 import { toTick, toTimeMs } from 'ssUtil';
-import { NotationShowBanner, NotationShowVideo, NotationShowScroller } from './';
-import Library, { Gradient, Fretboard, MaestroController, Piano, NotationControls, Tab, Footer } from 'components';
+import { NotationShowVideo, NotationShowScroller } from './';
+import { Gradient, Fretboard, MaestroController, Piano, NotationControls, Tab, Footer } from 'components';
 import { Affix, Button } from 'antd';
 import { Element as ScrollElement, scroller } from 'react-scroll';
 import styled from 'styled-components';
@@ -102,6 +102,7 @@ const LibraryLinkContainer = styled.span`
   top: 20px;
   left: 20px;
   z-index: 30;
+  padding: 10px;
 
   button {
     opacity: 0.5;

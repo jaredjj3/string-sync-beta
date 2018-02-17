@@ -76,6 +76,7 @@ const ScrollerInner = styled.span`
   top: 20px;
   right: 20px;
   z-index: 30;
+  padding: 10px;
 
   button {
     opacity: 0.5;
