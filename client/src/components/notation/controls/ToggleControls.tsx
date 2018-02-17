@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { compose, withState, withHandlers } from 'recompose';
 import { Icon } from 'antd';
-import NotationControlsMenu from './NotationControlsMenu';
-import * as classNames from 'classnames';
 import styled from 'styled-components';
 
 const enhance = compose(
