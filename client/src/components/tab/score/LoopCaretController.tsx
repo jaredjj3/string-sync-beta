@@ -15,7 +15,7 @@ const enhance = compose(
       }
 
       const loopLineNumbers = snapshot.data.loop.notes.
-        map(note => get(note, 'measure.line.number', null))
+        map(note => get(note, 'measure.line.number', 0))
 
       // Clear all lines and set loopLineNumbers attributes
       tab.lines.forEach(line => {

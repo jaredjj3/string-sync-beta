@@ -157,7 +157,7 @@ class SnapshotFactory {
     const tickRange = this.loopTick;
 
     // Compute notes
-    const notes = tickRange.sort().map(tick => (
+    const notes = tickRange.map(tick => (
       SnapshotFactory.getCurrentNote(this.tab, tick)
     ));
 
@@ -168,7 +168,7 @@ class SnapshotFactory {
     );
 
     // Compute changed array
-    const changed = tickRange.sort().map((tick, ndx) => prevTickRange[ndx] !== tick);
+    const changed = tickRange.map((tick, ndx) => prevTickRange[ndx] !== tick);
 
     this.loopData = {
       notes,

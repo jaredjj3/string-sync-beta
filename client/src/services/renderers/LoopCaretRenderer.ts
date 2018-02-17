@@ -96,7 +96,7 @@ class LoopCaretRenderer implements Renderer {
     if (startLineNumber < this.line.number) {
       x0 = 0;
     } else if (startLineNumber === this.line.number) {
-      x0 = this.posX[0]
+      x0 = this.posX[0] || 0;
     } else if (startLineNumber > this.line.number) {
       shouldFill = false;
     }

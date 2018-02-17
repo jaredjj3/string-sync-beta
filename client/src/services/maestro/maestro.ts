@@ -73,7 +73,7 @@ class Maestro {
       const timeData = {
         tick: this.offsetTick,
         timeMs: this.offsetTimeMs,
-        loopTick: this.loopMs.map(timeMs => toTick(timeMs, this.tpm))
+        loopTick: this.loopMs.map(timeMs => toTick(timeMs, this.tpm)).sort((a, b) => a - b)
       };
 
       const options = Object.assign({}, this.options);
