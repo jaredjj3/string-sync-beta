@@ -39,16 +39,14 @@ const enhance = compose (
       props.setFretboardChecked(checked);
 
       const { fretboard, notationShow } = window.ss.globalProps;
-      fretboard.setVisibility(checked);
-      notationShow.updateAffix();
+      notationShow.updateAffix(() => fretboard.setVisibility(checked));
     },
     handlePianoToggle: props => event => {
       const checked = !props.pianoChecked;
       props.setPianoChecked(checked);
 
       const { piano, notationShow } = window.ss.globalProps;
-      piano.setVisibility(checked);
-      notationShow.updateAffix();
+      notationShow.updateAffix(() => piano.setVisibility(checked));
     }
   }),
   withProps(props => ({

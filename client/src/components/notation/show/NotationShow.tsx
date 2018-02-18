@@ -42,11 +42,13 @@ const enhance = compose(
     }
   }),
   withHandlers({
-    updateAffix: props => () => {
+    updateAffix: props => callback => {
+      callback(props);
+
       // FIXME: The piano component has to fully show before this returns
       // the correct height. Fix this so this does not rely on the DOM change
       // finishing.
-      window.setTimeout(() => props.handleAffixChange(props.affixed), 1500);
+      window.setTimeout(() => props.handleAffixChange(props.affixed), 500);
     }
   }),
   hasGlobalProps('notationShow', () => window.ss.globalProps),
