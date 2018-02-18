@@ -2,6 +2,7 @@ import * as React from 'react';
 import { compose, lifecycle, withProps, withHandlers } from 'recompose';
 import { Piano } from 'services';
 import { isEmpty, compact } from 'lodash';
+import { withRaf } from 'enhancers';
 
 const enhance = compose(
   withHandlers({
@@ -16,31 +17,20 @@ const enhance = compose(
       piano.update(lightKeys, pressKeys, justPressKeys);
     }
   }),
-  withProps(props => {
-    const { rafLoop } = window.ss;
-    const name = 'PianoController.handleAnimationLoop';
-
-    return ({
-      registerRaf: () => {
-        rafLoop.register({
-          name,
-          precedence: 1,
-          onAnimationLoop: props.handleAnimationLoop
-        });
-      },
-      unregisterRaf: () => {
-        rafLoop.unregister(name);
-      }
-    });
-  }),
+  withRaf(
+    () => window.ss.rafLoop,
+    props => ({
+      name: 'PianoController.handleAnimationLoop',
+      precedence: 1,
+      onAnimationLoop: props.handleAnimationLoop
+    })
+  ),
   lifecycle({
     componentDidMount(): void {
       window.ss.maestro.piano = new Piano();
-      this.props.registerRaf();
     },
     componentWillUnmount(): void {
       window.ss.maestro.piano = new Piano();
-      this.props.unregisterRaf();
     }
   })
 );
