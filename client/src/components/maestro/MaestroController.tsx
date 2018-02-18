@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose, withProps, withHandlers, lifecycle } from 'recompose';
-import { withVideo, withNotation } from 'enhancers';
+import { withVideo, withNotation, withRaf } from 'enhancers';
 import { Maestro } from 'services';
 
 // The purpose of this component is to wrap the Maestro service
@@ -24,26 +24,16 @@ const enhance = compose(
       maestro.update();
     }
   }),
-  withProps(props => {
-    const { rafLoop, maestro } = window.ss;
-    const name = 'Maestro.handleAnimationLoop';
-
-    return ({
-      registerRaf: () => {
-        rafLoop.register({
-          name,
-          precedence: 0,
-          onAnimationLoop: props.handleAnimationLoop
-        });
-      },
-      unregisterRaf: () => {
-        rafLoop.unregister(name);
-      }
-    });
-  }),
+  withRaf(
+    () => window.ss.rafLoop,
+    props => ({
+      name: 'Maestro.handleAnimationLoop',
+      precedence: 0,
+      onAnimationLoop: props.handleAnimationLoop
+    })
+  ),
   lifecycle({
     componentDidMount(): void {
-      this.props.registerRaf();
       window.ss.rafLoop.start();
     },
     componentWillReceiveProps(nextProps: any): void {
@@ -54,7 +44,6 @@ const enhance = compose(
     },
     componentWillUnmount(): void {
       const { rafLoop, maestro } = window.ss;
-      this.props.unregisterRaf();
       rafLoop.stop();
       rafLoop.reset();
       window.ss.maestro = new Maestro();
