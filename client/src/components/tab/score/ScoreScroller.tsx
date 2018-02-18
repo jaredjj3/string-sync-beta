@@ -2,7 +2,7 @@ import * as React from 'react';
 import { compose, withState, withProps, withHandlers, shouldUpdate, lifecycle } from 'recompose';
 import { scroller } from 'react-scroll';
 import { get, isEqual } from 'lodash';
-import { withVideo } from 'enhancers';
+import { withVideo, withRaf } from 'enhancers';
 
 const enhance = compose(
   withVideo,
@@ -23,23 +23,13 @@ const enhance = compose(
       }
     }
   }),
-  withProps(props => {
-    const { rafLoop } = window.ss;
-    const name = 'ScoreScroller.handleAnimationLoop';
-
-    return ({
-      registerRaf: () => {
-        rafLoop.register({
-          name,
-          precedence: 2,
-          onAnimationLoop: props.handleAnimationLoop
-        });
-      },
-      unregisterRaf: () => {
-        rafLoop.unregister(name);
-      }
-    });
-  }),
+  withRaf(
+    () => window.ss.rafLoop,
+    props => ({
+      name: 'ScoreScroller.handleAnimationLoop',
+      onAnimationLoop: props.handleAnimationLoop
+    })
+  ),
   withProps(props => ({
     scrollToFocusedLine: () => {
       const target = props.initialScroll
@@ -58,7 +48,6 @@ const enhance = compose(
   lifecycle({
     componentDidMount(): void {
       window.ss.maestro.scoreScrollerProps = this.props;
-      this.props.registerRaf();
     },
     componentDidUpdate(): void {
       this.props.scrollToFocusedLine();
@@ -67,9 +56,6 @@ const enhance = compose(
       if (this.props.initialScroll && this.props.video.state.isActive) {
         this.props.setInitialScroll(false);
       }
-    },
-    componentWillUnmount(): void {
-      this.props.unregisterRaf();
     }
   })
 );

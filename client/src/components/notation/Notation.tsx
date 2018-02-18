@@ -1,6 +1,17 @@
 import * as React from 'react';
+import { compose, lifecycle } from 'recompose';
 import { Route, Switch } from 'react-router-dom';
 import { NotationEdit, NotationPrint, NotationShow } from './';
+import { withNotation } from 'enhancers';
+
+const enhance = compose(
+  withNotation,
+  lifecycle({
+    componentWillUnmount(): void {
+      this.props.notation.dispatch.resetNotation();
+    }
+  })
+);
 
 const Notation = ({ match }) => (
   <Switch>

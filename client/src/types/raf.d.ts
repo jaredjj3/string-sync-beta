@@ -1,6 +1,8 @@
 declare namespace RAF {
   type Callback = (dt?: number) => any;
 
+  type SpecFactory = (props: any) => Spec;
+
   interface Spec {
     name: string;
     precedence?: number;
