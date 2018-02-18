@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose, withState, mapProps, lifecycle, withProps, withHandlers } from 'recompose';
-import { withNotation, withTab, withViewport } from 'enhancers';
+import { withNotation, withTab, withViewport, withRaf } from 'enhancers';
 import { Tab } from 'services';
 
 const enhance = compose(
@@ -47,22 +47,14 @@ const enhance = compose(
       }
     }
   }),
-  withProps(props => {
-    const name = 'TabService.handleAnimationLoop';
-
-    return ({
-      registerRaf: () => {
-        window.ss.rafLoop.register({
-          name,
-          precedence: 4,
-          onAnimationLoop: props.handleAnimationLoop
-        });
-      },
-      unregisterRaf: () => {
-        window.ss.rafLoop.unregister(name);
-      }
-    });
-  }),
+  withRaf(
+    () => window.ss.rafLoop,
+    props => ({
+      name: 'Tab.handleAnimationLoop',
+      precedence: 4,
+      onAnimationLoop: props.handleAnimationLoop
+    })
+  ),
   lifecycle({
     componentWillReceiveProps(nextProps: any): void {
       nextProps.unregisterRaf();
