@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, withState, withHandlers, withProps, lifecycle } from 'recompose';
 import { Slider } from 'antd';
-import { withVideo, withNotation } from 'enhancers';
+import { withVideo, withNotation, withRaf } from 'enhancers';
 import { isBetween } from 'ssUtil';
 
 const enhance = compose (
@@ -36,6 +36,14 @@ const enhance = compose (
       }
     }
   }),
+  withRaf(
+    () => window.ss.rafLoop,
+    props => ({
+      name: 'Loop.handleAnimationLoop',
+      precedence: 6,
+      onAnimationLoop: props.handleAnimationLoop
+    })
+  ),
   withHandlers({
     handleChange: props => values => {
       const video = props.video.state;
@@ -55,33 +63,10 @@ const enhance = compose (
       props.setValues(values);
     }
   }),
-  withProps(props => {
-    const { rafLoop } = window.ss;
-    const name = 'Loop.handleAnimationLoop';
-
-    return ({
-      registerRaf: () => {
-        rafLoop.register({
-          name,
-          precedence: 6,
-          onAnimationLoop: props.handleAnimationLoop
-        });
-      },
-      unregisterRaf: () => {
-        rafLoop.unregister(name);
-      }
-    });
-  }),
   lifecycle({
-    componentDidMount(): void {
-      this.props.registerRaf();
-    },
     componentWillReceiveProps(nextProps: any): void {
       window.ss.maestro.loopMs = nextProps.adjustedValuesMs;
       window.ss.maestro.queueUpdate();
-    },
-    componentWillUnmount(): void {
-      this.props.unregisterRaf();
     }
   })
 );
