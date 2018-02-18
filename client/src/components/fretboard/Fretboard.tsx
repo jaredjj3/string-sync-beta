@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { compose, withState, withProps, lifecycle, branch, renderNothing } from 'recompose';
+import { compose, withState, withProps, branch, renderNothing } from 'recompose';
 import { Row, Col } from 'antd';
 import { FretboardController, Frets, GuitarStrings } from './';
-import { withViewport } from 'enhancers';
+import { withViewport, hasGlobalProps, identity } from 'enhancers';
 import { Overlap, Layer } from 'components';
 import * as classNames from 'classnames';
 import styled from 'styled-components';
@@ -19,17 +19,10 @@ const enhance = compose(
       }
     )
   })),
-  lifecycle({
-    componentDidMount(): void {
-      window.ss.maestro.fretboardProps = this.props;
-    },
-    componentWillUnmount(): void {
-      window.ss.maestro.fretboardProps = null;
-    }
-  }),
+  hasGlobalProps('fretboard', () => window.ss.globalProps),
   branch(
     props => props.isVisible,
-    i => i,
+    identity,
     renderNothing
   ),
 );
