@@ -31,13 +31,6 @@ class Maestro {
     autoScroll: true
   }
 
-  // react props
-  fretboardProps: any = null;
-  pianoProps: any = null;
-  notationShowTabProps: any = null;
-  scoreScrollerProps: any = null;
-  notationShowProps: any = null;
-
   private _snapshot: Snapshot = new Snapshot();
 
   get snapshot(): Snapshot {
