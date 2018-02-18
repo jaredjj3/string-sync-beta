@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { compose, withState, withProps, withHandlers, lifecycle } from 'recompose';
+import { compose, withState, withProps, withHandlers } from 'recompose';
+import { withRaf } from 'enhancers';
 import { get } from 'lodash';
 
 const enhance = compose(
@@ -27,31 +28,14 @@ const enhance = compose(
       }
     }
   }),
-  withProps(props => {
-    const { rafLoop } = window.ss;
-    const name = 'CaretController.handleAnimationLoop';
-
-    return ({
-      registerRaf: () => {
-        rafLoop.register({
-          name,
-          precedence: 2,
-          onAnimationLoop: props.handleAnimationLoop
-        });
-      },
-      unregisterRaf: () => {
-        rafLoop.unregister(name);
-      }
-    });
-  }),
-  lifecycle({
-    componentDidMount(): void {
-      this.props.registerRaf();
-    },
-    componentWillUnmount(): void {
-      this.props.unregisterRaf();
-    }
-  })
+  withRaf(
+    () => window.ss.rafLoop,
+    props => ({
+      name: 'CaretController.handleAnimationLoop',
+      precedence: 2,
+      onAnimationLoop: props.handleAnimationLoop
+    })
+  )
 );
 
 const CaretController = () => null;
