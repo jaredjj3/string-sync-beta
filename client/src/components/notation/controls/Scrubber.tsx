@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { compose, withState, withProps, withHandlers, lifecycle } from 'recompose';
+import { compose, withState, withProps, withHandlers } from 'recompose';
 import { Slider } from 'antd';
-import { withVideo, withNotation } from 'enhancers';
+import { withVideo, withNotation, withRaf } from 'enhancers';
 
 const enhance = compose (
   withVideo,
@@ -72,31 +72,14 @@ const enhance = compose (
       props.setWasActive(false);
     },
   }),
-  withProps(props => {
-    const { rafLoop } = window.ss;
-    const name = 'Scrubber.handleAnimationLoop';
-
-    return ({
-      registerRaf: () => {
-        rafLoop.register({
-          name,
-          precedence: 7,
-          onAnimationLoop: props.handleAnimationLoop
-        });
-      },
-      unregisterRaf: () => {
-        rafLoop.unregister(name);
-      }
-    });
-  }),
-  lifecycle({
-    componentDidMount(): void {
-      this.props.registerRaf();
-    },
-    componentWillUnmount(): void {
-      this.props.unregisterRaf();
-    }
-  })
+  withRaf(
+    () => window.ss.rafLoop,
+    props => ({
+      name: 'Scrubber.handleAnimationLoop',
+      precedence: 7,
+      onAnimationLoop: props.handleAnimationLoop      
+    })
+  )
 );
 
 const Scrubber = ({ video, value, handleChange, handleAfterChange }) => (
