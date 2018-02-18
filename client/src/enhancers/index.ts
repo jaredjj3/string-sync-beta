@@ -10,3 +10,4 @@ export { default as withVideo } from './withVideo';
 export { default as withViewport } from './withViewport';
 export { default as withRaf } from './withRaf';
 export { default as hasGlobalProps } from './hasGlobalProps';
+export { default as identity } from './identity';
