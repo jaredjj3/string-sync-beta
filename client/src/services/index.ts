@@ -7,3 +7,4 @@ export * from './loader';
 export * from './renderers';
 export * from './directive';
 export * from './piano';
+export * from './globalProps';
