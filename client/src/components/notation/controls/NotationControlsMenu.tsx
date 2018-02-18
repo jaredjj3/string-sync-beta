@@ -35,14 +35,18 @@ const enhance = compose (
     handleFretboardToggle: props => event => {
       const checked = !props.fretboardChecked;
       props.setFretboardChecked(checked);
-      window.ss.maestro.fretboardProps.setVisibility(checked);
-      window.ss.maestro.notationShowProps.updateAffix();
+
+      const { fretboard, notationShow } = window.ss.globalProps;
+      fretboard.setVisibility(checked);
+      notationShow.updateAffix();
     },
     handlePianoToggle: props => event => {
       const checked = !props.pianoChecked;
       props.setPianoChecked(checked);
-      window.ss.maestro.pianoProps.setVisibility(checked);
-      window.ss.maestro.notationShowProps.updateAffix();
+
+      const { piano, notationShow } = window.ss.globalProps;
+      piano.setVisibility(checked);
+      notationShow.updateAffix();
     }
   }),
   withProps(props => ({
@@ -85,8 +89,9 @@ const enhance = compose (
       maestro.options.showMoreNotes = false;
       maestro.options.showLoop = false;
 
-      this.props.setFretboardChecked(Boolean(window.ss.maestro.fretboardProps.isVisible));
-      this.props.setPianoChecked(Boolean(window.ss.maestro.pianoProps.isVisible));
+      const { fretboard, piano } = window.ss.globalProps;
+      this.props.setFretboardChecked(Boolean(fretboard.isVisible));
+      this.props.setPianoChecked(Boolean(piano.isVisible));
     }
   })
 );
