@@ -2,6 +2,7 @@ import * as React from 'react';
 import { compose, lifecycle, withProps, withHandlers } from 'recompose';
 import { Fretboard } from 'services';
 import { isEmpty } from 'lodash';
+import { withRaf } from 'enhancers';
 
 const enhance = compose(
   withHandlers({
@@ -11,31 +12,20 @@ const enhance = compose(
       fretboard.update(lightGuitarPositions, pressGuitarPositions, justPressGuitarPositions);
     }
   }),
-  withProps(props => {
-    const { rafLoop } = window.ss;
-    const name = 'FretboardController.handleAnimationLoop';
-
-    return ({
-      registerRaf: () => {
-        rafLoop.register({
-          name,
-          precedence: 1,
-          onAnimationLoop: props.handleAnimationLoop
-        });
-      },
-      unregisterRaf: () => {
-        rafLoop.unregister(name);
-      }
-    });
-  }),
+  withRaf(
+    () => window.ss.rafLoop,
+    props => ({
+      name: 'FretboardController.handleAnimationLoop',
+      precedence: 1,
+      onAnimationLoop: props.handleAnimationLoop
+    })
+  ),
   lifecycle({
     componentDidMount(): void {
       window.ss.maestro.fretboard = new Fretboard();
-      this.props.registerRaf();
     },
     componentWillUnmount(): void {
       window.ss.maestro.fretboard = new Fretboard();
-      this.props.unregisterRaf();
     }
   })
 );

@@ -1,7 +1,7 @@
 import { compose, withProps, lifecycle } from 'recompose';
 import { RafLoop } from 'services';
 
-type RafLoopGetter = () => RafLoop;
+type RafLoopGetter = (props?: any) => RafLoop;
 
 // This enhancer introduces the base functionality of the rafLoop.
 // The wrapped component will have access to registerRaf() and unregisterRaf() in
@@ -10,14 +10,15 @@ const withRaf = (getRafLoop: RafLoopGetter, rafSpecFactory: RAF.SpecFactory) => 
   BaseComponent => {
     const enhance = compose(
       withProps(props => ({
+        rafLoop: getRafLoop(props),
         rafSpec: rafSpecFactory(props)
       })),
       withProps(props => ({
         registerRaf: () => {
-          getRafLoop().register(props.rafSpec);
+          props.rafLoop.register(props.rafSpec);
         },
         unregisterRaf: () => {
-          getRafLoop().unregister(props.rafSpec.name);
+          props.rafLoop.unregister(props.rafSpec.name);
         }
       })),
       lifecycle({
