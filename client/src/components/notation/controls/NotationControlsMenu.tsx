@@ -23,14 +23,16 @@ const enhance = compose (
     handleMoreNotesToggle: props => event => {
       const checked = !props.moreNotesChecked;
       props.setMoreNotesChecked(checked);
-      window.ss.maestro.options.showMoreNotes = checked;
-      window.ss.maestro.queueUpdate();
+      window.ss.maestro.enqueue(maestro => {
+        maestro.options.showMoreNotes = checked;
+      });
     },
     handleShowLoopToggle: props => event => {
       const checked = !props.showLoopChecked;
       props.setShowLoopChecked(checked);
-      window.ss.maestro.options.showLoop = checked;
-      window.ss.maestro.queueUpdate();
+      window.ss.maestro.enqueue(maestro => {
+        maestro.options.showLoopChecked = checked
+      });
     },
     handleFretboardToggle: props => event => {
       const checked = !props.fretboardChecked;

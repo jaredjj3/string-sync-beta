@@ -4,4 +4,6 @@ declare namespace Maestro {
     showLoop: boolean;
     autoScroll: boolean;
   }
+
+  type QueueCallback = (maestro?: any) => any
 }

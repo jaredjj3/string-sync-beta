@@ -79,7 +79,8 @@ class Maestro {
     return this.snapshot;
   }
 
-  queueUpdate(): Maestro {
+  enqueue(callback: Maestro.QueueCallback): Maestro {
+    callback(this);
     this.updateQueued = true;
     return this;
   }

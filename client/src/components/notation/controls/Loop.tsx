@@ -65,8 +65,9 @@ const enhance = compose (
   }),
   lifecycle({
     componentWillReceiveProps(nextProps: any): void {
-      window.ss.maestro.loopMs = nextProps.adjustedValuesMs;
-      window.ss.maestro.queueUpdate();
+      window.ss.maestro.enqueue(maestro => {
+        maestro.loopMs = nextProps.adjustedValuesMs;
+      });
     }
   })
 );

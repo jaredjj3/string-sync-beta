@@ -44,8 +44,9 @@ const enhance = compose(
 
         // if this is the last ScoreLine rendered, populate the tickRanges on the tab
         if (line.next === null && !tab.error) {
-          tab.hydrateNotes();
-          maestro.queueUpdate();
+          maestro.enqueue(() => {
+            tab.hydrateNotes()
+          });
         }
       } catch (error) {
         tab.error = tab.error
