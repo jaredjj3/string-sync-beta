@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { compose, defaultProps, mapProps, withHandlers, lifecycle, shouldUpdate } from 'recompose';
-import { VideoInitializer } from './';
 import { withVideo, withNotation } from 'enhancers';
 import Youtube from 'react-youtube';
 
@@ -57,7 +56,6 @@ const enhance = compose(
 
 const Video = ({ video, withInitializer, youtubeVideoId, handleReady, handleStateChange }) => (
   <div className="Video">
-    {withInitializer ? <VideoInitializer /> : null}
     <Youtube
       id="Video__youtubePlayer"
       className="Video__youtubePlayer"

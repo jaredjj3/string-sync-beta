@@ -59,7 +59,7 @@ const NotationEdit = () => (
       <Gradient />
       <Nav />
       <MaestroController />
-      <Video withInitializer />
+      <Video />
       <Fretboard />
       <Piano />
       <NotationEditor />
