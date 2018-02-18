@@ -55,11 +55,7 @@ const enhance = compose(
       }
     }
   }),
-  hasGlobalProps(
-    'scoreScroller',
-    () => window.ss.globalProps,
-    props => props
-  )
+  hasGlobalProps('scoreScroller', () => window.ss.globalProps)
 );
 
 const ScoreScroller = () => null;

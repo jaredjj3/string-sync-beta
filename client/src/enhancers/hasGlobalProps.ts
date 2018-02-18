@@ -1,10 +1,11 @@
 import { compose, withProps, lifecycle } from 'recompose';
+import { identity } from './';
 import { GlobalProps } from 'services';
 
 type GlobalPropsGetter = (props?: any) => GlobalProps;
 type PropsGetter = (props: any) => any;
 
-const hasGlobalProps = (propsKey: string, getGlobalProps: GlobalPropsGetter, getProps: PropsGetter) => (
+const hasGlobalProps = (propsKey: string, getGlobalProps: GlobalPropsGetter, getProps: PropsGetter = identity) => (
   BaseComponent => {
     const enhance = compose(
       withProps(props => ({
