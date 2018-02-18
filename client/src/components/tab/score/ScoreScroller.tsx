@@ -2,7 +2,7 @@ import * as React from 'react';
 import { compose, withState, withProps, withHandlers, shouldUpdate, lifecycle } from 'recompose';
 import { scroller } from 'react-scroll';
 import { get, isEqual } from 'lodash';
-import { withVideo, withRaf } from 'enhancers';
+import { withVideo, withRaf, hasGlobalProps } from 'enhancers';
 
 const enhance = compose(
   withVideo,
@@ -46,9 +46,6 @@ const enhance = compose(
     }
   })),
   lifecycle({
-    componentDidMount(): void {
-      window.ss.maestro.scoreScrollerProps = this.props;
-    },
     componentDidUpdate(): void {
       this.props.scrollToFocusedLine();
 
@@ -57,7 +54,12 @@ const enhance = compose(
         this.props.setInitialScroll(false);
       }
     }
-  })
+  }),
+  hasGlobalProps(
+    'scoreScroller',
+    () => window.ss.globalProps,
+    props => props
+  )
 );
 
 const ScoreScroller = () => null;

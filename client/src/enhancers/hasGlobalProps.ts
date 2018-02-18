@@ -2,23 +2,29 @@ import { compose, withProps, lifecycle } from 'recompose';
 import { GlobalProps } from 'services';
 
 type GlobalPropsGetter = (props?: any) => GlobalProps;
+type PropsGetter = (props: any) => any;
 
-const hasGlobalProps = (getGlobalProps: GlobalPropsGetter, propsName: string, addProps: any) => (
+const hasGlobalProps = (propsKey: string, getGlobalProps: GlobalPropsGetter, getProps: PropsGetter) => (
   BaseComponent => {
     const enhance = compose(
       withProps(props => ({
-        propsName,
-        addProps,
+        propsKey,
+        props: getProps(props),
         globalProps: getGlobalProps(props),
       })),
       lifecycle({
         componentDidMount(): void {
-          const { globalProps, propsName, addProps } = this.props;
-          globalProps[propsName] = addProps;
+          const { globalProps, propsKey, props } = this.props;
+
+          if (typeof globalProps[propsKey] === 'undefined') {
+            throw new Error(`cannot arbitrarily add props to global props: ${propsKey}`);
+          } else {
+            globalProps[propsKey] = props;
+          }
         },
         componentWillUnmount(): void {
-          const { globalProps, propsName } = this.props;
-          globalProps[propsName] = null;
+          const { globalProps, propsKey } = this.props;
+          globalProps[propsKey] = null;
         }
       })
     )
