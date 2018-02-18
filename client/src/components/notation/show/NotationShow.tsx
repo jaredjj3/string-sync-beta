@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { compose, withState, withProps, withHandlers, lifecycle, shouldUpdate } from 'recompose';
-import { withNotation } from 'enhancers';
+import { withNotation, hasGlobalProps } from 'enhancers';
 import { toTick, toTimeMs } from 'ssUtil';
 import { NotationShowVideo, NotationShowScroller } from './';
 import { Gradient, Fretboard, MaestroController, Piano, NotationControls, Tab, Footer } from 'components';
@@ -38,7 +38,7 @@ const enhance = compose(
       }
 
       const scrollOffset = Math.max(affixed ? props.getAffixedHeight() : 0, 0);
-      window.ss.maestro.scoreScrollerProps.setScrollOffset(-scrollOffset);
+      window.ss.globalProps.scoreScroller.setScrollOffset(-scrollOffset);
     }
   }),
   withHandlers({
@@ -49,6 +49,7 @@ const enhance = compose(
       window.setTimeout(() => props.handleAffixChange(props.affixed), 1500);
     }
   }),
+  hasGlobalProps('notationShow', () => window.ss.globalProps),
   lifecycle({
     componentWillMount(): void {
       window.ss.loader.add('fetchNotation');
@@ -57,13 +58,11 @@ const enhance = compose(
     },
     componentDidMount(): void {
       this.props.fetchNotation();
-      window.ss.maestro.notationShowProps = this.props;
     },
     componentWillUnmount(): void {
       this.props.notation.dispatch.resetNotation();
       window.ss.loader.clear();
       window.$('body').css({ background: 'white' });
-      window.ss.maestro.notationShowProps = null;
     }
   }),
   shouldUpdate((props, nextProps) => (
