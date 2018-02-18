@@ -8,3 +8,4 @@ export { default as withTags } from './withTags';
 export { default as withUser } from './withUser';
 export { default as withVideo } from './withVideo';
 export { default as withViewport } from './withViewport';
+export { default as withRaf } from './withRaf';

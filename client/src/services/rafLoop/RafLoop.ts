@@ -11,7 +11,7 @@ const sortSpecs = <T>(collection: Array<T>): Array<T> => {
     o.hasOwnProperty('precedence'))
   );
 
-  const sortedWithPrecedence = sortBy(withPrecedence, ({ precedence, _n }) => [precedence, _n ]);
+  const sortedWithPrecedence = sortBy(withPrecedence, ({ precedence, _n }) => [precedence, _n]);
   const sortedWithoutPrecedence = sortBy(withoutPrecedence, ({ _n }) => _n);
 
   return [...sortedWithPrecedence, ...sortedWithoutPrecedence];
