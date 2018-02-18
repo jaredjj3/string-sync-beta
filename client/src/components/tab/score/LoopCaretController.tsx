@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { compose, withState, withProps, withHandlers, lifecycle } from 'recompose';
-import { withVideo } from 'enhancers';
+import { compose, withState, withProps, withHandlers } from 'recompose';
+import { withVideo, withRaf } from 'enhancers';
 import { isBetween } from 'ssUtil';
 import { get } from 'lodash';
 
@@ -58,31 +58,14 @@ const enhance = compose(
       }
     }
   }),
-  withProps(props => {
-    const { rafLoop } = window.ss;
-    const name = 'LoopCaretController.handleAnimationLoop';
-
-    return ({
-      registerRaf: () => {
-        rafLoop.register({
-          name,
-          precedence: 2,
-          onAnimationLoop: props.handleAnimationLoop
-        });
-      },
-      unregisterRaf: () => {
-        rafLoop.unregister(name);
-      }
-    });
-  }),
-  lifecycle({
-    componentDidMount(): void {
-      this.props.registerRaf();
-    },
-    componentWillUnmount(): void {
-      this.props.unregisterRaf();
-    }
-  })
+  withRaf(
+    () => window.ss.rafLoop,
+    props => ({
+      name: 'LoopCaretController.handleAnimationLoop',
+      precedence: 2,
+      onAnimationLoop: props.handleAnimationLoop
+    })
+  )
 );
 
 const LoopCaretController = () => null;
