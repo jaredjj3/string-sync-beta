@@ -1,4 +1,4 @@
-import { Tab, Line } from 'services';
+import { Line } from 'services';
 import { last } from 'lodash';
 
 class LoopCaretRenderer implements Renderer {

@@ -3,7 +3,7 @@ declare interface MaestroData {
   timeMs: number;
 }
 
-declare interface TabData {
+declare interface ScoreData {
   line: any;
   measure: any;
   note: any;
@@ -28,7 +28,7 @@ declare interface FocusedData {
 
 declare interface SnapshotData {
   maestro: MaestroData;
-  tab: TabData;
+  score: ScoreData;
   fretboard: FretboardData;
   loop: LoopData;
   focused: FocusedData;

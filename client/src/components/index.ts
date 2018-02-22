@@ -12,7 +12,7 @@ export * from './maestro';
 export * from './nav';
 export * from './notation';
 export * from './session';
-export * from './tab';
+export * from './score';
 export * from './user';
 export * from './video';
 export * from './piano';

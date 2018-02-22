@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { compose, withProps, lifecycle } from 'recompose';
 import {
   Gradient, MaestroController, Video, Nav,
-  Fretboard, Tab, NotationControls, Piano
+  Fretboard, Score, NotationControls, Piano
 } from 'components';
 import { withNotation } from 'enhancers';
 import { NotationEditor } from './';
@@ -41,7 +41,7 @@ const NotationEditOuter = styled.div`
   }
 `;
 const NotationEditInner = styled.div``;
-const TabOuter = styled.div`
+const ScoreOuter = styled.div`
   #Score .ScoreLine:last-child {
     margin-bottom: 500px;
   }
@@ -63,9 +63,9 @@ const NotationEdit = () => (
       <Fretboard />
       <Piano />
       <NotationEditor />
-      <TabOuter>
-        <Tab withCaret />
-      </TabOuter>
+      <ScoreOuter>
+        <Score caret width={900} />
+      </ScoreOuter>
       <NotationControlsOuter>
         <NotationControls />
       </NotationControlsOuter>

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { compose, withProps, lifecycle } from 'recompose';
 import { withNotation, textWhileLoading } from 'enhancers';
-import { Gradient, Tab, IconDescribe } from 'components';
+import { Gradient, Score, IconDescribe } from 'components';
 import { Row } from 'antd';
 import styled from 'styled-components';
 
@@ -47,21 +47,13 @@ const NotationPrintHeader = ({ isLoading, notation }) => (
         </Link>
       </Row>
     </div>
-    {/*
-      isLoading
-        ? null
-        : <div className="NotationPrint__title">
-            <h3>{`${notation.songName} by ${notation.artistName}`}</h3>
-            <p>{`transcribed by @${notation.transcriber.username}`}</p>
-          </div>
-    */}
   </div>
 );
 
 const NotationPrint = ({ isLoading, notation }) => (
   <NotationPrintOuter>
     <NotationPrintHeader isLoading={isLoading} notation={notation.state} />
-    {/*<Tab overrideWidth={900} />*/}
+    {/*<Score overrideWidth={900} />*/}
     <h1>Sorry, I'm fixing this feature.</h1>
     <br/>
     <p>

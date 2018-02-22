@@ -4,7 +4,7 @@ class Snapshot {
       tick: -1,
       timeMs: -1
     },
-    tab: {
+    score: {
       line: null,
       measure: null,
       note: null
@@ -44,14 +44,14 @@ class Snapshot {
 
   setData(data: SnapshotData): SnapshotData {
     const maestro = Object.freeze(Object.assign({}, this.data.maestro, data.maestro));
-    const tab = Object.freeze(Object.assign({}, this.data.tab, data.tab));
+    const score = Object.freeze(Object.assign({}, this.data.score, data.score));
     const fretboard = Object.freeze(Object.assign({}, this.data.fretboard, data.fretboard));
     const loop = Object.freeze(Object.assign({}, this.data.loop, data.loop));
     const focused = Object.freeze(Object.assign({}, this.data.focused, data.focused));
 
     this.data = Object.freeze({
       maestro,
-      tab,
+      score,
       fretboard,
       loop,
       focused

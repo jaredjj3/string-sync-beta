@@ -1,8 +1,9 @@
+export { default as Score } from './Score';
+export { default as ScoreController } from './ScoreController';
 export { default as Caret } from './Caret';
 export { default as CaretController } from './CaretController';
-export { default as Score } from './Score';
 export { default as ScoreLine } from './ScoreLine';
 export { default as LoopCarets } from './LoopCarets';
 export { default as LoopCaretController } from './LoopCaretController';
 export { default as ScoreScroller } from './ScoreScroller';
- 
+export { default as ScoreTitle } from './ScoreTitle';

@@ -1,5 +1,5 @@
 import { Flow } from 'vexflow';
-import { Artist, Vextab, Measure, Line, Tab, Fretboard, Maestro } from 'services';
+import { Artist, Vextab, Measure, Line, Score, Fretboard, Maestro } from 'services';
 import { startsWith } from 'lodash';
 import { DirectiveExtractor } from 'services';
 
@@ -43,7 +43,7 @@ class ScoreLineRenderer implements Renderer  {
     this.vextab = new Vextab(this.artist);
     this.vextab.parse(this.vextabString);
     
-    // Execute directives, then link staveNotes and tabNotes to the Tab service
+    // Execute directives, then link staveNotes and tabNotes to the Score service
     const stave = this.artist.staves[0];
     this.directiveExtractor = new DirectiveExtractor(stave, maestro);
     const directives = this.directiveExtractor.extract();
@@ -56,9 +56,9 @@ class ScoreLineRenderer implements Renderer  {
   }
 
   render(): ScoreLineRenderer {
-    this._renderTab();
+    this._renderScore();
     this._renderMeasureNumbers();
-    this._renderTabText();
+    this._renderScoreText();
     this._renderBranding();
 
     return this;
@@ -81,7 +81,7 @@ class ScoreLineRenderer implements Renderer  {
     return this;
   }
 
-  private _renderTab(): ScoreLineRenderer {
+  private _renderScore(): ScoreLineRenderer {
     this.artist.render(this.renderer);
     return this;
   }
@@ -104,7 +104,7 @@ class ScoreLineRenderer implements Renderer  {
     return this;
   }
 
-  private _renderTabText(): ScoreLineRenderer {
+  private _renderScoreText(): ScoreLineRenderer {
     this.ctx.save();
     this.ctx.font = '24px sans-serif';
 

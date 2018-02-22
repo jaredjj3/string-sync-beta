@@ -1,12 +1,12 @@
 import { Snapshot } from './';
-import { Tab, Tuning, Line, Measure, Note } from 'services';
+import { Score, Tuning, Line, Measure, Note } from 'services';
 import { flatMap, uniqWith, uniq, isEqual, startsWith, get } from 'lodash';
 import { Flow } from 'vexflow';
 import { isBetween, interpolator } from 'ssUtil';
 
 interface SFRefs {
   prevSnapshot: any;
-  tab: any;
+  score: any;
   tuning: any;
 }
 
@@ -19,7 +19,7 @@ interface SFTimeData {
 class SnapshotFactory {
   // attrs set from the constructor
   prevSnapshot: Snapshot;
-  tab: Tab;
+  score: Score;
   tick: number;
   timeMs: number;
   loopTick: Array<number>;
@@ -28,15 +28,15 @@ class SnapshotFactory {
 
   // computed data
   maestroData: MaestroData;
-  tabData: TabData;
+  scoreData: ScoreData;
   fretboardData: FretboardData;
   loopData: LoopData;
   focusedData: FocusedData;
 
-  static getCurrentNote(tab: Tab, tick: number): Note {
+  static getCurrentNote(score: Score, tick: number): Note {
     let currentNote = null;
 
-    tab.lines.forEach(line => {
+    score.lines.forEach(line => {
       const lineTickRange = line.getTickRange();
       if (isBetween(tick, lineTickRange.start, lineTickRange.stop)) {
         line.measures.forEach(measure => {
@@ -57,7 +57,7 @@ class SnapshotFactory {
 
   constructor(refs: SFRefs, timeData: SFTimeData, options: Maestro.Options) {
     this.prevSnapshot = refs.prevSnapshot;
-    this.tab = refs.tab;
+    this.score = refs.score;
     this.tuning = refs.tuning;
     
     this.tick     = timeData.tick;
@@ -78,7 +78,7 @@ class SnapshotFactory {
 
     return {
       maestro: this.maestroData,
-      tab: this.tabData,
+      score: this.scoreData,
       fretboard: this.fretboardData,
       loop: this.loopData,
       focused: this.focusedData
@@ -87,7 +87,7 @@ class SnapshotFactory {
 
   private _doSnapshot(): void {
     this._snapshotMaestroData();
-    this._snapshotTabData();
+    this._snapshotScoreData();
     this._snapshotFretboardData();
     this._snapshotLoopData();
     this._snapshotFocusedData();
@@ -100,12 +100,12 @@ class SnapshotFactory {
     };
   }
 
-  private _snapshotTabData(): void {
-    const note = SnapshotFactory.getCurrentNote(this.tab, this.tick);
+  private _snapshotScoreData(): void {
+    const note = SnapshotFactory.getCurrentNote(this.score, this.tick);
     const measure = get(note, 'measure', null);
     const line = get(measure, 'line', null);
 
-    this.tabData = {
+    this.scoreData = {
       note,
       measure,
       line
@@ -116,7 +116,7 @@ class SnapshotFactory {
     let press: Array<GuitarPosition> = [];
     let justPress: Array<GuitarPosition> = [];
     let light: Array<GuitarPosition> = [];
-    const { note } = this.tabData;
+    const { note } = this.scoreData;
 
     if (note) {
       // Compute press notes
@@ -158,7 +158,7 @@ class SnapshotFactory {
 
     // Compute notes
     const notes = tickRange.map(tick => (
-      SnapshotFactory.getCurrentNote(this.tab, tick)
+      SnapshotFactory.getCurrentNote(this.score, tick)
     ));
 
     // Compute isScrubbing
@@ -183,7 +183,7 @@ class SnapshotFactory {
     const line = get(this.loopData.notes[changedLoopNdx], 'measure.line')
 
     this.focusedData = {
-      line: line || this.tabData.line
+      line: line || this.scoreData.line
     }
   }
 }

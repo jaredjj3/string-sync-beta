@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { compose, withState, withProps, withHandlers, lifecycle, shouldUpdate } from 'recompose';
-import { withNotation, hasGlobalProps } from 'enhancers';
+import { withNotation, withViewport, hasGlobalProps } from 'enhancers';
 import { toTick, toTimeMs } from 'ssUtil';
 import { NotationShowVideo, NotationShowScroller } from './';
-import { Gradient, Fretboard, MaestroController, Piano, NotationControls, Tab, Footer } from 'components';
+import { Gradient, Fretboard, MaestroController, Piano, NotationControls, Score, Footer } from 'components';
 import { Affix, Button } from 'antd';
 import { Element as ScrollElement, scroller } from 'react-scroll';
 import styled from 'styled-components';
@@ -14,6 +14,7 @@ import { isEqual } from 'lodash';
 
 const enhance = compose(
   withNotation,
+  withViewport,
   withState('isFetching', 'setIsFetching', false),
   withState('affixed', 'setAffixed', false),
   withProps(props => ({
@@ -73,7 +74,7 @@ const enhance = compose(
   )
 );
 
-const NotationShowOuter = styled.section`
+const Outer = styled.section`
   display: flex;
   flex-flow: column;
   overflow: hidden;
@@ -115,7 +116,7 @@ const LibraryLinkContainer = styled.span`
 `;
 
 const NotationShow = ({ isFetching, notation, viewport, handleAffixChange }) => (
-  <NotationShowOuter id="NotationShow">
+  <Outer id="NotationShow">
     <Gradient />
     <Top>
       <ScrollElement name="NotationShow__top" />
@@ -137,19 +138,19 @@ const NotationShow = ({ isFetching, notation, viewport, handleAffixChange }) => 
         onChange={handleAffixChange}
       >
         <Affixed id="ScoreAffix">
-          <Fretboard />
           <Piano />
+          <Fretboard />
         </Affixed>
       </Affix>
     </Top>
     <Middle>
       <ScrollElement name="NotationShow__tab"/>
-      <Tab withCaret />
+      <Score caret scroller width={viewport.state.width} />
     </Middle>
     <Bottom>
       <NotationControls />
     </Bottom>
-  </NotationShowOuter>
+  </Outer>
 );
 
 export default enhance(NotationShow);

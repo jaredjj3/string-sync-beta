@@ -6,7 +6,7 @@ import { Flow } from 'vexflow';
 
 const { Fraction } = Flow;
 
-class Tab {
+class Score {
   measures: Array<Measure> = [];
   lines: Array<Line> = [];
   vextabString: string = '';
@@ -146,7 +146,7 @@ class Tab {
     return measureGroups;
   }
 
-  private _setNoteTickStarts(): Tab {
+  private _setNoteTickStarts(): Score {
     const totalTicks = new Fraction(0, 1);
 
     this.lines.forEach(line => {
@@ -181,7 +181,7 @@ class Tab {
     return this;
   }
 
-  private _setNoteTickStops(): Tab {
+  private _setNoteTickStops(): Score {
     this.lines.forEach(line => {
       line.measures.forEach(measure => {
         measure.notes.forEach(note => {
@@ -201,7 +201,7 @@ class Tab {
     return this;
   }
 
-  private _computeNoteInterpolators(): Tab {
+  private _computeNoteInterpolators(): Score {
     this.lines.forEach(line => {
       line.measures.forEach(measure => {
         measure.notes.forEach(note => {
@@ -214,4 +214,4 @@ class Tab {
   }
 }
 
-export default Tab;
+export default Score;

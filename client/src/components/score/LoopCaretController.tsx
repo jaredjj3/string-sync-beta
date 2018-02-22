@@ -8,9 +8,9 @@ const enhance = compose(
   withVideo,
   withHandlers({
     handleAnimationLoop: props => () => {
-      const { tab, snapshot } = window.ss.maestro;
+      const { score, snapshot } = window.ss.maestro;
 
-      if (!tab || !snapshot) {
+      if (!score || !snapshot) {
         return;
       }
 
@@ -18,7 +18,7 @@ const enhance = compose(
         map(note => get(note, 'measure.line.number', 0))
 
       // Clear all lines and set loopLineNumbers attributes
-      tab.lines.forEach(line => {
+      score.lines.forEach(line => {
         const renderer = line.loopCaretRenderer;
         if (renderer) {
           renderer.posX = [];
@@ -50,7 +50,7 @@ const enhance = compose(
       // render each of the line's loopRenderers if scrubbing and the maestro
       // does not require the loop to be force shown
       if (window.ss.maestro.options.showLoop || snapshot.data.loop.isScrubbing) {
-        tab.lines.forEach(({ loopCaretRenderer }) => {
+        score.lines.forEach(({ loopCaretRenderer }) => {
           if (loopCaretRenderer) {
             loopCaretRenderer.render();
           }

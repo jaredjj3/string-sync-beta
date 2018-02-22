@@ -6,9 +6,9 @@ import { get } from 'lodash';
 const enhance = compose(
   withHandlers({
     handleAnimationLoop: props => () => {
-      const { snapshot, tab } = window.ss.maestro;
-      const caretRenderer = get(snapshot.data.tab.line, 'caretRenderer', null);
-      const lines = get(tab, 'lines', []);
+      const { snapshot, score } = window.ss.maestro;
+      const caretRenderer = get(snapshot.data.score.line, 'caretRenderer', null);
+      const lines = get(score, 'lines', []);
 
       lines.forEach(({ caretRenderer }) => {
         if (caretRenderer && caretRenderer.isRendered) {
@@ -17,7 +17,7 @@ const enhance = compose(
       });
 
       if (caretRenderer) {
-        const { interpolator } = snapshot.data.tab.note;
+        const { interpolator } = snapshot.data.score.note;
         const { tick } = snapshot.data.maestro;
 
         if (interpolator) {

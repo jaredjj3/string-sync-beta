@@ -1,6 +1,6 @@
 import { Artist, Measure, Note, DirectiveObject } from 'services';
 import Linker from './Linker';
-import { ScoreLineRenderer, LoopCaretRenderer, CaretRenderer, Tab } from 'services';
+import { ScoreLineRenderer, LoopCaretRenderer, CaretRenderer, Score } from 'services';
 import { last } from 'lodash';
 
 class Line {
@@ -16,6 +16,7 @@ class Line {
   tabStave: any = null;
   noteStave: any = null;
   linker: Linker = null;
+  canvas: HTMLCanvasElement = null;
   scoreLineRenderer: ScoreLineRenderer = null;
   caretRenderer: CaretRenderer = null;
   loopCaretRenderer: LoopCaretRenderer = null;

@@ -1,7 +1,7 @@
 import { Flow } from 'vexflow';
 import { toTick } from 'ssUtil';
 import { Snapshot, SnapshotFactory } from './';
-import { Tab, Fretboard, Piano, Tuning } from 'services';
+import { Score, Fretboard, Piano, Tuning } from 'services';
 
 // The purpose of this service is to coordinate a video player's state (i.e. isActive and
 // current time states) with DOM elements or other services. Its role is distinct from the
@@ -11,7 +11,7 @@ import { Tab, Fretboard, Piano, Tuning } from 'services';
 // plan in the plans object.
 class Maestro {
   // refs
-  tab: Tab = null;
+  score: Score = null;
   fretboard: Fretboard = new Fretboard();
   tuning: Tuning = Tuning.get('standard');
   piano: Piano = new Piano();
@@ -59,7 +59,7 @@ class Maestro {
     if (this._shouldUpdate()) {
       const refs = {
         prevSnapshot: this._snapshot,
-        tab: this.tab,
+        score: this.score,
         tuning: this.tuning
       };
 
@@ -87,7 +87,7 @@ class Maestro {
 
   private _shouldUpdate(): boolean {
     const canUpdate = (
-      this.tab &&
+      this.score &&
       this.fretboard &&
       this.bpm > 0
     );

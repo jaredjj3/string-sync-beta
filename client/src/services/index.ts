@@ -1,5 +1,5 @@
 export * from './vex';
-export * from './tab';
+export * from './score';
 export * from './guitar';
 export * from './maestro';
 export * from './rafLoop';
