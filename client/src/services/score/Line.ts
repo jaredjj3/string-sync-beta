@@ -6,28 +6,35 @@ import { last } from 'lodash';
 class Line {
   static MAX_MEASURE_LENGTH: number = 400;
 
+  score: Score = null;
   measures: Array<Measure> = [];
   targetNumMeasures: number = null;
   vextabString: string = '';
   number: number = null;
   width: number = null;
+  height: number = null;
   prev: Line = null;
   next: Line = null;
   tabStave: any = null;
   noteStave: any = null;
   linker: Linker = null;
-  canvas: HTMLCanvasElement = null;
   scoreLineRenderer: ScoreLineRenderer = null;
   caretRenderer: CaretRenderer = null;
   loopCaretRenderer: LoopCaretRenderer = null;
 
-  constructor(measures: Array<Measure>, number: number, width: number, targetNumMeasures: number) {
+  constructor(score: Score, measures: Array<Measure>, number: number, width: number, targetNumMeasures: number) {
+    this.score = score;
     this.measures = measures;
     this.number = number;
     this.width = width;
+    this.height = 300;
     this.targetNumMeasures = targetNumMeasures;
 
     this._extractVextabString();
+  }
+
+  get isLast(): boolean {
+    return this.next === null;
   }
 
   setPrev(prev: Line): Line {

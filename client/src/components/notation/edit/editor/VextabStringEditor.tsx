@@ -2,7 +2,7 @@ import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose, withHandlers, withProps, withState, withPropsOnChange, lifecycle } from 'recompose';
 import { Input, Alert } from 'antd';
-import { withTab, withNotation } from 'enhancers';
+import { withNotation } from 'enhancers';
 import { debounce } from 'lodash';
 import styled from 'styled-components';
 
@@ -18,7 +18,6 @@ let setNotationVextabString = (props: any) => {
 setNotationVextabString = debounce(setNotationVextabString, 250);
 
 const enhance = compose(
-  withTab,
   withNotation,
   withRouter,
   withState('editorVextabString', 'setEditorVextabString', null),

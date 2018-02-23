@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { compose, mapProps, withProps, withState, lifecycle } from 'recompose';
+import { compose, mapProps, withProps, withState, shouldUpdate, lifecycle } from 'recompose';
 import { Element as ScrollElement } from 'react-scroll';
 import styled from 'styled-components';
-import { isEqual } from 'lodash';
+import { isEqual, get } from 'lodash';
 import { hash } from 'ssUtil';
 import { withNotation } from 'enhancers';
 import { Score as ScoreService } from 'services';
@@ -14,7 +14,8 @@ import {
 const enhance = compose(
   mapProps(props => ({
     width: props.width,
-    caret: Boolean(props.caret)
+    caret: Boolean(props.caret),
+    scroller: Boolean(props.scroller)
   })),
   withNotation,
   // The purpose of the score prop is solely to trigger rerenders
@@ -29,7 +30,7 @@ const enhance = compose(
       );
 
       if (shouldCreateScore) {
-        const score = new ScoreService(nextProps.vextabString, nextProps.width);
+        const score = new ScoreService(nextProps.notation.state.vextabString, nextProps.width);
         window.ss.maestro.score = score;
         nextProps.setScore(score);
       }
@@ -43,7 +44,8 @@ const enhance = compose(
       window.ss.maestro.score = null;
       this.props.setScore(null);
     }
-  })
+  }),
+  shouldUpdate((props, nextProps) => props.score !== nextProps.score)
 );
 
 const Head = styled.div`
@@ -59,10 +61,12 @@ const Spacer = styled.div`
 `;
 
 const ScoreLines = ({ score, caret }) => {
-  if (!score) {
+  const vextabString = get(score, 'vextabString');
+
+  if (!vextabString) {
     return null;
   } else {
-    const vextabStringHash = hash(score.vextabString);
+    const vextabStringHash = hash(vextabString);
     return (
       score.lines.map(line => (
         <ScoreLine
@@ -76,7 +80,7 @@ const ScoreLines = ({ score, caret }) => {
 };
 
 const Score = ({ width, caret, scroller, notation, score }) => (
-  <div>
+  <div id="Score">
     <Head>
       <ScoreController width={width} caret={caret} score={score} />
       {caret ? <CaretController /> : null}
@@ -84,7 +88,6 @@ const Score = ({ width, caret, scroller, notation, score }) => (
       {scroller ? <ScoreScroller /> : null}
     </Head>
     <Body>
-      <Spacer />
       <ScoreTitle
         songName={notation.state.songName}
         artistName={notation.state.artistName}

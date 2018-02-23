@@ -67,7 +67,7 @@ class Score {
 
   private _createLines(): Array<Line> {
     const lines = this._getMeasureGroups().map((measureGroup, lineNumber) =>
-      new Line(measureGroup, lineNumber, this.width, this.measuresPerLine)
+      new Line(this, measureGroup, lineNumber, this.width, this.measuresPerLine)
     );
 
     lines.forEach((line, ndx) => {
@@ -75,7 +75,7 @@ class Score {
       const prev = lines[ndx - 1] || null;
       line.setPrev(prev);
 
-      // Set line references on each of its measures
+      // Set references to line from measures
       line.measures.forEach(measure => {
         measure.line = line;
       });

@@ -15,44 +15,21 @@ interface ScoreLineRendererSpec {
 class ScoreLineRenderer implements Renderer  {
   canvas: HTMLCanvasElement = null;
   ctx: CanvasRenderingContext2D = null;
-  renderer: any = null;
-  width: number = 0;
-  height: number = 0;
+  renderer: any = null; // backend vextab renderer
   artist: any = null;
   vextab: any = null;
   vextabString: string = '';
   line: Line = null;
+  maestro: Maestro = null;
   directiveExtractor: DirectiveExtractor = null;
 
-  constructor(line: Line, canvas: HTMLCanvasElement, width: number, height: number) {
+  constructor(line: Line, canvas: HTMLCanvasElement, maestro: Maestro) {
     this.line = line;
+    line.scoreLineRenderer = this;
     this.vextabString = line.vextabString;
     this.canvas = canvas;
-    this.width = width;
-    this.height = height;
-  }
 
-  setup(maestro: Maestro): ScoreLineRenderer {
-    // Create a renderer and resize it
-    this.renderer = new Renderer(this.canvas, Renderer.Backends.CANVAS);
-    this.ctx = this.renderer.getContext();
-    this._resize();
-
-    // Vextab parsing pattern
-    this.artist = new Artist(10, 20, this.width - 20);
-    this.vextab = new Vextab(this.artist);
-    this.vextab.parse(this.vextabString);
-    
-    // Execute directives, then link staveNotes and tabNotes to the Score service
-    const stave = this.artist.staves[0];
-    this.directiveExtractor = new DirectiveExtractor(stave, maestro);
-    const directives = this.directiveExtractor.extract();
-
-    directives.forEach(directive => directive.exec('PREPROCESS'));
-    this.line.linkVexInstances(stave); // make a new array
-    directives.forEach(directive => directive.exec('POSTPROCESS'));
-
-    return this;
+    this._setup(maestro);
   }
 
   render(): ScoreLineRenderer {
@@ -69,8 +46,32 @@ class ScoreLineRenderer implements Renderer  {
     return this;
   }
 
+  private _setup(maestro: Maestro): ScoreLineRenderer {
+    // Create a renderer and resize it
+    this.renderer = new Renderer(this.canvas, Renderer.Backends.CANVAS);
+    this.ctx = this.renderer.getContext();
+    this._resize();
+
+    // Vextab parsing pattern
+    this.artist = new Artist(10, 20, this.line.width - 20);
+    this.vextab = new Vextab(this.artist);
+    this.vextab.parse(this.vextabString);
+
+    // Execute directives, then link staveNotes and tabNotes to the Score service
+    const stave = this.artist.staves[0];
+    this.directiveExtractor = new DirectiveExtractor(stave, maestro);
+    const directives = this.directiveExtractor.extract();
+
+    directives.forEach(directive => directive.exec('PREPROCESS'));
+    this.line.linkVexInstances(stave);
+    directives.forEach(directive => directive.exec('POSTPROCESS'));
+
+    return this;
+  }
+
   private _resize(): ScoreLineRenderer {
-    const { canvas, width, height } = this;
+    const { canvas, line } = this;
+    const { width, height } = line;
     const ratio = window.devicePixelRatio || 1;
 
     canvas.width = width * ratio;
