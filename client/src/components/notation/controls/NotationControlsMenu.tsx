@@ -72,14 +72,17 @@ const enhance = compose (
   withProps(props => {
     const { currentUser } = props.session.state;
     const { transcriber } = props.notation.state;
+    const { path } = props.match;
 
     return {
       showEditItem: (
-        currentUser.roles.includes('admin') ||
-        parseInt(currentUser.id, 10) === parseInt(transcriber.id, 10)
+        path === '/n/:id' && (
+          currentUser.roles.includes('admin') ||
+          parseInt(currentUser.id, 10) === parseInt(transcriber.id, 10)
+        )
       ),
       showStudioItem: currentUser.roles.includes('admin'),
-      showShowItem: props.match.path === 'n/:id/edit'
+      showShowItem: path === '/n/:id/edit'
     };
   }),
   withProps(props => ({
@@ -185,7 +188,7 @@ const NotationControlsMenu = ({
           </Item>
           {
             showEditItem
-              ? <Item>
+              ? <Item key="edit">
                   <Link to={`/n/${match.params.id}/edit`}>
                     <Icon type="edit" />
                     <span>edit</span>
@@ -195,7 +198,7 @@ const NotationControlsMenu = ({
           }
           {
             showShowItem
-              ? <Item>
+                ? <Item key="show">
                   <Link to={`/n/${match.params.id}`}>
                     <Icon type="picture" />
                     <span>show</span>
@@ -205,7 +208,7 @@ const NotationControlsMenu = ({
           }
           {
             showStudioItem
-              ? <Item>
+              ? <Item key="studio">
                   <Link to={`/n/${match.params.id}/studio`}>
                     <Icon type="video-camera" />
                     <span>studio</span>
