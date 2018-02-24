@@ -84,14 +84,14 @@ const ScoreLines = ({ score, caret }) => {
 };
 
 const Score = ({ width, caret, scroller, notation, score }) => (
-  <div id="Score">
+  <div>
     <Head>
       <ScoreController width={width} caret={caret} score={score} />
       {caret ? <CaretController /> : null}
       {caret ? <LoopCaretController /> : null}
       {scroller ? <ScoreScroller /> : null}
     </Head>
-    <Body>
+    <Body id="Score">
       <Spacer />
       <ScoreTitle
         songName={notation.state.songName}
