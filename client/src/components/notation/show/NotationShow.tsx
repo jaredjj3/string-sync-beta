@@ -145,7 +145,7 @@ const NotationShow = ({ isFetching, notation, viewport, handleAffixChange }) => 
     </Top>
     <Middle>
       <ScrollElement name="NotationShow__tab"/>
-      <Score caret scroller width={viewport.state.width} />
+      <Score caret scroller width={viewport.state.width - 20} />
     </Middle>
     <Bottom>
       <NotationControls />

@@ -3,7 +3,7 @@ import { Artist, Vextab, Measure, Line, Score, Fretboard, Maestro } from 'servic
 import { startsWith } from 'lodash';
 import { DirectiveExtractor } from 'services';
 
-const { Renderer } = Flow; // backend renderer
+const { Renderer } = Flow;
 
 interface ScoreLineRendererSpec {
   line: Line;
@@ -33,12 +33,11 @@ class ScoreLineRenderer implements Renderer  {
   }
 
   render(): ScoreLineRenderer {
-    this._renderScore();
-    this._renderMeasureNumbers();
-    this._renderScoreText();
-    this._renderBranding();
-
-    return this;
+    return this._renderScore().
+        _renderMeasureBarExtensions().
+        _renderMeasureNumbers().
+        _renderScoreText().
+        _renderBranding();
   }
 
   clear(): ScoreLineRenderer {
@@ -78,6 +77,27 @@ class ScoreLineRenderer implements Renderer  {
     canvas.height = height * ratio;
     canvas.style.width = width + 'px';
     canvas.style.height = height + 'px';
+
+    return this;
+  }
+
+  private _renderMeasureBarExtensions(): ScoreLineRenderer {
+    this.ctx.save();
+    this.ctx.fillStyle = 'black';
+
+    const barNoteXs = this.artist.staves[0].note_notes.
+        filter(note => note.attrs.type === 'BarNote').
+        map(barNote => barNote.getAbsoluteX());
+    
+    const staveX = this.artist.staves[0].note.end_x;
+
+    [...barNoteXs, staveX].forEach(x => {
+      const y0 = 100.5;
+      const y1 = 161.5;
+      this.ctx.fillRect(x, y0, 1, y1 - y0);
+    });
+
+    this.ctx.restore();
 
     return this;
   }
