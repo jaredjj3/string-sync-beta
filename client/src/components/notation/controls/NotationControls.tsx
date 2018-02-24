@@ -12,12 +12,21 @@ const Outer = styled.div`
   height: 100px;
 
   .VideoScrubber, .Loop {
-  .ant-slider-handle {
+    .ant-slider-handle {
       border-color: #fc354c;
+      background-color: #fc354c;
       margin-left: -18px;
       margin-top: -11px;
       width: 25px;
       height: 25px;
+    }
+
+    .ant-slider-track {
+      background: #fc354c;
+    }
+
+    .ant-slider-rail {
+      background-color: #efefef;
     }
   }
 `;
