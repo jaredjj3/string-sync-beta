@@ -1,6 +1,6 @@
 import { Flow } from 'vexflow';
 import { Artist, Vextab, Measure, Line, Score, Fretboard, Maestro } from 'services';
-import { startsWith } from 'lodash';
+import { startsWith, findIndex } from 'lodash';
 import { DirectiveExtractor } from 'services';
 
 const { Renderer } = Flow;
@@ -33,7 +33,10 @@ class ScoreLineRenderer implements Renderer  {
   }
 
   render(): ScoreLineRenderer {
-    return this._renderScore().
+    return this.
+        _removeFirstBarNotes().
+        _addPaddingToFirstNotes().
+        _renderScore().
         _renderMeasureBarExtensions().
         _renderMeasureNumbers().
         _renderScoreText().
@@ -77,6 +80,28 @@ class ScoreLineRenderer implements Renderer  {
     canvas.height = height * ratio;
     canvas.style.width = width + 'px';
     canvas.style.height = height + 'px';
+
+    return this;
+  }
+
+  private _removeFirstBarNotes(): ScoreLineRenderer {
+    const stave = this.artist.staves[0];
+
+    // https://lodash.com/docs/4.17.5#findIndex
+    const noteNotesIndex = findIndex(stave.note_notes, note => note.attrs.type === 'BarNote');
+    stave.note_notes.splice(noteNotesIndex, 1);
+
+    const barNotesIndex = findIndex(stave.tab_notes, note => note.attrs.type === 'BarNote');
+    stave.tab_notes.splice(barNotesIndex, 1)
+
+    return this;
+  }
+
+  private _addPaddingToFirstNotes(): ScoreLineRenderer {
+    const stave = this.artist.staves[0];
+
+    stave.note_notes[0].render_options.stave_padding = 30;
+    stave.tab_notes[0].render_options.stave_padding = 30;
 
     return this;
   }

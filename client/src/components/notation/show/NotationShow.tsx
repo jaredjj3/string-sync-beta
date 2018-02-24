@@ -70,6 +70,7 @@ const enhance = compose(
   }),
   shouldUpdate((props, nextProps) => (
     !isEqual(props.notation, nextProps.notation)) ||
+    props.viewport.state.width !== nextProps.viewport.state.width ||
     props.isFetching !== nextProps.isFetching
   )
 );

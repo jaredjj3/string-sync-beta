@@ -70,7 +70,7 @@ const ScoreLines = ({ score, caret }) => {
   if (!vextabString) {
     return null;
   } else {
-    const vextabStringHash = hash(vextabString);
+    const vextabStringHash = hash(`${vextabString}${score.width}`);
     return (
       score.lines.map(line => (
         <ScoreLine
