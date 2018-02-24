@@ -16,9 +16,9 @@ const Outer = styled.div`
       border-color: #fc354c;
       background-color: #fc354c;
       margin-left: -18px;
-      margin-top: -11px;
-      width: 25px;
-      height: 25px;
+      margin-top: -8px;
+      width: 20px;
+      height: 20px;
     }
 
     .ant-slider-track {

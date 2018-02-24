@@ -31,7 +31,7 @@ const enhance = compose (
       const checked = !props.showLoopChecked;
       props.setShowLoopChecked(checked);
       window.ss.maestro.enqueue(maestro => {
-        maestro.options.showLoopChecked = checked
+        maestro.options.showLoop = checked
       });
     },
     handleFretboardToggle: props => event => {
