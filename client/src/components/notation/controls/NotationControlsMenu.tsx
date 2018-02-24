@@ -76,8 +76,10 @@ const enhance = compose (
     return {
       showEditItem: (
         currentUser.roles.includes('admin') ||
-        currentUser.id === transcriber.id
-      )
+        parseInt(currentUser.id, 10) === parseInt(transcriber.id, 10)
+      ),
+      showStudioItem: currentUser.roles.includes('admin'),
+      showShowItem: props.match.path === 'n/:id/edit'
     };
   }),
   withProps(props => ({
@@ -150,6 +152,8 @@ const NotationControlsMenu = ({
   fretboardChecked,
   pianoChecked,
   showEditItem,
+  showStudioItem,
+  showShowItem,
   collapsed,
   isMobile,
   onMaskClick,
@@ -185,6 +189,26 @@ const NotationControlsMenu = ({
                   <Link to={`/n/${match.params.id}/edit`}>
                     <Icon type="edit" />
                     <span>edit</span>
+                  </Link>
+                </Item>
+              : null
+          }
+          {
+            showShowItem
+              ? <Item>
+                  <Link to={`/n/${match.params.id}`}>
+                    <Icon type="picture" />
+                    <span>show</span>
+                  </Link>
+                </Item>
+              : null
+          }
+          {
+            showStudioItem
+              ? <Item>
+                  <Link to={`/n/${match.params.id}/studio`}>
+                    <Icon type="video-camera" />
+                    <span>studio</span>
                   </Link>
                 </Item>
               : null

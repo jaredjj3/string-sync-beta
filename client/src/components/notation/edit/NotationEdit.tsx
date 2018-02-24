@@ -62,7 +62,6 @@ const NotationEdit = () => (
       <Video />
       <Fretboard />
       <Piano />
-      <NotationEditor />
       <ScoreOuter>
         <Score caret width={900} />
       </ScoreOuter>
