@@ -28,7 +28,7 @@ const enhance = compose (
       }
     },
     handleChange: props => value => {
-      if (props.video.state.isActive && !props.isScrubbing) {
+      if (props.video.state.playerState === 'PLAYING' && !props.isScrubbing) {
         props.setWasActive(true);
       }
 
