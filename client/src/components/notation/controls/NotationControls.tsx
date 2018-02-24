@@ -15,7 +15,7 @@ const Outer = styled.div`
     .ant-slider-handle {
       border-color: #fc354c;
       background-color: #fc354c;
-      margin-left: -18px;
+      margin-left: -13px;
       margin-top: -8px;
       width: 20px;
       height: 20px;
