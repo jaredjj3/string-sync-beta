@@ -33,6 +33,7 @@ const enhance = compose(
 
 const Outer = styled.div`
   min-height: 270px;
+  margin: 0 10px;
 `;
 
 const ScoreLine = ({ line, caret, handleCanvasRef }) => (

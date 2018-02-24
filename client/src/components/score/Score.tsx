@@ -52,10 +52,14 @@ const Head = styled.div`
   display: none;
 `;
 const Body = styled.div`
-  min-height: 520px;
+  background: white;
+  max-height: 1040px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 `;
 const Spacer = styled.div`
-  height: 300px;
+  height: 700px;
   width: 100%;
   background: white;
 `;
@@ -88,6 +92,7 @@ const Score = ({ width, caret, scroller, notation, score }) => (
       {scroller ? <ScoreScroller /> : null}
     </Head>
     <Body>
+      <Spacer />
       <ScoreTitle
         songName={notation.state.songName}
         artistName={notation.state.artistName}
