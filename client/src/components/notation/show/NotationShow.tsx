@@ -29,6 +29,13 @@ const enhance = compose(
       return node ? (node.outerHeight(true) + 2) || 0 : 0;
     }
   })),
+  withProps(props => {
+    const viewport = props.viewport.state;
+
+    return {
+      scoreWidth: viewport.width - (viewport.type === 'MOBILE' ? 20 : 40)
+    };
+  }),
   withHandlers({
     handleAffixChange: props => affixed => {
       if (props.affixed !== affixed) {
@@ -113,7 +120,7 @@ const LibraryLinkContainer = styled.span`
   }
 `;
 
-const NotationShow = ({ isFetching, notation, viewport, handleAffixChange }) => (
+const NotationShow = ({ isFetching, notation, viewport, scoreWidth, handleAffixChange }) => (
   <Outer id="NotationShow">
     <Gradient />
     <Top>
@@ -146,7 +153,7 @@ const NotationShow = ({ isFetching, notation, viewport, handleAffixChange }) => 
       <Score
         caret
         scroller
-        width={viewport.state.width - 40}
+        width={scoreWidth}
       />
     </Middle>
     <Bottom>
