@@ -22,7 +22,7 @@ const enhance = compose(
         focusedNote.renderer.setStyle('DEFAULT').redraw();
       }
 
-      if (note && note.renderer.currentStyle !== 'ACTIVE') {
+      if (note && !note.isRest && note.renderer.currentStyle !== 'ACTIVE') {
         note.renderer.setStyle('ACTIVE').redraw();
       }
 

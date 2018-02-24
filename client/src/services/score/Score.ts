@@ -158,12 +158,12 @@ class Score {
         measure.notes.forEach(note => {
           const absTick = totalTicks.clone();
           note.tickRange.start = absTick.add(totalMeasureTicks).simplify().value();
-          if (note.isGraceNote()) {
+          if (note.isGraceNote) {
             totalMeasureTicks.add(512, 1);
           } else if (note.getType() === 'note') {
             const noteTicks = note.getTicks();
             let numerator = noteTicks.numerator;
-            if (note.prev && note.prev.isGraceNote()) {
+            if (note.prev && note.prev.isGraceNote) {
               numerator -= 512;
             }
             totalMeasureTicks.add(numerator, noteTicks.denominator);

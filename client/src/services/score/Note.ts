@@ -26,8 +26,12 @@ class Note {
     this.renderer = new NoteRenderer(this).setStyle('DEFAULT');
   }
 
-  isGraceNote(): boolean {
+  get isGraceNote(): boolean {
     return this.staveNote.getCategory() === 'gracenotes';
+  }
+
+  get isRest(): boolean {
+    return this.staveNote.getNoteType() === 'r';
   }
 
   setPrev(prev: Note): Note {
