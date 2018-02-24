@@ -131,7 +131,7 @@ class ScoreLineRenderer implements Renderer  {
     this.ctx.font = '24px sans-serif';
 
     this.artist.staves.map(stave => {
-      let x = 25;
+      let x = 20;
       let y = stave.tab.y + 73;
       this.ctx.fillText('T', x, y);
       this.ctx.fillText('A', x, y + 20);
