@@ -2,14 +2,11 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { compose, withState, withProps, withHandlers, lifecycle, shouldUpdate } from 'recompose';
 import { withNotation, withViewport, hasGlobalProps } from 'enhancers';
-import { toTick, toTimeMs } from 'ssUtil';
 import { NotationShowVideo, NotationShowScroller } from './';
 import { Gradient, Fretboard, MaestroController, Piano, NotationControls, Score, Footer } from 'components';
 import { Affix, Button } from 'antd';
 import { Element as ScrollElement, scroller } from 'react-scroll';
 import styled from 'styled-components';
-import * as classNames from 'classnames';
-import { findDOMNode } from 'react-dom';
 import { isEqual } from 'lodash';
 
 const enhance = compose(
@@ -28,8 +25,8 @@ const enhance = compose(
   })),
   withProps(props => ({
     getAffixedHeight: () => {
-      const node = document.getElementById('ScoreAffix');
-      return node ? (node.offsetHeight + 2) || 0 : 0;
+      const node = window.$('#ScoreAffix');
+      return node ? (node.outerHeight(true) + 2) || 0 : 0;
     }
   })),
   withHandlers({
@@ -146,7 +143,11 @@ const NotationShow = ({ isFetching, notation, viewport, handleAffixChange }) => 
     </Top>
     <Middle>
       <ScrollElement name="NotationShow__tab"/>
-      <Score caret scroller width={viewport.state.width - 40} />
+      <Score
+        caret
+        scroller
+        width={viewport.state.width - 40}
+      />
     </Middle>
     <Bottom>
       <NotationControls />

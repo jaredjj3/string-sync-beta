@@ -83,7 +83,7 @@ const ScoreLines = ({ score, caret }) => {
   }
 };
 
-const Score = ({ width, caret, scroller, notation, score }) => (
+const Score = ({ width, caret, scroller, notation, score }) =>(
   <div>
     <Head>
       <ScoreController width={width} caret={caret} score={score} />
@@ -92,7 +92,6 @@ const Score = ({ width, caret, scroller, notation, score }) => (
       {scroller ? <ScoreScroller /> : null}
     </Head>
     <Body id="Score">
-      <Spacer />
       <ScoreTitle
         songName={notation.state.songName}
         artistName={notation.state.artistName}

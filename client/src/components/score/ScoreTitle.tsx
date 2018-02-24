@@ -13,6 +13,7 @@ const enhance = compose(
 const Outer = styled.div`
   text-align: center;
   margin-bottom: 40px;
+  margin-top: 300px;
 `;
 const Line1 = styled.h2`
   color: black;

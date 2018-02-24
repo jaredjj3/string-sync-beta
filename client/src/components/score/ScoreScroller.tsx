@@ -46,6 +46,9 @@ const enhance = compose(
     }
   })),
   lifecycle({
+    componentDidMount(): void {
+      this.props.scrollToFocusedLine();
+    },
     componentDidUpdate(): void {
       this.props.scrollToFocusedLine();
 
