@@ -18,7 +18,7 @@ const DesktopNavOuter = styled(Row)`
 const DesktopNavInner = styled(Col)`
   width: 100%;
   max-width: 980px;
-  margin: 5px 20px;
+  margin: 0px 20px;
 `;
 
 const DesktopNav = () => (
