@@ -35,7 +35,8 @@ const enhance = compose(
   mapProps(props => ({
     youtubeVideoId: props.notation.state.youtubeVideoId,
     video: props.video,
-    withInitializer: props.withInitializer
+    withInitializer: props.withInitializer,
+    onEnd: props.onEnd || null
   })),
   shouldUpdate((currProps, nextProps) => (
     currProps.youtubeVideoId !== nextProps.youtubeVideoId
@@ -55,15 +56,16 @@ const enhance = compose(
   })
 );
 
-const Video = ({ video, withInitializer, youtubeVideoId, handleReady, options, handleStateChange }) => (
+const Video = ({ video, withInitializer, youtubeVideoId, handleReady, handleStateChange, onEnd }) => (
   <div className="Video">
     <Youtube
       id="Video__youtubePlayer"
       className="Video__youtubePlayer"
-      opts={{...DEFAULT_YOUTUBE_OPTIONS, ...options}}
+      opts={DEFAULT_YOUTUBE_OPTIONS}
       videoId={youtubeVideoId}
       onReady={handleReady}
       onStateChange={handleStateChange}
+      onEnd={onEnd}
     />
   </div>
 );

@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { compose, withState, withHandlers, withProps, lifecycle } from 'recompose';
 import { Link } from 'react-router-dom';
-import { withNotation, withVideo } from 'enhancers';
+import { withNotation, withVideo, withRaf } from 'enhancers';
 import { DesktopNav, Gradient, Score, Video, Fretboard, MaestroController } from 'components';
 import styled from 'styled-components';
-import { Row, Col, InputNumber, Checkbox, Button } from 'antd';
+import { Row, Col, InputNumber, Checkbox, Button, Input } from 'antd';
 import Draggable from 'react-draggable';
+import { isBetween } from 'ssUtil';
 
 const enhance = compose(
   withNotation,
@@ -14,23 +15,88 @@ const enhance = compose(
   withState('left', 'setLeft', 0),
   withState('height', 'setHeight', 448),
   withState('width', 'setWidth', 794),
+  withState('font', 'setFont', `'Roboto', sans-serif`),
+  withState('fontHref', 'setFontHref', 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700'),
   withState('recording', 'setRecording', false),
   withState('isMaskActive', 'setIsMaskActive', false),
+  withProps(props => {
+    const { durationMs } = props.notation.state;
+
+    return {
+      maskActiveRangesMs: [
+        { start: -1000, stop: 1250 },
+        { start: durationMs - 3500, stop: durationMs + 1000}
+      ]
+    }
+  }),
   withHandlers({
     handleGenericChange: props => setterName => value => {
       props[setterName](value);
     },
+    handleFontHrefChange: props => event => {
+      const { value } = event.target;
+      const match = value.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/);
+      props.setFontHref(match ? match[0] : value);
+    },
+    handleFontChange: props => event => {
+      const { value } = event.target;
+      const sanitized = value.replace('font-family', '').replace(':', '').replace(';', '').trim();
+      props.setFont(sanitized);
+    },
     handleCheckedChange: props => setterName => event => {
       props[setterName](event.target.checked);
     },
-    handleRecordClick: props => async event => {
+    handleRecordClick: props => event => {
+      props.setIsMaskActive(true);
       props.setRecording(true);
 
+      window.setTimeout(() => {
+        const { player } = props.video.state;
+        player.seekTo(0);
+        player.playVideo();
+      }, 1000);
+    },
+    handleStopClick: props => event => {
       const { player } = props.video.state;
+      player.pauseVideo();
       player.seekTo(0);
-      player.playVideo();
+      props.setRecording(false);
+
+      window.ss.maestro.enqueue(maestro => maestro.currentTimeMs = 0).update();
+    },
+    handleAnimationLoop: props => dt => {
+      if (!props.recording) {
+        return;
+      }
+
+      const { currentTimeMs } = window.ss.maestro;
+      const withinMaskActiveRange = props.maskActiveRangesMs.some(range => (
+        isBetween(currentTimeMs, range.start, range.stop))
+      );
+
+      if (withinMaskActiveRange && !props.isMaskActive) {
+        props.setIsMaskActive(true);
+      } else if (!withinMaskActiveRange && props.isMaskActive) {
+        props.setIsMaskActive(false);
+      }
+    },
+    handleVideoEnd: props => dt => {
+      const { player } = props.video.state;
+      player.pauseVideo();
+      player.seekTo(0);
+      props.setRecording(false);
+
+      window.ss.maestro.enqueue(maestro => maestro.currentTimeMs = 0).update();
     }
   }),
+  withRaf(
+    () => window.ss.rafLoop,
+    props => ({
+      name: 'NotationStudio.handleAnimationLoop',
+      precedence: 1000,
+      onAnimationLoop: props.handleAnimationLoop
+    })
+  ),
   withProps(props => ({
     fetchNotation: async () => {
       const notationId = props.match.params.id;
@@ -65,21 +131,25 @@ const LeftCol = styled(Col)`
   > * {
     margin-top: 20px;
   }
+
+  h1 {
+    font-weight: 100;
+  }
 `;
 const RightCol = styled(Col)`
   padding: 20px;
 `;
 const RecordingZone = styled.div`
-  border: 3px solid fuchsia;
+  border: 3px solid lime;
   width: 800px;
   height: 800px;
   position: relative;
 `;
 const Mask = (styled.div as any)`
   position: absolute;
-  top: 504px;
+  top: 502px;
   left: 0;
-  height: 291px;
+  height: 293px;
   width: 794px;
   background: white;
   z-index: 101;
@@ -90,6 +160,7 @@ const Mask = (styled.div as any)`
   align-items: center;
   border-bottom: 10px solid #fc354c;
   opacity: ${props => props.isMaskActive ? 1 : 0};
+  font-family: ${props => props.font};
 `;
 const MaskLeft = (styled.div as any)`
   position: absolute;
@@ -110,15 +181,17 @@ const MaskLine = styled.div`
 
   h1 {
     font-size: 72px;
+    font-weight: 700;
   }
 
   h2 {
     font-size: 48px;
+    font-weight: 500;
   }
 
   h3 {
     font-size: 24px;
-    font-weight: 200;
+    font-weight: 300;
   }
 `;
 const Tag = styled.span`
@@ -182,16 +255,22 @@ const NotationStudio = props => (
   <div>
     <Gradient />
     <DesktopNav />
+    <link href={props.fontHref} rel="stylesheet" />
     <Inner>
       <MaestroController />
       <Row>
         <LeftCol span={8}>
+          <h1>studio</h1>
+          <Link to={`/n/${props.match.params.id}`}>
+            back
+          </Link>
           <Row>
             <Col span={6}>
               <Label>top</Label>
               <InputNumber
                 value={props.top}
                 onChange={props.handleGenericChange('setTop')}
+                disabled={props.recording}
               />
             </Col>
             <Col span={6}>
@@ -199,6 +278,7 @@ const NotationStudio = props => (
               <InputNumber
                 value={props.left}
                 onChange={props.handleGenericChange('setLeft')}
+                disabled={props.recording}
               />
             </Col>
             <Col span={6}>
@@ -206,6 +286,7 @@ const NotationStudio = props => (
               <InputNumber
                 value={props.height}
                 onChange={props.handleGenericChange('setHeight')}
+                disabled={props.recording}
               />
             </Col>
             <Col span={6}>
@@ -213,30 +294,55 @@ const NotationStudio = props => (
               <InputNumber
                 value={props.width}
                 onChange={props.handleGenericChange('setWidth')}
+                disabled={props.recording}
               />
             </Col>
           </Row>
           <Row>
-            <CheckboxLabel>show mask</CheckboxLabel>
-            <Checkbox
-              value={props.isMaskActive}
-              onChange={props.handleCheckedChange('setIsMaskActive')}
-            />
+            <Col span={24}>
+              <Label>font href</Label>
+              <Input
+                value={props.fontHref}
+                onChange={props.handleFontHrefChange}
+                disabled={props.recording}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
+              <Label>font</Label>
+              <Input
+                value={props.font}
+                onChange={props.handleFontChange}
+                disabled={props.recording}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6}>
+              <label>
+                <CheckboxLabel>show mask</CheckboxLabel>
+                <Checkbox
+                  checked={props.isMaskActive}
+                  onChange={props.handleCheckedChange('setIsMaskActive')}
+                  disabled={props.recording}
+                />
+              </label>
+            </Col>
           </Row>
           <Row>
             <RecordButton
               type="primary"
               size="large"
-              disabled={props.recording}
-              onClick={props.handleRecordClick}
+              onClick={props.recording ? props.handleStopClick : props.handleRecordClick}
             >
-              {props.recording ? 'recording...' : 'record'}
+              {props.recording ? 'stop' : 'record'}
             </RecordButton>
           </Row>
         </LeftCol>
         <RightCol span={16}>
           <RecordingZone>
-            <Mask isMaskActive={props.isMaskActive}>
+            <Mask {...props}>
               <MaskLeft isMaskActive={props.isMaskActive}>
                 <MaskLine>
                   <h1>{props.notation.state.songName}</h1>
@@ -257,7 +363,7 @@ const NotationStudio = props => (
               </MaskLeft>
             </Mask>
             <VideoContainer {...props}>
-              <Video />
+              <Video onEnd={props.handleVideoEnd} />
             </VideoContainer>
             <Spacer />
             <FretboardContainer>
