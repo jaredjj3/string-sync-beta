@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { withNotation, withVideo } from 'enhancers';
 import { DesktopNav, Gradient, Score, Video, Fretboard, MaestroController } from 'components';
 import styled from 'styled-components';
-import { Row, Col, InputNumber, Button } from 'antd';
+import { Row, Col, InputNumber, Checkbox, Button } from 'antd';
 import Draggable from 'react-draggable';
 
 const enhance = compose(
@@ -14,9 +14,21 @@ const enhance = compose(
   withState('left', 'setLeft', 0),
   withState('height', 'setHeight', 448),
   withState('width', 'setWidth', 794),
+  withState('recording', 'setRecording', false),
+  withState('isMaskActive', 'setIsMaskActive', false),
   withHandlers({
-    handleChange: props => setterName => value => {
+    handleGenericChange: props => setterName => value => {
       props[setterName](value);
+    },
+    handleCheckedChange: props => setterName => event => {
+      props[setterName](event.target.checked);
+    },
+    handleRecordClick: props => async event => {
+      props.setRecording(true);
+
+      const { player } = props.video.state;
+      player.seekTo(0);
+      player.playVideo();
     }
   }),
   withProps(props => ({
@@ -28,6 +40,13 @@ const enhance = compose(
   lifecycle({
     componentDidMount(): void {
       this.props.fetchNotation();
+    },
+    componentWillReceiveProps(nextProps): void {
+      if (this.props.video.state.isActive && !nextProps.video.state.isActive) {
+        const { player } = nextProps.video.state;
+        player.seekTo(0);
+        player.pauseVideo();
+      }
     },
     componentWillUmount(): void {
       this.props.notation.dispatch.resetNotation();
@@ -55,6 +74,65 @@ const RecordingZone = styled.div`
   width: 800px;
   height: 800px;
   position: relative;
+`;
+const Mask = (styled.div as any)`
+  position: absolute;
+  top: 504px;
+  left: 0;
+  height: 291px;
+  width: 794px;
+  background: white;
+  z-index: 101;
+  transition: 500ms;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 10px solid #fc354c;
+  opacity: ${props => props.isMaskActive ? 1 : 0};
+`;
+const MaskLeft = (styled.div as any)`
+  position: absolute;
+  top: 25px;
+  transition: 500ms;
+  left: ${props => props.isMaskActive ? 25 : 0}px;
+
+  h1, h2, h3 {
+    margin-bottom: 0;
+    align-text: center;
+    transition: 500ms;
+    display: inline-block;
+  }
+`;
+const MaskLine = styled.div`
+  display: flex;
+  align-items: center;
+
+  h1 {
+    font-size: 72px;
+  }
+
+  h2 {
+    font-size: 48px;
+  }
+
+  h3 {
+    font-size: 24px;
+    font-weight: 200;
+  }
+`;
+const Tag = styled.span`
+  padding: 5px;
+  margin: 7px;
+  border: 2px solid #fc354c;
+  background: #ffbfc6;
+  border-radius: 5px;
+`;
+const AppName = styled.h4`
+  color: darkgray;
+  margin-top: 10px;
+  font-weight: 100;
+  font-size: 18px;
 `;
 const VideoContainer = (styled.div as any)`
   background: black;
@@ -93,6 +171,9 @@ const Label = styled.div`
   margin-bottom: 6px;
   margin-top: 10px;
 `;
+const CheckboxLabel = styled.span`
+  margin-right: 5px;
+`;
 const RecordButton = styled(Button)`
   width: 100%;
 `;
@@ -110,39 +191,71 @@ const NotationStudio = props => (
               <Label>top</Label>
               <InputNumber
                 value={props.top}
-                onChange={props.handleChange('setTop')}
+                onChange={props.handleGenericChange('setTop')}
               />
             </Col>
             <Col span={6}>
               <Label>left</Label>
               <InputNumber
                 value={props.left}
-                onChange={props.handleChange('setLeft')}
+                onChange={props.handleGenericChange('setLeft')}
               />
             </Col>
             <Col span={6}>
               <Label>height</Label>
               <InputNumber
                 value={props.height}
-                onChange={props.handleChange('setHeight')}
+                onChange={props.handleGenericChange('setHeight')}
               />
             </Col>
             <Col span={6}>
               <Label>width</Label>
               <InputNumber
                 value={props.width}
-                onChange={props.handleChange('setWidth')}
+                onChange={props.handleGenericChange('setWidth')}
               />
             </Col>
           </Row>
           <Row>
-            <RecordButton type="primary" size="large">
-              Record
+            <CheckboxLabel>show mask</CheckboxLabel>
+            <Checkbox
+              value={props.isMaskActive}
+              onChange={props.handleCheckedChange('setIsMaskActive')}
+            />
+          </Row>
+          <Row>
+            <RecordButton
+              type="primary"
+              size="large"
+              disabled={props.recording}
+              onClick={props.handleRecordClick}
+            >
+              {props.recording ? 'recording...' : 'record'}
             </RecordButton>
           </Row>
         </LeftCol>
         <RightCol span={16}>
           <RecordingZone>
+            <Mask isMaskActive={props.isMaskActive}>
+              <MaskLeft isMaskActive={props.isMaskActive}>
+                <MaskLine>
+                  <h1>{props.notation.state.songName}</h1>
+                </MaskLine>
+                <MaskLine>
+                  <h2>{`by ${props.notation.state.artistName}`}</h2>
+                  {
+                    props.notation.state.tags.map(tag => (
+                      <Tag key={`notation-studio-tag-${tag}`}>
+                        <h3>{tag}</h3>
+                      </Tag>
+                    ))
+                  }
+                </MaskLine>
+                <MaskLine>
+                  <AppName>stringsync.com</AppName>
+                </MaskLine>
+              </MaskLeft>
+            </Mask>
             <VideoContainer {...props}>
               <Video />
             </VideoContainer>

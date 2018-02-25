@@ -54,7 +54,7 @@ const FretboardOuter = styled.div`
 `;
 const FretboardInner = styled.div`
   .Fret__indicator {
-    background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.6));
+    background: black;
   }
 
   width: 100%;
