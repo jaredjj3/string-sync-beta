@@ -43,7 +43,7 @@ const GuitarStringOuter = styled.div`
   .GuitarString {
     width: 100vw;
     background: #aaa;
-    opacity: 0.4;
+    opacity: 0.5;
   }
 
   .GuitarString--hidden {

@@ -15,7 +15,8 @@ const enhance = compose(
   mapProps(props => ({
     width: props.width,
     caret: Boolean(props.caret),
-    scroller: Boolean(props.scroller)
+    scroller: Boolean(props.scroller),
+    hideScroll: Boolean(props.hideScroll)
   })),
   withNotation,
   // The purpose of the score prop is solely to trigger rerenders
@@ -51,15 +52,15 @@ const enhance = compose(
 const Head = styled.div`
   display: none;
 `;
-const Body = styled.div`
+const Body = (styled.div as any)`
   background: white;
   max-height: 1040px;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: ${props => props.hideScroll ? 'hidden' : 'auto'};
   -webkit-overflow-scrolling: touch;
 `;
 const Spacer = styled.div`
-  height: 700px;
+  height: 800px;
   width: 100%;
   background: white;
 `;
@@ -83,7 +84,7 @@ const ScoreLines = ({ score, caret }) => {
   }
 };
 
-const Score = ({ width, caret, scroller, notation, score }) =>(
+const Score = ({ width, caret, scroller, notation, score, hideScroll }) =>(
   <div>
     <Head>
       <ScoreController width={width} caret={caret} score={score} />
@@ -91,7 +92,7 @@ const Score = ({ width, caret, scroller, notation, score }) =>(
       {caret ? <LoopCaretController /> : null}
       {scroller ? <ScoreScroller /> : null}
     </Head>
-    <Body id="Score">
+    <Body id="Score" hideScroll={hideScroll}>
       <ScoreTitle
         songName={notation.state.songName}
         artistName={notation.state.artistName}

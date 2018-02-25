@@ -32,7 +32,7 @@ const enhance = compose(
 );
 
 const Outer = styled.div`
-  min-height: 270px;
+  height: 280px;
   margin: 0 10px;
 `;
 

@@ -30,6 +30,7 @@ const enhance = compose(
 const FretboardOuter = styled.div`
   background: black;
   color: white;
+  z-index: 9999;
 
   &&& .ant-col-2 .Fret:first-child {
     border-right: 3px solid rgba(211, 211, 211, 0.2);
@@ -53,8 +54,10 @@ const FretboardOuter = styled.div`
 `;
 const FretboardInner = styled.div`
   .Fret__indicator {
-    background: black;
+    background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.6));
   }
+
+  width: 100%;
 `;
 
 const FretboardIndicators = () => {
@@ -63,10 +66,10 @@ const FretboardIndicators = () => {
   ));
 
   return (
-    <Row className="Fret__indicator" type="flex" justify="center">
+    <Row type="flex" justify="center">
       {
         indicators.map((indicator, fret) => (
-          <Col key={`fret-indicator-${fret}`} span={fret === 0 ? 2 : 1}>
+          <Col className="Fret__indicator" key={`fret-indicator-${fret}`} span={fret === 0 ? 2 : 1}>
             <Row type="flex" justify="center">
               {indicator}
             </Row>

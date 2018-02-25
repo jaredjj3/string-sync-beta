@@ -2,23 +2,19 @@ import * as React from 'react';
 import { Icon } from 'antd';
 import styled from 'styled-components';
 
-interface IconDescribeProps {
-  type: string;
-  description: string;
-}
-
-const IconDescribeOuter = styled.span`
+const Outer = styled.span`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  max-width: 50px;
 `;
 
-const IconDescribe = ({ type, description }: IconDescribeProps) => (
-  <IconDescribeOuter className="IconDescribe">
+const IconDescribe = ({ type, description }) => (
+  <Outer className="IconDescribe">
     <Icon type={type} />
     <span>{description}</span>
-  </IconDescribeOuter>
+  </Outer>
 );
 
 export default IconDescribe;

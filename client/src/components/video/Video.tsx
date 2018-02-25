@@ -2,6 +2,7 @@ import * as React from 'react';
 import { compose, defaultProps, mapProps, withHandlers, lifecycle, shouldUpdate } from 'recompose';
 import { withVideo, withNotation } from 'enhancers';
 import Youtube from 'react-youtube';
+import styled from 'styled-components';
 
 const PLAYER_STATES = {
   [-1] : 'UNSTARTED',
@@ -12,7 +13,7 @@ const PLAYER_STATES = {
   [5]  : 'VIDEO_CUED'
 };
 
-const youtubeOptions = {
+const DEFAULT_YOUTUBE_OPTIONS = {
   playerVars: {
     modestbranding: 1,
     playsinline: 1,
@@ -54,12 +55,12 @@ const enhance = compose(
   })
 );
 
-const Video = ({ video, withInitializer, youtubeVideoId, handleReady, handleStateChange }) => (
+const Video = ({ video, withInitializer, youtubeVideoId, handleReady, options, handleStateChange }) => (
   <div className="Video">
     <Youtube
       id="Video__youtubePlayer"
       className="Video__youtubePlayer"
-      opts={youtubeOptions}
+      opts={{...DEFAULT_YOUTUBE_OPTIONS, ...options}}
       videoId={youtubeVideoId}
       onReady={handleReady}
       onStateChange={handleStateChange}
