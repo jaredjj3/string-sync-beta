@@ -3,8 +3,8 @@ import { compose, withState, withHandlers, withProps, lifecycle } from 'recompos
 import { Link } from 'react-router-dom';
 import { withNotation, withVideo, withRaf } from 'enhancers';
 import {
-  DesktopNav, Gradient, Score, Video, Fretboard,
-  MaestroController, RecordingZone, NotationStudioControls
+  DesktopNav, Gradient, Score, Video, Fretboard, MaestroController,
+  RecordingZone, RecordingZoneMask, NotationStudioControls
 } from 'components';
 import styled from 'styled-components';
 import { Row, Col, InputNumber, Checkbox, Button, Input } from 'antd';
@@ -15,7 +15,7 @@ const enhance = compose(
   withVideo,
   withState('top', 'setTop', 0),
   withState('left', 'setLeft', 0),
-  withState('height', 'setHeight', 448),
+  withState('height', 'setHeight', 449),
   withState('width', 'setWidth', 800),
   withState('font', 'setFont', `'Roboto', sans-serif`),
   withState('fontHref', 'setFontHref', 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700'),
@@ -32,6 +32,11 @@ const enhance = compose(
       ]
     }
   }),
+  withProps(props => ({
+    recordingZoneHeightPx: props.mode === 'instagram' ? 810 : 608,
+    recordingZoneWidthPx: props.mode === 'instagram' ? 810 : 1090,
+    previewRecordingZoneProps: Object.assign({}, props, { isMaskActive: true })
+  })),
   withHandlers({
     handleGenericChange: props => setterName => value => {
       props[setterName](value);
@@ -144,14 +149,15 @@ const LeftCol = styled(Col)`
 `;
 const RightCol = styled(Col)`
   padding: 20px;
+  position: relative;
 `;
 const RecordButton = styled(Button)`
   width: 100%;
 `;
-const InstagramViewport = styled.div`
+const RecordingZoneContainer = (styled.div as any)`
   border: 5px solid lime;
-  width: 810px;
-  height: 810px;
+  width: ${props => props.width}px;
+  height: ${props => props.height}px;
 `;
 
 const Record = props => (
@@ -181,12 +187,16 @@ const NotationStudio = props => (
           <Record {...props} />
         </LeftCol>
         <RightCol span={16}>
-          <InstagramViewport>
-            {props.mode === 'instagram' ? <RecordingZone {...props} /> : null}
-          </InstagramViewport>
+          <RecordingZoneMask {...props.previewRecordingZoneProps} />
         </RightCol>
       </Row>
       <Row>
+        <RecordingZoneContainer
+          width={props.recordingZoneWidthPx}
+          height={props.recordingZoneHeightPx}
+        >
+          <RecordingZone {...props} />
+        </RecordingZoneContainer>
       </Row>
     </Inner>
   </div>
