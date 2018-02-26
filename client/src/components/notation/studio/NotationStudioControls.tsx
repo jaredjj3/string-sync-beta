@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { Row, Col, InputNumber, Button, Input, Checkbox } from 'antd';
+import { Row, Col, InputNumber, Button, Input, Checkbox, Radio } from 'antd';
 import styled from 'styled-components';
+
+const RadioGroup = Radio.Group;
 
 const Outer = styled.div`
   .ant-input-number,
@@ -90,6 +92,12 @@ const NotationStudioControls = props => (
         >
           show mask
         </Checkbox>
+      </Col>
+      <Col span={12}>
+        <RadioGroup onChange={props.handleModeChange} value={props.mode}>
+          <Radio value={'instagram'}>instagram</Radio>
+          <Radio value={'youtube'}>youtube</Radio>
+        </RadioGroup>
       </Col>
     </Row>
   </Outer>

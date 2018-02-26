@@ -16,11 +16,12 @@ const enhance = compose(
   withState('top', 'setTop', 0),
   withState('left', 'setLeft', 0),
   withState('height', 'setHeight', 448),
-  withState('width', 'setWidth', 794),
+  withState('width', 'setWidth', 800),
   withState('font', 'setFont', `'Roboto', sans-serif`),
   withState('fontHref', 'setFontHref', 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700'),
   withState('recording', 'setRecording', false),
   withState('isMaskActive', 'setIsMaskActive', false),
+  withState('mode', 'setMode', 'instagram'),
   withProps(props => {
     const { durationMs } = props.notation.state;
 
@@ -34,6 +35,9 @@ const enhance = compose(
   withHandlers({
     handleGenericChange: props => setterName => value => {
       props[setterName](value);
+    },
+    handleModeChange: props => event => {
+      props.setMode(event.target.value);
     },
     handleFontHrefChange: props => event => {
       const { value } = event.target;
@@ -144,6 +148,21 @@ const RightCol = styled(Col)`
 const RecordButton = styled(Button)`
   width: 100%;
 `;
+const InstagramViewport = styled.div`
+  border: 5px solid lime;
+  width: 810px;
+  height: 810px;
+`;
+
+const Record = props => (
+  <RecordButton
+    type="primary"
+    size="large"
+    onClick={props.recording ? props.handleStopClick : props.handleRecordClick}
+  >
+    {props.recording ? 'stop' : 'record'}
+  </RecordButton>
+);
 
 const NotationStudio = props => (
   <div>
@@ -159,17 +178,15 @@ const NotationStudio = props => (
             back
           </Link>
           <NotationStudioControls {...props} />
-          <RecordButton
-            type="primary"
-            size="large"
-            onClick={props.recording ? props.handleStopClick : props.handleRecordClick}
-          >
-            {props.recording ? 'stop' : 'record'}
-          </RecordButton>
+          <Record {...props} />
         </LeftCol>
         <RightCol span={16}>
-          <RecordingZone {...props} />
+          <InstagramViewport>
+            {props.mode === 'instagram' ? <RecordingZone {...props} /> : null}
+          </InstagramViewport>
         </RightCol>
+      </Row>
+      <Row>
       </Row>
     </Inner>
   </div>

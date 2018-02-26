@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Video, Score, Fretboard } from 'components';
 
 const Outer = styled.div`
-  border: 3px solid lime;
   width: 800px;
   height: 800px;
   position: relative;
@@ -12,8 +11,8 @@ const Mask = (styled.div as any) `
   position: absolute;
   top: 502px;
   left: 0;
-  height: 293px;
-  width: 794px;
+  height: 298px;
+  width: 800px;
   background: white;
   z-index: 101;
   transition: 500ms;
