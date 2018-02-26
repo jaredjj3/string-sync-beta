@@ -21,7 +21,7 @@ const Mask = (styled.div as any) `
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border-bottom: 10px solid #fc354c;
+  border: 10px solid #fc354c;
   opacity: ${props => props.isMaskActive ? 1 : 0};
   font-family: ${props => props.font};
 `;

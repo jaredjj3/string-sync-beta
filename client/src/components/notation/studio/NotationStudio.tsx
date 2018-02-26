@@ -141,13 +141,6 @@ const LeftCol = styled(Col)`
 const RightCol = styled(Col)`
   padding: 20px;
 `;
-const Label = styled.div`
-  margin-bottom: 6px;
-  margin-top: 10px;
-`;
-const CheckboxLabel = styled.span`
-  margin-right: 5px;
-`;
 const RecordButton = styled(Button)`
   width: 100%;
 `;
@@ -166,6 +159,13 @@ const NotationStudio = props => (
             back
           </Link>
           <NotationStudioControls {...props} />
+          <RecordButton
+            type="primary"
+            size="large"
+            onClick={props.recording ? props.handleStopClick : props.handleRecordClick}
+          >
+            {props.recording ? 'stop' : 'record'}
+          </RecordButton>
         </LeftCol>
         <RightCol span={16}>
           <RecordingZone {...props} />

@@ -2,20 +2,23 @@ import * as React from 'react';
 import { Row, Col, InputNumber, Button, Input, Checkbox } from 'antd';
 import styled from 'styled-components';
 
-const LabelMessage = styled.label`
-  margin-bottom: 6px;
-  margin-top: 10px;
-`;
-const RecordButton = styled(Button) `
-  width: 100%;
+const Outer = styled.div`
+  .ant-input-number,
+  .ant-input {
+    margin-top: 7px;
+  }
+
+  .ant-row {
+    margin-top: 10px;
+  }
 `;
 
 const NotationStudioControls = props => (
-  <div>
+  <Outer>
     <Row>
       <Col span={6}>
         <label>
-          <LabelMessage>top</LabelMessage>
+          top
           <InputNumber
             value={props.top}
             onChange={props.handleGenericChange('setTop')}
@@ -25,7 +28,7 @@ const NotationStudioControls = props => (
       </Col>
       <Col span={6}>
         <label>
-          <LabelMessage>left</LabelMessage>
+          left
           <InputNumber
             value={props.left}
             onChange={props.handleGenericChange('setLeft')}
@@ -35,7 +38,7 @@ const NotationStudioControls = props => (
       </Col>
       <Col span={6}>
         <label>
-          <LabelMessage>height</LabelMessage>
+          height
           <InputNumber
             value={props.height}
             onChange={props.handleGenericChange('setHeight')}
@@ -45,7 +48,7 @@ const NotationStudioControls = props => (
       </Col>
       <Col span={6}>
         <label>
-          <LabelMessage>width</LabelMessage>
+          width
           <InputNumber
             value={props.width}
             onChange={props.handleGenericChange('setWidth')}
@@ -57,7 +60,7 @@ const NotationStudioControls = props => (
     <Row>
       <Col span={24}>
         <label>
-          <LabelMessage>font href</LabelMessage>
+          font href
           <Input
             value={props.fontHref}
             onChange={props.handleFontHrefChange}
@@ -69,7 +72,7 @@ const NotationStudioControls = props => (
     <Row>
       <Col span={24}>
         <label>
-          <LabelMessage>font</LabelMessage>
+          font
           <Input
             value={props.font}
             onChange={props.handleFontChange}
@@ -79,27 +82,17 @@ const NotationStudioControls = props => (
       </Col>
     </Row>
     <Row>
-      <Col span={6}>
-        <label>
-          <LabelMessage>show mask</LabelMessage>
-          <Checkbox
-            checked={props.isMaskActive}
-            onChange={props.handleCheckedChange('setIsMaskActive')}
-            disabled={props.recording}
-          />
-        </label>
+      <Col span={12}>
+        <Checkbox
+          checked={props.isMaskActive}
+          onChange={props.handleCheckedChange('setIsMaskActive')}
+          disabled={props.recording}
+        >
+          show mask
+        </Checkbox>
       </Col>
     </Row>
-    <Row>
-      <RecordButton
-        type="primary"
-        size="large"
-        onClick={props.recording ? props.handleStopClick : props.handleRecordClick}
-      >
-        {props.recording ? 'stop' : 'record'}
-      </RecordButton>
-    </Row>
-  </div>
+  </Outer>
 );
 
 export default NotationStudioControls;
