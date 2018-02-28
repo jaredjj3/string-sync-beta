@@ -33,8 +33,8 @@ const enhance = compose(
     }
   }),
   withProps(props => ({
-    recordingZoneHeightPx: props.mode === 'instagram' ? 810 : 608,
-    recordingZoneWidthPx: props.mode === 'instagram' ? 810 : 1090,
+    recordingZoneHeightPx: props.mode === 'instagram' ? 810 : 810,
+    recordingZoneWidthPx: props.mode === 'instagram' ? 810 : 1450,
     previewRecordingZoneProps: Object.assign({}, props, { isMaskActive: true })
   })),
   withHandlers({
@@ -134,30 +134,40 @@ const enhance = compose(
 const Inner = styled.div`
   margin: 0 auto;
   margin-top: 50px;
-  width: 1280px;
-`;
-const LeftCol = styled(Col)`
-  padding: 20px;
-
-  > * {
-    margin-top: 20px;
-  }
+  margin-bottom: 200px;
+  width: 1440px;
 
   h1 {
     font-weight: 100;
   }
 `;
+const LeftCol = styled(Col)`
+  padding: 20px;
+  border-right: 1px solid #efefef;
+
+  > * {
+    margin-top: 20px;
+  }
+`;
 const RightCol = styled(Col)`
   padding: 20px;
-  position: relative;
+
+  > * {
+    margin-top: 20px;
+  }
 `;
 const RecordButton = styled(Button)`
   width: 100%;
+  margin-top: 20px;
+`;
+const MaskContainer = styled.div`
+  position: relative;
 `;
 const RecordingZoneContainer = (styled.div as any)`
   border: 5px solid lime;
   width: ${props => props.width}px;
   height: ${props => props.height}px;
+  margin-top: 50px;
 `;
 
 const Record = props => (
@@ -184,19 +194,22 @@ const NotationStudio = props => (
             back
           </Link>
           <NotationStudioControls {...props} />
-          <Record {...props} />
         </LeftCol>
         <RightCol span={16}>
-          <RecordingZoneMask {...props.previewRecordingZoneProps} />
+          <h1>mask</h1>
+          <MaskContainer>
+            <RecordingZoneMask {...props.previewRecordingZoneProps} />
+          </MaskContainer>
         </RightCol>
       </Row>
-      <Row>
+      <Row type="flex" justify="center">
         <RecordingZoneContainer
           width={props.recordingZoneWidthPx}
           height={props.recordingZoneHeightPx}
         >
           <RecordingZone {...props} />
         </RecordingZoneContainer>
+        <Record {...props} />
       </Row>
     </Inner>
   </div>

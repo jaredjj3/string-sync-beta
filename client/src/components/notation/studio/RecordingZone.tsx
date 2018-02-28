@@ -40,10 +40,14 @@ const ScoreContainer = styled.div`
   left: 0;
   z-index: 100;
 `;
+const MaskContainer = styled.div`
+  position: relative;
+  z-index: 101;
+  background: white;
+`;
 
 const RecordingZone = props => (
   <Outer>
-    <RecordingZoneMask {...props} />
     <VideoContainer {...props}>
       <Video onEnd={props.handleVideoEnd} />
     </VideoContainer>
@@ -59,6 +63,9 @@ const RecordingZone = props => (
         width={770}
       />
     </ScoreContainer>
+    <MaskContainer>
+      <RecordingZoneMask {...props} />
+    </MaskContainer>
   </Outer>
 );
 
