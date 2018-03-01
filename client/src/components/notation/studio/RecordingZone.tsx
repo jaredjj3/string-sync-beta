@@ -2,9 +2,9 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Video, Score, Fretboard, RecordingZoneMask } from 'components';
 
-const Outer = styled.div`
-  width: 800px;
-  height: 800px;
+const Outer = (styled.div as any)`
+  width: ${props => props.recordingZoneWidthPx - 10}px;
+  height: ${props => props.recordingZoneHeightPx - 10}px;
   position: relative;
 `;
 const VideoContainer = (styled.div as any) `
@@ -14,6 +14,8 @@ const VideoContainer = (styled.div as any) `
   position: absolute;
   top: ${props => props.top}px;
   left: ${props => props.left}px;
+  display: flex;
+  justify-content: center;
 
   iframe {
     height: ${props => props.height}px;
@@ -47,7 +49,7 @@ const MaskContainer = styled.div`
 `;
 
 const RecordingZone = props => (
-  <Outer>
+  <Outer {...props}>
     <VideoContainer {...props}>
       <Video onEnd={props.handleVideoEnd} />
     </VideoContainer>
@@ -60,7 +62,7 @@ const RecordingZone = props => (
         caret
         scroller
         hideScroll
-        width={770}
+        width={props.recordingZoneWidthPx - 30}
       />
     </ScoreContainer>
     <MaskContainer>
