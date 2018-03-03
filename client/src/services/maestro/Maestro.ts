@@ -23,6 +23,7 @@ class Maestro {
   loopMs: Array<number> = [];
   isActive: boolean = false;
   updateQueued: boolean = false;
+  errors: Array<string> = [];
 
   // options
   options: Maestro.Options = {

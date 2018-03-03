@@ -6,7 +6,8 @@ import styled from 'styled-components';
 import { Row, Col, Affix } from 'antd';
 import {
   Gradient, NotationControls, MaestroController,
-  Video, Fretboard, Piano, Score, NotationEditScroller
+  Video, Fretboard, Piano, Score, NotationEditScroller,
+  NotationEditor
 } from 'components';
 import { Element as ScrollElement } from 'react-scroll';
 
@@ -82,11 +83,18 @@ const InnerLeft = styled(Col)`
   height: auto;
   -webkit-overflow-scrolling: touch;
   border-right: 1px solid #efefef;
+  margin-bottom: 120px;
+
+  h1 {
+    font-weight: 100;
+  }
+`;
+const EditorContainer = styled.div`
+  padding: 20px;
 `;
 const InnerRight = (styled(Col) as any)`
   overflow: hidden;
-  height: auto;
-  -webkit-overflow-scrolling: touch;
+  margin-bottom: 120px;
 
   .ant-affix {
     z-index: 25;
@@ -113,7 +121,10 @@ const NotationEdit = ({ scoreWidth, handleAffixChange, handleInnerRightRef }) =>
     <NotationEditScroller />
     <Inner type="flex">
       <InnerLeft span={8}>
-        hello world 
+        <EditorContainer>
+          <h1>editor</h1>
+          <NotationEditor />
+        </EditorContainer>
       </InnerLeft>
       <InnerRight span={16} id="NotationEdit">
         <div ref={handleInnerRightRef}>

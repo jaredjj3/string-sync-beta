@@ -12,7 +12,6 @@ class Score {
   vextabString: string = '';
   parser: VextabParser = null;
   measuresPerLine: number = 0;
-  error: string = null;
   width: number = 0;
 
   constructor(vextabString: string, width: number) {
@@ -48,21 +47,14 @@ class Score {
     this._computeNoteInterpolators();
   }
 
-  private _setup(): boolean {
-    this.error = null;
+  private _setup(): void {
     this.measuresPerLine = this._getMeasuresPerLine(this.width);
 
-    try {
-      this.parser = new VextabParser(this.vextabString);
-      const parsed = this.parser.parse();
-      const chunks = this.parser.chunk();
-      this._createMeasures(chunks);
-      this._createLines();
-      return true;
-    } catch (error) {
-      this.error = error.message;
-      return false;
-    }
+    this.parser = new VextabParser(this.vextabString);
+    const parsed = this.parser.parse();
+    const chunks = this.parser.chunk();
+    this._createMeasures(chunks);
+    this._createLines();
   }
 
   private _createLines(): Array<Line> {

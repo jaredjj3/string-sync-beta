@@ -31,9 +31,15 @@ const enhance = compose(
       );
 
       if (shouldCreateScore) {
-        const score = new ScoreService(nextProps.notation.state.vextabString, nextProps.width);
-        window.ss.maestro.score = score;
-        nextProps.setScore(score);
+        const { maestro } = window.ss;
+        try {
+          maestro.errors = [];
+          const score = new ScoreService(nextProps.notation.state.vextabString, nextProps.width);
+          maestro.score = score;
+          nextProps.setScore(score);
+        } catch (error) {
+          maestro.errors.push(error);
+        }
       }
     }
   })),

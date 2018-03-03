@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { compose, withProps } from 'recompose';
 import { withNotation } from 'enhancers';
-import { Affix, Row } from 'antd';
 import { Save, DeadTime, Bpm, VextabStringEditor } from './';
 import styled from 'styled-components';
 
@@ -14,15 +13,8 @@ const enhance = compose(
 
 const NotationEditorOuter = styled.div`
   background: white;
-  padding: 20px;
   opacity: 1;
-
-  .ant-affix {
-    z-index: 20;
-    opacity: 0.95;
-  }
 `;
-
 const NotationEditorControlRow1Outer = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -38,21 +30,14 @@ const Affixed = styled.div`
 
 const NotationEditor = ({ getAffixTarget }) => (
   <NotationEditorOuter>
-    <Affix
-      target={getAffixTarget}
-      offsetTop={10}
-    >
-      <Affixed id="ScoreAffix">
-        <NotationEditorControlRow1Outer>
-          <Save />
-          <DeadTime />
-          <Bpm />
-        </NotationEditorControlRow1Outer>
-        <div className="NotationEditor__controlRow2">
-          <VextabStringEditor />
-        </div>
-      </Affixed>
-    </Affix>
+    <NotationEditorControlRow1Outer>
+      <Save />
+      <DeadTime />
+      <Bpm />
+    </NotationEditorControlRow1Outer>
+    <div className="NotationEditor__controlRow2">
+      <VextabStringEditor />
+    </div>
   </NotationEditorOuter>
 );
 

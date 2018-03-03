@@ -5,6 +5,7 @@ import { Input, Alert } from 'antd';
 import { withNotation } from 'enhancers';
 import { debounce } from 'lodash';
 import styled from 'styled-components';
+import { hash } from 'ssUtil';
 
 const { TextArea } = Input;
 
@@ -23,14 +24,11 @@ const enhance = compose(
   withState('editorVextabString', 'setEditorVextabString', null),
   withState('isInitialized', 'setIsInitialized', false),
   withProps(props => ({
-    getParseError: () => {
-      const tab = props.tab.state.instance;
-      return tab ? tab.error : null;
-    }
+    parseErrors: window.ss.maestro.errors
   })),
   withProps(props => ({
-    setNotationVextabString: () => {
-      setNotationVextabString(props);
+    setNotationVextabString: nextProps => {
+      setNotationVextabString(nextProps);
     }
   })),
   withHandlers({
@@ -47,10 +45,10 @@ const enhance = compose(
 
       if (isNotationFetched) {
         if (!nextProps.isInitialized) {
-          nextProps.setEditorVextabString(nextProps.notation.state.vextabString);
+          nextProps.setEditorVextabString(notationVextabString);
           nextProps.setIsInitialized(true);
-        } else if (notationVextabString !== editorVextabString) {
-          nextProps.setNotationVextabString();
+        } else if (this.props.notation.state.vextabString !== editorVextabString) {
+          nextProps.setNotationVextabString(nextProps);
         }
       }
     }
@@ -65,12 +63,16 @@ const VextabStringEditorOuter = styled.div`
   }
 `;
 
-const ParseError = ({ parseError }) => {
-  if (parseError) {
+const ParseError = ({ parseErrors }) => {
+  if (parseErrors.length > 0) {
     return (
       <Alert
         message="Parse Error"
-        description={parseError}
+        description={
+          <ul>
+            {parseErrors.map((error, ndx) => <li key={hash(error.message + ndx)}>{error.message}</li>)}
+          </ul>
+        }
         type="error"
       />
     );
@@ -85,13 +87,13 @@ const ParseError = ({ parseError }) => {
   }
 }
 
-const VextabStringEditor = ({ getParseError, editorVextabString, handleChange }) => (
+const VextabStringEditor = ({ parseErrors, editorVextabString, handleChange }) => (
   <VextabStringEditorOuter>
-    <ParseError parseError={getParseError()} />
+    <ParseError parseErrors={parseErrors} />
     <TextArea
       placeholder="Write Vextab here..."
       value={editorVextabString}
-      autosize={{ minRows: 5, maxRows: 10 }}
+      autosize={{ minRows: 5 }}
       onChange={handleChange}
     />
   </VextabStringEditorOuter>

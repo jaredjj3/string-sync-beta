@@ -14,18 +14,18 @@ const enhance = compose(
 
       const { maestro } = window.ss;
       const { score } = line;
-      const renderer = new ScoreLineRenderer(line, canvas, maestro);
 
       try {
+        const renderer = new ScoreLineRenderer(line, canvas, maestro);
         renderer.render();
 
-        if (line.isLast && !score.error) {
+        if (line.isLast && maestro.errors.length === 0) {
           maestro.enqueue(() => {
             score.hydrateNotes();
           });
         }
       } catch (error) {
-        score.error = score.error ? `${score.error}\n${error.message}` : error.message;
+        maestro.errors.push(error);
       }
     }
   })
