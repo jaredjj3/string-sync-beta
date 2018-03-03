@@ -73,7 +73,6 @@ const Outer = styled.div`
   min-width: 1080px;
 `;
 const Inner = styled(Row)`
-  border: 1px solid red;
   width: 100%;
   overflow: hidden;
   height: 100vh;
@@ -82,6 +81,7 @@ const InnerLeft = styled(Col)`
   overflow: auto;
   height: auto;
   -webkit-overflow-scrolling: touch;
+  border-right: 1px solid #efefef;
 `;
 const InnerRight = (styled(Col) as any)`
   overflow: hidden;
