@@ -63,9 +63,12 @@ const enhance = compose(
     componentDidMount(): void {
       const notationId = this.props.match.params.id;
       this.props.notation.dispatch.fetchNotation(notationId);
+
+      window.ss.keyboardManager.install(window);
     },
     componentWillUnmount(): void {
       this.props.notation.dispatch.resetNotation();
+      window.ss.keyboardManager.uninstall;
     }
   })
 );

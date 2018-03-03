@@ -8,6 +8,10 @@ const enhance = compose(
   withState('loading', 'setLoading', false),
   withProps(props => ({
     tryUpdate: async notation => {
+      if (props.loading) {
+        return;
+      }
+
       props.setLoading(true);
       const updateNotation = Object.assign({}, notation);
 
@@ -36,7 +40,10 @@ const enhance = compose(
   }),
   lifecycle({
     componentDidMount(): void {
-
+      window.ss.keyboardManager.register(['Control', 's'], this.props.handleClick);
+    },
+    componentWillUnmount(): void {
+      window.ss.keyboardManager.unregister(['Control', 's']);
     }
   })
 );
