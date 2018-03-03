@@ -88,10 +88,14 @@ const RecordingZoneMask = props => (
         </MaskLeft>
         <MaskRight>
           <MaskLine>
-            <h1>{props.notation.state.songName}</h1>
+            <span>
+              <h1>{props.notation.state.songName}</h1>
+            </span>
           </MaskLine>
           <MaskLine>
-            <h2>{`by ${props.notation.state.artistName}`}</h2>
+            <span>
+              <h2>{`by ${props.notation.state.artistName}`}</h2>
+            </span>
             {
               props.notation.state.tags.map(tag => (
                 <Tag key={`notation-studio-tag-${tag}`}>
