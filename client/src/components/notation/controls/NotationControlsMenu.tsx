@@ -7,6 +7,7 @@ import { withSession, withNotation, withViewport } from 'enhancers';
 import { Playback } from './';
 import styled from 'styled-components';
 import * as classNames from 'classnames';
+import { get } from 'lodash';
 
 const { SubMenu, ItemGroup, Item } = Menu;
 
@@ -38,15 +39,29 @@ const enhance = compose (
       const checked = !props.fretboardChecked;
       props.setFretboardChecked(checked);
 
-      const { fretboard, notationShow } = window.ss.globalProps;
-      notationShow.updateAffix(() => fretboard.setVisibility(checked));
+      const { fretboard, notationShow, notationEdit } = window.ss.globalProps;
+      if (fretboard) {
+        const updateAffix = get(notationShow, 'updateAffix') || get(notationEdit, 'updateAffix');
+        if (updateAffix) {
+          updateAffix(() => fretboard.setVisibility(checked));
+        } else {
+          fretboard.setVisibility(checked);
+        }
+      }
     },
     handlePianoToggle: props => event => {
       const checked = !props.pianoChecked;
       props.setPianoChecked(checked);
 
-      const { piano, notationShow } = window.ss.globalProps;
-      notationShow.updateAffix(() => piano.setVisibility(checked));
+      const { piano, notationShow, notationEdit } = window.ss.globalProps;
+      if (piano) {
+        const updateAffix = get(notationShow, 'updateAffix') || get(notationEdit, 'updateAffix');
+        if (updateAffix) {
+          updateAffix(() => piano.setVisibility(checked));
+        } else {
+          piano.setVisibility(checked);
+        }
+      }
     }
   }),
   withProps(props => ({
@@ -95,8 +110,8 @@ const enhance = compose (
       maestro.options.showLoop = false;
 
       const { fretboard, piano } = window.ss.globalProps;
-      this.props.setFretboardChecked(Boolean(fretboard.isVisible));
-      this.props.setPianoChecked(Boolean(piano.isVisible));
+      this.props.setFretboardChecked(Boolean(get(fretboard, 'isVisible')));
+      this.props.setPianoChecked(Boolean(get(piano, 'isVisible')));
     }
   })
 );

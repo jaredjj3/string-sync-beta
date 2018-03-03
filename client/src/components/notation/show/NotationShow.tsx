@@ -84,6 +84,7 @@ const Outer = styled.section`
   flex-flow: column;
   overflow: hidden;
   height: calc(100vh - 125px);
+  width: 100%;
 `;
 const Top = styled.header`
   margin-top: 1px;
@@ -101,13 +102,13 @@ const Middle = styled.div`
 const Bottom = styled.footer`
   position: fixed;
   bottom: 0;
+  left: 0;
   width: 100%;
   z-index: 28;
 `;
 const LibraryLinkContainer = styled.span`
   position: fixed;
   top: 20px;
-  left: 20px;
   z-index: 30;
   padding: 10px;
 

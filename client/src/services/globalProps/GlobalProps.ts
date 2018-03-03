@@ -9,6 +9,7 @@ class GlobalProps {
   fretboard: any = null;
   scoreScroller: any = null;
   notationShow: any = null;
+  notationEdit: any = null;
   notationShowTab: any = null;
 }
 
