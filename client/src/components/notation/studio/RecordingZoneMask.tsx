@@ -1,123 +1,77 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Row, Col } from 'antd';
-import { Textfit } from 'react-textfit';
+import { truncate } from 'lodash';
 
-const Mask = (styled.div as any)`
+const Outer = (styled.div as any)`
   z-index: 101;
   transition: 500ms;
   opacity: ${props => props.isMaskActive ? 1 : 0};
   font-family: ${props => props.font};
-`;
-const MaskContents = (styled.div as any)`
-  width: ${props => props.mode === 'instagram' ? 800 : 1440}px;
   height: 295px;
+  position: relative;
+  background: ${props => props.isMaskActive ? 'white' : 'transparent'};
+`;
+const Inner = (styled.div as any)`
   position: absolute;
-  background: white;
-  box-sizing: border-box;
-  padding-left: 25px;
-  padding-top: 25px;
   transition: 500ms;
   left: ${props => props.isMaskActive ? 0 : -25}px;
-
-  h1, h2, h3 {
-    margin-bottom: 0;
-    align-text: center;
-    transition: 500ms;
-    display: inline-block;
-  }
+  width: 100%;
 `;
-const MaskLeft = styled(Col)`
+const Contents = styled.div`
+  padding: 25px;
+  height: 295px;
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
-  padding-right: 30px;
-  transform: translateY(-23px);
+`;
+const Left = styled.div`
+  writing-mode: tb-rl;
+  text-orientation: upright;
+  padding: 20px;
+  padding-left: 0;
+  border-right: 10px solid #fc354c;
 
   h1 {
-    font-size: 96px;
-    height: 80px;
-    font-weight: 100;
+    margin: 0;
+    font-size: 54px;
+    font-weight: 700;
   }
 `;
-const MaskRight = (styled(Col) as any)`
-  padding-left: 30px;
-  border-left: 10px solid #fc354c;
-  width: ${props => props.mode === 'instagram' ? 650 : 1200}px;
-  color: #222;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+const Right = styled.div`
+  margin: 20px;
+
+  h1 {
+    font-size: 54px;
+    margin-bottom: 0;
+  }
 
   h2 {
     font-size: 36px;
-    font-weight: 400;
+    font-weight: 100;
+    margin-bottom: 15px;
   }
-
-  h3 {
-    font-size: 18px;
-    font-weight: 200;
-  }
-`;
-const MaskLine = styled.div`
-  margin-top: 5px;
-`;
-const BottomMaskLine = styled.div`
-  margin-top: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-`;
-const Tag = styled.span`
-  padding: 8px;
-  margin-right: 7px;
-  border: 2px solid #fc354c;
-  background: #ffbfc6;
-  border-radius: 5px;
-  text-align: center;
 `;
 const AppName = styled.h4`
   color: darkgray;
-  margin-top: 10px;
   font-weight: 100;
   font-size: 18px;
 `;
 
 const RecordingZoneMask = props => (
-  <Mask {...props}>
-    <MaskContents {...props}>
-      <Row type="flex">
-        <MaskLeft>
-          <h1>T</h1>
-          <h1>A</h1>
-          <h1>B</h1>
-        </MaskLeft>
-        <MaskRight mode={props.mode}>
-          <MaskLine>
-            <Textfit mode="single">
-              {props.line1}
-            </Textfit>
-          </MaskLine>
-          <MaskLine>
-            <h2>{props.line2}</h2>
-          </MaskLine>
-          <BottomMaskLine>
-            <AppName>stringsync.com</AppName>
-            <div>
-              {
-                props.notation.state.tags.map(tag => (
-                  <Tag key={`notation-studio-tag-${tag}`}>
-                    <h3>{tag}</h3>
-                  </Tag>
-                ))
-              }
-            </div>
-          </BottomMaskLine>
-        </MaskRight>
-      </Row>
-    </MaskContents>
-  </Mask>
+  <Outer {...props}>
+    <Inner isMaskActive={props.isMaskActive}>
+      <Contents>
+        <Left>
+          <h1>TAB</h1>
+        </Left>
+        <Right>
+          <h1>{truncate(props.line1, { length: 23 })}</h1>
+          <h2>{truncate(props.line2, { length: 37 })}</h2>
+          <AppName>with ❤️ from stringsync.com</AppName>
+        </Right>
+      </Contents>
+    </Inner>
+  </Outer>
 );
 
 export default RecordingZoneMask;

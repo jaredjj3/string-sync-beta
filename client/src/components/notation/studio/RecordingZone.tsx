@@ -44,8 +44,6 @@ const ScoreContainer = styled.div`
 `;
 const MaskContainer = styled.div`
   position: relative;
-  z-index: 101;
-  background: white;
 `;
 
 const RecordingZone = props => (

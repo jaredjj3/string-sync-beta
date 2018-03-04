@@ -178,6 +178,7 @@ const RecordButton = styled(Button)`
 `;
 const MaskContainer = styled.div`
   position: relative;
+  border: 3px solid lime;
 `;
 const RecordingZoneContainer = (styled.div as any)`
   border: 5px solid lime;
