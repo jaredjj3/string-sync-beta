@@ -62,6 +62,32 @@ const NotationStudioControls = props => (
     <Row>
       <Col span={24}>
         <label>
+          line1
+          <Input
+            type="textarea"
+            value={props.line1}
+            onChange={props.handleLine1Change}
+            disabled={props.recording}
+          />
+        </label>
+      </Col>
+    </Row>
+    <Row>
+      <Col span={24}>
+        <label>
+          line2
+          <Input
+            type="textarea"
+            value={props.line2}
+            onChange={props.handleLine2Change}
+            disabled={props.recording}
+          />
+        </label>
+      </Col>
+    </Row>
+    <Row>
+      <Col span={24}>
+        <label>
           font href
           <Input
             value={props.fontHref}

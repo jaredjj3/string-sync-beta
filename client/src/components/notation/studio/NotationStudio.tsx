@@ -22,6 +22,8 @@ const enhance = compose(
   withState('recording', 'setRecording', false),
   withState('isMaskActive', 'setIsMaskActive', false),
   withState('mode', 'setMode', 'instagram'),
+  withState('line1', 'setLine1', ''),
+  withState('line2', 'setLine2', ''),
   withProps(props => {
     const { durationMs } = props.notation.state;
 
@@ -53,6 +55,12 @@ const enhance = compose(
       const { value } = event.target;
       const sanitized = value.replace('font-family', '').replace(':', '').replace(';', '').trim();
       props.setFont(sanitized);
+    },
+    handleLine1Change: props => event => {
+      props.setLine1(event.target.value);
+    },
+    handleLine2Change: props => event => {
+      props.setLine2(event.target.value);
     },
     handleCheckedChange: props => setterName => event => {
       props[setterName](event.target.checked);
@@ -123,6 +131,14 @@ const enhance = compose(
         const { player } = nextProps.video.state;
         player.seekTo(0);
         player.pauseVideo();
+      }
+
+      if (nextProps.line1.length === 0) {
+        nextProps.setLine1(nextProps.notation.state.songName);
+      }
+
+      if (nextProps.line2.length === 0) {
+        nextProps.setLine2(`by ${nextProps.notation.state.artistName}`);
       }
     },
     componentWillUmount(): void {

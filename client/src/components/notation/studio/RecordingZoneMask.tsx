@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { Row, Col } from 'antd';
+import { Textfit } from 'react-textfit';
 
 const Mask = (styled.div as any)`
   z-index: 101;
@@ -32,7 +33,7 @@ const MaskLeft = styled(Col)`
   justify-content: flex-start;
   align-items: center;
   padding-right: 30px;
-  transform: translateY(-25px);
+  transform: translateY(-23px);
 
   h1 {
     font-size: 96px;
@@ -40,35 +41,41 @@ const MaskLeft = styled(Col)`
     font-weight: 100;
   }
 `;
-const MaskRight = styled(Col)`
+const MaskRight = (styled(Col) as any)`
   padding-left: 30px;
   border-left: 10px solid #fc354c;
-`;
-const MaskLine = styled.div`
+  width: ${props => props.mode === 'instagram' ? 650 : 1200}px;
+  color: #222;
   display: flex;
-  align-items: center;
-
-  h1 {
-    font-size: 64px;
-    font-weight: 700;
-  }
+  flex-direction: column;
+  justify-content: center;
 
   h2 {
-    font-size: 48px;
-    font-weight: 500;
+    font-size: 36px;
+    font-weight: 400;
   }
 
   h3 {
-    font-size: 24px;
-    font-weight: 300;
+    font-size: 18px;
+    font-weight: 200;
   }
 `;
+const MaskLine = styled.div`
+  margin-top: 5px;
+`;
+const BottomMaskLine = styled.div`
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+`;
 const Tag = styled.span`
-  padding: 5px;
-  margin: 7px;
+  padding: 8px;
+  margin-right: 7px;
   border: 2px solid #fc354c;
   background: #ffbfc6;
   border-radius: 5px;
+  text-align: center;
 `;
 const AppName = styled.h4`
   color: darkgray;
@@ -86,27 +93,27 @@ const RecordingZoneMask = props => (
           <h1>A</h1>
           <h1>B</h1>
         </MaskLeft>
-        <MaskRight>
+        <MaskRight mode={props.mode}>
           <MaskLine>
-            <span>
-              <h1>{props.notation.state.songName}</h1>
-            </span>
+            <Textfit mode="single">
+              {props.line1}
+            </Textfit>
           </MaskLine>
           <MaskLine>
-            <span>
-              <h2>{`by ${props.notation.state.artistName}`}</h2>
-            </span>
-            {
-              props.notation.state.tags.map(tag => (
-                <Tag key={`notation-studio-tag-${tag}`}>
-                  <h3>{tag}</h3>
-                </Tag>
-              ))
-            }
+            <h2>{props.line2}</h2>
           </MaskLine>
-          <MaskLine>
+          <BottomMaskLine>
             <AppName>stringsync.com</AppName>
-          </MaskLine>
+            <div>
+              {
+                props.notation.state.tags.map(tag => (
+                  <Tag key={`notation-studio-tag-${tag}`}>
+                    <h3>{tag}</h3>
+                  </Tag>
+                ))
+              }
+            </div>
+          </BottomMaskLine>
         </MaskRight>
       </Row>
     </MaskContents>
