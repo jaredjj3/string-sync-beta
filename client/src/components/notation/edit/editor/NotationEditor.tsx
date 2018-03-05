@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, withProps } from 'recompose';
 import { withNotation } from 'enhancers';
-import { Save, DeadTime, Bpm, VextabStringEditor } from './';
+import { Save, DeadTime, Bpm, VextabStringEditor, Duration } from './';
 import styled from 'styled-components';
 
 const enhance = compose(
@@ -34,6 +34,7 @@ const NotationEditor = ({ getAffixTarget }) => (
       <Save />
       <DeadTime />
       <Bpm />
+      <Duration />
     </NotationEditorControlRow1Outer>
     <div className="NotationEditor__controlRow2">
       <VextabStringEditor />

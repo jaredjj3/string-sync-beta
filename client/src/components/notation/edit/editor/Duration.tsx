@@ -6,23 +6,23 @@ import { withNotation } from 'enhancers';
 const enhance = compose(
   withNotation,
   withHandlers({
-    handleChange: props => bpm => {
-      const notation = Object.assign(props.notation.state, { bpm });
+    handleChange: props => durationMs => {
+      const notation = Object.assign(props.notation.state, { durationMs });
       props.notation.dispatch.setNotation(notation);
     }
   })
 );
 
-const Bpm = ({ notation, handleChange }) => (
-  <div className="Bpm">
-    <h3>Bpm</h3>
+const Duration = ({ notation, handleChange }) => (
+  <div className="Duration">
+    <h3>Duration ms</h3>
     <InputNumber
       step={0.01}
-      value={notation.state.bpm}
+      value={notation.state.durationMs}
       precision={2}
       onChange={handleChange}
     />
   </div>
 );
 
-export default enhance(Bpm);
+export default enhance(Duration);

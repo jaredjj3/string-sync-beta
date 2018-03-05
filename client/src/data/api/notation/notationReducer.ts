@@ -9,8 +9,9 @@ const notationReducer = (state= defaultState, action): Store.Notation => {
 
   switch (action.type) {
     case constants.SET_NOTATION:
-      return Object.assign({}, action.notation);
-
+      const bpm = parseFloat(action.notation.bpm);
+      return Object.assign({}, action.notation, { bpm });
+    
     case constants.RESET_NOTATION:
       return getDefaultState();
 
