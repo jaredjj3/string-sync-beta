@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171129210105) do
+ActiveRecord::Schema.define(version: 20180304172329) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,9 +27,9 @@ ActiveRecord::Schema.define(version: 20171129210105) do
     t.string   "thumbnail_content_type"
     t.integer  "thumbnail_file_size"
     t.datetime "thumbnail_updated_at"
-    t.integer  "duration_ms"
+    t.decimal  "duration_ms"
     t.integer  "dead_time_ms",           default: 0,     null: false
-    t.integer  "bpm",                    default: 0,     null: false
+    t.decimal  "bpm",                    default: "0.0", null: false
     t.boolean  "featured",               default: false, null: false
     t.index ["transcriber_id"], name: "index_notations_on_transcriber_id", using: :btree
   end
