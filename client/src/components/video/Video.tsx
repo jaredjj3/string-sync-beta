@@ -36,7 +36,7 @@ const enhance = compose(
     youtubeVideoId: props.notation.state.youtubeVideoId,
     video: props.video,
     withInitializer: props.withInitializer,
-    onEnd: props.onEnd || null
+    onEnd: props.onEnd || (() => null)
   })),
   shouldUpdate((currProps, nextProps) => (
     currProps.youtubeVideoId !== nextProps.youtubeVideoId

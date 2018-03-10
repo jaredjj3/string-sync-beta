@@ -6,3 +6,4 @@ export { default as Frets } from './Frets';
 export { default as GuitarString } from './GuitarString';
 export { default as GuitarStrings } from './GuitarStrings';
 export { default as FretIndicators } from './FretIndicators';
+export { default as SuggestedNoteDescription } from './SuggestedNoteDescription';
