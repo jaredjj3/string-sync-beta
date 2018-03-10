@@ -1,5 +1,6 @@
 import { DirectiveObject } from 'services';
 import { Flow } from 'vexflow';
+import { flatMap } from 'lodash';
 
 // This class takes one or more directives, and performs preprocessing and/or
 // post processing using a Vexflow stave object or a Tab service object.
@@ -37,11 +38,17 @@ class DirectiveHandler {
   }
 
   private _execPostprocessors(): void {
-    // noop
+    switch (this.directive.type) {
+      case 'NOTE_SUGGESTIONS':
+        this._handleSuggestedNotes();
+        break;
+      default:
+        break;
+    }
   }
 
   private _handleGraceNote(): void {
-    const { positions, duration, slur } = this.directive.struct;
+    const { positions, duration, slur } = this.directive.struct as Directive.GraceNoteStruct;
     const { tabNote, staveNote, maestro } = this.directive.refs;
     const { tuning } = maestro;
     const _duration = duration || '8';
@@ -71,6 +78,18 @@ class DirectiveHandler {
     staveNote.addModifier(0, graceNoteGroup);
     graceNote.context = staveNote.context;
     graceNote.tickContext = staveNote.getTickContext();
+  }
+
+  private _handleSuggestedNotes(): void {
+    const { notes, fromMeasureIndex, toMeasureIndex, description } = this.directive.struct as Directive.SuggestedNotesStruct;
+    const { score } = this.directive.refs.maestro;
+
+    if (score) {
+      const measures = flatMap(score.lines, line => line.measures);
+      measures.slice(fromMeasureIndex, toMeasureIndex).forEach(measure => {
+        measure.pushNoteSuggestion(description, notes);
+      });
+    }
   }
 }
 

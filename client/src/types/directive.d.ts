@@ -1,7 +1,7 @@
 declare namespace Directive {
   type Types = 'GRACE_NOTE';
   type HandlerBehaviors = 'PASSIVE' | 'PREPROCESS' | 'POSTPROCESS';
-  type Structs = GraceNoteStruct;
+  type Structs = GraceNoteStruct | SuggestedNotesStruct;
 
   interface Refs {
     staveNote: any;
@@ -21,5 +21,12 @@ declare namespace Directive {
     positions: Array<{fret: number | string, str: number | string}>;
     duration: string;
     slur?: boolean;
+  }
+
+  interface SuggestedNotesStruct extends BaseStruct {
+    notes: Array<string>;
+    fromMeasureIndex: number;
+    toMeasureIndex: number;
+    description: string;
   }
 }

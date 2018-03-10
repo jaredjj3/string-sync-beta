@@ -1,4 +1,4 @@
-import { Note, Line } from './';
+import { Note, Line, NoteSuggestion } from './';
 
 interface MeasureSpec {
   vextabString: string;
@@ -18,6 +18,7 @@ class Measure {
   next: Measure = null;
   barNote: any = null;
   line: Line = null;
+  noteSuggestions: Array<NoteSuggestion> = [];
 
   constructor(spec: MeasureSpec) {
     this.vextabString = spec.vextabString;
@@ -54,6 +55,12 @@ class Measure {
       start: startNote ? startNote.tickRange.start : 0,
       stop: stopNote ? stopNote.tickRange.stop : 0
     };
+  }
+
+  pushNoteSuggestion(description: string, notes: Array<string>): NoteSuggestion {
+    const noteSuggestion = new NoteSuggestion(description, notes);
+    this.noteSuggestions.push(noteSuggestion);
+    return noteSuggestion;
   }
 }
 
