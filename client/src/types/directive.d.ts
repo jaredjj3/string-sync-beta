@@ -26,7 +26,7 @@ declare namespace Directive {
   interface SuggestedNotesStruct extends BaseStruct {
     notes: Array<string>;
     fromMeasureIndex: number;
-    toMeasureIndex: number;
+    toMeasureIndex?: number;
     description: string;
   }
 }

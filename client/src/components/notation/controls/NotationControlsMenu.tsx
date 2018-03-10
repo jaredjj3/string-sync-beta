@@ -272,7 +272,7 @@ const NotationControlsMenu = ({
         <ItemGroup title="player">
           <Item key="moreNotes">
             <Checkbox checked={moreNotesChecked} />
-            <CheckDescription>more notes</CheckDescription>
+            <CheckDescription>suggest notes</CheckDescription>
           </Item>
           <Item key="showLoop">
             <Checkbox checked={showLoopChecked} />

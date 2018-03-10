@@ -1,5 +1,5 @@
 import { Snapshot } from './';
-import { Score, Tuning, Line, Measure, Note } from 'services';
+import NoteSuggestion, { Score, Tuning, Line, Measure, Note } from 'services';
 import { flatMap, uniqWith, uniq, isEqual, startsWith, get } from 'lodash';
 import { Flow } from 'vexflow';
 import { isBetween, interpolator } from 'ssUtil';
@@ -137,13 +137,13 @@ class SnapshotFactory {
     // Compute light notes
     if (note) {
       if (this.showMoreNotes) {
-        const noteNames = flatMap(note.measure.notes, measureNote => measureNote.staveNote.keys);
-        const lightNotes = uniq(noteNames).filter(noteName => !startsWith(noteName.toUpperCase(), 'R'));
+        const lightNotes = uniq(flatMap(note.measure.noteSuggestions, suggestion => suggestion.notes));
         light = flatMap(lightNotes, lightNote => this.tuning.getGuitarPositions(lightNote));
       } else {
         light = flatMap(note.measure.notes, note => note.getGuitarPos());
-        light = uniqWith(light, isEqual);
-      }  
+      }
+
+      light = uniqWith(light, isEqual);
     }
 
     this.fretboardData = {
