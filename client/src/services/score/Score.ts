@@ -14,7 +14,7 @@ class Score {
   measuresPerLine: number = 0;
   width: number = 0;
 
-  constructor(vextabString: string, width: number) {
+  constructor(vextabString: string, width: number, measurePerLine?: number) {
     this.vextabString = vextabString;
     this.width = width;
 
