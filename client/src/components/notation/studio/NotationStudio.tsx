@@ -129,8 +129,10 @@ const enhance = compose(
     componentWillReceiveProps(nextProps): void {
       if (this.props.video.state.isActive && !nextProps.video.state.isActive) {
         const { player } = nextProps.video.state;
-        player.seekTo(0);
-        player.pauseVideo();
+        if (player) {
+          player.seekTo(0);
+          player.pauseVideo();
+        }
       }
 
       if (nextProps.line1.length === 0) {

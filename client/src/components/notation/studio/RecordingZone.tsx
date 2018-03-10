@@ -61,6 +61,7 @@ const RecordingZone = props => (
         scroller
         hideScroll
         width={props.recordingZoneWidthPx - 30}
+        measuresPerLine={4}
       />
     </ScoreContainer>
     <MaskContainer>
