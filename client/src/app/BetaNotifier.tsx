@@ -27,6 +27,9 @@ const enhance = compose(
               <div>
                 <small>make the fretboard POP</small>
               </div>
+              <div>
+                <small>(you can turn off in settings</small>
+              </div>
             </div>
         });
       }
