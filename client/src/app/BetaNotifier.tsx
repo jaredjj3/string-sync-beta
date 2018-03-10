@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 import { hash } from 'ssUtil';
 
-const UPDATED_AT = 'March 5';
+const UPDATED_AT = 'March 10';
 
 const enhance = compose(
   withHandlers({
@@ -25,7 +25,7 @@ const enhance = compose(
             <div>
               <div>updated at {UPDATED_AT}</div>
               <div>
-                <small>enhance the notation editor</small>
+                <small>make the fretboard POP</small>
               </div>
             </div>
         });

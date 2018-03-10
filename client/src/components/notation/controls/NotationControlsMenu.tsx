@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, withProps, withState, withHandlers, lifecycle } from 'recompose';
 import { withRouter, Link } from 'react-router-dom';
-import { Menu, Icon, Checkbox } from 'antd';
+import { Menu, Icon, Checkbox, Radio } from 'antd';
 import { Switch as MobileSwitch } from 'antd-mobile';
 import { withSession, withNotation, withViewport } from 'enhancers';
 import { Playback } from './';
@@ -10,6 +10,7 @@ import * as classNames from 'classnames';
 import { get } from 'lodash';
 
 const { SubMenu, ItemGroup, Item } = Menu;
+const RadioGroup = Radio.Group;
 
 const enhance = compose (
   withRouter,
@@ -20,6 +21,7 @@ const enhance = compose (
   withState('showLoopChecked', 'setShowLoopChecked', false),
   withState('fretboardChecked', 'setFretboardChecked', true),
   withState('pianoChecked', 'setPianoChecked', false),
+  withState('fretboardStyle', 'setFretboardStyle', null),
   withHandlers({
     handleMoreNotesToggle: props => event => {
       const checked = !props.moreNotesChecked;
@@ -61,6 +63,14 @@ const enhance = compose (
         } else {
           piano.setVisibility(checked);
         }
+      }
+    },
+    handleFretboardStyleUpdate: props => event => {
+      const callback = get(window.ss.globalProps.fretboard, 'handleFretboardStyleUpdate')
+
+      if (typeof callback === 'function') {
+        callback(event);
+        props.setFretboardStyle(event.target.value);
       }
     }
   }),
@@ -110,8 +120,9 @@ const enhance = compose (
       maestro.options.showLoop = false;
 
       const { fretboard, piano } = window.ss.globalProps;
-      this.props.setFretboardChecked(Boolean(get(fretboard, 'isVisible')));
-      this.props.setPianoChecked(Boolean(get(piano, 'isVisible')));
+      this.props.setFretboardChecked(!!get(fretboard, 'isVisible'));
+      this.props.setPianoChecked(!!get(piano, 'isVisible'));
+      this.props.setFretboardStyle(localStorage.getItem('fretboardStyle') || 'FANCY');
     }
   })
 );
@@ -125,6 +136,10 @@ const Outer = styled.div`
 
   .ant-menu-inline-collapsed {
     width: 0;
+  }
+
+  .ant-radio-wrapper {
+    color: rgba(255, 255, 255, 0.65);
   }
 `;
 const Mask = styled.div`
@@ -169,6 +184,7 @@ const NotationControlsMenu = ({
   showLoopChecked,
   fretboardChecked,
   pianoChecked,
+  fretboardStyle,
   showEditItem,
   showStudioItem,
   showShowItem,
@@ -176,7 +192,8 @@ const NotationControlsMenu = ({
   isMobile,
   onMaskClick,
   collapsedClassName,
-  handleMenuItemClick
+  handleMenuItemClick,
+  handleFretboardStyleUpdate
 }) => (
   <Outer>
     <Mask
@@ -233,6 +250,15 @@ const NotationControlsMenu = ({
           }
         </ItemGroup>
         <ItemGroup title="visuals">
+          <Item key="fretboardStyle">
+            <RadioGroup
+              onChange={handleFretboardStyleUpdate}
+              value={fretboardStyle}
+            >
+              <Radio value={'FANCY'}>fancy</Radio>
+              <Radio value={'NONE'}>plain</Radio>
+            </RadioGroup>
+          </Item>
           <Item key="fretboard">
             <Checkbox checked={fretboardChecked} />
             <CheckDescription>fretboard</CheckDescription>
