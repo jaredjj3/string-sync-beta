@@ -138,7 +138,7 @@ const Outer = styled.div`
     width: 0;
   }
 
-  .ant-radio-wrapper {
+  .ant-radio-wrapper, .ant-radio-disabled + span {
     color: rgba(255, 255, 255, 0.65);
   }
 `;
@@ -254,6 +254,7 @@ const NotationControlsMenu = ({
             <RadioGroup
               onChange={handleFretboardStyleUpdate}
               value={fretboardStyle}
+              disabled={!fretboardChecked}
             >
               <Radio value={'FANCY'}>fancy</Radio>
               <Radio value={'NONE'}>plain</Radio>
