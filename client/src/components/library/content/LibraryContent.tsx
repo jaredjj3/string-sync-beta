@@ -11,11 +11,11 @@ const enhance = compose(
 
 const tagNewNotations = (notations: Enhancers.Notations) => {
   const dupNotations = merge([], notations.state);
-  const twoWeeksAgo = Date.now() - (86400 * 14);
+  const twoWeeksAgo = Date.now() - (86400 * 14 * 1000);
 
   dupNotations.forEach(notation => {
     const createdAt = Date.parse(notation.createdAt);
-    if (createdAt < twoWeeksAgo) {
+    if (createdAt > twoWeeksAgo) {
       notation.tags.push('new');
     }
   });

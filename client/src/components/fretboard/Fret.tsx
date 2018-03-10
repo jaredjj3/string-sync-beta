@@ -7,7 +7,7 @@ import styled from 'styled-components';
 const Outer = (styled.div as any)`
   height: ${props => props.height}px;
   border-right: ${props => props.fret === 0 ? 6 : props.type === 'MOBILE' ? 1 : 2}px solid #aaa;
-  box-shadow: 0 3px 1px 1px #222;
+  box-shadow: 0 1px 1px 1px #222;
   width: 100%;
 `;
 const FretMarkerContainer = (styled.div as any)`
