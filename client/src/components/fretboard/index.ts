@@ -5,3 +5,4 @@ export { default as FretMarker } from './FretMarker';
 export { default as Frets } from './Frets';
 export { default as GuitarString } from './GuitarString';
 export { default as GuitarStrings } from './GuitarStrings';
+export { default as FretIndicators } from './FretIndicators';

@@ -144,7 +144,7 @@ const NotationShow = ({ isFetching, notation, viewport, scoreWidth, handleAffixC
         onChange={handleAffixChange}
       >
         <Affixed id="ScoreAffix">
-          <Fretboard />
+          <Fretboard width={viewport.state.width} />
           <Piano />
         </Affixed>
       </Affix>

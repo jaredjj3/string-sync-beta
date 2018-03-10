@@ -19,27 +19,19 @@ const enhance = compose(
   setStatic('MOBILE_DOTS', MOBILE_DOTS)
 );
 
-const FretsOuter = styled.div`
-  .ant-row-flex {
-    flex-flow: row;
-  }
-`;
-
-const Frets = () => (
-  <FretsOuter>
-    <Row type="flex">
-      {
-        DOTS.map((dots, fret) => (
-          <Col
-            span={fret === 0 ? 2 : 1}
-            key={`fret-${fret}`}
-          >
-            <Fret fret={fret} dots={dots} />
-          </Col>
-        ))
-      }
-    </Row>
-  </FretsOuter>
+const Frets = ({ height, type }) => (
+  <Row type="flex">
+    {
+      DOTS.map((dots, fret) => (
+        <Col
+          span={fret === 0 ? 2 : 1}
+          key={`fret-${fret}`}
+        >
+          <Fret fret={fret} dots={dots} height={height} type={type} />
+        </Col>
+      ))
+    }
+  </Row>
 );
 
 export default enhance(Frets);

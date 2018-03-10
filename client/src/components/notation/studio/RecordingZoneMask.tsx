@@ -7,7 +7,7 @@ const Outer = (styled.div as any)`
   transition: 500ms;
   opacity: ${props => props.isMaskActive ? 1 : 0};
   font-family: ${props => props.font};
-  height: 295px;
+  height: 290px;
   position: relative;
   background: ${props => props.isMaskActive ? 'white' : 'transparent'};
 `;

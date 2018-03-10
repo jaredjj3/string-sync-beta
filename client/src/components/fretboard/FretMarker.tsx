@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { isEqual } from 'lodash';
 
 const enhance = compose(
-  withViewport,
   withState('lit', 'setLit', false),
   withState('pressed', 'setPressed', false),
   withState('justPressed', 'setJustPressed', false),
@@ -19,9 +18,11 @@ const enhance = compose(
         'FretMarker--pressed': props.pressed,
         'FretMarker--hidden': !props.lit && !props.pressed,
         'FretMarker--justPressed': props.pressed && props.justPressed,
-        'FretMarker--mobile': props.viewport.state.type === 'MOBILE',
       }
     )
+  })),
+  withProps(props => ({
+    note: window.ss.maestro.tuning.getNote({ fret: props.fret, str: props.str }).slice(0, -2)
   })),
   lifecycle({
     componentDidMount(): void {
@@ -45,23 +46,17 @@ const enhance = compose(
   })
 );
 
-const FretMarkerOuter = styled.div`
+const Outer = (styled.div as any)`
   .FretMarker {
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    font-size: 10px;
-    margin: 3.5px 1px;
+    width: ${props => props.type === 'MOBILE' ? 13 : 24}px;
+    height: ${props => props.type === 'MOBILE' ? 13 : 24}px;
+    margin-top: -2px;
+    font-size: ${props => props.type === 'MOBILE' ? 6 : 8}px;
     background-color: #B3FB66;
-
-    &.FretMarker--mobile {
-      width: 12px;
-      height: 12px;
-      font-size: 0;
-    }
 
     &.FretMarker--pressed {
       background-color: #B3FB66;
@@ -85,10 +80,10 @@ const FretMarkerOuter = styled.div`
   }
 `;
 
-const FretMarker = ({ rootClassNames }) => (
-  <FretMarkerOuter>
-    <div className={rootClassNames}></div>
-  </FretMarkerOuter>
+const FretMarker = ({ note, type, rootClassNames }) => (
+  <Outer type={type}>
+    <div className={rootClassNames}>{note}</div>
+  </Outer>
 );
 
 export default enhance(FretMarker);

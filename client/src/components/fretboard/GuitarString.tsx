@@ -13,8 +13,8 @@ const enhance = compose(
         'GuitarString--lit': props.lit,
         'GuitarString--pressed': props.pressed,
         'GuitarString--hidden': !props.lit && !props.pressed,
-        'GuitarString--thin': props.string <= 3,
-        'GuitarString--thick': props.string > 3
+        'GuitarString--thin': [0, 1, 2].includes(props.string),
+        'GuitarString--thick': [3, 4, 5].includes(props.string)
       }
     )
   })),
@@ -39,11 +39,13 @@ const enhance = compose(
   })
 );
 
-const GuitarStringOuter = styled.div`
+const Outer = (styled.div as any)`
+  width: 100%;
+
   .GuitarString {
-    width: 100vw;
-    background: #aaa;
-    opacity: 0.5;
+    background: #eee;
+    box-shadow: 0 0 1px 1px #222;
+    opacity: ${props => props.type === 'MOBILE' ? 0.6 : 0.9};
   }
 
   .GuitarString--hidden {
@@ -52,10 +54,14 @@ const GuitarStringOuter = styled.div`
 
   .GuitarString--thin {
     height: 1px;
+    margin-top: -1px;
+    background: #6e6e6e;
   }
 
   .GuitarString--thick {
     height: 2px;
+    margin-top: -2px;
+    background: #878787;
   }
 
   .GuitarString--pressed {
@@ -63,10 +69,10 @@ const GuitarStringOuter = styled.div`
   }
 `;
 
-const GuitarString = ({ rootClassNames }) => (
-  <GuitarStringOuter>
+const GuitarString = ({ type, rootClassNames }) => (
+  <Outer type={type}>
     <div className={rootClassNames}></div>
-  </GuitarStringOuter>
+  </Outer>
 );
 
 export default enhance(GuitarString);

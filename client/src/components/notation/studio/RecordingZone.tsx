@@ -9,7 +9,7 @@ const Outer = (styled.div as any)`
 `;
 const VideoContainer = (styled.div as any) `
   background: black;
-  height: 320px;
+  height: 305px;
   width: 100%;
   position: absolute;
   top: ${props => props.top}px;
@@ -23,7 +23,7 @@ const VideoContainer = (styled.div as any) `
   }
 `;
 const Spacer = styled.div`
-  height: 320px;
+  height: 305px;
   width: 100%;
   background: black;
 `;
@@ -31,10 +31,11 @@ const FretboardContainer = styled.div`
   height: 185px;
   width: 100%;
   background: black;
+  margin-bottom: 20px;
 `;
 const ScoreContainer = styled.div`
   width: 100%;
-  height: 291px;
+  height: 295px;
   overflow: hidden;
   background: white;
   position: absolute;
