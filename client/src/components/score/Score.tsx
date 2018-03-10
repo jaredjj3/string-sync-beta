@@ -14,9 +14,10 @@ import {
 const enhance = compose(
   mapProps(props => ({
     width: props.width,
+    measuresPerLine: props.measuresPerLine || ScoreService.getMeasuresPerLine(props.width),
     caret: Boolean(props.caret),
     scroller: Boolean(props.scroller),
-    hideScroll: Boolean(props.hideScroll)
+    hideScroll: Boolean(props.hideScroll),
   })),
   withNotation,
   // The purpose of the score prop is solely to trigger rerenders
@@ -34,7 +35,9 @@ const enhance = compose(
         const { maestro } = window.ss;
         try {
           maestro.errors = [];
-          const score = new ScoreService(nextProps.notation.state.vextabString, nextProps.width);
+          const score = new ScoreService(
+            nextProps.notation.state.vextabString, nextProps.width, nextProps.measuresPerLine
+          );
           maestro.score = score;
           nextProps.setScore(score);
         } catch (error) {

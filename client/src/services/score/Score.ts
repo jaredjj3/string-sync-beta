@@ -14,9 +14,27 @@ class Score {
   measuresPerLine: number = 0;
   width: number = 0;
 
-  constructor(vextabString: string, width: number, measurePerLine?: number) {
+  static getMeasuresPerLine(width: number): number {
+    switch (true) {
+      case width <= 646:
+        return 1;
+      case isBetween(width, 646, 768):
+        return 2;
+      case isBetween(width, 768, 992):
+        return 3;
+      case isBetween(width, 992, 1200):
+        return 4;
+      case isBetween(width, 1200, 1680):
+        return 5;
+      default:
+        return Math.ceil(width / 336);
+    }
+  }
+
+  constructor(vextabString: string, width: number, measuresPerLine: number) {
     this.vextabString = vextabString;
     this.width = width;
+    this.measuresPerLine = measuresPerLine;
 
     this._setup();
   }
@@ -48,8 +66,6 @@ class Score {
   }
 
   private _setup(): void {
-    this.measuresPerLine = this._getMeasuresPerLine(this.width);
-
     this.parser = new VextabParser(this.vextabString);
     const parsed = this.parser.parse();
     const chunks = this.parser.chunk();
@@ -74,23 +90,6 @@ class Score {
     });
 
     return this.lines = lines;
-  }
-
-  private _getMeasuresPerLine(width: number): number {
-    switch (true) {
-      case width <= 646:
-        return 1;
-      case isBetween(width, 646, 768):
-        return 2;
-      case isBetween(width, 768, 992):
-        return 3;
-      case isBetween(width, 992, 1200):
-        return 4;
-      case isBetween(width, 1200, 1680):
-        return 5;
-      default:
-        return Math.ceil(width / 336);
-    }
   }
 
   private _createMeasures(chunks: Array<Vextab.Chunk>): Array<Measure> {
