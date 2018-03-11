@@ -116,6 +116,7 @@ class SnapshotFactory {
     let press: Array<GuitarPosition> = [];
     let justPress: Array<GuitarPosition> = [];
     let light: Array<GuitarPosition> = [];
+    let suggest: Array<GuitarPosition> = [];
     const { note } = this.scoreData;
 
     if (note) {
@@ -135,21 +136,21 @@ class SnapshotFactory {
     }
 
     // Compute light notes
-    if (note) {
-      if (this.showMoreNotes) {
-        const lightNotes = uniq(flatMap(note.measure.noteSuggestions, suggestion => suggestion.notes));
-        light = flatMap(lightNotes, lightNote => this.tuning.getGuitarPositions(lightNote));
-      } else {
-        light = flatMap(note.measure.notes, note => note.getGuitarPos());
-      }
-
+    if (note) {      
+      light = flatMap(note.measure.notes, note => note.getGuitarPos());
       light = uniqWith(light, isEqual);
+
+      if (this.showMoreNotes) {
+        const suggestNotes = uniq(flatMap(note.measure.noteSuggestions, suggestion => suggestion.notes));
+        suggest = flatMap(suggestNotes, lightNote => this.tuning.getGuitarPositions(lightNote));
+      }
     }
 
     this.fretboardData = {
       lightGuitarPositions: light,
       justPressGuitarPositions: justPress,
-      pressGuitarPositions: press
+      pressGuitarPositions: press,
+      suggestGuitarPositions: suggest
     };
   }
 

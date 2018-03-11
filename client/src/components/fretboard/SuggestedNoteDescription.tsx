@@ -33,15 +33,14 @@ const enhance = compose(
   shouldUpdate((currProps, nextProps) => currProps.description !== nextProps.description)
 );
 
-const Outer = styled.div`
-  color: white;
-`;
-
-const SuggestedNoteDescription = ({ description }) => (
+const SuggestedNoteDescription = enhance(({ description }) => (
   <Outer>
     {description}
   </Outer>
-);
+));
 
+const Outer = styled.div`
+  color: fuchsia;
+`;
 
-export default enhance(SuggestedNoteDescription);
+export default SuggestedNoteDescription;

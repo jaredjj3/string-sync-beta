@@ -9,6 +9,7 @@ const enhance = compose(
   withState('lit', 'setLit', false),
   withState('pressed', 'setPressed', false),
   withState('justPressed', 'setJustPressed', false),
+  withState('suggested', 'setSuggested', false),
   shouldUpdate((currProps, nextProps) => !isEqual(currProps, nextProps)),
   withProps(props => ({
     rootClassNames: classNames(
@@ -16,8 +17,9 @@ const enhance = compose(
       {
         'FretMarker--lit': props.lit && !props.pressed,
         'FretMarker--pressed': props.pressed,
-        'FretMarker--hidden': !props.lit && !props.pressed,
+        'FretMarker--hidden': !props.lit && !props.pressed && !props.suggested,
         'FretMarker--justPressed': props.pressed && props.justPressed,
+        'FretMarker--suggested': !props.pressed && !props.justPressed && !props.lit && props.suggested
       }
     )
   })),
@@ -46,7 +48,13 @@ const enhance = compose(
   })
 );
 
-const Outer = (styled.div as any)`
+const FretMarker = ({ note, type, rootClassNames }) => (
+  <Outer type={type}>
+    <div className={rootClassNames}>{note}</div>
+  </Outer>
+);
+
+const Outer = (styled.div as any) `
   .FretMarker {
     display: flex;
     justify-content: center;
@@ -77,13 +85,12 @@ const Outer = (styled.div as any)`
     &.FretMarker--justPressed {
       border: 2px solid rgba(0, 0, 0, 0.75);
     }
+
+    &.FretMarker--suggested {
+      background-color: fuchsia;
+      opacity: 0.5;
+    }
   }
 `;
-
-const FretMarker = ({ note, type, rootClassNames }) => (
-  <Outer type={type}>
-    <div className={rootClassNames}>{note}</div>
-  </Outer>
-);
 
 export default enhance(FretMarker);

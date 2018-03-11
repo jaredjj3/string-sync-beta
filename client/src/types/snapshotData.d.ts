@@ -13,6 +13,7 @@ declare interface FretboardData {
   lightGuitarPositions: Array<GuitarPosition>;
   justPressGuitarPositions: Array<GuitarPosition>;
   pressGuitarPositions: Array<GuitarPosition>;
+  suggestGuitarPositions: Array<GuitarPosition>;
 }
 
 declare interface LoopData {

@@ -12,7 +12,8 @@ class Snapshot {
     fretboard: {
       lightGuitarPositions: [],
       justPressGuitarPositions: [],
-      pressGuitarPositions: []
+      pressGuitarPositions: [],
+      suggestGuitarPositions: []
     },
     loop: {
       notes: [null, null],

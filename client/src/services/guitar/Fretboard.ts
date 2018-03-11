@@ -24,15 +24,18 @@ class Fretboard {
   lit: Set<FretboardComponent> = new Set();
   pressed: Set<FretboardComponent> = new Set();
   justPressed: Set<FretMarker> = new Set();
+  suggested: Set<FretMarker> = new Set();
 
-  update(lightPositions: Array<any>, pressPositions: Array<any>, justPressPositions: Array<any>): Fretboard {
+  update(lightPositions: Array<any>, pressPositions: Array<any>, justPressPositions: Array<any>, suggestedPositions: Array<any>): Fretboard {
     const lightComps = this.mapComponents(lightPositions, true);
     const pressComps = this.mapComponents(pressPositions, false);
     const justPressComps = this.mapComponents(justPressPositions, true) as Array<FretMarker>;
+    const suggestedComps = this.mapComponents(suggestedPositions, true) as Array<FretMarker>;
 
     const lit = new Set();
     const pressed = new Set();
     const justPressed = new Set();
+    const suggested = new Set();
 
     lightComps.forEach(comp => {
       if (!this.lit.has(comp)) {
@@ -58,18 +61,29 @@ class Fretboard {
       justPressed.add(comp);
     })
 
+    suggestedComps.forEach(comp => {
+      if (!this.suggested.has(comp)) {
+        comp.suggest();
+      }
+
+      suggested.add(comp);
+    })
+
     // Unlight the components not newly pressed nor lit.
     const shouldUnlight = Array.from(this.lit).filter(comp => !lit.has(comp));
     const shouldUnpress = Array.from(this.pressed).filter(comp => !pressed.has(comp));
     const shouldUnjustPress = Array.from(this.justPressed).filter(comp => !justPressed.has(comp));
+    const shouldUnsuggest = Array.from(this.suggested).filter(comp => !suggested.has(comp));
 
     shouldUnlight.forEach(comp => comp.unlight());
     shouldUnpress.forEach(comp => comp.unpress());
     shouldUnjustPress.forEach(comp => comp.unJustPress());
+    shouldUnsuggest.forEach(comp => comp.unSuggest());
 
     this.lit = lit;
     this.pressed = pressed;
     this.justPressed = justPressed;
+    this.suggested = suggested;
 
     return this;
   }

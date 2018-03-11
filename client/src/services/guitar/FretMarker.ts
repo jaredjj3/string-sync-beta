@@ -24,6 +24,11 @@ class FretMarker {
     return this;
   }
 
+  suggest(): FretMarker {
+    this.props.setSuggested(true);
+    return this;
+  }
+
   press(): FretMarker {
     this.props.setPressed(true);
     return this;
@@ -41,6 +46,11 @@ class FretMarker {
 
   unJustPress(): FretMarker {
     this.props.setJustPressed(false);
+    return this;
+  }
+
+  unSuggest(): FretMarker {
+    this.props.setSuggested(false);
     return this;
   }
 }

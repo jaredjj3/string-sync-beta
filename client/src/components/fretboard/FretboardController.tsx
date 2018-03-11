@@ -8,8 +8,16 @@ const enhance = compose(
   withHandlers({
     handleAnimationLoop: props => () => {
       const { snapshot, fretboard } = window.ss.maestro;
-      const { lightGuitarPositions, pressGuitarPositions, justPressGuitarPositions } = snapshot.data.fretboard;
-      fretboard.update(lightGuitarPositions, pressGuitarPositions, justPressGuitarPositions);
+      const { 
+        lightGuitarPositions, pressGuitarPositions, justPressGuitarPositions, suggestGuitarPositions
+      } = snapshot.data.fretboard;
+
+      fretboard.update(
+        lightGuitarPositions,
+        pressGuitarPositions,
+        justPressGuitarPositions,
+        suggestGuitarPositions
+      );
     }
   }),
   withRaf(
