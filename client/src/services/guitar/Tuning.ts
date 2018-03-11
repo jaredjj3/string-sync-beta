@@ -64,12 +64,14 @@ class Tuning {
 
     this.notes.forEach((stringNotes, str) => {
       stringNotes.forEach((_note, fret) => {
+        if (!_note || !note) {
+          return;
+        }
+
         const srcNote = note.toUpperCase();
         const dstNote = _note.toUpperCase();
         
-        const shouldAddNote = sameOctave
-            ? srcNote === dstNote
-            : startsWith(dstNote, srcNote.split("/")[0]);
+        const shouldAddNote = sameOctave ? srcNote === dstNote : dstNote.split("/")[0] === srcNote;
 
         if (shouldAddNote) {
           guitarPositions.push({ str, fret });

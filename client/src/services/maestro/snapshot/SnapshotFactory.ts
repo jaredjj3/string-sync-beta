@@ -142,7 +142,8 @@ class SnapshotFactory {
 
       if (this.showMoreNotes) {
         const suggestNotes = uniq(flatMap(note.measure.noteSuggestions, suggestion => suggestion.notes));
-        suggest = flatMap(suggestNotes, lightNote => this.tuning.getGuitarPositions(lightNote));
+        suggest = flatMap(suggestNotes, suggestNotes => this.tuning.getGuitarPositions(suggestNotes));
+        suggest = uniqWith(suggest, isEqual);
       }
     }
 
