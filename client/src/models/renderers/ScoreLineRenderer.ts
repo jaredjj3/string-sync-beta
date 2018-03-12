@@ -62,9 +62,9 @@ class ScoreLineRenderer implements Renderer  {
     this.directiveExtractor = new DirectiveExtractor(stave, maestro);
     const directives = this.directiveExtractor.extract();
 
-    directives.forEach(directive => directive.exec('PREPROCESS'));
+    directives.forEach(directive => directive.handler.execPre());
     this.line.linkVexInstances(stave);
-    directives.forEach(directive => directive.exec('POSTPROCESS'));
+    directives.forEach(directive => directive.handler.execPost());
 
     return this;
   }

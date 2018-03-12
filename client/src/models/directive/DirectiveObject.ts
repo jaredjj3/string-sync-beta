@@ -25,13 +25,6 @@ class DirectiveObject {
       this.type = struct.type;
     }
   }
-
-  exec(handlerBehavior: Directive.HandlerBehaviors): boolean {
-    this.handler.behavior = handlerBehavior;
-    const didExec = this.handler.exec();
-    this.handler.behavior = 'PASSIVE';
-    return didExec;
-  }
 }
 
 export default DirectiveObject;

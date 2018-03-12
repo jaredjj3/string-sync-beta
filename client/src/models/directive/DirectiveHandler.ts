@@ -6,28 +6,13 @@ import { flatMap, isEmpty } from 'lodash';
 // post processing using a Vexflow stave object or a Tab service object.
 class DirectiveHandler {
   directive: DirectiveObject;
-  behavior: Directive.HandlerBehaviors = 'PASSIVE';
 
   constructor(directive: DirectiveObject) { 
     this.directive = directive;
   }
 
-  exec(): boolean {
-    switch (this.behavior) {
-      case 'PASSIVE':
-        return false;
-      case 'PREPROCESS':
-        this._execPreprocessors();
-        return true;
-      case 'POSTPROCESS':
-        this._execPostprocessors();
-        return true;
-      default:
-        return false;
-    }
-  }
-
-  private _execPreprocessors(): void {
+  // preprocessors
+  execPre(): void {
     switch (this.directive.type) {
       case 'GRACE_NOTE':
         this._handleGraceNote();
@@ -37,7 +22,8 @@ class DirectiveHandler {
     }
   }
 
-  private _execPostprocessors(): void {
+  // postprocessers
+  execPost(): void {
     switch (this.directive.type) {
       case 'NOTE_SUGGESTIONS':
         this._handleNoteSuggestions();
