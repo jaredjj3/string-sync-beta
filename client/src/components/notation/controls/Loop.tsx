@@ -2,7 +2,7 @@ import * as React from 'react';
 import { compose, withState, withHandlers, withProps, lifecycle } from 'recompose';
 import { Slider } from 'antd';
 import { withVideo, withNotation, withRaf } from 'enhancers';
-import { isBetween } from 'ssUtil';
+import { isBetween } from 'utilities';
 
 const enhance = compose (
   withVideo,

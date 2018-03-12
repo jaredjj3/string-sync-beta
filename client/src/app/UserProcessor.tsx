@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose, createSink } from 'recompose';
-import { getNullUser, camelCaseObjKeys } from 'ssUtil';
+import { getNullUser, camelCaseObjKeys } from 'utilities';
 import { withUser } from 'enhancers';
 
 const enhance = compose(

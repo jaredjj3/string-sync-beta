@@ -1,5 +1,5 @@
 import * as constants from './sessionConstants';
-import { getNullUser, isLoggedIn } from 'ssUtil';
+import { getNullUser, isLoggedIn } from 'utilities';
 
 // Since the user can't be altered via the sessionReducer, the defaultState
 // can be static. This is unlike the relationship between the notation and

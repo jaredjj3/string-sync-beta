@@ -2,7 +2,7 @@ import { Snapshot } from './';
 import { Score, Tuning, Line, Measure, Note, NoteSuggestion } from 'models';
 import { flatMap, uniqWith, uniq, isEqual, startsWith, get } from 'lodash';
 import { Flow } from 'vexflow';
-import { isBetween, interpolator } from 'ssUtil';
+import { isBetween, interpolator } from 'utilities';
 
 interface SFRefs {
   prevSnapshot: any;

@@ -1,5 +1,5 @@
 import * as constants from './viewportConstants';
-import { getViewport } from 'ssUtil';
+import { getViewport } from 'utilities';
 
 const defaultState: Store.Viewport = Object.freeze(getViewport());
 

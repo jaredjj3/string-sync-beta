@@ -1,4 +1,4 @@
-import { hash } from 'ssUtil';
+import { hash } from 'utilities';
 
 interface KeySpec {
   [key: number]: Function

@@ -1,5 +1,5 @@
 import { Flow } from 'vexflow';
-import { toTick } from 'ssUtil';
+import { toTick } from 'utilities';
 import { Snapshot, SnapshotFactory } from './';
 import { Score, Fretboard, Piano, Tuning } from 'models';
 

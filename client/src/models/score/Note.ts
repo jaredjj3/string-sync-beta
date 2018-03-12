@@ -1,7 +1,7 @@
 import { Flow } from 'vexflow'; 
 import { NoteRenderer } from 'models';
 import { Measure } from './';
-import { interpolator } from 'ssUtil';
+import { interpolator } from 'utilities';
 
 class Note {
   number: number = 0;

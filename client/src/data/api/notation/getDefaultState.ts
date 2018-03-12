@@ -1,4 +1,4 @@
-import { getNullUser } from 'ssUtil';
+import { getNullUser } from 'utilities';
 
 const getDefaultState = () => ({
   id: -1,

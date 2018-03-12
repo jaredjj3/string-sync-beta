@@ -1,6 +1,6 @@
 import * as API from './sessionApi';
 import * as constants from './sessionConstants';
-import { getNullUser, camelCaseObjKeys } from 'ssUtil';
+import { getNullUser, camelCaseObjKeys } from 'utilities';
 
 export const setUser = user => ({
   type: constants.SET_USER,

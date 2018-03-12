@@ -3,7 +3,7 @@ import { compose, mapProps, withProps, withState, shouldUpdate, lifecycle } from
 import { Element as ScrollElement } from 'react-scroll';
 import styled from 'styled-components';
 import { isEqual, get } from 'lodash';
-import { hash } from 'ssUtil';
+import { hash } from 'utilities';
 import { withNotation } from 'enhancers';
 import { Score as ScoreService } from 'models';
 import {

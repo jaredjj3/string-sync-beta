@@ -1,5 +1,5 @@
 import { createStore } from 'redux';
-import { getViewport, isLoggedIn } from 'ssUtil';
+import { getViewport, isLoggedIn } from 'utilities';
 import { rootReducer, rootMiddleware } from './';
 
 const preLoadedState = {

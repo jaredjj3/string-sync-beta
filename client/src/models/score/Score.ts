@@ -1,7 +1,7 @@
 import { Line, Measure, Note } from './';
 import { VextabParser } from './parser';
 import { last } from 'lodash';
-import { isBetween } from 'ssUtil';
+import { isBetween } from 'utilities';
 import { Flow } from 'vexflow';
 
 const { Fraction } = Flow;

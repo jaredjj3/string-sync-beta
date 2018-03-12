@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Frets, SuggestedNoteDescription } from './';
 import { Row, Col } from 'antd';
 import styled from 'styled-components';
-import { isBetween } from 'ssUtil';
+import { isBetween } from 'utilities';
 
 const Outer = styled.div`
   background: rgba(0, 0, 0, 0.75);

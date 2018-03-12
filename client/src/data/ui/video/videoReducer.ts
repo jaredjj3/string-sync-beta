@@ -1,5 +1,5 @@
 import * as constants from './videoConstants';
-import { isVideoActive } from 'ssUtil';
+import { isVideoActive } from 'utilities';
 
 const getDefaultState = (): Store.Video => ({
   player: null,

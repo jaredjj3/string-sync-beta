@@ -8,7 +8,7 @@ import {
 } from 'components';
 import styled from 'styled-components';
 import { Row, Col, InputNumber, Checkbox, Button, Input } from 'antd';
-import { isBetween } from 'ssUtil';
+import { isBetween } from 'utilities';
 
 const enhance = compose(
   withNotation,

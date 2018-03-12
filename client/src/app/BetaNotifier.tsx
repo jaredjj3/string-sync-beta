@@ -2,7 +2,7 @@ import * as React from 'react';
 import { compose, withHandlers, lifecycle } from 'recompose';
 import { Link } from 'react-router-dom';
 import { Button } from 'antd';
-import { hash } from 'ssUtil';
+import { hash } from 'utilities';
 
 const UPDATED_AT = 'March 11';
 

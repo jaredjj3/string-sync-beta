@@ -1,6 +1,6 @@
 import * as constants from './notationConstants';
 import * as API from './notationApi';
-import { camelCaseObjKeys } from 'ssUtil';
+import { camelCaseObjKeys } from 'utilities';
 
 export const setNotation = (notation: Store.Notation) => ({
   type: constants.SET_NOTATION,

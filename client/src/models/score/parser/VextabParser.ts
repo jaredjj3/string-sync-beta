@@ -1,7 +1,7 @@
 import { jisonVextabParser } from 'models';
 import { flatMap, mapValues, mapKeys, groupBy, compact } from 'lodash';
 import MeasureSplitter from './MeasureSplitter';
-import { hash } from 'ssUtil';
+import { hash } from 'utilities';
 
 class VextabParser {
   static BACKEND_PARSER: any = jisonVextabParser;

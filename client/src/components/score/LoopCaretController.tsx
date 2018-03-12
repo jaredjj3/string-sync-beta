@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, withState, withProps, withHandlers } from 'recompose';
 import { withVideo, withRaf } from 'enhancers';
-import { isBetween } from 'ssUtil';
+import { isBetween } from 'utilities';
 import { get } from 'lodash';
 
 const enhance = compose(

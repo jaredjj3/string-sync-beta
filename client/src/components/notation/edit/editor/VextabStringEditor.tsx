@@ -5,7 +5,7 @@ import { Input, Alert } from 'antd';
 import { withNotation } from 'enhancers';
 import { debounce } from 'lodash';
 import styled from 'styled-components';
-import { hash } from 'ssUtil';
+import { hash } from 'utilities';
 
 const { TextArea } = Input;
 
