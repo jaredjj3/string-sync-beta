@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose, withState, withHandlers, lifecycle } from 'recompose';
-import { LoopCaretRenderer } from 'services';
+import { LoopCaretRenderer } from 'models';
 
 const CARET_HEIGHT_PX = 228;
 

@@ -1,5 +1,5 @@
 import { Flow } from 'vexflow'; 
-import { NoteRenderer } from 'services';
+import { NoteRenderer } from 'models';
 import { Measure } from './';
 import { interpolator } from 'ssUtil';
 

@@ -1,4 +1,4 @@
-import { DirectiveObject } from 'services';
+import { DirectiveObject } from 'models';
 import { Flow } from 'vexflow';
 import { flatMap, isEmpty } from 'lodash';
 

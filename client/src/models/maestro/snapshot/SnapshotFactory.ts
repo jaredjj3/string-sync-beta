@@ -1,5 +1,5 @@
 import { Snapshot } from './';
-import NoteSuggestion, { Score, Tuning, Line, Measure, Note } from 'services';
+import { Score, Tuning, Line, Measure, Note, NoteSuggestion } from 'models';
 import { flatMap, uniqWith, uniq, isEqual, startsWith, get } from 'lodash';
 import { Flow } from 'vexflow';
 import { isBetween, interpolator } from 'ssUtil';

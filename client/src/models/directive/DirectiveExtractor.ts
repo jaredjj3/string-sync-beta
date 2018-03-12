@@ -1,6 +1,6 @@
 import { DirectiveObject } from './';
 import { startsWith, partition } from 'lodash';
-import { Fretboard, Maestro } from 'services';
+import { Fretboard, Maestro } from 'models';
 
 // This class is constructed with a Vexflow stave object and then gets extract() 
 // called upon it. This mutates the stave object by excluding directive strings

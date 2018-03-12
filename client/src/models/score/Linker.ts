@@ -1,4 +1,4 @@
-import { Line, Measure, Note } from 'services';
+import { Line, Measure, Note } from 'models';
 import { flatMap, groupBy, merge, last } from 'lodash';
 import { Flow } from 'vexflow';
 

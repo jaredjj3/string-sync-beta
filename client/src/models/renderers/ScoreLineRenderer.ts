@@ -1,7 +1,7 @@
 import { Flow } from 'vexflow';
-import { Artist, Vextab, Measure, Line, Score, Fretboard, Maestro } from 'services';
+import { Artist, Vextab, Measure, Line, Score, Fretboard, Maestro } from 'models';
 import { startsWith } from 'lodash';
-import { DirectiveExtractor } from 'services';
+import { DirectiveExtractor } from 'models';
 
 const { Renderer } = Flow;
 

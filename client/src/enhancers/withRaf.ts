@@ -1,5 +1,5 @@
 import { compose, withProps, lifecycle } from 'recompose';
-import { RafLoop } from 'services';
+import { RafLoop } from 'models';
 
 type RafLoopGetter = (props?: any) => RafLoop;
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, withProps, withHandlers, lifecycle } from 'recompose';
 import { withVideo, withNotation, withRaf } from 'enhancers';
-import { Maestro } from 'services';
+import { Maestro } from 'models';
 
 // The purpose of this component is to wrap the Maestro service
 // in a react wrapper, so that it can respond to changes in redux

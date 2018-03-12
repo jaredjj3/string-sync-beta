@@ -1,4 +1,4 @@
-import { Line } from 'services';
+import { Line } from 'models';
 
 class CaretRenderer implements Renderer {
   static CARET_THICKNESS_PX: number = 2;

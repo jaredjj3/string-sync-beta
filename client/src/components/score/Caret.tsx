@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose, withState, withHandlers, lifecycle } from 'recompose';
-import { CaretRenderer } from 'services';
+import { CaretRenderer } from 'models';
 
 const CARET_HEIGHT_PX = 228;
 

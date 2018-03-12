@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { App } from 'app';
 import { store } from 'data';
-import { Maestro, RafLoop, Loader, GlobalProps, KeyboardManager } from 'services';
+import { Maestro, RafLoop, Loader, GlobalProps, KeyboardManager } from 'models';
 
 declare global {
   interface Window {

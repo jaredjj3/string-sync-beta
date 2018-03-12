@@ -1,4 +1,4 @@
-import { Line } from 'services';
+import { Line } from 'models';
 import { last } from 'lodash';
 
 class LoopCaretRenderer implements Renderer {

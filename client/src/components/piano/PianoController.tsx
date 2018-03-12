@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose, lifecycle, withProps, withHandlers } from 'recompose';
-import { Piano } from 'services';
+import { Piano } from 'models';
 import { isEmpty, compact } from 'lodash';
 import { withRaf } from 'enhancers';
 

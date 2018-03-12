@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose, withState, mapProps, withProps, withHandlers } from 'recompose';
 import { withNotation, withViewport, withRaf } from 'enhancers';
-import { Score } from 'services';
+import { Score } from 'models';
 
 const enhance = compose(
   withNotation,

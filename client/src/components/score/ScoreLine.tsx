@@ -2,7 +2,7 @@ import * as React from 'react';
 import { compose, withHandlers, lifecycle } from 'recompose';
 import { Overlap, Layer, Caret, LoopCarets } from 'components';
 import { Element as ScrollElement } from 'react-scroll';
-import { ScoreLineRenderer } from 'services';
+import { ScoreLineRenderer } from 'models';
 import styled from 'styled-components';
 
 const enhance = compose(

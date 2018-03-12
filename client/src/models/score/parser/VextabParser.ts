@@ -1,4 +1,4 @@
-import { jisonVextabParser } from 'services';
+import { jisonVextabParser } from 'models';
 import { flatMap, mapValues, mapKeys, groupBy, compact } from 'lodash';
 import MeasureSplitter from './MeasureSplitter';
 import { hash } from 'ssUtil';

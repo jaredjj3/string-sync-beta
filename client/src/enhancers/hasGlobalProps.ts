@@ -1,6 +1,6 @@
 import { compose, withProps, lifecycle } from 'recompose';
 import { identity } from './';
-import { GlobalProps } from 'services';
+import { GlobalProps } from 'models';
 
 type GlobalPropsGetter = (props?: any) => GlobalProps;
 type PropsGetter = (props: any) => any;

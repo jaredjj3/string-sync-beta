@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose, lifecycle, withProps, withHandlers } from 'recompose';
-import { Fretboard } from 'services';
+import { Fretboard } from 'models';
 import { isEmpty } from 'lodash';
 import { withRaf } from 'enhancers';
 

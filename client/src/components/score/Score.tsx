@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { isEqual, get } from 'lodash';
 import { hash } from 'ssUtil';
 import { withNotation } from 'enhancers';
-import { Score as ScoreService } from 'services';
+import { Score as ScoreService } from 'models';
 import {
   ScoreController, CaretController, LoopCaretController,
   ScoreScroller, ScoreLine, ScoreTitle

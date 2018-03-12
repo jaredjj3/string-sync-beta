@@ -1,7 +1,7 @@
 import { Flow } from 'vexflow';
 import { toTick } from 'ssUtil';
 import { Snapshot, SnapshotFactory } from './';
-import { Score, Fretboard, Piano, Tuning } from 'services';
+import { Score, Fretboard, Piano, Tuning } from 'models';
 
 // The purpose of this service is to coordinate a video player's state (i.e. isActive and
 // current time states) with DOM elements or other services. Its role is distinct from the
